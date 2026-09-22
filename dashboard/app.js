@@ -108,21 +108,26 @@ function selectProduct(codigo) {
 function renderHero(produto) {
   const wrap = document.getElementById("president-cards");
   wrap.innerHTML = "";
+  const isComb = produto.tipo === "combustivel";
   ["Bolsonaro", "Lula"].forEach((periodo) => {
     const pres = DATA.presidentes[periodo];
     const resumo = produto.resumo_periodos[periodo]?.governo_inteiro;
     const card = document.createElement("div");
     card.className = `president-card ${periodo.toLowerCase()}`;
-    const precoInicio = resumo ? (produto.tipo === "combustivel" ? resumo.preco_nominal_inicio : resumo.indice_nominal_inicio) : null;
-    const precoFim = resumo ? (produto.tipo === "combustivel" ? resumo.preco_nominal_fim : resumo.indice_nominal_fim) : null;
+    let corpo;
+    if (!resumo) {
+      corpo = "dado não disponível";
+    } else if (isComb) {
+      corpo = `${fmtMesAno(resumo.mes_inicio)}: <b>${valorFormatado(produto, resumo.preco_nominal_inicio)}</b><br/>${fmtMesAno(resumo.mes_fim)}: <b>${valorFormatado(produto, resumo.preco_nominal_fim)}</b>`;
+    } else {
+      corpo = `${fmtMesAno(resumo.mes_inicio)} a ${fmtMesAno(resumo.mes_fim)}<br/>Variação: <b>${fmtPct(resumo.variacao_nominal_pct)}</b> (índice, não R$)`;
+    }
     card.innerHTML = `
       <img src="${pres.foto}" alt="${pres.nome}" loading="lazy" />
       <div>
         <div class="p-name">${pres.nome}</div>
         <div class="p-period">${pres.periodo_label}</div>
-        <div class="p-prices">
-          ${resumo ? `${fmtMesAno(resumo.mes_inicio)}: <b>${valorFormatado(produto, precoInicio)}</b><br/>${fmtMesAno(resumo.mes_fim)}: <b>${valorFormatado(produto, precoFim)}</b>` : "dado não disponível"}
-        </div>
+        <div class="p-prices">${corpo}</div>
       </div>`;
     wrap.appendChild(card);
   });
@@ -131,12 +136,30 @@ function renderHero(produto) {
   credit.innerHTML = `${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}`;
   wrap.appendChild(credit);
 
+  const eraCard = document.getElementById("era-card");
+  const notaEl = document.getElementById("nota-alimento");
+
+  if (!isComb) {
+    // Índice de cesta básica: o card "Era/Agora" foi desenhado para preço em
+    // R$ e confunde as pessoas com um alimento (parece preço, não é). Em vez
+    // disso, mostramos só a variação % dentro da própria nota explicativa.
+    eraCard.hidden = true;
+    const serie = produto.serie_mensal;
+    const variacaoTotal = (serie[serie.length - 1].indice_relativo / serie[0].indice_relativo - 1) * 100;
+    notaEl.hidden = false;
+    notaEl.innerHTML = `${produto.nota}<br/><br/><strong>Variação do índice de ${fmtMesAno(serie[0].ano_mes)} a ${fmtMesAno(serie[serie.length - 1].ano_mes)}: ${fmtPct(variacaoTotal)}</strong>`;
+    return;
+  }
+
+  eraCard.hidden = false;
+  notaEl.hidden = true;
+
   // Era / Agora: primeiro mês da série vs. mês mais recente disponível.
   const serie = produto.serie_mensal;
   const primeiro = serie[0];
   const ultimo = serie[serie.length - 1];
-  const valorInicio = produto.tipo === "combustivel" ? primeiro.preco_nominal : primeiro.indice_relativo;
-  const valorFim = produto.tipo === "combustivel" ? ultimo.preco_nominal : ultimo.indice_relativo;
+  const valorInicio = primeiro.preco_nominal;
+  const valorFim = ultimo.preco_nominal;
 
   document.getElementById("era-value").textContent = valorFormatado(produto, valorInicio);
   document.getElementById("era-date").textContent = fmtMesAno(primeiro.ano_mes);
@@ -146,23 +169,11 @@ function renderHero(produto) {
   const diffEl = document.getElementById("era-diff");
   const pct = (valorFim / valorInicio - 1) * 100;
   const up = pct >= 0;
-  if (produto.tipo === "combustivel") {
-    const diffRs = valorFim - valorInicio;
-    diffEl.querySelector(".diff-rs").textContent = `${diffRs >= 0 ? "+" : ""}${fmtBRL.format(diffRs)}`;
-  } else {
-    diffEl.querySelector(".diff-rs").textContent = `${(valorFim - valorInicio) >= 0 ? "+" : ""}${fmtNum(valorFim - valorInicio, 1)} pts`;
-  }
+  const diffRs = valorFim - valorInicio;
+  diffEl.querySelector(".diff-rs").textContent = `${diffRs >= 0 ? "+" : ""}${fmtBRL.format(diffRs)}`;
   diffEl.querySelector(".diff-pct").textContent = fmtPct(pct);
   diffEl.querySelector(".diff-rs").className = `diff-rs ${up ? "diff-up" : "diff-down"}`;
   diffEl.querySelector(".diff-pct").className = `diff-pct ${up ? "diff-up" : "diff-down"}`;
-
-  const notaEl = document.getElementById("nota-alimento");
-  if (produto.tipo === "alimento_indice") {
-    notaEl.hidden = false;
-    notaEl.textContent = produto.nota;
-  } else {
-    notaEl.hidden = true;
-  }
 }
 
 // ---------- Gráfico principal ----------

@@ -130,6 +130,7 @@ section { padding: 36px 0; border-top: 1px solid var(--border); }
   flex-wrap: wrap;
   background: var(--bg-subtle); border-radius: var(--radius); padding: 32px 24px;
 }
+.era-card[hidden] { display: none; }
 .era-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .era-label { font-size: 0.75rem; font-weight: 700; letter-spacing: .08em; color: var(--ink-faint); }
 .era-value { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
