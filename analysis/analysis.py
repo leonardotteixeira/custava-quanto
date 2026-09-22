@@ -145,7 +145,8 @@ def grafico_resumo_variacao_periodo(resumo_comb: pd.DataFrame, resumo_cesta: pd.
 
     fig = make_subplots(
         rows=1, cols=2,
-        subplot_titles=["Combustíveis — variação % real dentro de cada período", "Cesta básica — variação % real dentro de cada período"],
+        subplot_titles=["Combustíveis", "Cesta básica"],
+        horizontal_spacing=0.12,
     )
     for periodo, cor in CORES_PERIODO.items():
         g = comb_br[comb_br["periodo"] == periodo]
@@ -160,10 +161,12 @@ def grafico_resumo_variacao_periodo(resumo_comb: pd.DataFrame, resumo_cesta: pd.
             row=1, col=2,
         )
     fig.update_layout(
-        title="Variação percentual REAL (acima da inflação) do início ao fim de cada período de governo",
+        title="Variação percentual REAL (acima da inflação) do início ao fim de cada período de governo<br>"
+              "<sup>Combustíveis: preço nacional médio. Cesta básica: índice relativo (ver limitações no README)</sup>",
         template="plotly_white",
         barmode="group",
         height=550,
+        width=1100,
     )
     fig.update_xaxes(tickangle=-30)
     return fig
@@ -185,7 +188,7 @@ def main() -> None:
     }
     for nome, fig in graficos.items():
         path = OUTPUT_DIR / nome
-        fig.write_html(path, include_plotlyjs="cdn")
+        fig.write_html(path, include_plotlyjs="cdn", config={"responsive": True})
         logger.info(f"Salvo: {path}")
 
 

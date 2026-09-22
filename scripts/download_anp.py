@@ -26,6 +26,7 @@ import argparse
 import re
 import sys
 import time
+import unicodedata
 from datetime import date
 
 import pandas as pd
@@ -43,14 +44,22 @@ RAW_DIR = DATA_RAW / "anp"
 # Produtos de interesse e como aparecem na coluna "Produto" da ANP.
 PRODUTOS_ALVO = {"GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP"}
 
-USECOLS = ["Regiao - Sigla", "Estado - Sigla", "Produto", "Data da Coleta", "Valor de Venda"]
-RENAME = {
-    "Regiao - Sigla": "regiao",
-    "Estado - Sigla": "estado",
-    "Produto": "produto",
-    "Data da Coleta": "data_coleta",
-    "Valor de Venda": "preco",
+# A ANP não é consistente na acentuação dos cabeçalhos entre arquivos (ex.:
+# "Regiao - Sigla" vs "Região - Sigla", "Numero Rua" vs "Número Rua"). Por
+# isso mapeamos por nome NORMALIZADO (sem acento, minúsculo) em vez de
+# comparar a string exata.
+COLUNAS_ALVO_NORMALIZADAS = {
+    "regiao - sigla": "regiao",
+    "estado - sigla": "estado",
+    "produto": "produto",
+    "data da coleta": "data_coleta",
+    "valor de venda": "preco",
 }
+
+
+def _normalizar(texto: str) -> str:
+    sem_acento = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode("ascii")
+    return sem_acento.strip().lower()
 
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": "Mozilla/5.0 (compat; quanto-custa-research/1.0)"})
@@ -85,15 +94,36 @@ def _download(url: str, dest_path, tentativas: int = 4) -> bool:
 
 def _read_and_aggregate(csv_path) -> pd.DataFrame:
     """Lê um CSV bruto da ANP (por posto) e retorna médias mensais por região/produto."""
+    # A ANP não é consistente no encoding entre arquivos: a maioria é
+    # utf-8-sig, mas alguns saem em cp1252/latin-1 (acentos quebram utf-8).
+    for encoding in ("utf-8-sig", "cp1252", "latin-1"):
+        try:
+            cabecalho = pd.read_csv(csv_path, sep=";", encoding=encoding, nrows=0).columns
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        raise ValueError(f"{csv_path.name}: não consegui detectar o encoding")
+
+    mapa_rename = {}
+    for col in cabecalho:
+        alvo = COLUNAS_ALVO_NORMALIZADAS.get(_normalizar(col))
+        if alvo:
+            mapa_rename[col] = alvo
+    faltando = set(COLUNAS_ALVO_NORMALIZADAS.values()) - set(mapa_rename.values())
+    if faltando:
+        raise ValueError(f"{csv_path.name}: colunas esperadas não encontradas: {faltando} (cabeçalho: {list(cabecalho)})")
+
     df = pd.read_csv(
         csv_path,
         sep=";",
         decimal=",",
-        encoding="utf-8-sig",
-        usecols=USECOLS,
-        dtype={"Regiao - Sigla": "category", "Estado - Sigla": "category", "Produto": "category"},
+        encoding=encoding,
+        usecols=list(mapa_rename.keys()),
+        dtype={c: "category" for c in mapa_rename if mapa_rename[c] in ("regiao", "estado", "produto")},
     )
-    df = df.rename(columns=RENAME)
+    df = df.rename(columns=mapa_rename)
+    df["produto"] = df["produto"].astype(str).str.strip().str.upper()
     df = df[df["produto"].isin(PRODUTOS_ALVO)]
     if df.empty:
         return df
@@ -138,6 +168,20 @@ def _discover_dsan_links(ano: int, categoria: str) -> list[str]:
 PRIMEIRO_ANO_DSAN = 2021
 
 
+def _baixar_e_agregar(url: str, dest) -> pd.DataFrame | None:
+    """Baixa (com cache/retry) e agrega um arquivo; nunca derruba o processo
+    inteiro — um arquivo com formato inesperado só gera um aviso e é pulado,
+    e fica marcado para poder ser investigado depois."""
+    if not _download(url, dest):
+        return None
+    try:
+        agg = _read_and_aggregate(dest)
+    except Exception as e:
+        logger.warning(f"não consegui processar {dest.name}, pulando: {e}")
+        return None
+    return agg if not agg.empty else None
+
+
 def baixar_periodo(ano_inicio: int, ano_fim: int) -> pd.DataFrame:
     ensure_dirs(RAW_DIR / "ca", RAW_DIR / "glp", RAW_DIR / "dsan")
     agregados = []
@@ -151,10 +195,9 @@ def baixar_periodo(ano_inicio: int, ano_fim: int) -> pd.DataFrame:
                 for grupo, subdir in (("ca", "ca"), ("glp", "glp")):
                     url = f"{BASE_DSAS}/{grupo}/{grupo}-{ano}-{sem:02d}.csv"
                     dest = RAW_DIR / subdir / f"{grupo}-{ano}-{sem:02d}.csv"
-                    if _download(url, dest):
-                        agg = _read_and_aggregate(dest)
-                        if not agg.empty:
-                            agregados.append(agg)
+                    agg = _baixar_e_agregar(url, dest)
+                    if agg is not None:
+                        agregados.append(agg)
         else:
             # --- Formato mensal: cada mês tem 3 arquivos (gasolina-etanol,
             # diesel-gnv, glp). Nomes de arquivo mudam entre anos, por isso
@@ -163,10 +206,9 @@ def baixar_periodo(ano_inicio: int, ano_fim: int) -> pd.DataFrame:
                 links = _discover_dsan_links(ano, categoria)
                 for href in links:
                     dest = RAW_DIR / "dsan" / f"{ano}-{href.rsplit('/', 1)[-1]}"
-                    if _download(href, dest):
-                        agg = _read_and_aggregate(dest)
-                        if not agg.empty:
-                            agregados.append(agg)
+                    agg = _baixar_e_agregar(href, dest)
+                    if agg is not None:
+                        agregados.append(agg)
 
     if not agregados:
         raise RuntimeError("Nenhum dado da ANP foi baixado com sucesso.")
