@@ -100,6 +100,10 @@ Gera arquivos `.html` interativos em `output/` (abra no navegador).
    empresa contratada, cobre um subconjunto de postos (não todos) e alguns
    meses/regiões têm menos coletas que outras — isso afeta a precisão da
    média, especialmente em regiões menores (Norte, Centro-Oeste).
+   **Setembro/2020 está completamente ausente** dos dados brutos publicados
+   pela ANP para todos os combustíveis (confirmado direto no arquivo fonte,
+   não é bug deste projeto) — coincide com um dos picos da pandemia, mas não
+   temos confirmação da causa.
 2. **Cesta básica não é preço em R$**: como explicado acima, os itens do
    IBGE aqui são um índice relativo, não um valor monetário. Para preço
    absoluto (ex.: "quanto custa 1kg de arroz"), a fonte de referência no
