@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_RAW = ROOT_DIR / "data" / "raw"
 DATA_PROCESSED = ROOT_DIR / "data" / "processed"
 OUTPUT_DIR = ROOT_DIR / "output"
+DASHBOARD_DIR = ROOT_DIR / "dashboard"
 
 # Marco da transição de governo: Bolsonaro até 31/12/2022, Lula a partir de 01/01/2023.
 PERIODO_CORTE = "2023-01-01"

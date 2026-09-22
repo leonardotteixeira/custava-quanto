@@ -1,4 +1,4 @@
-# Quanto Custa — Combustíveis e Alimentos: Bolsonaro x Lula
+# CUSTAVA QUANTO? — Combustíveis e Alimentos: Bolsonaro x Lula
 
 Projeto pessoal de análise de dados comparando preços de combustíveis e itens
 da cesta básica entre o governo Bolsonaro (até 31/12/2022) e o governo Lula
@@ -8,7 +8,9 @@ não atribuir a um governo o que é efeito de fatores externos.
 **Objetivo declarado: entender o que os dados mostram, não confirmar uma
 narrativa.** Ver [output/RESUMO.md](output/RESUMO.md) para as conclusões e,
 principalmente, para as limitações da análise — elas importam tanto quanto os
-números.
+números. O projeto tem duas camadas de apresentação: um **dashboard
+interativo** ([dashboard/](dashboard/), ver [seção abaixo](#dashboard-custava-quanto))
+e os gráficos estáticos originais em `output/`.
 
 ## Fontes de dados
 
@@ -16,7 +18,7 @@ números.
 |---|---|---|
 | [ANP](https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis) | Gasolina comum, etanol hidratado, diesel (comum e S10), GLP (botijão 13kg) — preço por posto revendedor, agregado aqui por mês/região | 2019–hoje |
 | [IBGE/SIDRA](https://sidra.ibge.gov.br) | IPCA geral (deflator) e variação mensal de itens específicos (arroz, feijão, carne, leite, óleo de soja, café) | 2019–hoje |
-| [Banco Central (SGS)](https://www3.bcb.gov.br/sgspub/) | Câmbio USD/BRL e Selic — contexto, não resultado | 2019–hoje |
+| [Banco Central (SGS)](https://www3.bcb.gov.br/sgspub/) | Câmbio USD/BRL, Selic e salário mínimo nacional (série 1619) — contexto, não resultado | 2019–hoje |
 | [FRED (Brent)](https://fred.stlouisfed.org/series/DCOILBRENTEU) | Petróleo Brent, USD/barril — contexto | 2019–hoje |
 | DIEESE (Cesta Básica Nacional) | **Não incluída no pipeline automático** — ver [Sobre o DIEESE](#sobre-o-dieese) | — |
 
@@ -26,9 +28,14 @@ números.
 data/
   raw/          dados brutos baixados (não versionado — ver .gitignore)
   processed/    dados agregados/tratados (versionado, são pequenos)
-scripts/        download_*.py (coleta) e build_dataset.py (consolidação)
-analysis/       analysis.py — gera os gráficos em /output
+                inclui dashboard_data.json, a fonte única de dados do dashboard
+scripts/        download_*.py (coleta), build_dataset.py e
+                build_dashboard_data.py (consolidação)
+analysis/       analysis.py — gera os gráficos estáticos em /output
 output/         gráficos (.html) e RESUMO.md com as conclusões
+dashboard/      site estático interativo (HTML/CSS/JS + Plotly.js),
+                lê data/processed/dashboard_data.json — nenhum cálculo
+                econômico acontece no navegador
 ```
 
 ## Como rodar
@@ -47,6 +54,7 @@ python -m venv .venv
 .venv/Scripts/python scripts/download_ibge.py
 .venv/Scripts/python scripts/download_bcb.py
 .venv/Scripts/python scripts/download_brent.py
+.venv/Scripts/python scripts/download_salario_minimo.py
 ```
 
 Todos os scripts são **idempotentes**: usam cache em `data/raw/` e podem ser
@@ -63,13 +71,56 @@ padrão, `download_anp.py` baixa de 2019 até o ano atual; ajuste com
 Gera os datasets finais em `data/processed/`: séries mensais nominais e
 reais (deflacionadas pelo IPCA), e os resumos por período de governo.
 
-### 3. Gerar os gráficos
+### 3. Gerar os gráficos estáticos
 
 ```bash
 .venv/Scripts/python analysis/analysis.py
 ```
 
 Gera arquivos `.html` interativos em `output/` (abra no navegador).
+
+### 4. Gerar os dados do dashboard e rodar o dashboard
+
+```bash
+.venv/Scripts/python scripts/build_dashboard_data.py
+```
+
+Gera `data/processed/dashboard_data.json` — a única fonte de dados que o
+dashboard lê (nenhum cálculo de preço/deflação acontece em JavaScript).
+
+O dashboard é HTML/CSS/JS estático e usa `fetch()`, então precisa ser servido
+por HTTP (abrir `dashboard/index.html` direto como `file://` não funciona).
+Da raiz do projeto:
+
+```bash
+.venv/Scripts/python -m http.server 8420
+```
+
+e abra `http://localhost:8420/dashboard/index.html`. (Há também um
+`.claude/launch.json` já configurado para isso, se estiver usando o Claude
+Code desktop app com preview de navegador.)
+
+## Dashboard CUSTAVA QUANTO?
+
+Camada de apresentação interativa sobre os mesmos dados do pipeline: escolha
+um produto (5 combustíveis + 6 itens da cesta básica) e veja preço ao longo
+do tempo (nominal, real ou % do salário mínimo), comparação Bolsonaro x Lula
+(governo inteiro ou primeiros 12/24/36 meses), poder de compra, contexto
+(Brent/câmbio/IPCA indexados) e histórico anual.
+
+- **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
+  todas as contas em Python e grava o resultado pronto em
+  `dashboard_data.json`; `dashboard/app.js` só formata e desenha.
+- **Salário mínimo**: Banco Central, SGS série 1619 (piso nacional, nominal
+  — não reflete pisos regionais mais altos em alguns estados).
+- **Fotos dos presidentes**: retratos oficiais do acervo do Palácio do
+  Planalto, licença CC BY 2.0, via Wikimedia Commons (mesmas fotos usadas
+  pela Wikipedia em pt-BR) — crédito visível no próprio card.
+- **Cesta básica no dashboard**: mostra o índice relativo (não R$), com a
+  mesma nota de limitação do restante do projeto, sempre visível na tela
+  (não escondida em tooltip).
+- **Escopo do MVP**: região é sempre "Brasil" (os dados têm quebra regional
+  em `combustiveis_final.csv`, mas o dashboard não expõe esse filtro ainda).
 
 ## Metodologia (resumo)
 
@@ -136,6 +187,10 @@ Gera arquivos `.html` interativos em `output/` (abra no navegador).
    carne) são menos sazonais que hortifrutis, mas quebras de safra e
    entressafra ainda afetam meses específicos — isso é mencionado no resumo
    qualitativamente, não modelado formalmente.
+8. **Salário mínimo é o piso nacional**: usado no dashboard para "% do
+   salário mínimo" e "poder de compra" — é o valor nominal vigente em cada
+   mês (BCB SGS 1619), não ajustado por pisos regionais mais altos que
+   alguns estados praticam para certas categorias.
 
 ### Sobre o DIEESE
 
@@ -156,9 +211,10 @@ relatórios mensais em PDF publicados em
 
 ## Atualizando os dados no futuro
 
-Basta rodar os 4 scripts de download novamente (eles buscam automaticamente
-até o mês mais recente disponível em cada fonte) e depois `build_dataset.py`
-e `analysis/analysis.py`. Não é preciso apagar `data/raw/` — o cache local
+Basta rodar os 5 scripts de download novamente (eles buscam automaticamente
+até o mês mais recente disponível em cada fonte), depois `build_dataset.py`,
+`build_dashboard_data.py` e, se quiser os gráficos estáticos também,
+`analysis/analysis.py`. Não é preciso apagar `data/raw/` — o cache local
 evita rebaixar arquivos que não mudam (arquivos de meses/anos fechados da
 ANP raramente são revisados; se desconfiar de dado desatualizado, apague o
 arquivo específico em `data/raw/anp/` e rode de novo).
