@@ -378,6 +378,40 @@ function eraReferencia(serie) {
   return serie[Math.max(0, idx)];
 }
 
+// Para indicadores de mercado com cotacao_hoje, cria um objeto "agora" com
+// dados de hoje (em vez do último mês fechado)
+function agoraComCotacaoHoje(produto, tipo) {
+  if (!produto.cotacao_hoje) {
+    return null;  // usar último mês fechado
+  }
+  const hoje = new Date();
+  const ano_mes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+
+  if (tipo === "taxa") {
+    return {
+      ano_mes,
+      taxa_aa: produto.cotacao_hoje.valor,
+      ipca_indice: produto.serie_mensal[produto.serie_mensal.length - 1]?.ipca_indice || 1,
+    };
+  } else if (tipo === "pontos") {
+    return {
+      ano_mes,
+      pontos: produto.cotacao_hoje.pontos,
+      ipca_indice: produto.serie_mensal[produto.serie_mensal.length - 1]?.ipca_indice || 1,
+    };
+  } else if (tipo === "cambio") {
+    return {
+      ano_mes,
+      preco_nominal: produto.cotacao_hoje.valor,
+      preco_real: produto.cotacao_hoje.valor,
+      indice_relativo: produto.cotacao_hoje.valor,
+      pct_salario_minimo: 0,  // placeholder
+      ipca_indice: produto.serie_mensal[produto.serie_mensal.length - 1]?.ipca_indice || 1,
+    };
+  }
+  return null;
+}
+
 // =====================================================================
 // ABERTURA — Era × Agora com barras proporcionais + frase-resumo
 // =====================================================================
@@ -389,9 +423,13 @@ function renderAnswer(produto) {
   // TAXA_INFO para não hardcodar "Selic" quando o produto é o IPCA.
   if (produto.tipo === "taxa") {
     const info = TAXA_INFO[state.product];
-    const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+    let ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+    const agoraHoje = agoraComCotacaoHoje(produto, "taxa");
+    if (agoraHoje) {
+      ultimo = agoraHoje;
+    }
     const eraRef = eraReferencia(produto.serie_mensal);
-    const mEra = fmtMesAno(eraRef.ano_mes), mFim = fmtMesAno(ultimo.ano_mes);
+    const mEra = fmtMesAno(eraRef.ano_mes), mFim = agoraHoje ? "hoje" : fmtMesAno(ultimo.ano_mes);
 
     document.getElementById("product-name").textContent = t.titulo;
     const tag = document.getElementById("unit-tag");
@@ -440,9 +478,13 @@ function renderAnswer(produto) {
   // de "se tivesse só acompanhado a inflação" (mesma técnica do marcador
   // usado para combustível/alimento, aplicada aos pontos).
   if (produto.tipo === "pontos") {
-    const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+    let ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+    const agoraHoje = agoraComCotacaoHoje(produto, "pontos");
+    if (agoraHoje) {
+      ultimo = agoraHoje;
+    }
     const eraRef = eraReferencia(produto.serie_mensal);
-    const mEra = fmtMesAno(eraRef.ano_mes), mFim = fmtMesAno(ultimo.ano_mes);
+    const mEra = fmtMesAno(eraRef.ano_mes), mFim = agoraHoje ? "hoje" : fmtMesAno(ultimo.ano_mes);
 
     document.getElementById("product-name").textContent = t.titulo;
     const tag = document.getElementById("unit-tag");
@@ -493,10 +535,15 @@ function renderAnswer(produto) {
   }
 
   const isComb = temPreco(produto);
-  const [primeiro, ultimo] = primeiroUltimo(produto.serie_mensal);
+  const [primeiro, ultimoMessal] = primeiroUltimo(produto.serie_mensal);
+  let ultimo = ultimoMessal;
+  const agoraHoje = state.product === "DOLAR" && agoraComCotacaoHoje(produto, "cambio");
+  if (agoraHoje) {
+    ultimo = agoraHoje;
+  }
   const eraRef = eraReferencia(produto.serie_mensal);
   const u = unidadeInfo(produto);
-  const mIni = fmtMesAno(primeiro.ano_mes), mFim = fmtMesAno(ultimo.ano_mes), mEra = fmtMesAno(eraRef.ano_mes);
+  const mIni = fmtMesAno(primeiro.ano_mes), mFim = agoraHoje ? "hoje" : fmtMesAno(ultimo.ano_mes), mEra = fmtMesAno(eraRef.ano_mes);
 
   document.getElementById("product-name").textContent = t.titulo;
   const tag = document.getElementById("unit-tag");
