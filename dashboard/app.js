@@ -572,8 +572,9 @@ function renderPurchasingPower(produto) {
   section.style.display = "";
   const u = unidadeInfo(produto);
   const t = txt(state.product);
-  const [primeiro, ultimo] = primeiroUltimo(produto.serie_mensal);
-  const uIni = primeiro.unidades_por_salario_minimo, uFim = ultimo.unidades_por_salario_minimo;
+  const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+  const eraRef = eraReferencia(produto.serie_mensal);
+  const uIni = eraRef.unidades_por_salario_minimo, uFim = ultimo.unidades_por_salario_minimo;
 
   document.getElementById("pp-sub").innerHTML =
     `Quantos ${u.plural} ${t.sem} dava para comprar gastando um ${term("salario", "salário mínimo")} inteiro.`;
@@ -594,11 +595,11 @@ function renderPurchasingPower(produto) {
 
   const diff = Math.round(uFim) - Math.round(uIni);
   const veredito = diff === 0
-    ? `Hoje um salário mínimo compra <strong>a mesma quantidade</strong> que em ${fmtMesAno(primeiro.ano_mes)}.`
-    : `Hoje um salário mínimo compra <strong>${fmtNum(Math.abs(diff), 0)} ${Math.abs(diff) === 1 ? u.singular : u.plural} a ${diff > 0 ? "mais" : "menos"}</strong> do que em ${fmtMesAno(primeiro.ano_mes)}.`;
+    ? `Hoje um salário mínimo compra <strong>a mesma quantidade</strong> que em ${fmtMesAno(eraRef.ano_mes)}.`
+    : `Hoje um salário mínimo compra <strong>${fmtNum(Math.abs(diff), 0)} ${Math.abs(diff) === 1 ? u.singular : u.plural} a ${diff > 0 ? "mais" : "menos"}</strong> do que em ${fmtMesAno(eraRef.ano_mes)}.`;
 
   document.getElementById("pp-card").innerHTML =
-    linha(primeiro, uIni, "") + linha(ultimo, uFim, "now") +
+    linha(eraRef, uIni, "") + linha(ultimo, uFim, "now") +
     `<div class="pp-footer"><p class="pp-verdict">${veredito}</p><span class="pp-legend"><span class="pp-unit"></span> = ${passo} ${passo === 1 ? u.singular : u.plural}</span></div>`;
 }
 
