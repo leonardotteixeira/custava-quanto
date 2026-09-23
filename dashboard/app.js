@@ -15,7 +15,7 @@ const PRODUCT_CHIP_LABEL = {
   "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "Gás (GLP)",
   "Arroz": "Arroz", "Feijão carioca": "Feijão", "Carne bovina (patinho)": "Carne",
   "Leite longa vida": "Leite", "Óleo de soja": "Óleo de soja", "Café moído": "Café",
-  "DOLAR": "💵 Dólar", "SELIC": "🏦 Selic", "IBOVESPA": "📈 Ibovespa", "IPCA": "📊 IPCA",
+  "DOLAR": "Dólar", "SELIC": "Selic", "IBOVESPA": "Ibovespa", "IPCA": "IPCA",
 };
 // Nome de exibição (título), forma usada no meio de frases ("do arroz") e sem artigo ("de arroz").
 const PRODUCT_TEXT = {
@@ -661,7 +661,12 @@ function renderAnswer(produto) {
   else fraseReal = pct >= 0
     ? `Mas os preços em geral subiram mais: <span class="hl">descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`
     : `<span class="hl">Descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`;
-  const fraseSalario = isComb
+  // "Quanto custa em % do salário mínimo" só faz sentido intuitivo pra
+  // combustível (algo que se compra em unidades físicas com o salário).
+  // Câmbio (Dólar) tem preço em R$ como combustível (isComb=true), mas
+  // "1 dólar custa X% do salário mínimo" não é uma frase que ninguém lê
+  // e entende — por isso a checagem aqui é mais estrita que `isComb`.
+  const fraseSalario = produto.tipo === "combustivel"
     ? ` Hoje, ${u.um} custa <strong>${fmtNum(ultimo.pct_salario_minimo, 2)}%</strong> do ${term("salario", "salário mínimo")}.`
     : "";
   // alimentos: traduz o índice para uma situação concreta, sem apresentá-lo como preço
