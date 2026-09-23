@@ -344,8 +344,6 @@ ul { margin: 0; }
 .gov-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 36px; border-top: 1px solid var(--line); }
 .gov { padding: 26px 36px 26px 0; }
 .gov + .gov { padding: 26px 0 26px 36px; border-left: 1px solid var(--line); }
-.gov-head { display: flex; align-items: center; gap: 12px; }
-.gov-head img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; filter: grayscale(1) contrast(1.05); border: 1px solid var(--line); flex-shrink: 0; }
 .gov-name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 .bolsonaro .dot, .dot.bolsonaro { background: var(--p-bolsonaro); }

@@ -8,9 +8,11 @@ Tratamento (o mesmo para os dois, sem alterar a aparência das pessoas):
   1. recorte quadrado com o rosto na mesma escala e posição (linha dos olhos
      a ~42% da altura, rosto ocupando ~50% da largura);
   2. redimensionamento para 720x720 px (nítido até ~360 px de tela em 2x);
-  3. conversão para monocromático com leve ajuste de contraste — tira as
-     cores de fundo (bandeira, faixa presidencial) para que a única cor
-     associada a cada período seja a de identificação do próprio site.
+  3. leve dessaturação com ajuste de contraste — reduz sem eliminar as
+     cores de fundo (bandeira, faixa presidencial), seguindo a diretriz do
+     Custava Quanto Brand Book ("tratamento levemente dessaturado, nunca
+     preto e branco puro"). DESSATURACAO = 0 (colorido original) a
+     1 (P&B total).
 """
 from pathlib import Path
 
@@ -25,15 +27,17 @@ RECORTES = {
     "lula": (122, 28, 856, 762),
 }
 LADO = 720
+DESSATURACAO = 0.35
 
 
 def processar(nome: str, caixa: tuple[int, int, int, int]) -> None:
     img = Image.open(PASTA / "originais" / f"{nome}.jpg").convert("RGB")
     img = img.crop(caixa).resize((LADO, LADO), Image.LANCZOS)
-    img = ImageOps.grayscale(img)
+    cinza = ImageOps.grayscale(img).convert("RGB")
+    img = Image.blend(img, cinza, DESSATURACAO)
     img = ImageOps.autocontrast(img, cutoff=0.5)
-    img.convert("RGB").save(PASTA / f"{nome}.jpg", quality=90, optimize=True, progressive=True)
-    print(f"{nome}: {caixa} -> {LADO}x{LADO}")
+    img.save(PASTA / f"{nome}.jpg", quality=90, optimize=True, progressive=True)
+    print(f"{nome}: {caixa} -> {LADO}x{LADO}, dessaturação {DESSATURACAO:.0%}")
 
 
 if __name__ == "__main__":
