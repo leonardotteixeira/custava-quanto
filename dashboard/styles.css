@@ -170,6 +170,8 @@ ul { margin: 0; }
 .month-select { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; }
 .month-btn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; font-size: 0.86rem; font-weight: 600; }
 .month-btn:hover, .month-select:hover { border-color: var(--ink); }
+.month-btn:disabled { color: var(--line); cursor: not-allowed; opacity: .5; }
+.month-btn:disabled:hover { border-color: var(--line); }
 .month-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
 .month-pill { padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font-size: 0.78rem; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all .15s; }
 .month-pill:hover, .month-pill.active { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
@@ -271,6 +273,8 @@ ul { margin: 0; }
 .segmented-btn:hover { color: var(--ink); background: var(--paper); }
 .segmented-btn.active { background: var(--ink); color: var(--paper); font-weight: 600; }
 .segmented-btn[hidden] { display: none; }
+.segmented-btn:disabled { color: var(--line); cursor: not-allowed; }
+.segmented-btn:disabled:hover { background: transparent; color: var(--line); }
 
 .plot { width: 100%; height: 470px; margin-top: 8px; }
 .plot-small { height: 380px; }

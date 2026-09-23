@@ -897,6 +897,11 @@ function renderChart() {
     });
   }
   Plotly.react("main-chart", traces, layout, { responsive: true, displayModeBar: false });
+  // resumo textual pra quem não consegue ver/interagir com o gráfico Plotly
+  // (leitor de tela, navegação só por teclado) — sem isso o aria-label
+  // ficava estático e nunca dizia qual produto ou quais valores
+  document.getElementById("main-chart").setAttribute("aria-label",
+    `${titulo}. De ${fmtY(y[idxIni])} em ${fmtMesAno(serie[idxIni].ano_mes)} a ${fmtY(y[idxFim])} em ${fmtMesAno(serie[idxFim].ano_mes)}. A tabela e o texto abaixo trazem os mesmos números.`);
   bindChartClicks();
   renderNewsTrack();
 }
@@ -1258,6 +1263,8 @@ function renderContext(produto) {
       ].filter(Boolean)),
     ];
     Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
+    document.getElementById("context-chart").setAttribute("aria-label",
+      `${document.getElementById("context-chart-title").textContent}. ${document.getElementById("context-answer").textContent}`);
     return;
   }
 
@@ -1372,6 +1379,8 @@ function renderContext(produto) {
     })),
   ];
   Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
+  document.getElementById("context-chart").setAttribute("aria-label",
+    `${document.getElementById("context-chart-title").textContent}. ${document.getElementById("context-answer").textContent}`);
 }
 
 // =====================================================================
@@ -1434,6 +1443,14 @@ function bindSnapshotControls(produto) {
   const prev = document.getElementById("month-prev");
   const next = document.getElementById("month-next");
 
+  // desabilita prev/next no início/fim do intervalo — sem isso, clicar
+  // no limite não fazia nada e não dava nenhum sinal de por quê
+  const atualizarLimites = (iso) => {
+    const meses = Object.keys(DATA.fotografia_mensal).sort();
+    const idx = meses.indexOf(iso);
+    if (prev) prev.disabled = idx <= 0;
+    if (next) next.disabled = idx < 0 || idx >= meses.length - 1;
+  };
   const updateSnapshot = (iso) => {
     selectedSnapshotIso = iso;
     if (drop) drop.value = iso;
@@ -1442,8 +1459,10 @@ function bindSnapshotControls(produto) {
       p.classList.toggle("active", ativo);
       p.setAttribute("aria-pressed", String(ativo));
     });
+    atualizarLimites(iso);
     renderSnapshot(state.product ? DATA.produtos[state.product] : produto);
   };
+  atualizarLimites(selectedSnapshotIso);
 
   if (drop) {
     drop.addEventListener("change", (e) => updateSnapshot(e.target.value));
