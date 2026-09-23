@@ -1,6 +1,8 @@
 // CUSTAVA QUANTO? — toda a lógica de preço/deflação/índice já foi calculada
 // em Python (scripts/build_dashboard_data.py). Este arquivo só lê
-// dashboard_data.json e renderiza — nenhum cálculo econômico acontece aqui.
+// dashboard_data.json e renderiza — nenhum cálculo econômico acontece aqui
+// (apenas razões de exibição entre valores já prontos: diferença entre o
+// primeiro e o último mês, largura de barras, escala dos minigráficos etc.).
 
 const DATA_URL = "../data/processed/dashboard_data.json";
 
@@ -8,17 +10,25 @@ const PRODUCT_ORDER = [
   "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
   "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
 ];
-const PRODUCT_EMOJI = {
-  "GASOLINA": "⛽", "ETANOL": "🌱", "DIESEL": "🚛", "DIESEL S10": "🚚", "GLP": "🔥",
-  "Arroz": "🍚", "Feijão carioca": "🫘", "Carne bovina (patinho)": "🥩",
-  "Leite longa vida": "🥛", "Óleo de soja": "🛢️", "Café moído": "☕",
-};
 const PRODUCT_CHIP_LABEL = {
-  "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "GLP",
+  "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "Gás (GLP)",
   "Arroz": "Arroz", "Feijão carioca": "Feijão", "Carne bovina (patinho)": "Carne",
-  "Leite longa vida": "Leite", "Óleo de soja": "Óleo", "Café moído": "Café",
+  "Leite longa vida": "Leite", "Óleo de soja": "Óleo de soja", "Café moído": "Café",
 };
-const CATEGORY_DEFAULT = { combustivel: "GASOLINA", alimento_indice: "Arroz" };
+// Nome de exibição (título), forma usada no meio de frases ("do arroz") e sem artigo ("de arroz").
+const PRODUCT_TEXT = {
+  "GASOLINA": { titulo: "Gasolina comum", de: "da gasolina comum", sem: "de gasolina comum" },
+  "ETANOL": { titulo: "Etanol hidratado", de: "do etanol", sem: "de etanol" },
+  "DIESEL": { titulo: "Diesel comum (S500)", de: "do diesel comum", sem: "de diesel comum" },
+  "DIESEL S10": { titulo: "Diesel S10", de: "do diesel S10", sem: "de diesel S10" },
+  "GLP": { titulo: "Gás de cozinha (GLP)", de: "do gás de cozinha", sem: "de gás de cozinha" },
+  "Arroz": { titulo: "Arroz", de: "do arroz", sem: "de arroz" },
+  "Feijão carioca": { titulo: "Feijão carioca", de: "do feijão carioca", sem: "de feijão carioca" },
+  "Carne bovina (patinho)": { titulo: "Carne bovina (patinho)", de: "da carne (patinho)", sem: "de carne (patinho)" },
+  "Leite longa vida": { titulo: "Leite longa vida", de: "do leite longa vida", sem: "de leite longa vida" },
+  "Óleo de soja": { titulo: "Óleo de soja", de: "do óleo de soja", sem: "de óleo de soja" },
+  "Café moído": { titulo: "Café moído", de: "do café moído", sem: "de café moído" },
+};
 const COHORT_LABEL = {
   governo_inteiro: "governo inteiro",
   primeiros_12m: "primeiros 12 meses",
@@ -26,69 +36,113 @@ const COHORT_LABEL = {
   primeiros_36m: "primeiros 36 meses",
 };
 
+// Explicações curtas dos termos técnicos — aparecem ao tocar/passar o mouse.
+const TERMS = {
+  inflacao: ["Inflação", "É quando os preços em geral sobem. Com inflação, o mesmo dinheiro compra menos coisas com o passar do tempo."],
+  ipca: ["IPCA", "O índice oficial de inflação do Brasil, calculado pelo IBGE. Mede quanto subiu, em média, o custo de vida das famílias."],
+  real: ["Corrigido pela inflação", "O preço antigo convertido para dinheiro de hoje. Serve para comparar épocas diferentes de forma justa: se o preço corrigido sobe, o produto ficou mais caro de verdade."],
+  indice: ["Índice", "Mostra a variação, não o preço. Começa em 100 em jan/2019: 150 quer dizer 50% mais caro que no início. Não é um valor em reais."],
+  brent: ["Brent", "O preço internacional do barril de petróleo, referência para o preço dos combustíveis. Aqui, convertido para reais."],
+  cambio: ["Dólar (câmbio)", "Quantos reais é preciso para comprar 1 dólar. Quando o dólar sobe, o que é cotado em dólar — como o petróleo — fica mais caro no Brasil."],
+  salario: ["Salário mínimo", "O piso salarial nacional vigente em cada mês (dados do Banco Central). Não inclui pisos estaduais mais altos."],
+};
+const term = (key, label) => `<button type="button" class="term" data-term="${key}" aria-expanded="false">${label}</button>`;
+
 let DATA = null;
 const state = { categoria: "combustivel", product: "GASOLINA", metric: "nominal", cohort: "governo_inteiro" };
 
 const fmtBRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-const fmtPct = (v, digits = 1) => (v === null || v === undefined || Number.isNaN(v)) ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(digits)}%`;
-const fmtNum = (v, digits = 1) => (v === null || v === undefined || Number.isNaN(v)) ? "—" : v.toLocaleString("pt-BR", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+const isNil = (v) => v === null || v === undefined || Number.isNaN(v);
+const fmtNum = (v, digits = 1) => isNil(v) ? "—" : v.toLocaleString("pt-BR", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+const fmtPct = (v, digits = 1) => isNil(v) ? "—" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${fmtNum(Math.abs(v), digits)}%`;
+const fmtSignedBRL = (v) => isNil(v) ? "—" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${fmtBRL.format(Math.abs(v))}`;
 const fmtMesAno = (isoDate) => {
   const [y, m] = isoDate.split("-");
   const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
   return `${meses[parseInt(m, 10) - 1]}/${y}`;
 };
+const pad2 = (n) => String(n).padStart(2, "0");
 
 function valorFormatado(produto, valor) {
-  if (valor === null || valor === undefined) return "dado não disponível";
+  if (isNil(valor)) return "dado não disponível";
   return produto.tipo === "combustivel" ? fmtBRL.format(valor) : fmtNum(valor, 1);
 }
+// Preço-herói: "R$" pequeno, número em destaque.
+const precoHeroi = (v) => isNil(v) ? "—" : `<span class="cur">R$</span>${fmtNum(v, 2)}`;
 
-// Troca o conteúdo de um elemento com um pequeno "giro" (fade + deslocamento),
-// o único momento de movimento orquestrado da página — reservado para o
-// número mais importante da tela (o preço-herói).
-function swapWithRoll(el, novoTexto) {
-  el.classList.add("rolling");
-  window.setTimeout(() => {
-    el.textContent = novoTexto;
-    el.classList.remove("rolling");
-  }, 140);
+// Unidade física do produto, para nunca deixar a pessoa adivinhar.
+function unidadeInfo(produto) {
+  if (produto.unidade === "R$/13kg") return { por: "por botijão de 13 kg", um: "1 botijão", plural: "botijões", singular: "botijão", curta: "R$ por botijão" };
+  return { por: "por litro", um: "1 litro", plural: "litros", singular: "litro", curta: "R$ por litro" };
+}
+const txt = (codigo) => PRODUCT_TEXT[codigo] || { titulo: DATA.produtos[codigo].nome, de: DATA.produtos[codigo].nome.toLowerCase(), sem: DATA.produtos[codigo].nome.toLowerCase() };
+const primeiroUltimo = (serie) => [serie[0], serie[serie.length - 1]];
+const ultimoValido = (arr) => { for (let i = arr.length - 1; i >= 0; i--) if (!isNil(arr[i])) return arr[i]; return null; };
+
+function cssVar(nome) { return getComputedStyle(document.documentElement).getPropertyValue(nome).trim(); }
+function hexAlpha(hex, alpha) {
+  const h = hex.replace("#", "");
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+const reduzMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Número que "conta" até o novo valor (curto, só nos números-herói).
+function animateNumber(el, to, render) {
+  const from = parseFloat(el.dataset.v);
+  el.dataset.v = to;
+  if (isNil(to) || Number.isNaN(from) || reduzMovimento()) { el.innerHTML = render(to); return; }
+  const t0 = performance.now(), dur = 520;
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / dur);
+    const e = 1 - Math.pow(1 - k, 3);
+    el.innerHTML = render(from + (to - from) * e);
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Classificação em linguagem simples da variação real (descontada a inflação).
+function leituraReal(realPct) {
+  if (Math.abs(realPct) < 3) return "igual";
+  return realPct > 0 ? "acima" : "abaixo";
 }
 
 async function init() {
   const resp = await fetch(DATA_URL);
   DATA = await resp.json();
-  bindCategoryTabs();
   renderSelector();
   bindToggles();
+  bindHeaderLinks();
+  bindStickyBar();
+  bindTerms();
+  // primeira carga: os números-herói contam a partir de zero
+  ["era-value", "agora-value"].forEach((id) => { document.getElementById(id).dataset.v = 0; });
   selectProduct(state.product);
-}
-
-function bindCategoryTabs() {
-  document.getElementById("category-tabs").addEventListener("click", (e) => {
-    const btn = e.target.closest(".category-tab");
-    if (!btn) return;
-    const categoria = btn.dataset.categoria;
-    if (categoria === state.categoria) return;
-    state.categoria = categoria;
-    document.querySelectorAll(".category-tab").forEach((t) => t.classList.toggle("active", t === btn));
-    renderSelector();
-    selectProduct(CATEGORY_DEFAULT[categoria]);
+  let eraEstreito = estreito();
+  window.addEventListener("resize", () => {
+    if (estreito() === eraEstreito) return;
+    eraEstreito = estreito();
+    renderChart();
+    renderContext(DATA.produtos[state.product]);
   });
 }
 
 function renderSelector() {
-  const el = document.getElementById("product-selector");
-  el.innerHTML = "";
-  PRODUCT_ORDER
-    .filter((p) => DATA.produtos[p] && DATA.produtos[p].tipo === state.categoria)
-    .forEach((codigo) => {
-      const btn = document.createElement("button");
-      btn.className = "product-chip" + (codigo === state.product ? " active" : "");
-      btn.dataset.produto = codigo;
-      btn.innerHTML = `<span class="emoji">${PRODUCT_EMOJI[codigo] || "📦"}</span><span>${PRODUCT_CHIP_LABEL[codigo] || codigo}</span>`;
-      btn.addEventListener("click", () => selectProduct(codigo));
-      el.appendChild(btn);
-    });
+  ["combustivel", "alimento_indice"].forEach((tipo) => {
+    const el = document.getElementById(`rail-${tipo}`);
+    el.innerHTML = "";
+    PRODUCT_ORDER
+      .filter((p) => DATA.produtos[p] && DATA.produtos[p].tipo === tipo)
+      .forEach((codigo) => {
+        const btn = document.createElement("button");
+        btn.className = "product-chip" + (codigo === state.product ? " active" : "");
+        btn.dataset.produto = codigo;
+        btn.textContent = PRODUCT_CHIP_LABEL[codigo] || codigo;
+        btn.addEventListener("click", () => selectProduct(codigo));
+        el.appendChild(btn);
+      });
+  });
 }
 
 function bindToggles() {
@@ -104,7 +158,7 @@ function bindToggles() {
     if (!btn) return;
     state.cohort = btn.dataset.cohort;
     updateToggleActive("cohort-toggle", btn);
-    renderComparisonTable();
+    renderGovernos(DATA.produtos[state.product]);
   });
 }
 
@@ -113,305 +167,660 @@ function updateToggleActive(groupId, activeBtn) {
   activeBtn.classList.add("active");
 }
 
+// Links "Fontes" / "Metodologia" do cabeçalho abrem o accordion correspondente.
+function bindHeaderLinks() {
+  document.querySelectorAll("[data-open]").forEach((a) => {
+    a.addEventListener("click", () => {
+      const det = document.getElementById(a.dataset.open);
+      if (det) det.open = true;
+    });
+  });
+}
+
+// Barra compacta: aparece quando o seletor sai da tela.
+function bindStickyBar() {
+  const bar = document.getElementById("sticky-bar");
+  const alvo = document.getElementById("seletor");
+  if (!("IntersectionObserver" in window)) return;
+  new IntersectionObserver(([entry]) => {
+    const passou = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    bar.classList.toggle("visible", passou);
+    bar.setAttribute("aria-hidden", passou ? "false" : "true");
+  }).observe(alvo);
+}
+
+// Popover de termos: hover no desktop, toque no celular, foco no teclado.
+function bindTerms() {
+  const pop = document.getElementById("term-pop");
+  let atual = null, abertoEm = 0;
+  const mostrar = (btn) => {
+    const def = TERMS[btn.dataset.term];
+    if (!def) return;
+    if (atual && atual !== btn) atual.setAttribute("aria-expanded", "false");
+    if (atual !== btn || pop.hidden) abertoEm = performance.now();
+    atual = btn;
+    btn.setAttribute("aria-expanded", "true");
+    pop.innerHTML = `<strong>${def[0]}</strong>${def[1]}`;
+    pop.hidden = false;
+    const r = btn.getBoundingClientRect();
+    const w = pop.offsetWidth;
+    const left = Math.max(12, Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - w - 12));
+    pop.style.left = `${left}px`;
+    pop.style.top = `${window.scrollY + r.bottom + 8}px`;
+  };
+  const esconder = () => {
+    if (atual) atual.setAttribute("aria-expanded", "false");
+    atual = null;
+    pop.hidden = true;
+  };
+  document.addEventListener("mouseover", (e) => { const b = e.target.closest(".term"); if (b) mostrar(b); });
+  document.addEventListener("mouseout", (e) => { const b = e.target.closest(".term"); if (b && !b.contains(e.relatedTarget)) esconder(); });
+  document.addEventListener("focusin", (e) => { const b = e.target.closest(".term"); if (b) mostrar(b); });
+  document.addEventListener("focusout", (e) => { if (e.target.closest(".term")) esconder(); });
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".term");
+    // no toque, mouseover/foco já abriram o popover: o clique só fecha se ele já estava aberto antes
+    if (b) { e.preventDefault(); atual === b && !pop.hidden && performance.now() - abertoEm > 400 ? esconder() : mostrar(b); }
+    else if (!e.target.closest("#term-pop")) esconder();
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") esconder(); });
+  window.addEventListener("scroll", () => { if (!pop.hidden && atual && !atual.matches(":focus")) esconder(); }, { passive: true });
+}
+
 function selectProduct(codigo) {
   state.product = codigo;
   state.metric = "nominal";
+  const produto = DATA.produtos[codigo];
+  state.categoria = produto.tipo;
+  const isComb = produto.tipo === "combustivel";
   document.querySelectorAll(".product-chip").forEach((c) => c.classList.toggle("active", c.dataset.produto === codigo));
   document.querySelectorAll("#metric-toggle .segmented-btn").forEach((b) => b.classList.toggle("active", b.dataset.metric === "nominal"));
 
-  const produto = DATA.produtos[codigo];
-  document.getElementById("product-kicker").textContent = produto.nome;
-
+  // Alimentos são índice: os rótulos da métrica mudam e "% do salário" não se aplica.
+  document.querySelector('#metric-toggle [data-metric="nominal"]').textContent = isComb ? "Preço na época" : "Índice";
+  document.querySelector('#metric-toggle [data-metric="real"]').textContent = isComb ? "Corrigido pela inflação" : "Índice corrigido pela inflação";
   const pctBtn = document.querySelector('#metric-toggle [data-metric="pct_sm"]');
-  pctBtn.disabled = produto.tipo !== "combustivel";
-  pctBtn.title = produto.tipo === "combustivel" ? "" : "Não aplicável: este item é um índice, não tem preço em R$.";
+  pctBtn.disabled = !isComb;
+  pctBtn.hidden = !isComb;
 
-  renderHero(produto);
+  renderAnswer(produto);
   renderChart();
+  renderYears(produto);
   renderPurchasingPower(produto);
-  renderComparisonTable();
+  renderGovernos(produto);
   renderContext(produto);
-  renderAnnual(produto);
+  renderStepNumbers(isComb);
+  renderStickyBar(produto);
 }
 
-// ---------- Presidentes + Era/Agora ----------
-function renderHero(produto) {
-  const wrap = document.getElementById("president-cards");
-  wrap.innerHTML = "";
+function renderStepNumbers(isComb) {
+  // Sem a seção de poder de compra (alimentos), a numeração continua sem buracos.
+  const base = isComb ? 4 : 3;
+  document.getElementById("step-comparison").textContent = pad2(base);
+  document.getElementById("step-context").textContent = pad2(base + 1);
+  document.getElementById("step-method").textContent = pad2(base + 2);
+}
+
+function renderStickyBar(produto) {
+  const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+  const eraRef = eraReferencia(produto.serie_mensal);
+  document.getElementById("sticky-product").textContent = txt(state.product).titulo;
+  document.getElementById("sticky-value").textContent = produto.tipo === "combustivel"
+    ? `${fmtBRL.format(eraRef.preco_nominal)} → ${fmtBRL.format(ultimo.preco_nominal)} ${unidadeInfo(produto).por} (${fmtPct((ultimo.preco_nominal / eraRef.preco_nominal - 1) * 100)})`
+    : `índice ${fmtNum(eraRef.indice_relativo, 1)} → ${fmtNum(ultimo.indice_relativo, 1)} (${fmtPct((ultimo.indice_relativo / eraRef.indice_relativo - 1) * 100)})`;
+}
+
+// Último mês do governo Bolsonaro na série deste produto — é a referência
+// de "Era" na abertura (ver renderAnswer) e no eco da barra fixa
+// (renderStickyBar). Comparar direto jan/2019 → hoje misturaria a variação
+// dos dois governos numa única manchete; usando o fim do governo anterior,
+// a manchete mostra o que mudou já sob o governo atual. É achado pelo campo
+// `periodo`, que já vem pronto do Python — não por comparação de datas.
+function eraReferencia(serie) {
+  let idx = serie.findIndex((r) => r.periodo === "Lula") - 1;
+  return serie[Math.max(0, idx)];
+}
+
+// =====================================================================
+// ABERTURA — Era × Agora com barras proporcionais + frase-resumo
+// =====================================================================
+function renderAnswer(produto) {
   const isComb = produto.tipo === "combustivel";
-  ["Bolsonaro", "Lula"].forEach((periodo) => {
-    const pres = DATA.presidentes[periodo];
-    const resumo = produto.resumo_periodos[periodo]?.governo_inteiro;
-    const card = document.createElement("div");
-    card.className = `president-card ${periodo.toLowerCase()}`;
-    let precos, datas;
-    if (!resumo) {
-      precos = "dado não disponível";
-      datas = "";
-    } else if (isComb) {
-      precos = `${valorFormatado(produto, resumo.preco_nominal_inicio)}<span class="p-sep">→</span>${valorFormatado(produto, resumo.preco_nominal_fim)}`;
-      datas = `${fmtMesAno(resumo.mes_inicio)} — ${fmtMesAno(resumo.mes_fim)}`;
-    } else {
-      precos = `${fmtPct(resumo.variacao_nominal_pct)} <span class="p-sep">·</span> índice, não R$`;
-      datas = `${fmtMesAno(resumo.mes_inicio)} — ${fmtMesAno(resumo.mes_fim)}`;
-    }
-    card.innerHTML = `
-      <img src="${pres.foto}" alt="${pres.nome}" loading="lazy" />
-      <div>
-        <div class="p-eyebrow"><span class="dot"></span>${periodo.toUpperCase()}</div>
-        <div class="p-name">${pres.nome}</div>
-        <div class="p-prices">${precos}</div>
-        <div class="p-dates">${datas}</div>
-      </div>`;
-    wrap.appendChild(card);
-  });
-  const credit = document.createElement("div");
-  credit.className = "p-credit";
-  credit.innerHTML = `${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}`;
-  wrap.appendChild(credit);
+  const [primeiro, ultimo] = primeiroUltimo(produto.serie_mensal);
+  const eraRef = eraReferencia(produto.serie_mensal);
+  const u = unidadeInfo(produto);
+  const t = txt(state.product);
+  const mIni = fmtMesAno(primeiro.ano_mes), mFim = fmtMesAno(ultimo.ano_mes), mEra = fmtMesAno(eraRef.ano_mes);
 
-  const eraCard = document.getElementById("era-card");
-  const notaEl = document.getElementById("nota-alimento");
+  document.getElementById("product-name").textContent = t.titulo;
+  const tag = document.getElementById("unit-tag");
+  tag.textContent = isComb ? u.curta : "Índice · não é R$";
+  tag.classList.toggle("is-index", !isComb);
+  document.getElementById("product-measure").innerHTML = isComb
+    ? `Preço médio nacional · ${mEra} → ${mFim}`
+    : `${term("indice", "Índice de preço")} (${mIni} = 100) · ${mEra} → ${mFim}`;
+  document.getElementById("era-date").textContent = mEra;
+  document.getElementById("agora-date").textContent = mFim;
 
-  if (!isComb) {
-    // Índice de cesta básica: o card Era/Agora foi desenhado para preço em
-    // R$ e confunde as pessoas com um alimento (parece preço, não é). Em vez
-    // disso, mostramos só a variação % dentro da própria nota explicativa.
-    eraCard.hidden = true;
-    const serie = produto.serie_mensal;
-    const variacaoTotal = (serie[serie.length - 1].indice_relativo / serie[0].indice_relativo - 1) * 100;
-    notaEl.hidden = false;
-    notaEl.innerHTML = `${produto.nota}<br/><br/><strong>Variação do índice de ${fmtMesAno(serie[0].ano_mes)} a ${fmtMesAno(serie[serie.length - 1].ano_mes)}: ${fmtPct(variacaoTotal)}</strong>`;
-    return;
+  // valores: preço em R$ (combustível) ou índice (alimento) — nunca misturar
+  const vIni = isComb ? eraRef.preco_nominal : eraRef.indice_relativo;
+  const vFim = isComb ? ultimo.preco_nominal : ultimo.indice_relativo;
+  // referência "se tivesse seguido a inflação", a partir de "Era" (não de
+  // jan/2019): preço de dez/2022 corrigido, ou o índice reescalado pela
+  // inflação (IPCA) acumulada desde então.
+  const vRef = isComb ? eraRef.preco_real : eraRef.indice_relativo * (ultimo.ipca_indice / eraRef.ipca_indice);
+  const render = isComb ? precoHeroi : (v) => fmtNum(v, 1);
+  animateNumber(document.getElementById("era-value"), vIni, render);
+  animateNumber(document.getElementById("agora-value"), vFim, render);
+
+  const max = Math.max(vIni, vFim, vRef || 0);
+  document.getElementById("era-bar").style.width = `${(vIni / max * 100).toFixed(1)}%`;
+  document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
+  const marker = document.getElementById("infl-marker");
+  const posRef = vRef / max * 100;
+  marker.style.left = `${posRef.toFixed(1)}%`;
+  marker.classList.toggle("flip", posRef > 55);
+  document.getElementById("infl-marker-label").innerHTML =
+    `<b>${isComb ? fmtBRL.format(vRef) : fmtNum(vRef, 1)}</b> se tivesse subido igual à ${term("inflacao", "inflação")}`;
+
+  const pct = (vFim / vIni - 1) * 100;
+  const realPct = isComb
+    ? (ultimo.preco_real / eraRef.preco_real - 1) * 100
+    : (ultimo.indice_relativo_real / eraRef.indice_relativo_real - 1) * 100;
+
+  if (isComb) {
+    const diff = vFim - vIni;
+    document.getElementById("diff-a").textContent = fmtSignedBRL(diff);
+    document.getElementById("diff-a-cap").textContent = `${diff >= 0 ? "a mais" : "a menos"} ${u.por}`;
+    document.getElementById("diff-b").textContent = fmtPct(pct);
+    document.getElementById("diff-b-cap").textContent = `no preço desde ${mEra}`;
+  } else {
+    document.getElementById("diff-a").textContent = fmtPct(pct);
+    document.getElementById("diff-a-cap").textContent = `no preço desde ${mEra}`;
+    document.getElementById("diff-b").textContent = fmtPct(vRef / vIni * 100 - 100);
+    document.getElementById("diff-b-cap").textContent = "foi a inflação geral no mesmo período";
   }
 
-  eraCard.hidden = false;
-  notaEl.hidden = true;
+  // Frase-resumo: responde "ficou mais caro de verdade?" em português simples.
+  const subiu = pct >= 0 ? "subiu" : "caiu";
+  const infl = term("inflacao", "inflação");
+  const leitura = leituraReal(realPct);
+  let fraseReal;
+  if (leitura === "igual") fraseReal = `Mas os preços em geral subiram quase o mesmo: <span class="hl">descontada a ${infl}, ficou praticamente igual (${fmtPct(realPct)})</span>.`;
+  else if (leitura === "acima") fraseReal = `Mesmo <span class="hl">descontando a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais caro</span> — subiu mais que os preços em geral.`;
+  else fraseReal = pct >= 0
+    ? `Mas os preços em geral subiram mais: <span class="hl">descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`
+    : `<span class="hl">Descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`;
+  const fraseSalario = isComb
+    ? ` Hoje, ${u.um} custa <strong>${fmtNum(ultimo.pct_salario_minimo, 2)}%</strong> do ${term("salario", "salário mínimo")}.`
+    : "";
+  // alimentos: traduz o índice para uma situação concreta, sem apresentá-lo como preço
+  const fraseIndice = isComb ? ""
+    : ` Na prática: quem gastava R$ 100 com esse item em ${mEra} precisa de cerca de ${fmtBRL.format(100 * vFim / vIni)} para levar a mesma quantidade hoje.`;
+  document.getElementById("lede").innerHTML =
+    `Desde ${mEra}, o preço ${t.de} ${subiu} <strong>${fmtNum(Math.abs(pct), 1)}%</strong>. ${fraseReal}${fraseSalario}${fraseIndice}`;
 
-  const serie = produto.serie_mensal;
-  const primeiro = serie[0];
-  const ultimo = serie[serie.length - 1];
-  const valorInicio = primeiro.preco_nominal;
-  const valorFim = ultimo.preco_nominal;
-
-  swapWithRoll(document.getElementById("era-value"), valorFormatado(produto, valorInicio));
-  document.getElementById("era-date").textContent = fmtMesAno(primeiro.ano_mes);
-  swapWithRoll(document.getElementById("agora-value"), valorFormatado(produto, valorFim));
-  document.getElementById("agora-date").textContent = fmtMesAno(ultimo.ano_mes);
-
-  const diffEl = document.getElementById("era-diff");
-  const pct = (valorFim / valorInicio - 1) * 100;
-  const diffRs = valorFim - valorInicio;
-  diffEl.querySelector(".diff-pct").textContent = fmtPct(pct);
-  diffEl.querySelector(".diff-rs").textContent = `${diffRs >= 0 ? "+" : ""}${fmtBRL.format(diffRs)}`;
+  const nota = document.getElementById("index-note");
+  nota.hidden = isComb;
+  if (!isComb) nota.innerHTML = `<strong>Por que índice e não R$?</strong> ${produto.nota}`;
 }
 
-// ---------- Gráfico principal ----------
+// =====================================================================
+// 02 — Gráfico principal
+// =====================================================================
+function baseLayout() {
+  const soft = cssVar("--ink-soft"), line = cssVar("--line"), ink = cssVar("--ink");
+  return {
+    font: { family: "Inter, sans-serif", size: 12, color: soft },
+    separators: ",.",
+    plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)",
+    hovermode: "x",
+    hoverlabel: { bgcolor: "#ffffff", bordercolor: line, align: "left", font: { color: ink, size: 13, family: "Inter, sans-serif" } },
+    xaxis: {
+      type: "date", showgrid: false, showline: true, linecolor: ink, linewidth: 1,
+      ticks: "outside", ticklen: 5, tickcolor: line, tickformat: "%Y", dtick: "M12",
+      tickfont: { size: 12, color: soft },
+      showspikes: true, spikemode: "across", spikesnap: "cursor", spikecolor: cssVar("--ink-faint"), spikethickness: 1, spikedash: "solid",
+      fixedrange: true,
+    },
+    yaxis: { gridcolor: cssVar("--line-soft"), zeroline: false, showline: false, ticks: "", tickfont: { size: 12, color: soft }, fixedrange: true, automargin: true },
+  };
+}
+function periodShapes(xIni, xFim, cutoff) {
+  return [
+    { type: "rect", xref: "x", yref: "paper", x0: xIni, x1: cutoff, y0: 0, y1: 1, fillcolor: cssVar("--p-bolsonaro-wash"), line: { width: 0 }, layer: "below" },
+    { type: "rect", xref: "x", yref: "paper", x0: cutoff, x1: xFim, y0: 0, y1: 1, fillcolor: cssVar("--p-lula-wash"), line: { width: 0 }, layer: "below" },
+    { type: "line", xref: "x", yref: "paper", x0: cutoff, x1: cutoff, y0: 0, y1: 1, line: { color: cssVar("--ink"), width: 1 } },
+  ];
+}
+// Telas estreitas: rótulos curtos, embaixo, e sem rótulos na ponta das linhas.
+const estreito = () => window.innerWidth < 640;
+function periodAnnotations(xIni, cutoff) {
+  const f = { size: 11, color: cssVar("--ink-soft"), family: "Inter, sans-serif" };
+  const e = estreito();
+  const pos = e ? { y: 0, yanchor: "bottom", yshift: 6 } : { y: 1, yanchor: "top", yshift: -6 };
+  return [
+    { x: xIni, xref: "x", yref: "paper", text: e ? "<b>BOLSONARO</b>" : "<b>GOVERNO BOLSONARO</b>", showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
+    { x: cutoff, xref: "x", yref: "paper", text: e ? "<b>LULA</b>" : "<b>GOVERNO LULA</b>", showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
+  ];
+}
+function endLabel(x, y, texto, lado) {
+  return {
+    x, y, xref: "x", yref: "y", text: `<b>${texto}</b>`, showarrow: false,
+    xanchor: lado === "left" ? "left" : "right", yanchor: "bottom", yshift: 10,
+    font: { size: 14, color: cssVar("--ink"), family: "Inter, sans-serif" }, bgcolor: "rgba(255,255,255,0.88)", borderpad: 2,
+  };
+}
+
 function renderChart() {
   const produto = DATA.produtos[state.product];
   const serie = produto.serie_mensal;
   const x = serie.map((r) => r.ano_mes);
+  const isComb = produto.tipo === "combustivel";
+  const u = unidadeInfo(produto);
+  const t = txt(state.product);
+  const [primeiro, ultimo] = primeiroUltimo(serie);
+  const mIni = fmtMesAno(primeiro.ano_mes), mFim = fmtMesAno(ultimo.ano_mes);
+  const infl = term("inflacao", "inflação");
 
-  const cores = getComputedStyle(document.documentElement);
-  const inkColor = cores.getPropertyValue("--ink").trim();
-  const goldColor = cores.getPropertyValue("--gold").trim();
-  const softColor = cores.getPropertyValue("--ink-soft").trim();
-  const lineColor = cores.getPropertyValue("--line").trim();
-  const paperColor = cores.getPropertyValue("--paper").trim();
-  const pBolsonaro = cores.getPropertyValue("--p-bolsonaro").trim();
-  const pLula = cores.getPropertyValue("--p-lula").trim();
-
-  let y, hovertext, yTitle;
-  if (produto.tipo === "combustivel") {
-    if (state.metric === "nominal") { y = serie.map((r) => r.preco_nominal); yTitle = produto.unidade; }
-    else if (state.metric === "real") { y = serie.map((r) => r.preco_real); yTitle = `${produto.unidade} (real)`; }
-    else { y = serie.map((r) => r.pct_salario_minimo); yTitle = "% do salário mínimo"; }
-
-    hovertext = serie.map((r) => {
-      const linhas = [`<b>${fmtMesAno(r.ano_mes)}</b>`, `${produto.nome}: <b>${r.preco_nominal !== null ? fmtBRL.format(r.preco_nominal) : "—"}</b>`];
-      if (r.salario_minimo !== null) linhas.push(`Salário mínimo: ${fmtBRL.format(r.salario_minimo)}`);
-      if (r.pct_salario_minimo !== null) linhas.push(`Preço = ${fmtNum(r.pct_salario_minimo, 2)}% do salário mínimo`);
-      if (r.unidades_por_salario_minimo !== null) linhas.push(`Poder de compra: ${fmtNum(r.unidades_por_salario_minimo, 1)} unidades por salário mínimo`);
-      return linhas.join("<br>");
+  let y, yRef = null, refNome = "", hovertext, fmtY, unidadeEixo, titulo, subtitulo, ajuda, yaxisExtra = {};
+  if (isComb) {
+    const brl = { tickprefix: "R$ ", tickformat: ",.2f" };
+    if (state.metric === "nominal") {
+      y = serie.map((r) => r.preco_nominal); fmtY = (v) => fmtBRL.format(v); yaxisExtra = brl;
+      unidadeEixo = `R$ ${u.por}`;
+      titulo = `Preço médio ${t.de}, ${u.por}, mês a mês`;
+      subtitulo = `Média nacional, ${mIni}–${mFim}, como estava na bomba.`;
+      ajuda = `<strong>Preço na época:</strong> o valor cobrado em cada mês, sem nenhum ajuste. Para comparar épocas de forma justa, use “Corrigido pela ${infl}”.`;
+    } else if (state.metric === "real") {
+      y = serie.map((r) => r.preco_real); fmtY = (v) => fmtBRL.format(v); yaxisExtra = brl;
+      yRef = serie.map((r) => r.preco_nominal); refNome = "Preço na época";
+      unidadeEixo = `R$ de ${mFim} ${u.por}`;
+      titulo = `Preço ${t.de} em dinheiro de hoje`;
+      subtitulo = `Todos os meses convertidos para reais de ${mFim}. Se a linha sobe, o produto ficou mais caro de verdade — não só por causa da inflação.`;
+      ajuda = `<strong>${term("real", "Corrigido pela inflação")}:</strong> quanto o preço de cada mês valeria em dinheiro de hoje. A linha pontilhada é o preço como estava na época, para comparar.`;
+    } else {
+      y = serie.map((r) => r.pct_salario_minimo); fmtY = (v) => `${fmtNum(v, 2)}%`; yaxisExtra = { ticksuffix: "%", tickformat: ",.2f" };
+      unidadeEixo = `% do salário mínimo (${u.um})`;
+      titulo = `Quanto ${u.um} ${t.sem} pesava no salário mínimo`;
+      subtitulo = "Quanto mais alta a linha, mais o produto pesa no bolso de quem ganha o mínimo.";
+      ajuda = `<strong>% do ${term("salario", "salário mínimo")}:</strong> preço do produto dividido pelo salário mínimo vigente naquele mês.`;
+    }
+    hovertext = serie.map((r, i) => {
+      if (isNil(y[i])) return "";
+      const l = [`<b>${fmtMesAno(r.ano_mes)}</b>`];
+      if (state.metric === "real") l.push(`<b>${fmtBRL.format(r.preco_real)}</b> ${u.por} em reais de ${mFim}`, `<span style="color:#8a8883">na época: ${fmtBRL.format(r.preco_nominal)}</span>`);
+      else l.push(`<b>${fmtBRL.format(r.preco_nominal)}</b> ${u.por}`);
+      if (!isNil(r.pct_salario_minimo)) l.push(`${u.um} = ${fmtNum(r.pct_salario_minimo, 2)}% do salário mínimo (${fmtBRL.format(r.salario_minimo)})`);
+      if (!isNil(r.unidades_por_salario_minimo)) l.push(`1 salário mínimo comprava ${fmtNum(r.unidades_por_salario_minimo, 0)} ${u.plural}`);
+      return l.join("<br>");
     });
   } else {
-    if (state.metric === "real") { y = serie.map((r) => r.indice_relativo_real); yTitle = "Índice real (base 100 = jan/2019)"; }
-    else { y = serie.map((r) => r.indice_relativo); yTitle = "Índice (base 100 = jan/2019)"; }
-
-    hovertext = serie.map((r) => [
-      `<b>${fmtMesAno(r.ano_mes)}</b>`,
-      `${produto.nome}: <b>${fmtNum(r.indice_relativo, 1)}</b> (índice, não R$)`,
-    ].join("<br>"));
+    fmtY = (v) => fmtNum(v, 1);
+    if (state.metric === "real") {
+      y = serie.map((r) => r.indice_relativo_real);
+      yRef = serie.map((r) => r.indice_relativo); refNome = "Índice na época";
+      unidadeEixo = `índice em valores de ${mFim}`;
+      titulo = `Evolução do preço ${t.de}, descontada a inflação`;
+      subtitulo = `Índice convertido para valores de ${mFim}. Se a linha cai, o item ficou mais barato de verdade; se sobe, mais caro.`;
+      ajuda = `<strong>${term("real", "Índice corrigido pela inflação")}:</strong> o índice em valores de hoje. A linha pontilhada é o índice como estava na época. Não representa preço em reais.`;
+    } else {
+      y = serie.map((r) => r.indice_relativo);
+      unidadeEixo = `índice (${mIni} = 100)`;
+      titulo = `Evolução do preço ${t.de} — ${mIni} = 100`;
+      subtitulo = `Índice mensal oficial (IBGE). 150 significa 50% mais caro que em ${mIni}.`;
+      ajuda = `<strong>${term("indice", "Índice")}:</strong> mostra quanto o preço variou em relação a ${mIni} = 100. Não representa preço em reais.`;
+    }
+    hovertext = serie.map((r, i) => {
+      if (isNil(y[i])) return "";
+      const l = [`<b>${fmtMesAno(r.ano_mes)}</b>`, `Índice: <b>${fmtNum(y[i], 1)}</b> <span style="color:#8a8883">(não é R$)</span>`];
+      if (state.metric !== "real") l.push(`${fmtPct(r.indice_relativo - 100)} em relação a ${mIni}`);
+      return l.join("<br>");
+    });
   }
 
+  document.getElementById("chart-title").textContent = titulo;
+  document.getElementById("chart-subtitle").textContent = subtitulo;
+  document.getElementById("metric-help").innerHTML = ajuda;
+  document.getElementById("chart-source").textContent = isComb
+    ? "Fonte: ANP (preços), Banco Central (salário mínimo), IBGE (IPCA). Set/2020 ausente na fonte."
+    : "Fonte: IBGE/SIDRA — variação mensal do IPCA por item, encadeada em índice.";
+
+  const accent = cssVar("--c-product");
   const cutoff = DATA.periodo_corte;
-  const trace = {
-    x, y, type: "scatter", mode: "lines", line: { color: goldColor, width: 2.5, shape: "spline", smoothing: 0.3 },
-    fill: "tozeroy", fillcolor: goldColor.startsWith("#") ? goldColor + "14" : goldColor,
-    hovertext, hoverinfo: "text",
-  };
+  const idxIni = y.findIndex((v) => !isNil(v));
+  let idxFim = y.length - 1;
+  while (idxFim > 0 && isNil(y[idxFim])) idxFim--;
+  // pico da série, anotado quando não é o primeiro nem o último mês
+  let idxPico = idxIni;
+  y.forEach((v, i) => { if (!isNil(v) && v > y[idxPico]) idxPico = i; });
 
-  const layout = {
-    margin: { l: 54, r: 16, t: 34, b: 40 },
-    font: { family: "Space Grotesk, sans-serif", size: 12, color: softColor },
-    xaxis: { showgrid: false, tickfont: { size: 11 }, linecolor: lineColor, showline: true, ticks: "outside", tickcolor: lineColor },
-    yaxis: { title: yTitle, gridcolor: lineColor, zeroline: false, rangemode: "tozero" },
-    shapes: [{ type: "line", x0: cutoff, x1: cutoff, y0: 0, y1: 1, yref: "paper", line: { color: softColor, width: 1, dash: "dot" } }],
-    annotations: [
-      { x: cutoff, y: 1.06, yref: "paper", text: "BOLSONARO", showarrow: false, xanchor: "right", xshift: -6, font: { size: 10.5, color: pBolsonaro, family: "Space Grotesk, sans-serif" } },
-      { x: cutoff, y: 1.06, yref: "paper", text: "LULA", showarrow: false, xanchor: "left", xshift: 6, font: { size: 10.5, color: pLula, family: "Space Grotesk, sans-serif" } },
-    ],
-    plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)",
-    hoverlabel: { bgcolor: inkColor, font: { color: paperColor, size: 12, family: "Space Grotesk, sans-serif" }, bordercolor: inkColor },
-  };
+  const traces = [];
+  if (yRef) {
+    traces.push({ x, y: yRef, type: "scatter", mode: "lines", line: { color: cssVar("--ink-faint"), width: 1.75, dash: "dot" }, hoverinfo: "skip", name: refNome });
+  }
+  traces.push(
+    { x, y, type: "scatter", mode: "lines", line: { color: accent, width: 2.75 }, fill: "tozeroy", fillcolor: hexAlpha(cssVar("--accent"), 0.1), hovertext, hoverinfo: "text", name: "" },
+    { x: [x[idxIni], x[idxFim]], y: [y[idxIni], y[idxFim]], type: "scatter", mode: "markers", marker: { size: 10, color: accent, line: { color: "#ffffff", width: 2 } }, hoverinfo: "skip" },
+  );
 
-  Plotly.react("main-chart", [trace], layout, { responsive: true, displayModeBar: false });
+  document.getElementById("chart-legend").innerHTML = yRef
+    ? `<span class="lg-item"><span class="lg-swatch" style="border-color:${accent}"></span>${isComb ? "Em dinheiro de hoje" : "Índice corrigido"}</span>
+       <span class="lg-item"><span class="lg-swatch dotted" style="border-color:${cssVar("--ink-faint")}"></span>${refNome}</span>`
+    : "";
 
-  document.getElementById("chart-subtitle").textContent =
-    produto.tipo === "combustivel"
-      ? `Preço médio nacional mensal, jan/2019–${fmtMesAno(serie[serie.length - 1].ano_mes)}.`
-      : `Índice relativo (IBGE/IPCA por item), não é preço em R$ — ver nota acima.`;
+  const layout = baseLayout();
+  layout.showlegend = false;
+  layout.margin = { l: 8, r: 24, t: 44, b: 40 };
+  layout.xaxis.range = [x[0], x[x.length - 1]];
+  if (estreito()) layout.xaxis.dtick = "M24";
+  Object.assign(layout.yaxis, yaxisExtra, { rangemode: "tozero" });
+  layout.shapes = periodShapes(x[0], x[x.length - 1], cutoff);
+  layout.annotations = [
+    ...periodAnnotations(x[0], cutoff),
+    { x: 0, y: 1, xref: "paper", yref: "paper", text: unidadeEixo, showarrow: false, xanchor: "left", yanchor: "bottom", yshift: 14, font: { size: 12, color: cssVar("--ink-soft") } },
+    endLabel(x[idxIni], y[idxIni], fmtY(y[idxIni]), "left"),
+    endLabel(x[idxFim], y[idxFim], fmtY(y[idxFim]), "right"),
+  ];
+  if (idxPico !== idxIni && idxPico !== idxFim) {
+    layout.annotations.push({
+      x: x[idxPico], y: y[idxPico], xref: "x", yref: "y", showarrow: true, arrowhead: 0, arrowwidth: 1, arrowcolor: cssVar("--ink-soft"),
+      ax: 0, ay: -28, text: `pico: <b>${fmtY(y[idxPico])}</b> · ${fmtMesAno(serie[idxPico].ano_mes)}`,
+      font: { size: 12, color: cssVar("--ink") }, bgcolor: "rgba(255,255,255,0.9)", borderpad: 3,
+    });
+  }
+  Plotly.react("main-chart", traces, layout, { responsive: true, displayModeBar: false });
 }
 
-// ---------- Poder de compra ----------
+// ---------- 02 · Média de cada ano (colunas) ----------
+function renderYears(produto) {
+  const isComb = produto.tipo === "combustivel";
+  const u = unidadeInfo(produto);
+  document.getElementById("annual-title").textContent = isComb ? "Preço médio de cada ano" : "Índice médio de cada ano";
+  document.getElementById("annual-sub").textContent = isComb
+    ? `Em ${u.curta}, preço na época (média dos meses de cada ano).`
+    : "Índice (jan/2019 = 100), média dos meses de cada ano. Não é preço em R$.";
+  const corteAno = parseInt(DATA.periodo_corte.slice(0, 4), 10);
+  const valores = produto.serie_anual.map((r) => (isComb ? r.preco_nominal_medio : r.indice_nominal_medio));
+  const max = Math.max(...valores.filter((v) => !isNil(v)));
+  const cols = produto.serie_anual.map((r, i) => {
+    const v = valores[i];
+    const cls = `${r.ano < corteAno ? "bolsonaro" : "lula"} ${r.n_meses < 12 ? "partial" : ""}`;
+    return `<div class="yr ${cls}" title="${r.ano}: ${valorFormatado(produto, v)}${r.n_meses < 12 ? ` (${r.n_meses} de 12 meses)` : ""}">
+      <span class="yr-val tnum">${isNil(v) ? "—" : fmtNum(v, isComb ? 2 : 0)}</span>
+      <div class="yr-col"><div class="yr-fill" style="height:${isNil(v) ? 0 : (v / max * 100).toFixed(1)}%"></div></div>
+    </div>`;
+  }).join("");
+  const eixo = produto.serie_anual.map((r) => `<span>${r.ano}${r.n_meses < 12 ? `<small>${r.n_meses} meses</small>` : ""}</span>`).join("");
+  document.getElementById("annual-grid").innerHTML = cols;
+  let axis = document.getElementById("year-axis");
+  if (!axis) {
+    axis = document.createElement("div");
+    axis.id = "year-axis";
+    axis.className = "year-axis";
+    document.getElementById("annual-grid").after(axis);
+  }
+  axis.innerHTML = eixo;
+}
+
+// =====================================================================
+// 03 — Poder de compra (pictograma)
+// =====================================================================
 function renderPurchasingPower(produto) {
   const section = document.getElementById("purchasing-power-section");
   if (produto.tipo !== "combustivel") { section.style.display = "none"; return; }
   section.style.display = "";
-  const serie = produto.serie_mensal;
-  const primeiro = serie[0], ultimo = serie[serie.length - 1];
-  const maxUnidades = Math.max(primeiro.unidades_por_salario_minimo, ultimo.unidades_por_salario_minimo);
-  const card = document.getElementById("pp-card");
-  card.innerHTML = `
-    <div class="pp-col">
-      <div class="pp-label">1 salário mínimo em ${fmtMesAno(primeiro.ano_mes)}</div>
-      <div class="pp-value">${fmtNum(primeiro.unidades_por_salario_minimo, 0)}</div>
-      <div class="pp-sub">unidades de ${produto.nome.toLowerCase()}</div>
-      <div class="pp-bar"><div class="pp-bar-fill" style="width:${(primeiro.unidades_por_salario_minimo / maxUnidades * 100).toFixed(0)}%"></div></div>
-    </div>
-    <div class="pp-connector"><svg viewBox="0 0 40 24"><path d="M2 12 H32 M24 4 L34 12 L24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="pp-col">
-      <div class="pp-label">1 salário mínimo em ${fmtMesAno(ultimo.ano_mes)}</div>
-      <div class="pp-value">${fmtNum(ultimo.unidades_por_salario_minimo, 0)}</div>
-      <div class="pp-sub">unidades de ${produto.nome.toLowerCase()}</div>
-      <div class="pp-bar"><div class="pp-bar-fill" style="width:${(ultimo.unidades_por_salario_minimo / maxUnidades * 100).toFixed(0)}%"></div></div>
+  const u = unidadeInfo(produto);
+  const t = txt(state.product);
+  const [primeiro, ultimo] = primeiroUltimo(produto.serie_mensal);
+  const uIni = primeiro.unidades_por_salario_minimo, uFim = ultimo.unidades_por_salario_minimo;
+
+  document.getElementById("pp-sub").innerHTML =
+    `Quantos ${u.plural} ${t.sem} dava para comprar gastando um ${term("salario", "salário mínimo")} inteiro.`;
+
+  // Cada quadradinho vale um número redondo de unidades, para caber numa linha.
+  const passo = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => Math.max(uIni, uFim) / s <= 40) || 100;
+  const quadrados = (n) => {
+    const cheios = Math.floor(n / passo);
+    const resto = n / passo - cheios;
+    return '<span class="pp-unit"></span>'.repeat(cheios) + (resto >= 0.25 ? '<span class="pp-unit partial"></span>' : "");
+  };
+  const linha = (r, unidades, cls) => `
+    <div class="pp-row ${cls}">
+      <div><div class="pp-when">${fmtMesAno(r.ano_mes)}</div><div class="pp-wage">salário mínimo: ${fmtBRL.format(r.salario_minimo)}</div></div>
+      <div class="pp-units" role="img" aria-label="${fmtNum(unidades, 0)} ${u.plural}">${quadrados(unidades)}</div>
+      <div class="pp-result"><span class="pp-value tnum">${fmtNum(unidades, 0)}</span><span class="pp-unitname">${u.plural}</span><span class="pp-share">${u.um} = ${fmtNum(r.pct_salario_minimo, 2)}% do salário</span></div>
     </div>`;
+
+  const diff = Math.round(uFim) - Math.round(uIni);
+  const veredito = diff === 0
+    ? `Hoje um salário mínimo compra <strong>a mesma quantidade</strong> que em ${fmtMesAno(primeiro.ano_mes)}.`
+    : `Hoje um salário mínimo compra <strong>${fmtNum(Math.abs(diff), 0)} ${Math.abs(diff) === 1 ? u.singular : u.plural} a ${diff > 0 ? "mais" : "menos"}</strong> do que em ${fmtMesAno(primeiro.ano_mes)}.`;
+
+  document.getElementById("pp-card").innerHTML =
+    linha(primeiro, uIni, "") + linha(ultimo, uFim, "now") +
+    `<div class="pp-footer"><p class="pp-verdict">${veredito}</p><span class="pp-legend"><span class="pp-unit"></span> = ${passo} ${passo === 1 ? u.singular : u.plural}</span></div>`;
 }
 
-// ---------- Tabela comparativa ----------
-function renderComparisonTable() {
-  const produto = DATA.produtos[state.product];
-  const rB = produto.resumo_periodos.Bolsonaro[state.cohort];
-  const rL = produto.resumo_periodos.Lula[state.cohort];
+// =====================================================================
+// 04 — Governos: minigráfico na mesma escala + barras de variação + tabela
+// =====================================================================
+function renderGovernos(produto) {
+  const isComb = produto.tipo === "combustivel";
+  const u = unidadeInfo(produto);
+  const periodos = ["Bolsonaro", "Lula"];
+  const resumos = periodos.map((p) => produto.resumo_periodos[p]?.[state.cohort]);
+  const rL = resumos[1];
 
   document.getElementById("cohort-note").textContent = !rL || rL.completo === false
-    ? `O governo Lula ainda não completou ${COHORT_LABEL[state.cohort]} neste momento; o recorte usa os meses disponíveis até agora.`
-    : `Comparando os ${COHORT_LABEL[state.cohort]} de cada período.`;
+    ? `O governo Lula ainda não completou ${COHORT_LABEL[state.cohort]}; o recorte usa os meses disponíveis até agora.`
+    : state.cohort === "governo_inteiro"
+      ? "Comparando o governo inteiro de cada período, do primeiro ao último mês."
+      : `Comparando os ${COHORT_LABEL[state.cohort]} de cada período.`;
 
-  const isComb = produto.tipo === "combustivel";
+  // --- minigráficos: mesma escala vertical e mesma largura por mês nos dois ---
+  const valorDe = (r) => (isComb ? r.preco_nominal : r.indice_relativo);
+  const janelas = resumos.map((r) => r ? produto.serie_mensal.filter((m) => m.ano_mes >= r.mes_inicio && m.ano_mes <= r.mes_fim) : []);
+  const todos = janelas.flat().map(valorDe).filter((v) => !isNil(v));
+  const yMin = Math.min(...todos), yMax = Math.max(...todos);
+  const nMax = Math.max(...janelas.map((j) => j.length), 2);
+  const W = 300, H = 100, PAD = 8;
+  const sx = (i) => (i / (nMax - 1)) * W;
+  const sy = (v) => PAD + (1 - (v - yMin) / ((yMax - yMin) || 1)) * (H - 2 * PAD);
+
+  function spark(janela, periodo) {
+    if (!janela.length) return "";
+    const cor = cssVar(periodo === "Bolsonaro" ? "--p-bolsonaro" : "--p-lula");
+    let d = "", aberto = false;
+    janela.forEach((m, i) => {
+      const v = valorDe(m);
+      if (isNil(v)) { aberto = false; return; }
+      d += `${aberto ? "L" : "M"}${sx(i).toFixed(1)},${sy(v).toFixed(1)} `;
+      aberto = true;
+    });
+    const v0 = valorDe(janela[0]);
+    const ultimoI = janela.length - 1;
+    const v1 = ultimoValido(janela.map(valorDe));
+    const dot = (x, y, fill) => `<path d="M${x.toFixed(1)},${y.toFixed(1)} l0,0" stroke="${fill}" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" x2="${W}" y1="${sy(v0).toFixed(1)}" y2="${sy(v0).toFixed(1)}" stroke="${cssVar("--ink-faint")}" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
+      <path d="${d}" fill="none" stroke="${cor}" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+      ${dot(sx(0), sy(v0), cor)}${dot(sx(ultimoI), sy(v1), cor)}
+    </svg>`;
+  }
+
+  document.getElementById("gov-cols").innerHTML = periodos.map((p, k) => {
+    const pres = DATA.presidentes[p];
+    const r = resumos[k];
+    const cls = p.toLowerCase();
+    if (!r) return `<div class="gov ${cls}"><div class="gov-head"><img src="${pres.foto}" alt="${pres.nome}" loading="lazy" /><div><div class="gov-name"><span class="dot"></span>${p}</div><div class="gov-dates">dado não disponível</div></div></div></div>`;
+    const vIni = isComb ? r.preco_nominal_inicio : r.indice_nominal_inicio;
+    const vFim = isComb ? r.preco_nominal_fim : r.indice_nominal_fim;
+    const suf = isComb ? "" : "<small>índice</small>";
+    return `<div class="gov ${cls}">
+      <div class="gov-head">
+        <img src="${pres.foto}" alt="${pres.nome}" loading="lazy" />
+        <div>
+          <div class="gov-name"><span class="dot"></span>${p}</div>
+          <div class="gov-dates">${fmtMesAno(r.mes_inicio)} – ${fmtMesAno(r.mes_fim)}${p === "Lula" ? " · em curso" : ""}</div>
+        </div>
+      </div>
+      ${spark(janelas[k], p)}
+      <div class="gov-ends">
+        <div class="gov-end"><span class="when">início · ${fmtMesAno(r.mes_inicio)}</span><span class="val tnum">${valorFormatado(produto, vIni)}${suf}</span></div>
+        <span class="gov-arrow" aria-hidden="true">→</span>
+        <div class="gov-end"><span class="when">fim · ${fmtMesAno(r.mes_fim)}</span><span class="val tnum">${valorFormatado(produto, vFim)}${suf}</span></div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // --- barras de variação: mesma escala para os quatro valores ---
+  const grupos = [
+    { titulo: isComb ? "Na bomba" : "Variação do índice", ajuda: isComb ? "variação do preço na época, do primeiro ao último mês" : "do primeiro ao último mês do recorte", campo: "variacao_nominal_pct" },
+    { titulo: "Descontada a inflação", ajuda: `variação ${term("real", "corrigida pela inflação")} — mostra se ficou mais caro de verdade`, campo: "variacao_real_pct" },
+  ];
+  const vals = grupos.flatMap((g) => resumos.map((r) => r?.[g.campo])).filter((v) => !isNil(v));
+  const posMax = Math.max(0, ...vals), negMax = Math.max(0, ...vals.map((v) => -v));
+  const span = (posMax + negMax) || 1;
+  const zero = negMax / span * 100;
+  document.getElementById("variation").innerHTML = grupos.map((g) => `
+    <div class="var-group">
+      <div class="var-title">${g.titulo}<span class="var-title-help">${g.ajuda}</span></div>
+      <div class="var-rows">
+        ${periodos.map((p, k) => {
+          const v = resumos[k]?.[g.campo];
+          const w = isNil(v) ? 0 : Math.abs(v) / span * 100;
+          const left = isNil(v) || v >= 0 ? zero : zero - w;
+          return `<div class="var-row">
+            <span class="var-name"><span class="dot ${p.toLowerCase()}"></span>${p}</span>
+            <div class="var-track"><div class="var-zero" style="left:${zero.toFixed(1)}%"></div><div class="var-bar ${p.toLowerCase()} ${v < 0 ? "neg" : "pos"}" style="left:${left.toFixed(1)}%;width:${w.toFixed(1)}%"></div></div>
+            <span class="var-val tnum">${fmtPct(v)}</span>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`).join("");
+
+  // --- tabela completa (camada de aprofundamento) ---
+  const [rB] = resumos;
   const linhas = isComb
     ? [
-        ["Preço inicial", (r) => valorFormatado(produto, r?.preco_nominal_inicio)],
-        ["Preço final", (r) => valorFormatado(produto, r?.preco_nominal_fim)],
-        ["Variação nominal", (r) => fmtPct(r?.variacao_nominal_pct)],
-        ["Variação real", (r) => fmtPct(r?.variacao_real_pct)],
-        ["Preço médio", (r) => valorFormatado(produto, r?.preco_nominal_medio)],
-        ["Mínimo", (r) => valorFormatado(produto, r?.preco_nominal_min)],
-        ["Máximo", (r) => valorFormatado(produto, r?.preco_nominal_max)],
-        ["% do salário mínimo (início → fim)", (r) => (r ? `${fmtNum(r.pct_salario_minimo_inicio, 2)}% → ${fmtNum(r.pct_salario_minimo_fim, 2)}%` : "—")],
+        ["Variação do preço", "preço na época, do primeiro ao último mês", (r) => fmtPct(r?.variacao_nominal_pct)],
+        ["Descontada a inflação", "variação real, corrigida pelo IPCA", (r) => fmtPct(r?.variacao_real_pct)],
+        ["Preço no início", u.por, (r) => valorFormatado(produto, r?.preco_nominal_inicio)],
+        ["Preço no fim", u.por, (r) => valorFormatado(produto, r?.preco_nominal_fim)],
+        ["Preço médio", "média de todos os meses do recorte", (r) => valorFormatado(produto, r?.preco_nominal_medio)],
+        ["Menor preço", "mês mais barato do recorte", (r) => valorFormatado(produto, r?.preco_nominal_min)],
+        ["Maior preço", "mês mais caro do recorte", (r) => valorFormatado(produto, r?.preco_nominal_max)],
+        ["Peso no salário mínimo", `quanto ${u.um} representava do salário, início → fim`, (r) => (r ? `${fmtNum(r.pct_salario_minimo_inicio, 2)}% → ${fmtNum(r.pct_salario_minimo_fim, 2)}%` : "—")],
       ]
     : [
-        ["Índice inicial", (r) => valorFormatado(produto, r?.indice_nominal_inicio)],
-        ["Índice final", (r) => valorFormatado(produto, r?.indice_nominal_fim)],
-        ["Variação nominal", (r) => fmtPct(r?.variacao_nominal_pct)],
-        ["Variação real", (r) => fmtPct(r?.variacao_real_pct)],
-        ["Índice médio", (r) => valorFormatado(produto, r?.indice_nominal_medio)],
+        ["Variação do índice", "do primeiro ao último mês do recorte", (r) => fmtPct(r?.variacao_nominal_pct)],
+        ["Descontada a inflação", "variação real, corrigida pelo IPCA", (r) => fmtPct(r?.variacao_real_pct)],
+        ["Índice no início", "jan/2019 = 100 · não é R$", (r) => valorFormatado(produto, r?.indice_nominal_inicio)],
+        ["Índice no fim", "jan/2019 = 100 · não é R$", (r) => valorFormatado(produto, r?.indice_nominal_fim)],
+        ["Índice médio", "média de todos os meses do recorte", (r) => valorFormatado(produto, r?.indice_nominal_medio)],
       ];
+  document.getElementById("comparison-table").innerHTML = `
+    <thead><tr><th></th><th>Bolsonaro</th><th>Lula</th></tr></thead>
+    <tbody>${linhas.map(([label, help, fn]) => `<tr><td>${label}<span class="row-help">${help}</span></td><td>${fn(rB)}</td><td>${fn(rL)}</td></tr>`).join("")}</tbody>`;
 
-  const table = document.getElementById("comparison-table");
-  table.innerHTML = `
-    <thead><tr><th></th><th class="col-bolsonaro">Bolsonaro</th><th class="col-lula">Lula</th></tr></thead>
-    <tbody>
-      ${linhas.map(([label, fn]) => `<tr><td>${label}</td><td>${fn(rB)}</td><td>${fn(rL)}</td></tr>`).join("")}
-    </tbody>`;
+  document.getElementById("photo-credit").textContent = `${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}`;
 }
 
-// ---------- Contexto ----------
+// =====================================================================
+// 05 — Contexto econômico
+// =====================================================================
 function renderContext(produto) {
   const isComb = produto.tipo === "combustivel";
   const serie = produto.serie_mensal;
   const x = serie.map((r) => r.ano_mes);
-  const ultimo = serie[serie.length - 1];
-  const primeiro = serie[0];
+  const [primeiro, ultimo] = primeiroUltimo(serie);
+  const t = txt(state.product);
+  const u = unidadeInfo(produto);
+  const desde = fmtMesAno(primeiro.ano_mes);
 
-  const cores = getComputedStyle(document.documentElement);
-  const goldColor = cores.getPropertyValue("--gold").trim();
-  const softColor = cores.getPropertyValue("--ink-soft").trim();
-  const faintColor = cores.getPropertyValue("--ink-faint").trim();
-  const lineColor = cores.getPropertyValue("--line").trim();
-  const inkColor = cores.getPropertyValue("--ink").trim();
-  const paperColor = cores.getPropertyValue("--paper").trim();
-  const slateColor = cores.getPropertyValue("--p-bolsonaro").trim();
-  const plumColor = cores.getPropertyValue("--p-lula").trim();
-
-  const traces = [
-    { x, y: serie.map((r) => (isComb ? r.preco_indice100 : r.indice_relativo)), name: produto.nome, type: "scatter", mode: "lines", line: { color: goldColor, width: 2.5 } },
-    { x, y: serie.map((r) => r.ipca_indice100), name: "IPCA (inflação geral)", type: "scatter", mode: "lines", line: { color: faintColor, width: 1.5, dash: "dot" } },
+  const series = [
+    { key: "produto", nome: t.titulo, y: serie.map((r) => (isComb ? r.preco_indice100 : r.indice_relativo)), cor: cssVar("--c-product"), dash: "solid", largura: 2.75,
+      desc: isComb ? `preço ${u.por}` : "índice de preço" },
   ];
   if (isComb) {
-    traces.push({ x, y: serie.map((r) => r.brent_brl_indice100), name: "Brent (em R$)", type: "scatter", mode: "lines", line: { color: slateColor, width: 1.4, dash: "dash" } });
-    traces.push({ x, y: serie.map((r) => r.cambio_indice100), name: "Câmbio USD/BRL", type: "scatter", mode: "lines", line: { color: plumColor, width: 1.4, dash: "dash" } });
+    series.push(
+      { key: "brent", nome: "Brent", termo: "brent", y: serie.map((r) => r.brent_brl_indice100), cor: cssVar("--c-brent"), dash: "dash", largura: 2, desc: "petróleo internacional, em reais" },
+      { key: "cambio", nome: "Dólar", termo: "cambio", y: serie.map((r) => r.cambio_indice100), cor: cssVar("--c-cambio"), dash: "dashdot", largura: 2, desc: "quantos reais valia 1 dólar" });
   }
+  series.push({ key: "ipca", nome: "IPCA", termo: "ipca", y: serie.map((r) => r.ipca_indice100), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: "inflação: média de todos os preços" });
 
-  const layout = {
-    margin: { l: 46, r: 12, t: 10, b: 34 },
-    font: { family: "Space Grotesk, sans-serif", size: 11, color: softColor },
-    xaxis: { showgrid: false, linecolor: lineColor, showline: true, ticks: "outside", tickcolor: lineColor },
-    yaxis: { title: "índice (mês inicial = 100)", gridcolor: lineColor },
-    legend: { orientation: "h", y: -0.22, font: { size: 11 } },
-    plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)",
-    hoverlabel: { bgcolor: inkColor, font: { color: paperColor, family: "Space Grotesk, sans-serif" } },
-  };
-  Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
+  const varDe = (s) => { const v = ultimoValido(s.y); return isNil(v) ? null : v - 100; };
+  const vProd = varDe(series[0]);
+  const vIpca = varDe(series.find((s) => s.key === "ipca"));
 
-  const intro = document.getElementById("context-intro");
-  const strip = document.getElementById("stat-strip");
-
-  function statHtml(label, valorPct) {
-    const cls = valorPct === null ? "" : valorPct >= 0 ? "stat-positive" : "stat-negative";
-    return `<div class="stat-item"><div class="stat-label">${label}</div><div class="stat-value tnum ${cls}">${valorPct === null ? "—" : fmtNum(Math.abs(valorPct), 1) + "%"}</div></div>`;
-  }
-
+  // Resposta direta: subiu mais ou menos que a inflação? (mesma régua da abertura)
+  const realPct = ((100 + vProd) / (100 + vIpca) - 1) * 100;
+  const leitura = leituraReal(realPct);
+  const veredito = leitura === "igual" ? "ou seja, acompanhou a inflação"
+    : leitura === "acima" ? "ou seja, subiu mais que os preços em geral"
+    : vProd >= 0 ? "ou seja, subiu menos que os preços em geral" : "ou seja, caiu enquanto os preços em geral subiram";
+  let resposta = `Desde ${desde}, o preço ${t.de} variou <strong>${fmtPct(vProd)}</strong> e a ${term("ipca", "inflação geral (IPCA)")}, <strong>${fmtPct(vIpca)}</strong> — ${veredito}.`;
   if (isComb) {
-    const varItem = (ultimo.preco_indice100 !== null) ? ultimo.preco_indice100 - 100 : null;
-    const varBrent = ultimo.brent_brl_indice100 !== null ? ultimo.brent_brl_indice100 - 100 : null;
-    const varCambio = ultimo.cambio_indice100 !== null ? ultimo.cambio_indice100 - 100 : null;
-    const varIpca = ultimo.ipca_indice100 !== null ? ultimo.ipca_indice100 - 100 : null;
-    strip.innerHTML =
-      statHtml(produto.nome, varItem) +
-      statHtml("Brent (em R$)", varBrent) +
-      statHtml("Câmbio USD/BRL", varCambio) +
-      statHtml("IPCA", varIpca);
-    intro.textContent = `De ${fmtMesAno(primeiro.ano_mes)} a ${fmtMesAno(ultimo.ano_mes)}, estes indicadores variaram assim — contexto para entender o ambiente em que o preço se formou, não uma atribuição de causa: a política de preços da Petrobras, tributos e a dinâmica interna de oferta e demanda também têm peso.`;
-  } else {
-    const varItem = (ultimo.indice_relativo !== null) ? ultimo.indice_relativo - 100 : null;
-    const varIpca = ultimo.ipca_indice100 !== null ? ultimo.ipca_indice100 - 100 : null;
-    strip.innerHTML = statHtml(produto.nome, varItem) + statHtml("IPCA (inflação geral)", varIpca);
-    intro.textContent = `Comparação entre a evolução do índice deste item e o IPCA geral, ambos na mesma base 100 (${fmtMesAno(primeiro.ano_mes)}). Quando a linha do item fica acima da linha pontilhada, o item subiu mais que a inflação média do país.`;
+    const vBrent = varDe(series.find((s) => s.key === "brent"));
+    const vDolar = varDe(series.find((s) => s.key === "cambio"));
+    resposta += ` No mesmo período, o petróleo (${term("brent", "Brent")}, em reais) variou <strong>${fmtPct(vBrent)}</strong> e o ${term("cambio", "dólar")}, <strong>${fmtPct(vDolar)}</strong>.`;
   }
-}
+  document.getElementById("context-answer").innerHTML = resposta;
 
-// ---------- Histórico anual ----------
-function renderAnnual(produto) {
-  const grid = document.getElementById("annual-grid");
-  grid.innerHTML = produto.serie_anual.map((r) => {
-    const valor = produto.tipo === "combustivel" ? r.preco_nominal_medio : r.indice_nominal_medio;
-    const parcial = r.n_meses < 12;
-    return `<div class="annual-cell ${parcial ? "partial" : ""}">
-      <div class="a-year">${r.ano}</div>
-      <div class="a-value tnum">${valorFormatado(produto, valor)}</div>
-    </div>`;
-  }).join("");
+  const swClass = { solid: "", dot: "dotted", dash: "dashed", dashdot: "dashed" };
+  const strip = document.getElementById("stat-strip");
+  strip.classList.toggle("two", !isComb);
+  strip.innerHTML = series.map((s) => `
+    <div class="stat-item ${s.key === "produto" ? "is-product" : ""}">
+      <div class="stat-label"><span class="ln ${swClass[s.dash]}" style="border-color:${s.cor}"></span>${s.termo ? term(s.termo, s.nome) : s.nome}</div>
+      <div class="stat-value tnum">${fmtPct(varDe(s))}</div>
+      <div class="stat-desc">${s.desc}, desde ${desde}</div>
+    </div>`).join("");
+
+  document.getElementById("context-chart-title").textContent = `Tudo começa em 100 em ${desde}`;
+  document.getElementById("context-chart-sub").textContent =
+    "Se uma linha chega a 150, aquilo subiu 50% desde o início. Assim dá para comparar coisas de unidades diferentes na mesma régua.";
+  document.getElementById("context-legend").innerHTML = series.map((s) =>
+    `<span class="lg-item"><span class="lg-swatch ${swClass[s.dash]}" style="border-color:${s.cor}"></span>${s.nome}</span>`).join("");
+  document.getElementById("context-intro").textContent = isComb
+    ? "Isto é contexto, não prova de causa: a política de preços da Petrobras, os impostos e a oferta e demanda internas também pesam no preço final."
+    : "Isto é contexto, não prova de causa: safra, clima, exportações e demanda interna também pesam no preço de cada alimento.";
+
+  const traces = series.map((s) => ({
+    x, y: s.y, name: s.nome, type: "scatter", mode: "lines",
+    line: { color: s.cor, width: s.largura, dash: s.dash },
+    hovertemplate: `${s.nome}: <b>%{y:,.1f}</b><extra></extra>`,
+  }));
+
+  // Rótulos diretos no fim de cada linha, afastados para não se sobreporem.
+  const todos = series.flatMap((s) => s.y.filter((v) => !isNil(v)));
+  const yMin = Math.min(...todos, 100), yMax = Math.max(...todos);
+  const gap = (yMax - yMin) * 0.075;
+  const rotulos = series.map((s) => ({ s, y: ultimoValido(s.y) })).filter((r) => !isNil(r.y)).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < rotulos.length; i++) if (rotulos[i].y - rotulos[i - 1].y < gap) rotulos[i].y = rotulos[i - 1].y + gap;
+
+  const layout = baseLayout();
+  layout.hovermode = "x unified";
+  layout.showlegend = false;
+  layout.margin = { l: 8, r: estreito() ? 12 : 150, t: 40, b: 40 };
+  if (estreito()) layout.xaxis.dtick = "M24";
+  layout.xaxis.hoverformat = "%m/%Y";
+  layout.xaxis.range = [x[0], x[x.length - 1]];
+  layout.shapes = [
+    ...periodShapes(x[0], x[x.length - 1], DATA.periodo_corte),
+    { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 100, y1: 100, line: { color: cssVar("--ink-faint"), width: 1 } },
+  ];
+  layout.annotations = [
+    ...periodAnnotations(x[0], DATA.periodo_corte),
+    { x: 0, y: 1, xref: "paper", yref: "paper", text: `índice (${desde} = 100)`, showarrow: false, xanchor: "left", yanchor: "bottom", yshift: 14, font: { size: 12, color: cssVar("--ink-soft") } },
+    ...(estreito() ? [] : rotulos).map((r) => ({
+      x: x[x.length - 1], y: r.y, xref: "x", yref: "y", xanchor: "left", xshift: 8, showarrow: false,
+      text: `<b>${r.s.nome.length > 16 ? r.s.nome.split(" ")[0] : r.s.nome}</b> ${fmtPct(ultimoValido(r.s.y) - 100, 0)}`,
+      font: { size: 12, color: cssVar("--ink"), family: "Inter, sans-serif" },
+    })),
+  ];
+  Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
 }
 
 init();
