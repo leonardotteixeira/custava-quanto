@@ -9,13 +9,13 @@ const DATA_URL = "../data/processed/dashboard_data.json";
 const PRODUCT_ORDER = [
   "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
   "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
-  "DOLAR", "SELIC", "IBOVESPA",
+  "DOLAR", "SELIC", "IBOVESPA", "IPCA",
 ];
 const PRODUCT_CHIP_LABEL = {
   "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "Gás (GLP)",
   "Arroz": "Arroz", "Feijão carioca": "Feijão", "Carne bovina (patinho)": "Carne",
   "Leite longa vida": "Leite", "Óleo de soja": "Óleo de soja", "Café moído": "Café",
-  "DOLAR": "Dólar", "SELIC": "Selic", "IBOVESPA": "Ibovespa",
+  "DOLAR": "Dólar", "SELIC": "Selic", "IBOVESPA": "Ibovespa", "IPCA": "IPCA",
 };
 // Nome de exibição (título), forma usada no meio de frases ("do arroz") e sem artigo ("de arroz").
 const PRODUCT_TEXT = {
@@ -36,6 +36,30 @@ const PRODUCT_TEXT = {
   "DOLAR": { titulo: "Dólar comercial", de: "do dólar", sem: "" },
   "SELIC": { titulo: "Taxa Selic", de: "da Selic", sem: "da Selic" },
   "IBOVESPA": { titulo: "Ibovespa", de: "do Ibovespa", sem: "do Ibovespa" },
+  "IPCA": { titulo: "Inflação (IPCA)", de: "da inflação (IPCA)", sem: "da inflação (IPCA)" },
+};
+
+// Selic e IPCA (ambos tipo "taxa") mostram um ao outro como comparador no
+// Contexto — cada um precisa saber o nome/campo do "outro lado" e um texto
+// de sujeito com o gênero certo ("a Selic", "a inflação"), para nenhum
+// texto ficar hardcoded assumindo que o produto é sempre a Selic.
+const TAXA_INFO = {
+  SELIC: {
+    medida: "Taxa básica de juros, definida pelo Copom",
+    subtitulo: "Taxa básica de juros definida pelo Copom em cada reunião.",
+    ajuda: `<strong>Selic:</strong> a taxa básica de juros da economia. Aqui é o valor nominal — para comparar com a inflação, veja "Contexto" mais abaixo.`,
+    sujeito: "Selic",
+    curto: "Selic",
+    comparador: { campo: "ipca_var_12m", nome: "IPCA 12 meses", termo: "ipca", desc: "inflação acumulada nos últimos 12 meses" },
+  },
+  IPCA: {
+    medida: "Inflação acumulada nos últimos 12 meses (IBGE)",
+    subtitulo: "Variação do IPCA acumulada nos últimos 12 meses, calculada pelo IBGE.",
+    ajuda: `<strong>IPCA em 12 meses:</strong> quanto os preços, em média, subiram nos últimos 12 meses até cada mês. Para comparar com a Selic, veja "Contexto" mais abaixo.`,
+    sujeito: "inflação em 12 meses (IPCA)",
+    curto: "IPCA 12m",
+    comparador: { campo: "selic_meta_aa", nome: "Selic", termo: null, desc: "taxa básica de juros definida pelo Copom" },
+  },
 };
 // Categoria de cada produto no seletor — combustível/alimento vêm do próprio
 // tipo; Dólar e Selic são "indicadores", uma categoria à parte.
@@ -338,9 +362,11 @@ function eraReferencia(serie) {
 function renderAnswer(produto) {
   const t = txt(state.product);
 
-  // Selic é uma taxa, não um preço: nada de R$, índice ou "poder de
-  // compra" — manchete própria, bem mais simples.
+  // Selic e IPCA (taxa) não são preço: nada de R$, índice ou "poder de
+  // compra" — manchete própria, bem mais simples. Generalizada por
+  // TAXA_INFO para não hardcodar "Selic" quando o produto é o IPCA.
   if (produto.tipo === "taxa") {
+    const info = TAXA_INFO[state.product];
     const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
     const eraRef = eraReferencia(produto.serie_mensal);
     const mEra = fmtMesAno(eraRef.ano_mes), mFim = fmtMesAno(ultimo.ano_mes);
@@ -349,7 +375,7 @@ function renderAnswer(produto) {
     const tag = document.getElementById("unit-tag");
     tag.textContent = produto.unidade;
     tag.classList.remove("is-index");
-    document.getElementById("product-measure").innerHTML = `Taxa básica de juros, definida pelo Copom · ${mEra} → ${mFim}`;
+    document.getElementById("product-measure").innerHTML = `${info.medida} · ${mEra} → ${mFim}`;
     document.getElementById("era-date").textContent = mEra;
     document.getElementById("agora-date").textContent = mFim;
 
@@ -363,20 +389,27 @@ function renderAnswer(produto) {
     document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
     document.getElementById("infl-marker").hidden = true;
 
+    // "Inflação acumulada desde a Era" (ponta a ponta) é uma leitura
+    // diferente de "inflação em 12 meses" (a métrica usada como taxa_aa do
+    // IPCA-produto) — mostrar as duas juntas não é redundante, é honesto
+    // sobre serem medidas diferentes da mesma série de preços.
     const diffPP = vFim - vIni;
     const inflacaoPeriodo = (ultimo.ipca_indice / eraRef.ipca_indice - 1) * 100;
     document.getElementById("diff-a").textContent = `${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.`;
     document.getElementById("diff-a-cap").textContent = `desde ${mEra}`;
     document.getElementById("diff-b").textContent = fmtPct(inflacaoPeriodo);
-    document.getElementById("diff-b-cap").textContent = "foi a inflação (IPCA) no mesmo período";
+    document.getElementById("diff-b-cap").textContent = state.product === "IPCA"
+      ? "foi a inflação acumulada, ponta a ponta, no mesmo período"
+      : "foi a inflação (IPCA) no mesmo período";
 
     const subiu = diffPP >= 0 ? "subiu" : "caiu";
+    const infl2 = state.product === "IPCA" ? "a inflação acumulada, ponta a ponta," : `a ${term("ipca", "inflação (IPCA)")} acumulada`;
     document.getElementById("lede").innerHTML =
-      `Desde ${mEra}, a Selic ${subiu} <strong>${fmtNum(Math.abs(diffPP), 2)} pontos percentuais</strong> — foi de ${fmtNum(vIni, 2)}% para ${fmtNum(vFim, 2)}% ao ano. No mesmo período, a ${term("ipca", "inflação (IPCA)")} acumulada foi de <strong>${fmtPct(inflacaoPeriodo)}</strong>.`;
+      `Desde ${mEra}, a ${info.sujeito} ${subiu} <strong>${fmtNum(Math.abs(diffPP), 2)} pontos percentuais</strong> — foi de ${fmtNum(vIni, 2)}% para ${fmtNum(vFim, 2)}% ao ano. No mesmo período, ${infl2} foi de <strong>${fmtPct(inflacaoPeriodo)}</strong>.`;
 
-    const notaSelic = document.getElementById("index-note");
-    notaSelic.hidden = false;
-    notaSelic.innerHTML = `<strong>Por que não "poder de compra"?</strong> ${produto.nota}`;
+    const notaTaxa = document.getElementById("index-note");
+    notaTaxa.hidden = false;
+    notaTaxa.innerHTML = `<strong>Por que não "poder de compra"?</strong> ${produto.nota}`;
     return;
   }
 
@@ -579,14 +612,15 @@ function renderChart() {
 
   let y, yRef = null, refNome = "", hovertext, fmtY, unidadeEixo, titulo, subtitulo, ajuda, yaxisExtra = {};
   if (produto.tipo === "taxa") {
+    const info = TAXA_INFO[state.product];
     y = serie.map((r) => r.taxa_aa);
     fmtY = (v) => `${fmtNum(v, 2)}%`;
     yaxisExtra = { ticksuffix: "%", tickformat: ",.2f" };
-    unidadeEixo = "% ao ano";
-    titulo = "Taxa Selic, mês a mês";
-    subtitulo = "Taxa básica de juros definida pelo Copom em cada reunião.";
-    ajuda = `<strong>Selic:</strong> a taxa básica de juros da economia. Aqui é o valor nominal — para comparar com a inflação, veja "Contexto" mais abaixo.`;
-    hovertext = serie.map((r, i) => (isNil(y[i]) ? "" : `<b>${fmtMesAno(r.ano_mes)}</b><br>Selic: <b>${fmtNum(y[i], 2)}%</b> ao ano`));
+    unidadeEixo = produto.unidade;
+    titulo = `${t.titulo}, mês a mês`;
+    subtitulo = info.subtitulo;
+    ajuda = info.ajuda;
+    hovertext = serie.map((r, i) => (isNil(y[i]) ? "" : `<b>${fmtMesAno(r.ano_mes)}</b><br>${info.curto}: <b>${fmtNum(y[i], 2)}%</b> ao ano`));
   } else if (produto.tipo === "pontos") {
     y = serie.map((r) => r.pontos);
     fmtY = (v) => `${fmtNum(v, 0)} pts`;
@@ -655,7 +689,7 @@ function renderChart() {
   document.getElementById("chart-subtitle").textContent = subtitulo;
   document.getElementById("metric-help").innerHTML = ajuda;
   document.getElementById("chart-source").textContent =
-    produto.tipo === "taxa" ? "Fonte: Banco Central (Selic e IPCA)."
+    produto.tipo === "taxa" ? "Fonte: Banco Central (Selic), IBGE (IPCA)."
       : produto.tipo === "pontos" ? "Fonte: B3/Yahoo Finance (fechamento mensal do Ibovespa)."
       : isCambio ? "Fonte: Banco Central (câmbio, salário mínimo), IBGE (IPCA)."
       : isComb ? "Fonte: ANP (preços), Banco Central (salário mínimo), IBGE (IPCA). Set/2020 ausente na fonte."
@@ -713,9 +747,10 @@ function renderYears(produto) {
   const isPontos = produto.tipo === "pontos";
   const isComb = temPreco(produto);
   const u = unidadeInfo(produto);
-  document.getElementById("annual-title").textContent = isTaxa ? "Selic média de cada ano" : isPontos ? "Ibovespa médio de cada ano" : isComb ? "Preço médio de cada ano" : "Índice médio de cada ano";
+  const t = txt(state.product);
+  document.getElementById("annual-title").textContent = isTaxa ? `${t.titulo} — média de cada ano` : isPontos ? "Ibovespa médio de cada ano" : isComb ? "Preço médio de cada ano" : "Índice médio de cada ano";
   document.getElementById("annual-sub").textContent = isTaxa
-    ? "Média mensal da taxa, % ao ano, em cada ano."
+    ? "Média mensal, % ao ano, em cada ano."
     : isPontos
       ? "Média mensal do fechamento, em pontos, em cada ano. Não é dinheiro."
       : isComb
@@ -993,16 +1028,19 @@ function renderContext(produto) {
   // acumulada em 12 meses — mesma escala, a comparação padrão de "juro
   // nominal vs. inflação" que qualquer noticiário econômico usa.
   if (isTaxa) {
+    const info = TAXA_INFO[state.product];
+    const comp = info.comparador;
     const series = [
-      { key: "produto", nome: t.titulo, y: serie.map((r) => r.taxa_aa), cor: cssVar("--c-product"), dash: "solid", largura: 2.75, desc: "Selic, % ao ano" },
-      { key: "ipca12m", nome: "IPCA 12 meses", termo: "ipca", y: serie.map((r) => r.ipca_var_12m), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: "inflação acumulada nos últimos 12 meses" },
+      { key: "produto", nome: t.titulo, y: serie.map((r) => r.taxa_aa), cor: cssVar("--c-product"), dash: "solid", largura: 2.75, desc: `${info.curto}, % ao ano` },
+      { key: "comparador", nome: comp.nome, termo: comp.termo, y: serie.map((r) => r[comp.campo]), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: comp.desc },
     ];
-    const vSelic = ultimoValido(series[0].y);
-    const vIpca12m = ultimoValido(series[1].y);
-    const diffPP = isNil(vSelic) || isNil(vIpca12m) ? null : vSelic - vIpca12m;
+    const vProd = ultimoValido(series[0].y);
+    const vComp = ultimoValido(series[1].y);
+    const diffPP = isNil(vProd) || isNil(vComp) ? null : vProd - vComp;
+    const compLabel = comp.termo ? term(comp.termo, comp.nome) : `a ${comp.nome}`;
     document.getElementById("context-answer").innerHTML = isNil(diffPP)
-      ? `Em ${fmtMesAno(ultimo.ano_mes)}, a Selic estava em <strong>${fmtNum(vSelic, 2)}%</strong> ao ano.`
-      : `Em ${fmtMesAno(ultimo.ano_mes)}, a Selic estava em <strong>${fmtNum(vSelic, 2)}%</strong> ao ano e a ${term("ipca", "inflação acumulada em 12 meses")} era <strong>${fmtNum(vIpca12m, 2)}%</strong> — uma diferença de <strong>${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.</strong> (uma aproximação do juro real: quanto o rendimento supera a inflação recente).`;
+      ? `Em ${fmtMesAno(ultimo.ano_mes)}, a ${info.sujeito} estava em <strong>${fmtNum(vProd, 2)}%</strong> ao ano.`
+      : `Em ${fmtMesAno(ultimo.ano_mes)}, a ${info.sujeito} estava em <strong>${fmtNum(vProd, 2)}%</strong> ao ano e ${compLabel} estava em <strong>${fmtNum(vComp, 2)}%</strong> — uma diferença de <strong>${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.</strong> entre Selic e IPCA em 12 meses (uma aproximação do juro real).`;
 
     const swClass = { solid: "", dot: "dotted", dash: "dashed", dashdot: "dashed" };
     const strip = document.getElementById("stat-strip");
@@ -1016,13 +1054,14 @@ function renderContext(produto) {
       </div>`;
     }).join("");
 
-    document.getElementById("context-chart-title").textContent = "Selic vs. inflação, lado a lado";
+    document.getElementById("context-chart-title").textContent = `${info.curto} vs. ${comp.nome}, lado a lado`;
     document.getElementById("context-chart-sub").textContent =
-      "As duas na mesma escala (% ao ano): quando a linha da Selic fica acima da do IPCA, o rendimento nominal supera a inflação recente.";
+      "As duas na mesma escala (% ao ano) — dá para ver quando uma supera a outra.";
     document.getElementById("context-legend").innerHTML = series.map((s) =>
       `<span class="lg-item"><span class="lg-swatch ${swClass[s.dash]}" style="border-color:${s.cor}"></span>${s.nome}</span>`).join("");
-    document.getElementById("context-intro").textContent =
-      "Isto é contexto, não prova de causa: a Selic é definida pelo Copom considerando várias expectativas, não só a inflação passada.";
+    document.getElementById("context-intro").textContent = state.product === "SELIC"
+      ? "Isto é contexto, não prova de causa: a Selic é definida pelo Copom considerando várias expectativas, não só a inflação passada."
+      : "Isto é contexto, não prova de causa: a inflação reflete oferta e demanda, câmbio, safra e outros fatores — a Selic definida pelo Copom é só uma peça.";
 
     const traces = series.map((s) => ({
       x, y: s.y, name: s.nome, type: "scatter", mode: "lines",
@@ -1038,13 +1077,13 @@ function renderContext(produto) {
     layout.xaxis.range = [x[0], x[x.length - 1]];
     layout.yaxis.ticksuffix = "%";
     layout.shapes = periodShapes(x[0], x[x.length - 1], DATA.periodo_corte);
-    const fimSelic = ultimoValido(series[0].y), fimIpca = ultimoValido(series[1].y);
+    const fimProd = ultimoValido(series[0].y), fimComp = ultimoValido(series[1].y);
     layout.annotations = [
       ...periodAnnotations(x[0], DATA.periodo_corte),
       { x: 0, y: 1, xref: "paper", yref: "paper", text: "% ao ano", showarrow: false, xanchor: "left", yanchor: "bottom", yshift: 14, font: { size: 12, color: cssVar("--ink-soft") } },
       ...(estreito() ? [] : [
-        !isNil(fimSelic) && { x: x[x.length - 1], y: fimSelic, xref: "x", yref: "y", xanchor: "left", xshift: 8, showarrow: false, text: `<b>Selic</b> ${fmtNum(fimSelic, 1)}%`, font: { size: 12, color: cssVar("--ink"), family: "Inter, sans-serif" } },
-        !isNil(fimIpca) && { x: x[x.length - 1], y: fimIpca, xref: "x", yref: "y", xanchor: "left", xshift: 8, showarrow: false, text: `<b>IPCA 12m</b> ${fmtNum(fimIpca, 1)}%`, font: { size: 12, color: cssVar("--ink"), family: "Inter, sans-serif" } },
+        !isNil(fimProd) && { x: x[x.length - 1], y: fimProd, xref: "x", yref: "y", xanchor: "left", xshift: 8, showarrow: false, text: `<b>${info.curto}</b> ${fmtNum(fimProd, 1)}%`, font: { size: 12, color: cssVar("--ink"), family: "Inter, sans-serif" } },
+        !isNil(fimComp) && { x: x[x.length - 1], y: fimComp, xref: "x", yref: "y", xanchor: "left", xshift: 8, showarrow: false, text: `<b>${comp.nome}</b> ${fmtNum(fimComp, 1)}%`, font: { size: 12, color: cssVar("--ink"), family: "Inter, sans-serif" } },
       ].filter(Boolean)),
     ];
     Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
