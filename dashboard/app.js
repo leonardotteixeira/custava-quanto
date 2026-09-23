@@ -303,13 +303,13 @@ function selectProduct(codigo) {
   state.newsId = null;
   renderAnswer(produto);
   renderLiveQuote(produto);
-  renderInterlude(produto);
   renderChart();
+  renderInterlude(produto);
   renderYears(produto);
   renderPurchasingPower(produto);
-  renderGovernos(produto);
   renderContext(produto);
   renderSnapshot(produto);
+  renderGovernos(produto);
   renderArchive(produto);
   renderStepNumbers();
   renderStickyBar(produto);
@@ -348,12 +348,15 @@ function renderLiveQuote(produto) {
 }
 
 function renderStepNumbers() {
-  // "Poder de compra" (03) agora aparece para todo produto, então a
-  // numeração das seções seguintes é sempre a mesma.
-  document.getElementById("step-comparison").textContent = "04";
-  document.getElementById("step-context").textContent = "05";
-  document.getElementById("step-archive").textContent = "06";
-  document.getElementById("step-method").textContent = "07";
+  const produto = DATA.produtos[state.product];
+  const semPoderCompra = produto && (produto.tipo === "taxa" || produto.tipo === "pontos");
+  const base = semPoderCompra ? 2 : 3;
+
+  document.getElementById("step-context").textContent    = pad2(base + 1); // 04 ou 03
+  document.getElementById("step-snapshot").textContent   = pad2(base + 2); // 05 ou 04
+  document.getElementById("step-comparison").textContent = pad2(base + 3); // 06 ou 05
+  document.getElementById("step-archive").textContent    = pad2(base + 4); // 07 ou 06
+  document.getElementById("step-method").textContent     = pad2(base + 5); // 08 ou 07
 }
 
 function renderStickyBar(produto) {
@@ -790,7 +793,7 @@ function renderChart() {
     : produto.tipo === "pontos" ? "fechamento do mês"
     : isComb ? (state.metric === "real" ? `em reais de ${mFim}, ${u.por}` : state.metric === "pct_sm" ? `do salário mínimo naquele mês (${u.um})` : isCambio ? "cotação média do mês" : `preço médio no mês, ${u.por}`)
     : state.metric === "real" ? "índice corrigido pela inflação (não é R$)" : "índice no mês (não é R$)";
-  chartCtx = { x, y, fmtY, cap: capMetrica };
+  chartCtx = { x, y, fmtY, cap: capMetrica, idxPico };
   const marcadores = newsMarkerTrace(x, y);
   if (marcadores) traces.push(marcadores);
 

@@ -111,21 +111,6 @@
   <!-- ================================================================
        INTERLÚDIO — um número + a notícia real daquele momento
        ================================================================ -->
-  <section class="interlude" id="interlude" hidden>
-    <div class="wrap">
-      <p class="interlude-kicker">O que estava acontecendo?</p>
-      <div class="interlude-grid">
-        <div class="il-figure">
-          <span class="il-label" id="il-label">—</span>
-          <span class="il-number tnum" id="il-number">—</span>
-          <span class="il-date" id="il-date">—</span>
-        </div>
-        <div id="il-clip"></div>
-      </div>
-      <p class="news-disclaimer">Notícia real da época, com link para a matéria original. Mostra o que estava sendo noticiado — não é prova de causa.</p>
-    </div>
-  </section>
-
   <!-- ================================================================ 02 -->
   <section class="chapter" id="evolucao">
     <div class="wrap">
@@ -169,6 +154,24 @@
     </div>
   </section>
 
+  <!-- ================================================================
+       INTERLÚDIO — um número + a notícia real daquele momento (MOVIDO PARA PÓS-GRÁFICO)
+       ================================================================ -->
+  <section class="interlude" id="interlude" hidden>
+    <div class="wrap">
+      <p class="interlude-kicker">O que estava sendo noticiado naquele momento?</p>
+      <div class="interlude-grid">
+        <div class="il-figure">
+          <span class="il-label" id="il-label">—</span>
+          <span class="il-number tnum" id="il-number">—</span>
+          <span class="il-date" id="il-date">—</span>
+        </div>
+        <div id="il-clip"></div>
+      </div>
+      <p class="news-disclaimer">Notícia real da época, com link para a matéria original. Mostra o que estava sendo noticiado — não é prova de causa.</p>
+    </div>
+  </section>
+
   <!-- ================================================================ 03 -->
   <section class="chapter" id="purchasing-power-section">
     <div class="wrap">
@@ -181,11 +184,42 @@
     </div>
   </section>
 
-  <!-- ================================================================ 04 -->
+  <!-- ================================================================ 04 (CONTEXTO PRIMEIRO) -->
+  <section class="chapter" id="context-section">
+    <div class="wrap">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-context">04</span>
+        <h2>O que estava acontecendo na economia?</h2>
+      </div>
+      <p class="context-answer" id="context-answer"></p>
+      <div class="stat-strip" id="stat-strip"></div>
+      <h3 class="chart-title" id="context-chart-title">—</h3>
+      <p class="chart-sub" id="context-chart-sub"></p>
+      <div class="chart-legend" id="context-legend"></div>
+      <div id="context-chart" class="plot plot-small" role="img" aria-label="Gráfico comparando o produto com inflação, petróleo e dólar"></div>
+      <p class="caveat" id="context-intro"></p>
+    </div>
+  </section>
+
+  <!-- ================================================================ 05 (EXTRAÍDO: FOTOGRAFIA DO BRASIL) -->
+  <section class="chapter" id="brasil-snapshot">
+    <div class="wrap">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-snapshot">05</span>
+        <h2>Como estava o Brasil?</h2>
+      </div>
+      <p class="chapter-sub" id="snapshot-sub">Uma fotografia dos principais indicadores em cada momento — dá para comparar mesmo quem não tem relação direta com este produto.</p>
+      <div class="snapshot" id="snapshot-section">
+        <div class="snapshot-grid" id="snapshot-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ 06 (GOVERNOS DEPOIS DO CONTEXTO) -->
   <section class="chapter" id="governos">
     <div class="wrap">
       <div class="chapter-head">
-        <span class="chapter-n" id="step-comparison">04</span>
+        <span class="chapter-n" id="step-comparison">06</span>
         <h2>Como os dois governos se comparam?</h2>
       </div>
       <div class="gov-controls">
@@ -213,34 +247,11 @@
     </div>
   </section>
 
-  <!-- ================================================================ 05 -->
-  <section class="chapter" id="context-section">
-    <div class="wrap">
-      <div class="chapter-head">
-        <span class="chapter-n" id="step-context">05</span>
-        <h2>O que estava acontecendo na economia?</h2>
-      </div>
-      <p class="context-answer" id="context-answer"></p>
-      <div class="stat-strip" id="stat-strip"></div>
-      <h3 class="chart-title" id="context-chart-title">—</h3>
-      <p class="chart-sub" id="context-chart-sub"></p>
-      <div class="chart-legend" id="context-legend"></div>
-      <div id="context-chart" class="plot plot-small" role="img" aria-label="Gráfico comparando o produto com inflação, petróleo e dólar"></div>
-      <p class="caveat" id="context-intro"></p>
-
-      <div class="snapshot" id="snapshot-section">
-        <h3 class="mini-title">Como estava o Brasil?</h3>
-        <p class="mini-sub" id="snapshot-sub">Uma fotografia dos principais indicadores em cada momento — dá para comparar mesmo quem não tem relação direta com este produto.</p>
-        <div class="snapshot-grid" id="snapshot-grid"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================================================================ 06 -->
+  <!-- ================================================================ 07 -->
   <section class="chapter" id="arquivo" hidden>
     <div class="wrap">
       <div class="chapter-head">
-        <span class="chapter-n" id="step-archive">06</span>
+        <span class="chapter-n" id="step-archive">07</span>
         <h2>O que estava sendo noticiado?</h2>
       </div>
       <p class="chapter-sub" id="archive-sub"></p>
@@ -249,11 +260,11 @@
     </div>
   </section>
 
-  <!-- ================================================================ 07 -->
+  <!-- ================================================================ 08 -->
   <section class="chapter methodology" id="como-calculamos">
     <div class="wrap narrow">
       <div class="chapter-head">
-        <span class="chapter-n" id="step-method">07</span>
+        <span class="chapter-n" id="step-method">08</span>
         <h2>Como calculamos?</h2>
       </div>
 
