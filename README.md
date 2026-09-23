@@ -48,6 +48,19 @@ python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt
 ```
 
+**Atalho:** depois da primeira execução completa (passos 1–4 abaixo pelo
+menos uma vez), `scripts/update_data.py` roda tudo de novo em sequência —
+baixa os dados mais recentes de cada fonte, consolida e reverifica as
+notícias — parando na primeira falha de uma etapa crítica:
+
+```bash
+.venv/Scripts/python scripts/update_data.py            # pipeline completo
+.venv/Scripts/python scripts/update_data.py --rapido    # pula ANP/IBGE (lentos); só Dólar/Selic/Ibovespa/notícias
+```
+
+Os passos abaixo explicam o que cada etapa faz, para quem quiser rodar (ou
+depurar) uma de cada vez.
+
 ### 1. Baixar os dados brutos
 
 ```bash
@@ -105,13 +118,14 @@ Code desktop app com preview de navegador.)
 ## Dashboard CUSTAVA QUANTO?
 
 Camada de apresentação interativa sobre os mesmos dados do pipeline: escolha
-um produto (5 combustíveis, 6 itens da cesta básica ou um indicador — Dólar,
-Selic, Ibovespa) e veja a evolução no tempo, comparação Bolsonaro x Lula
-(governo inteiro ou primeiros 12/24/36 meses), contexto e histórico anual.
-Combustíveis e Dólar também têm preço em R$ (nominal, real ou % do salário
-mínimo) e poder de compra; Selic (taxa, % ao ano) e Ibovespa (pontos, não é
-R$) têm cada um sua própria leitura — não fazem sentido nas mesmas contas de
-"preço" ou "poder de compra" dos outros produtos.
+um produto (5 combustíveis, 6 itens da cesta básica ou um indicador de
+**Mercados** — Dólar, Selic, Ibovespa, IPCA) e veja a evolução no tempo,
+comparação Bolsonaro x Lula (governo inteiro ou primeiros 12/24/36 meses),
+contexto, notícias reais da época e histórico anual. Combustíveis e Dólar
+também têm preço em R$ (nominal, real ou % do salário mínimo) e poder de
+compra; Selic e IPCA (taxas, % ao ano) e Ibovespa (pontos, não é R$) têm cada
+um sua própria leitura — não fazem sentido nas mesmas contas de "preço" ou
+"poder de compra" dos outros produtos.
 
 - **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
   todas as contas em Python e grava o resultado pronto em
@@ -120,7 +134,23 @@ R$) têm cada um sua própria leitura — não fazem sentido nas mesmas contas d
   a última cotação diária disponível de cada série em
   `data/processed/bcb_hoje.json` — mostrada à parte da série mensal (que
   fica limitada ao último mês fechado pelo IPCA), para acompanhar o valor
-  mais recente sem esperar o mês fechar.
+  mais recente sem esperar o mês fechar. Para a Selic, essa cotação diária
+  também traz `vigente_desde` (a primeira data da sequência atual do mesmo
+  valor) — mostrado como "vigente desde" no dashboard, separado da data da
+  própria decisão do Copom, e sempre rotulado como **Selic-meta** (a taxa
+  definida pelo Copom), não a Selic efetiva diária do mercado.
+- **Cotação mais recente do Ibovespa**: `scripts/download_ibovespa.py`
+  também lê, do mesmo request à Yahoo Finance, a cotação mais recente
+  disponível (`regularMarketPrice`/`regularMarketTime`) e grava em
+  `data/processed/ibovespa_hoje.json`. Não é tempo real garantido — é o que
+  a Yahoo Finance publica como última cotação do símbolo, sujeito ao atraso
+  normal de fontes de mercado gratuitas; o dashboard deixa isso explícito
+  no selo, em vez de dizer "tempo real".
+- **"Como estava o Brasil?"**: uma fotografia cross-indicador (Dólar,
+  Ibovespa, Selic, IPCA, salário mínimo, Gasolina) para os meses Era/Agora
+  do produto selecionado — montada em `montar_fotografia_mensal()`
+  (`build_dashboard_data.py`) só a partir de campos que os outros produtos
+  já calcularam, sem nenhuma conta nova.
 - **Salário mínimo**: Banco Central, SGS série 1619 (piso nacional, nominal
   — não reflete pisos regionais mais altos em alguns estados).
 - **Fotos dos presidentes**: retratos oficiais do acervo do Palácio do
@@ -131,6 +161,31 @@ R$) têm cada um sua própria leitura — não fazem sentido nas mesmas contas d
   (não escondida em tooltip).
 - **Escopo do MVP**: região é sempre "Brasil" (os dados têm quebra regional
   em `combustiveis_final.csv`, mas o dashboard não expõe esse filtro ainda).
+
+## Notícias da época
+
+O dashboard intercala os dados com **matérias jornalísticas reais**: um
+"O que estava acontecendo?" logo após a abertura (o número de um momento +
+a notícia daquele momento), marcadores numerados e clicáveis no gráfico
+mensal e a seção "O que estava sendo noticiado?", com um arquivo por ano.
+
+- **Curadoria:** `data/news/raw_*.json` (título, veículo, data, URL, resumo e
+  tags de produto de cada matéria).
+- **Verificação:** `scripts/build_news.py` abre cada URL e só publica o item se
+  a página responder e o título curado bater com o título da própria página.
+  A descrição exibida é a publicada pela página (og:description). Saída em
+  `data/processed/noticias.json`.
+
+  ```bash
+  .venv/Scripts/python scripts/build_news.py
+  ```
+- **Fotos:** só aparecem quando a licença permite reprodução com crédito
+  (Agência Brasil, CC BY 4.0) **e** o crédito não indica restrição. Fotos da
+  Reuters/AFP, "Divulgação" ou "Direitos reservados" publicadas pela própria
+  Agência Brasil ficam de fora. As demais matérias aparecem só com texto.
+- **Não é causalidade:** as notícias mostram o que estava sendo noticiado em
+  cada momento. Elas não substituem os números nem provam que um evento
+  causou uma variação de preço.
 
 ## Metodologia (resumo)
 
@@ -221,10 +276,14 @@ relatórios mensais em PDF publicados em
 
 ## Atualizando os dados no futuro
 
-Basta rodar os 5 scripts de download novamente (eles buscam automaticamente
-até o mês mais recente disponível em cada fonte), depois `build_dataset.py`,
-`build_dashboard_data.py` e, se quiser os gráficos estáticos também,
-`analysis/analysis.py`. Não é preciso apagar `data/raw/` — o cache local
-evita rebaixar arquivos que não mudam (arquivos de meses/anos fechados da
-ANP raramente são revisados; se desconfiar de dado desatualizado, apague o
-arquivo específico em `data/raw/anp/` e rode de novo).
+O jeito mais simples é `.venv/Scripts/python scripts/update_data.py` (ou
+`--rapido` para pular ANP/IBGE) — ver [Como rodar](#como-rodar). Isso
+equivale a rodar os 6 scripts de download novamente (eles buscam
+automaticamente até o dado mais recente disponível em cada fonte), depois
+`build_dataset.py`, `build_dashboard_data.py` e `build_news.py` (reverifica
+as notícias curadas contra as páginas originais). Quer os gráficos estáticos
+também? Rode `analysis/analysis.py` à parte. Não é preciso apagar
+`data/raw/` — o cache local evita rebaixar arquivos que não mudam (arquivos
+de meses/anos fechados da ANP raramente são revisados; se desconfiar de dado
+desatualizado, apague o arquivo específico em `data/raw/anp/` e rode de
+novo).

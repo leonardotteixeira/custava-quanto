@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T01:37:37+00:00",
+  "gerado_em": "2026-09-23T02:05:21+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -18219,7 +18219,8 @@
       },
       "cotacao_hoje": {
         "data": "2026-09-22",
-        "valor": 13.75
+        "valor": 13.75,
+        "vigente_desde": "2026-09-17"
       }
     },
     "IPCA": {
@@ -20179,7 +20180,735 @@
             "completo": true
           }
         }
+      },
+      "cotacao_hoje": {
+        "pontos": 187422.92,
+        "data_hora": "2026-09-22T17:17:00-0300",
+        "fonte": "Yahoo Finance",
+        "nota": "Cotação mais recente disponível na fonte; não é garantidamente em tempo real."
       }
+    }
+  },
+  "fotografia_mensal": {
+    "2019-01-01": {
+      "dolar": 3.7417,
+      "ibovespa": 97394.0,
+      "selic": 6.5,
+      "gasolina": 4.3189,
+      "salario_minimo": 998.0
+    },
+    "2019-02-01": {
+      "dolar": 3.7236,
+      "ibovespa": 95584.0,
+      "selic": 6.5,
+      "gasolina": 4.2424,
+      "salario_minimo": 998.0
+    },
+    "2019-03-01": {
+      "dolar": 3.8465,
+      "ibovespa": 95415.0,
+      "selic": 6.5,
+      "gasolina": 4.3456,
+      "salario_minimo": 998.0
+    },
+    "2019-04-01": {
+      "dolar": 3.8962,
+      "ibovespa": 96353.0,
+      "selic": 6.5,
+      "gasolina": 4.4682,
+      "salario_minimo": 998.0
+    },
+    "2019-05-01": {
+      "dolar": 4.0015,
+      "ibovespa": 97030.0,
+      "selic": 6.5,
+      "gasolina": 4.5884,
+      "salario_minimo": 998.0
+    },
+    "2019-06-01": {
+      "dolar": 3.8588,
+      "ibovespa": 100967.0,
+      "selic": 6.5,
+      "gasolina": 4.5098,
+      "salario_minimo": 998.0
+    },
+    "2019-07-01": {
+      "dolar": 3.7793,
+      "ibovespa": 101812.0,
+      "selic": 6.5,
+      "gasolina": 4.3937,
+      "salario_minimo": 998.0
+    },
+    "2019-08-01": {
+      "dolar": 4.02,
+      "ibovespa": 101135.0,
+      "selic": 6.0,
+      "gasolina": 4.3629,
+      "salario_minimo": 998.0
+    },
+    "2019-09-01": {
+      "dolar": 4.1215,
+      "ibovespa": 104745.0,
+      "selic": 5.8,
+      "gasolina": 4.3697,
+      "salario_minimo": 998.0
+    },
+    "2019-10-01": {
+      "dolar": 4.087,
+      "ibovespa": 107220.0,
+      "selic": 5.48,
+      "gasolina": 4.4183,
+      "salario_minimo": 998.0
+    },
+    "2019-11-01": {
+      "dolar": 4.1553,
+      "ibovespa": 108233.0,
+      "selic": 5.0,
+      "gasolina": 4.4464,
+      "salario_minimo": 998.0
+    },
+    "2019-12-01": {
+      "dolar": 4.1096,
+      "ibovespa": 115645.0,
+      "selic": 4.68,
+      "gasolina": 4.5575,
+      "salario_minimo": 998.0
+    },
+    "2020-01-01": {
+      "dolar": 4.1495,
+      "ibovespa": 113761.0,
+      "selic": 4.5,
+      "ipca": 4.19,
+      "gasolina": 4.6163,
+      "salario_minimo": 1039.0
+    },
+    "2020-02-01": {
+      "dolar": 4.341,
+      "ibovespa": 104172.0,
+      "selic": 4.29,
+      "ipca": 4.01,
+      "gasolina": 4.5877,
+      "salario_minimo": 1045.0
+    },
+    "2020-03-01": {
+      "dolar": 4.8839,
+      "ibovespa": 73020.0,
+      "selic": 4.04,
+      "ipca": 3.3,
+      "gasolina": 4.5072,
+      "salario_minimo": 1045.0
+    },
+    "2020-04-01": {
+      "dolar": 5.3256,
+      "ibovespa": 80506.0,
+      "selic": 3.75,
+      "ipca": 2.4,
+      "gasolina": 4.1163,
+      "salario_minimo": 1045.0
+    },
+    "2020-05-01": {
+      "dolar": 5.6434,
+      "ibovespa": 87403.0,
+      "selic": 3.15,
+      "ipca": 1.88,
+      "gasolina": 3.8491,
+      "salario_minimo": 1045.0
+    },
+    "2020-06-01": {
+      "dolar": 5.1966,
+      "ibovespa": 95056.0,
+      "selic": 2.67,
+      "ipca": 2.13,
+      "gasolina": 3.9862,
+      "salario_minimo": 1045.0
+    },
+    "2020-07-01": {
+      "dolar": 5.2802,
+      "ibovespa": 102912.0,
+      "selic": 2.25,
+      "ipca": 2.31,
+      "gasolina": 4.1663,
+      "salario_minimo": 1045.0
+    },
+    "2020-08-01": {
+      "dolar": 5.4612,
+      "ibovespa": 99369.0,
+      "selic": 2.04,
+      "ipca": 2.44,
+      "gasolina": 4.2623,
+      "salario_minimo": 1045.0
+    },
+    "2020-09-01": {
+      "dolar": 5.3995,
+      "ibovespa": 94603.0,
+      "selic": 2.0,
+      "ipca": 3.14
+    },
+    "2020-10-01": {
+      "dolar": 5.6258,
+      "ibovespa": 93952.0,
+      "selic": 2.0,
+      "ipca": 3.92,
+      "gasolina": 4.391,
+      "salario_minimo": 1045.0
+    },
+    "2020-11-01": {
+      "dolar": 5.4178,
+      "ibovespa": 108888.0,
+      "selic": 2.0,
+      "ipca": 4.31,
+      "gasolina": 4.4036,
+      "salario_minimo": 1045.0
+    },
+    "2020-12-01": {
+      "dolar": 5.1456,
+      "ibovespa": 119306.0,
+      "selic": 2.0,
+      "ipca": 4.52,
+      "gasolina": 4.4742,
+      "salario_minimo": 1045.0
+    },
+    "2021-01-01": {
+      "dolar": 5.3562,
+      "ibovespa": 116007.0,
+      "selic": 2.0,
+      "ipca": 4.56,
+      "gasolina": 4.5857,
+      "salario_minimo": 1100.0
+    },
+    "2021-02-01": {
+      "dolar": 5.4165,
+      "ibovespa": 110035.0,
+      "selic": 2.0,
+      "ipca": 5.2,
+      "gasolina": 4.9122,
+      "salario_minimo": 1100.0
+    },
+    "2021-03-01": {
+      "dolar": 5.6461,
+      "ibovespa": 116634.0,
+      "selic": 2.34,
+      "ipca": 6.1,
+      "gasolina": 5.4685,
+      "salario_minimo": 1100.0
+    },
+    "2021-04-01": {
+      "dolar": 5.5621,
+      "ibovespa": 118894.0,
+      "selic": 2.75,
+      "ipca": 6.76,
+      "gasolina": 5.4543,
+      "salario_minimo": 1100.0
+    },
+    "2021-05-01": {
+      "dolar": 5.2911,
+      "ibovespa": 126216.0,
+      "selic": 3.38,
+      "ipca": 8.06,
+      "gasolina": 5.5842,
+      "salario_minimo": 1100.0
+    },
+    "2021-06-01": {
+      "dolar": 5.0319,
+      "ibovespa": 126802.0,
+      "selic": 3.85,
+      "ipca": 8.35,
+      "gasolina": 5.6684,
+      "salario_minimo": 1100.0
+    },
+    "2021-07-01": {
+      "dolar": 5.1567,
+      "ibovespa": 121801.0,
+      "selic": 4.25,
+      "ipca": 8.99,
+      "gasolina": 5.8003,
+      "salario_minimo": 1100.0
+    },
+    "2021-08-01": {
+      "dolar": 5.2517,
+      "ibovespa": 118781.0,
+      "selic": 5.12,
+      "ipca": 9.68,
+      "gasolina": 5.9214,
+      "salario_minimo": 1100.0
+    },
+    "2021-09-01": {
+      "dolar": 5.2797,
+      "ibovespa": 110979.0,
+      "selic": 5.52,
+      "ipca": 10.25,
+      "gasolina": 6.0836,
+      "salario_minimo": 1100.0
+    },
+    "2021-10-01": {
+      "dolar": 5.54,
+      "ibovespa": 103501.0,
+      "selic": 6.44,
+      "ipca": 10.67,
+      "gasolina": 6.3375,
+      "salario_minimo": 1100.0
+    },
+    "2021-11-01": {
+      "dolar": 5.5569,
+      "ibovespa": 101915.0,
+      "selic": 7.75,
+      "ipca": 10.74,
+      "gasolina": 6.741,
+      "salario_minimo": 1100.0
+    },
+    "2021-12-01": {
+      "dolar": 5.6514,
+      "ibovespa": 104822.0,
+      "selic": 8.86,
+      "ipca": 10.06,
+      "gasolina": 6.6749,
+      "salario_minimo": 1100.0
+    },
+    "2022-01-01": {
+      "dolar": 5.5341,
+      "ibovespa": 112388.0,
+      "selic": 9.25,
+      "ipca": 10.38,
+      "gasolina": 6.6448,
+      "salario_minimo": 1212.0
+    },
+    "2022-02-01": {
+      "dolar": 5.1966,
+      "ibovespa": 113142.0,
+      "selic": 10.64,
+      "ipca": 10.54,
+      "gasolina": 6.6023,
+      "salario_minimo": 1212.0
+    },
+    "2022-03-01": {
+      "dolar": 4.9684,
+      "ibovespa": 119999.0,
+      "selic": 11.23,
+      "ipca": 11.3,
+      "gasolina": 7.0126,
+      "salario_minimo": 1212.0
+    },
+    "2022-04-01": {
+      "dolar": 4.758,
+      "ibovespa": 107876.0,
+      "selic": 11.75,
+      "ipca": 12.13,
+      "gasolina": 7.243,
+      "salario_minimo": 1212.0
+    },
+    "2022-05-01": {
+      "dolar": 4.955,
+      "ibovespa": 111351.0,
+      "selic": 12.62,
+      "ipca": 11.73,
+      "gasolina": 7.288,
+      "salario_minimo": 1212.0
+    },
+    "2022-06-01": {
+      "dolar": 5.0492,
+      "ibovespa": 98542.0,
+      "selic": 13.0,
+      "ipca": 11.89,
+      "gasolina": 7.2577,
+      "salario_minimo": 1212.0
+    },
+    "2022-07-01": {
+      "dolar": 5.3681,
+      "ibovespa": 103165.0,
+      "selic": 13.25,
+      "ipca": 10.07,
+      "gasolina": 6.059,
+      "salario_minimo": 1212.0
+    },
+    "2022-08-01": {
+      "dolar": 5.1433,
+      "ibovespa": 109523.0,
+      "selic": 13.7,
+      "ipca": 8.73,
+      "gasolina": 5.4234,
+      "salario_minimo": 1212.0
+    },
+    "2022-09-01": {
+      "dolar": 5.237,
+      "ibovespa": 110037.0,
+      "selic": 13.75,
+      "ipca": 7.17,
+      "gasolina": 5.0345,
+      "salario_minimo": 1212.0
+    },
+    "2022-10-01": {
+      "dolar": 5.2503,
+      "ibovespa": 116037.0,
+      "selic": 13.75,
+      "ipca": 6.47,
+      "gasolina": 4.8639,
+      "salario_minimo": 1212.0
+    },
+    "2022-11-01": {
+      "dolar": 5.2746,
+      "ibovespa": 112486.0,
+      "selic": 13.75,
+      "ipca": 5.9,
+      "gasolina": 5.0173,
+      "salario_minimo": 1212.0
+    },
+    "2022-12-01": {
+      "dolar": 5.2424,
+      "ibovespa": 110031.0,
+      "selic": 13.75,
+      "ipca": 5.79,
+      "gasolina": 4.9635,
+      "salario_minimo": 1212.0
+    },
+    "2023-01-01": {
+      "dolar": 5.2007,
+      "ibovespa": 113532.0,
+      "selic": 13.75,
+      "ipca": 5.77,
+      "gasolina": 5.0445,
+      "salario_minimo": 1302.0
+    },
+    "2023-02-01": {
+      "dolar": 5.1717,
+      "ibovespa": 104932.0,
+      "selic": 13.75,
+      "ipca": 5.6,
+      "gasolina": 5.1011,
+      "salario_minimo": 1302.0
+    },
+    "2023-03-01": {
+      "dolar": 5.2115,
+      "ibovespa": 101882.0,
+      "selic": 13.75,
+      "ipca": 4.65,
+      "gasolina": 5.514,
+      "salario_minimo": 1302.0
+    },
+    "2023-04-01": {
+      "dolar": 5.0197,
+      "ibovespa": 104432.0,
+      "selic": 13.75,
+      "ipca": 4.18,
+      "gasolina": 5.5066,
+      "salario_minimo": 1302.0
+    },
+    "2023-05-01": {
+      "dolar": 4.9828,
+      "ibovespa": 108335.0,
+      "selic": 13.75,
+      "ipca": 3.94,
+      "gasolina": 5.4024,
+      "salario_minimo": 1320.0
+    },
+    "2023-06-01": {
+      "dolar": 4.8516,
+      "ibovespa": 118087.0,
+      "selic": 13.75,
+      "ipca": 3.16,
+      "gasolina": 5.3926,
+      "salario_minimo": 1320.0
+    },
+    "2023-07-01": {
+      "dolar": 4.8008,
+      "ibovespa": 121943.0,
+      "selic": 13.75,
+      "ipca": 3.99,
+      "gasolina": 5.6092,
+      "salario_minimo": 1320.0
+    },
+    "2023-08-01": {
+      "dolar": 4.9035,
+      "ibovespa": 115742.0,
+      "selic": 13.28,
+      "ipca": 4.61,
+      "gasolina": 5.713,
+      "salario_minimo": 1320.0
+    },
+    "2023-09-01": {
+      "dolar": 4.937,
+      "ibovespa": 116565.0,
+      "selic": 13.08,
+      "ipca": 5.19,
+      "gasolina": 5.8397,
+      "salario_minimo": 1320.0
+    },
+    "2023-10-01": {
+      "dolar": 5.0648,
+      "ibovespa": 113144.0,
+      "selic": 12.75,
+      "ipca": 4.82,
+      "gasolina": 5.7653,
+      "salario_minimo": 1320.0
+    },
+    "2023-11-01": {
+      "dolar": 4.8983,
+      "ibovespa": 127331.0,
+      "selic": 12.27,
+      "ipca": 4.68,
+      "gasolina": 5.6765,
+      "salario_minimo": 1320.0
+    },
+    "2023-12-01": {
+      "dolar": 4.8972,
+      "ibovespa": 134185.0,
+      "selic": 11.96,
+      "ipca": 4.62,
+      "gasolina": 5.6354,
+      "salario_minimo": 1320.0
+    },
+    "2024-01-01": {
+      "dolar": 4.9144,
+      "ibovespa": 127752.0,
+      "selic": 11.75,
+      "ipca": 4.51,
+      "gasolina": 5.6087,
+      "salario_minimo": 1412.0
+    },
+    "2024-02-01": {
+      "dolar": 4.9644,
+      "ibovespa": 129020.0,
+      "selic": 11.25,
+      "ipca": 4.5,
+      "gasolina": 5.7742,
+      "salario_minimo": 1412.0
+    },
+    "2024-03-01": {
+      "dolar": 4.9801,
+      "ibovespa": 128106.0,
+      "selic": 11.07,
+      "ipca": 3.93,
+      "gasolina": 5.7653,
+      "salario_minimo": 1412.0
+    },
+    "2024-04-01": {
+      "dolar": 5.1291,
+      "ibovespa": 125924.0,
+      "selic": 10.75,
+      "ipca": 3.69,
+      "gasolina": 5.822,
+      "salario_minimo": 1412.0
+    },
+    "2024-05-01": {
+      "dolar": 5.133,
+      "ibovespa": 122098.0,
+      "selic": 10.56,
+      "ipca": 3.93,
+      "gasolina": 5.8719,
+      "salario_minimo": 1412.0
+    },
+    "2024-06-01": {
+      "dolar": 5.389,
+      "ibovespa": 123907.0,
+      "selic": 10.5,
+      "ipca": 4.23,
+      "gasolina": 5.8637,
+      "salario_minimo": 1412.0
+    },
+    "2024-07-01": {
+      "dolar": 5.542,
+      "ibovespa": 127652.0,
+      "selic": 10.5,
+      "ipca": 4.5,
+      "gasolina": 6.0352,
+      "salario_minimo": 1412.0
+    },
+    "2024-08-01": {
+      "dolar": 5.5526,
+      "ibovespa": 136004.0,
+      "selic": 10.5,
+      "ipca": 4.24,
+      "gasolina": 6.1168,
+      "salario_minimo": 1412.0
+    },
+    "2024-09-01": {
+      "dolar": 5.5416,
+      "ibovespa": 131816.0,
+      "selic": 10.6,
+      "ipca": 4.42,
+      "gasolina": 6.0953,
+      "salario_minimo": 1412.0
+    },
+    "2024-10-01": {
+      "dolar": 5.6241,
+      "ibovespa": 129713.0,
+      "selic": 10.75,
+      "ipca": 4.76,
+      "gasolina": 6.103,
+      "salario_minimo": 1412.0
+    },
+    "2024-11-01": {
+      "dolar": 5.8071,
+      "ibovespa": 125668.0,
+      "selic": 11.15,
+      "ipca": 4.87,
+      "gasolina": 6.1053,
+      "salario_minimo": 1412.0
+    },
+    "2024-12-01": {
+      "dolar": 6.097,
+      "ibovespa": 120283.0,
+      "selic": 11.9,
+      "ipca": 4.83,
+      "gasolina": 6.1435,
+      "salario_minimo": 1412.0
+    },
+    "2025-01-01": {
+      "dolar": 6.0218,
+      "ibovespa": 126135.0,
+      "selic": 12.31,
+      "ipca": 4.56,
+      "gasolina": 6.1838,
+      "salario_minimo": 1518.0
+    },
+    "2025-02-01": {
+      "dolar": 5.7656,
+      "ibovespa": 122799.0,
+      "selic": 13.25,
+      "ipca": 5.06,
+      "gasolina": 6.3672,
+      "salario_minimo": 1518.0
+    },
+    "2025-03-01": {
+      "dolar": 5.7468,
+      "ibovespa": 130260.0,
+      "selic": 13.64,
+      "ipca": 5.48,
+      "gasolina": 6.35,
+      "salario_minimo": 1518.0
+    },
+    "2025-04-01": {
+      "dolar": 5.7837,
+      "ibovespa": 135067.0,
+      "selic": 14.25,
+      "ipca": 5.53,
+      "gasolina": 6.3162,
+      "salario_minimo": 1518.0
+    },
+    "2025-05-01": {
+      "dolar": 5.6674,
+      "ibovespa": 137027.0,
+      "selic": 14.64,
+      "ipca": 5.32,
+      "gasolina": 6.2836,
+      "salario_minimo": 1518.0
+    },
+    "2025-06-01": {
+      "dolar": 5.5471,
+      "ibovespa": 138855.0,
+      "selic": 14.85,
+      "ipca": 5.35,
+      "gasolina": 6.2263,
+      "salario_minimo": 1518.0
+    },
+    "2025-07-01": {
+      "dolar": 5.5285,
+      "ibovespa": 133071.0,
+      "selic": 15.0,
+      "ipca": 5.23,
+      "gasolina": 6.2112,
+      "salario_minimo": 1518.0
+    },
+    "2025-08-01": {
+      "dolar": 5.4469,
+      "ibovespa": 141422.0,
+      "selic": 15.0,
+      "ipca": 5.13,
+      "gasolina": 6.1821,
+      "salario_minimo": 1518.0
+    },
+    "2025-09-01": {
+      "dolar": 5.3674,
+      "ibovespa": 146237.0,
+      "selic": 15.0,
+      "ipca": 5.17,
+      "gasolina": 6.1916,
+      "salario_minimo": 1518.0
+    },
+    "2025-10-01": {
+      "dolar": 5.3855,
+      "ibovespa": 149540.0,
+      "selic": 15.0,
+      "ipca": 4.68,
+      "gasolina": 6.2152,
+      "salario_minimo": 1518.0
+    },
+    "2025-11-01": {
+      "dolar": 5.3409,
+      "ibovespa": 159072.0,
+      "selic": 15.0,
+      "ipca": 4.46,
+      "gasolina": 6.1878,
+      "salario_minimo": 1518.0
+    },
+    "2025-12-01": {
+      "dolar": 5.4531,
+      "ibovespa": 161125.0,
+      "selic": 15.0,
+      "ipca": 4.26,
+      "gasolina": 6.2033,
+      "salario_minimo": 1518.0
+    },
+    "2026-01-01": {
+      "dolar": 5.338,
+      "ibovespa": 181364.0,
+      "selic": 15.0,
+      "ipca": 4.44,
+      "gasolina": 6.3256,
+      "salario_minimo": 1621.0
+    },
+    "2026-02-01": {
+      "dolar": 5.2006,
+      "ibovespa": 188787.0,
+      "selic": 15.0,
+      "ipca": 3.81,
+      "gasolina": 6.3117,
+      "salario_minimo": 1621.0
+    },
+    "2026-03-01": {
+      "dolar": 5.2316,
+      "ibovespa": 187462.0,
+      "selic": 14.9,
+      "ipca": 4.14,
+      "gasolina": 6.6028,
+      "salario_minimo": 1621.0
+    },
+    "2026-04-01": {
+      "dolar": 5.0331,
+      "ibovespa": 187318.0,
+      "selic": 14.74,
+      "ipca": 4.39
+    },
+    "2026-05-01": {
+      "dolar": 4.9837,
+      "ibovespa": 173788.0,
+      "selic": 14.5,
+      "ipca": 4.72,
+      "gasolina": 6.6779,
+      "salario_minimo": 1621.0
+    },
+    "2026-06-01": {
+      "dolar": 5.1276,
+      "ibovespa": 172024.0,
+      "selic": 14.39,
+      "ipca": 4.64,
+      "gasolina": 6.6567,
+      "salario_minimo": 1621.0
+    },
+    "2026-07-01": {
+      "dolar": 5.1139,
+      "ibovespa": 177999.0,
+      "selic": 14.25,
+      "ipca": 4.44,
+      "gasolina": 6.6179,
+      "salario_minimo": 1621.0
+    },
+    "2026-08-01": {
+      "dolar": 5.1532,
+      "ibovespa": 177419.0,
+      "selic": 14.04,
+      "ipca": 4.22,
+      "gasolina": 6.5683,
+      "salario_minimo": 1621.0
     }
   },
   "presidentes": {

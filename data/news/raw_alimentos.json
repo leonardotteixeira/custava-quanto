@@ -1,0 +1,200 @@
+[
+  {
+    "titulo": "Tomate, feijão e gasolina levam IPCA de março ao maior nível desde 2015",
+    "veiculo": "Exame",
+    "data": "2019-04-10",
+    "url": "https://exame.com/economia/inflacao-chega-a-075-em-marco-a-maior-para-o-mes-desde-2015/",
+    "resumo": "Os segmentos de Alimentação e bebidas e de Transportes foram os maiores responsáveis pela alta dos preços no mês, de acordo com o IBGE",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Feijão carioca"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço da carne atinge maior nível dos últimos 30 anos — até quando?",
+    "veiculo": "Exame",
+    "data": "2019-12-03",
+    "url": "https://exame.com/economia/preco-da-carne-sobe-simulando-lancamento-de-um-foguete-ate-quando/",
+    "resumo": "Do início de setembro para cá, o valor da carne bovina no atacado já subiu quase 50%; analistas apostam em até 4 meses para que volte ao normal",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Carne bovina (patinho)"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Exportações de carne podem fechar 2019 com resultado recorde",
+    "veiculo": "Agência Brasil",
+    "data": "2019-12-10",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-12/exportacoes-de-carne-podem-fechar-2019-com-resultado-recorde",
+    "resumo": "Vendas devem somar 1,8 milhão de toneladas e render US$ 7,5 milhões",
+    "imagem": "https://imagens.ebc.com.br/6feez0_tqBu2Ikc4hCDDrzo82SU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/carne2.jpg?itok=qgHyVmnH",
+    "credito_imagem": "Divulgação/Abiec",
+    "produtos": ["Carne bovina (patinho)"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Governo zera imposto de importação do arroz até o final do ano",
+    "veiculo": "Agência Brasil",
+    "data": "2020-09-09",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/governo-zera-imposto-de-importacao-do-arroz-ate-o-final-do-ano",
+    "resumo": "Redução está restrita a 400 mil toneladas de arroz em casca e beneficiado; isenção valerá até 31 de dezembro. Tarifa sobre o produto era de 10% para arroz em casca.",
+    "imagem": "https://imagens.ebc.com.br/WNf2OVerTYTUVQNfiXecUl-v-TY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/arroz_1009201524.jpg?itok=qW86bIT5",
+    "credito_imagem": "Marcello Casal JrAgência Brasil",
+    "produtos": ["Arroz"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Arroz chega a custar R$ 35 em supermercados de São Paulo",
+    "veiculo": "CNN Brasil",
+    "data": "2020-09-10",
+    "url": "https://www.cnnbrasil.com.br/economia/seu-bolso/meu-dinheiro/arroz-chega-a-custar-r-35-em-supermercados-de-sao-paulo/",
+    "resumo": "A inflação do produto passa de 19% na média nacional neste ano",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Arroz"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Óleo de soja mais que dobra de preço e arroz sobe 76% no acumulado de 2020",
+    "veiculo": "CNN Brasil",
+    "data": "2021-01-12",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/ipca-oleo-de-soja-mais-que-dobra-de-preco-e-arroz-sobe-76-no-acumulado-de-2020/",
+    "resumo": "Dados sobre a inflação, divulgados pelo IBGE nesta terça (12), mostram que setor de alimentos pesou mais do que qualquer outro no bolso dos brasileiros em 2020",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Óleo de soja", "Arroz"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Trigo, café e óleo de soja continuam subindo no Brasil com guerra, diz Abia",
+    "veiculo": "InfoMoney",
+    "data": "2022-05-23",
+    "url": "https://www.infomoney.com.br/mercados/trigo-cafe-e-oleo-de-soja-continuam-subindo-no-brasil-com-guerra-diz-abia/",
+    "resumo": "Por outro lado, o preço do milho, também uma das commodities mais utilizadas pela indústria de alimentos, recuou em abril ante março no mercado interno",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Óleo de soja", "Café moído"],
+    "confirmado": true
+  },
+  {
+    "titulo": "IPCA: deflação foi puxada por combustíveis; preços de alimentos sobem",
+    "veiculo": "Agência Brasil",
+    "data": "2022-08-09",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-08/ipca-deflacao-foi-puxada-por-combustiveis-precos-de-alimentos-sobem",
+    "resumo": "Segundo o IBGE, a alta de 25,46% no leite longa vida e de 14,06% em leites e derivados, pressionou o grupo, que ficou 1,30% mais caro em julho.",
+    "imagem": "https://imagens.ebc.com.br/W14p8Lo5IaK9IdWSmcONkRja0nw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/supermercado_economia_20220729_0887.jpg?itok=inNuKwP0",
+    "credito_imagem": "Valter Campanato/Agência Brasil",
+    "produtos": ["Leite longa vida"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Após arroz subir 18%, feijão deve ficar mais caro em 2024",
+    "veiculo": "CNN Brasil",
+    "data": "2024-01-05",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/apos-arroz-subir-18-feijao-deve-ficar-mais-caro-em-2024/",
+    "resumo": "Estimativa era de que a colheita do feijão fosse de aproximadamente 3 milhões de toneladas, mas a safra deve registrar retração de mais ou menos 2,5%",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Feijão carioca", "Arroz"],
+    "confirmado": true
+  },
+  {
+    "titulo": "IPCA 2023: veja o que mais caiu e mais subiu no ano",
+    "veiculo": "CNN Brasil",
+    "data": "2024-01-11",
+    "url": "https://www.cnnbrasil.com.br/economia/financas/ipca-2023-veja-o-que-mais-caiu-e-mais-subiu-no-ano/",
+    "resumo": "Após fechar 2022 com maior alta, cebola foi segundo produto que mais barateou no ano",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Óleo de soja", "Carne bovina (patinho)"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Governo encerra leilão e compra 263 mil toneladas de arroz",
+    "veiculo": "Poder360",
+    "data": "2024-06-06",
+    "url": "https://www.poder360.com.br/governo/governo-encerra-leilao-e-compra-263-mil-toneladas-de-arroz/",
+    "resumo": "Segundo ministério da Agricultura, produto estará disponível a R$ 20 em até 95 dias; medida foi anunciada após enchentes no RS. Leia no Poder360.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Arroz"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Batata-inglesa e leite longa vida puxam inflação em junho",
+    "veiculo": "Agência Brasil",
+    "data": "2024-07-10",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-07/batata-inglesa-e-leite-longa-vida-puxam-inflacao-em-junho",
+    "resumo": "Apesar das altas de preços registradas em vários itens, o IPCA registrou, em junho, uma inflação menos intensa, de 0,21%, do que em maio, de 0,46%.",
+    "imagem": "https://imagens.ebc.com.br/yMdAWG2c_WDj5HsZgWsLU3yaSnk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_de_imagens_vac_abr_2907221191.jpg?itok=vNDxuM1Y",
+    "credito_imagem": "Valter Campanato/Agência Brasil",
+    "produtos": ["Leite longa vida"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Clima, dólar e preço da carne explicam inflação acima da meta em 2024",
+    "veiculo": "Agência Brasil",
+    "data": "2025-01-10",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-01/clima-dolar-e-preco-da-carne-explicam-inflacao-acima-da-meta-em-2024",
+    "resumo": "Maior pressão de alta de preços em 2024 veio do grupo alimentos e bebidas, que subiu 7,69%, o que representa um impacto de 1,63 pontos percentuais (p.p.) no IPCA.",
+    "imagem": "https://imagens.ebc.com.br/Yg1ulJ7uKOyFFhu44X657Fdcbjk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/01/10/inlacao1.jpg?itok=NvMJZWYD",
+    "credito_imagem": "Joédson Alves/Agência Brasil",
+    "produtos": ["Carne bovina (patinho)"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço do café moído sobe 80% em 12 meses e tem maior alta desde início do Plano Real",
+    "veiculo": "InfoMoney",
+    "data": "2025-05-09",
+    "url": "https://www.infomoney.com.br/economia/preco-do-cafe-moido-sobe-80-em-12-meses-e-tem-maior-alta-desde-inicio-do-plano-real/",
+    "resumo": "Preços dos alimentos em geral vêm pressionando a inflação no Brasil, em meio a questões climáticas",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Café moído"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço do café cai pela primeira vez depois de 18 meses, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2025-08-12",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-08/preco-do-cafe-cai-pela-primeira-vez-depois-de-18-meses-diz-ibge",
+    "resumo": "Índice Nacional de Preços ao Consumidor Amplo (IPCA) mostra que o preço do café recuou 1,01%. Nos 18 meses anteriores, a alta do produto chegou a 99,46%, ou seja, praticamente dobrou de preço.",
+    "imagem": "https://imagens.ebc.com.br/SMRK89zL4TbyDTTkOUkvrlpwmWg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_17061917250.jpg?itok=YNihncoY",
+    "credito_imagem": "Marcello Casal jr/Agência Brasil",
+    "produtos": ["Café moído"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preços dos alimentos caem pelo 4º mês consecutivo, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2025-10-10",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-10/precos-dos-alimentos-caem-pelo-4o-mes-consecutivo-diz-ibge",
+    "resumo": "Alimentos com queda mais acentuada de preços foram tomate (-11,52%), cebola (-10,16%), alho (-8,70%), batata (-8,55%) e arroz (-2,14%). No caso da alimentação no domicílio, deflação ficou em -0,41% contra queda de -0,83% em agosto.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["alimentos"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Alimentos contribuem para a inflação mais baixa em 2025, diz IBGE",
+    "veiculo": "Poder360",
+    "data": "2026-01-09",
+    "url": "https://www.poder360.com.br/poder-economia/alimentos-contribuem-para-a-inflacao-mais-baixa-em-2025-diz-ibge/",
+    "resumo": "Arroz e feijão tiveram deflação (queda de preço) no ano, segundo o levantamento; picanha subiu 2,82%. Leia no Poder360.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Arroz", "Feijão carioca"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
+    "veiculo": "CNN Brasil",
+    "data": "2026-08-16",
+    "url": "https://www.cnnbrasil.com.br/agro/preco-do-feijao-carioca-dispara-968-em-2026-aponta-levantamento-da-vr/",
+    "resumo": "Enquanto o carioca quase dobra, o jalo e o vermelho registram queda nos sete primeiros meses de 2026",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["Feijão carioca"],
+    "confirmado": true
+  }
+]

@@ -1,0 +1,178 @@
+[
+  {
+    "titulo": "Petrobras eleva preço da gasolina em 3,5% e do diesel em 4,2%",
+    "veiculo": "Agência Brasil",
+    "data": "2019-09-18",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-09/petrobras-eleva-preco-da-gasolina-em-35-e-do-diesel-em-42",
+    "resumo": "A Petrobras anunciou, na noite desta quarta-feira (18), reajuste nos preços da gasolina e do óleo diesel. Os novos valores passam a valer nesta quinta-feira (19) nas vendas de refinarias para distribuidoras. O litro da gasolina foi reajustado em 3,5% e o do diesel, em 4,2%. Para o consumidor final, porém, sobre esses valores, serão acrescidos encargos tributários e trabalhistas e as margens de lucro dos postos de combustíveis.",
+    "imagem": "https://imagens.ebc.com.br/dfREycXmsXhxu5Ufhbn7DyNBPPk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807919.jpg?itok=c388OzRu",
+    "credito_imagem": "Tomaz Silva/Agência Brasil",
+    "produtos": ["GASOLINA", "DIESEL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "ANP: preço médio de revenda da gasolina acumula queda de 17,11%",
+    "veiculo": "Agência Brasil",
+    "data": "2020-05-18",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-05/anp-preco-medio-de-revenda-da-gasolina-acumula-queda-de-1711",
+    "resumo": "Queda foi observada em 16 semanas consecutivas",
+    "imagem": "https://imagens.ebc.com.br/3iSJoBlKQYwWxc42S9vCmXe0zdo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/caminhao-tanque_em_refinaria_da_petrobras_em_canoas_rs.jpg?itok=NLxlR3qV",
+    "credito_imagem": "Reuters/Diego Vara/Direitos Reservados",
+    "produtos": ["combustiveis", "GASOLINA", "ETANOL", "DIESEL", "GLP"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reajusta hoje preços do gás de cozinha e da gasolina",
+    "veiculo": "Agência Brasil",
+    "data": "2021-10-09",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-10/petrobras-reajusta-hoje-precos-do-gas-de-cozinha-e-da-gasolina",
+    "resumo": "Preço de venda para distribuidora passa R$ 2,78 para R$ 2,98 por litro",
+    "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
+    "credito_imagem": "Fernando Frazão/Agência Brasil",
+    "produtos": ["GASOLINA", "GLP"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reajusta preços da gasolina e diesel para as distribuidoras",
+    "veiculo": "Agência Brasil",
+    "data": "2022-03-10",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-03/petrobras-reajusta-precos-da-gasolina-e-diesel-para-distribuidoras",
+    "resumo": "Preço médio da gasolina sobe para R$ 3,86 e o do diesel, para R$ 4,51",
+    "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
+    "credito_imagem": "Fernando Frazão/Agência Brasil",
+    "produtos": ["GASOLINA", "DIESEL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço de gás de cozinha dispara e botijão já é vendido a R$ 160",
+    "veiculo": "CNN Brasil",
+    "data": "2022-03-19",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/preco-de-gas-de-cozinha-dispara-e-botijao-ja-e-vendido-a-r-160/",
+    "resumo": "Preço reflete o último reajuste de 16,1% no valor do gás de cozinha anunciado pela Petrobras",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["GLP"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço da gasolina chega a R$ 7,27 e é o mais alto registrado pela ANP",
+    "veiculo": "Agência Brasil",
+    "data": "2022-04-27",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-04/preco-da-gasolina-chega-r-727-e-e-o-mais-alto-registrado-pela-anp",
+    "resumo": "Valor sobe pela segunda semana consecutiva",
+    "imagem": "https://imagens.ebc.com.br/3cQCn6xsSSy6CLwIvD9_TYNIgxE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/aumento_gazolina_rj_0506202742.jpg?itok=S4GWGDfI",
+    "credito_imagem": "Fernando Frazão/Agência Brasil",
+    "produtos": ["GASOLINA"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço médio da gasolina cai R$ 0,90 no país em três semanas",
+    "veiculo": "Agência Brasil",
+    "data": "2022-07-08",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-07/preco-medio-da-gasolina-cai-r-090-no-pais-em-tres-semanas",
+    "resumo": "Dados fazem parte de levantamento feito pela ANP",
+    "imagem": "https://imagens.ebc.com.br/_mN1h3nkq59vMBSGlCFH3_Ljvoc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_posto_de_combustivel_mcajr_abr_1609210451.jpg?itok=U3txCMXD",
+    "credito_imagem": "Marcello Casal jr/Agência Brasil",
+    "produtos": ["GASOLINA"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Preço médio diesel S10 em bombas sobe após 16 semanas de queda, diz ANP",
+    "veiculo": "CNN Brasil",
+    "data": "2022-10-21",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/preco-medio-diesel-s10-em-bombas-sobe-apos-16-semanas-de-queda-diz-anp/",
+    "resumo": "Segundo a agência, preço do combustível subiu 1,05%, de R$ 6,65 para R$ 6,72 na semana de 16 e 22 de outubro",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["DIESEL S10"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Governo Lula cobrará R$ 0,47 de imposto sobre o litro da gasolina",
+    "veiculo": "Poder360",
+    "data": "2023-02-28",
+    "url": "https://www.poder360.com.br/economia/governo-lula-cobrara-r-047-de-imposto-sobre-o-litro-da-gasolina/",
+    "resumo": "Etanol passa a ter alíquota de R$ 0,02; mudanças valem já a partir de 4ª feira (1º.mar.2023)",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["GASOLINA", "ETANOL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras anuncia fim da paridade internacional de preços do petróleo",
+    "veiculo": "CNN Brasil",
+    "data": "2023-05-16",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/petrobras-anuncia-fim-da-paridade-internacional-de-precos-do-petroleo/",
+    "resumo": "Paridade de importação de preços – que alinha os preços locais aos internacionais – foi adotada durante o governo Michel Temer (MDB)",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["combustiveis", "GASOLINA", "DIESEL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Entenda como os preços dos combustíveis variaram em 2023",
+    "veiculo": "Agência Brasil",
+    "data": "2023-12-27",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-12/entenda-como-os-precos-dos-combustiveis-variaram-em-2023",
+    "resumo": "Apesar de cenário externo favorável, gasolina subiu 12% até novembro",
+    "imagem": "https://imagens.ebc.com.br/3iSJoBlKQYwWxc42S9vCmXe0zdo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/caminhao-tanque_em_refinaria_da_petrobras_em_canoas_rs.jpg?itok=NLxlR3qV",
+    "credito_imagem": "Reuters/Diego Vara/Direitos Reservados",
+    "produtos": ["combustiveis"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reajusta em 7,12% preço da gasolina para distribuidoras",
+    "veiculo": "Agência Brasil",
+    "data": "2024-07-08",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-07/petrobras-reajusta-712-no-preco-da-gasolina-para-distribuidoras",
+    "resumo": "Impacto para consumidor deve ser de R$ 0,15 por litro do combustível",
+    "imagem": "https://imagens.ebc.com.br/MfGYzZrLJwsYXyyWSeDIe97mFTM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807918.jpg?itok=tobSJlmc",
+    "credito_imagem": "Tomaz Silva/Agência Brasil",
+    "produtos": ["GASOLINA", "GLP"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reduz preço do diesel para as distribuidoras",
+    "veiculo": "Agência Brasil",
+    "data": "2025-05-05",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-05/petrobras-reduz-preco-do-diesel-para-distribuidoras",
+    "resumo": "Novo valor será de R$ 3,27 por litro a partir desta terça-feira (6)",
+    "imagem": "https://imagens.ebc.com.br/MuZhbRKBhjx_Pw_LekK5dUfcbAw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/02/29/tanque_de_diesel_r5_na_rpbc_-_foto_wilson_melo_agencia_petrobras.jpg?itok=DURYnQE5",
+    "credito_imagem": "Petrobras/Divulgação/Arquivo",
+    "produtos": ["DIESEL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras (PETR4) reduz em R$ 0,14, ou 4,9%, o preço da gasolina para distribuidoras",
+    "veiculo": "InfoMoney",
+    "data": "2025-10-20",
+    "url": "https://www.infomoney.com.br/mercados/petrobras-petr4-anuncia-reducao-de-49-do-preco-da-gasolina-para-distribuidoras/",
+    "resumo": "Com o reajuste anunciado, esta é a segunda redução dos preços de gasolina em 2025, disse a empresa",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": ["GASOLINA"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reajusta preço do diesel em R$ 0,38 por litro",
+    "veiculo": "Agência Brasil",
+    "data": "2026-03-13",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-03/petrobras-reajusta-preco-do-diesel-em-r-038-por-litro",
+    "resumo": "Novos valores para venda a distribuidoras passam a vigorar no sábado",
+    "imagem": "https://imagens.ebc.com.br/jKlflsgIFQA9sf8IXH5NskwocVQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/11/08/dji_0374-2.jpg?itok=ISHxLKnO",
+    "credito_imagem": "Fernando Frazão/Agência Brasil",
+    "produtos": ["DIESEL"],
+    "confirmado": true
+  },
+  {
+    "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
+    "veiculo": "Agência Brasil",
+    "data": "2026-09-17",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/petrobras-aumenta-diesel-mas-subsitio-mantem-valor-final-entenda",
+    "resumo": "Subvenção por 30 dias de R$ 1 anula o reajuste nas refinarias",
+    "imagem": "https://imagens.ebc.com.br/vlPCyTNYNOglbobWxriy4XX2QTg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2019-05-07t131900z_6993045_rc15f3e59060_rtrmadp_3_petrobras-divestiture-refineries.jpg?itok=y-fNX2V2",
+    "credito_imagem": "Reuters / Diego Vara / Direitos Reservados",
+    "produtos": ["DIESEL"],
+    "confirmado": true
+  }
+]

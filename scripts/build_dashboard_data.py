@@ -43,6 +43,14 @@ NOTA_ALIMENTO = (
 COHORTS = {"primeiros_12m": 12, "primeiros_24m": 24, "primeiros_36m": 36}
 
 
+def _carregar_json_opcional(path) -> dict | None:
+    """Lê um JSON auxiliar (cotação ao vivo, notícias) se o arquivo existir —
+    scripts de download que ainda não rodaram não devem quebrar o build."""
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def _fmt_mes(ts) -> str:
     return pd.Timestamp(ts).strftime("%Y-%m-%d")
 
@@ -382,6 +390,7 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame, ibovespa: pd.D
         "serie_mensal": serie_ibov,
         "serie_anual": _serie_anual_pontos(ibov),
         "resumo_periodos": resumo_ibov,
+        "cotacao_hoje": _carregar_json_opcional(DATA_PROCESSED / "ibovespa_hoje.json"),
     }
     return produtos
 
@@ -484,6 +493,30 @@ def montar_alimentos(salario: pd.DataFrame) -> dict:
     return produtos
 
 
+def montar_fotografia_mensal(produtos: dict) -> dict:
+    """"Como estava o Brasil?" — fotografia cross-indicador por mês, montada
+    só a partir de campos que os produtos já calcularam (nenhuma conta
+    nova). Usada pelo frontend para os cards Era/Agora fora do produto
+    selecionado."""
+    campos = [
+        ("dolar", "DOLAR", "preco_nominal"),
+        ("ibovespa", "IBOVESPA", "pontos"),
+        ("selic", "SELIC", "taxa_aa"),
+        ("ipca", "IPCA", "taxa_aa"),
+        ("gasolina", "GASOLINA", "preco_nominal"),
+        ("salario_minimo", "GASOLINA", "salario_minimo"),
+    ]
+    foto: dict[str, dict] = {}
+    for chave, codigo_produto, campo in campos:
+        produto = produtos.get(codigo_produto)
+        if not produto:
+            continue
+        for r in produto["serie_mensal"]:
+            if campo in r:
+                foto.setdefault(r["ano_mes"], {})[chave] = r[campo]
+    return foto
+
+
 def main() -> None:
     ensure_dirs(DATA_PROCESSED, DASHBOARD_DIR / "data")
 
@@ -491,14 +524,17 @@ def main() -> None:
     ipca = pd.read_csv(DATA_PROCESSED / "ipca_geral_mensal.csv", parse_dates=["ano_mes"])
     ibovespa = pd.read_csv(DATA_PROCESSED / "ibovespa_mensal.csv", parse_dates=["ano_mes"])
 
+    produtos = {
+        **montar_combustiveis(salario),
+        **montar_alimentos(salario),
+        **montar_indicadores(salario, ipca, ibovespa),
+    }
+
     dados = {
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "periodo_corte": "2023-01-01",
-        "produtos": {
-            **montar_combustiveis(salario),
-            **montar_alimentos(salario),
-            **montar_indicadores(salario, ipca, ibovespa),
-        },
+        "produtos": produtos,
+        "fotografia_mensal": montar_fotografia_mensal(produtos),
         "presidentes": {
             "Bolsonaro": {
                 "nome": "Jair Bolsonaro",
