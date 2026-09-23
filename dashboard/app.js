@@ -452,13 +452,17 @@ function agoraComCotacaoHoje(produto, tipo) {
       ipca_indice: produto.serie_mensal[produto.serie_mensal.length - 1]?.ipca_indice || 1,
     };
   } else if (tipo === "cambio") {
+    const ultimoMes = produto.serie_mensal[produto.serie_mensal.length - 1];
+    const salarioMinimo = ultimoMes?.salario_minimo;
     return {
       ano_mes,
       preco_nominal: produto.cotacao_hoje.valor,
       preco_real: produto.cotacao_hoje.valor,
       indice_relativo: produto.cotacao_hoje.valor,
-      pct_salario_minimo: 0,  // placeholder
-      ipca_indice: produto.serie_mensal[produto.serie_mensal.length - 1]?.ipca_indice || 1,
+      // mesma fórmula usada no Python (ver build_dashboard_data.py):
+      // preço nominal / salário mínimo vigente * 100
+      pct_salario_minimo: salarioMinimo ? (produto.cotacao_hoje.valor / salarioMinimo) * 100 : null,
+      ipca_indice: ultimoMes?.ipca_indice || 1,
     };
   }
   return null;
