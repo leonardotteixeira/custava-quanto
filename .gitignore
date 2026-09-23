@@ -13,3 +13,5 @@ data/raw/
 .ipynb_checkpoints/
 data/anp_download*.log
 .claude/
+# Design resources (external repos)
+design-resources/
