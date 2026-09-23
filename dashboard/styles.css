@@ -7,22 +7,27 @@
      Algarismos alinhados e sem floreio são lidos mais rápido que os de uma
      serifa de alto contraste — por isso preço grande é Inter, não Fraunces.
 
-   Cor: papel off-white + grafite, um único acento ocre para "o valor que
-   importa", rótulos de período neutros (nunca cores partidárias).
+   Cor: papel off-white + petróleo (tinta), um único acento âmbar para "o
+   valor que importa", rótulos de período neutros (nunca cores partidárias).
+   Paleta vem do Custavo Quanto Brand Book (v1, set/2026) — petróleo/âmbar
+   substituem o grafite/ocre da v1 do dashboard; tons derivados (line,
+   line-soft, bar-muted, accent-wash, ink-faint, accent-ink) preservam as
+   mesmas proporções de mistura e contraste WCAG AA (4.5:1+) da paleta
+   anterior, só trocando o hue base.
    ===================================================================== */
 
 :root {
-  --paper: #f8f7f3;
+  --paper: #F6F3EC;
   --surface: #ffffff;
-  --ink: #151515;
-  --ink-soft: #5c5b57;
-  --ink-faint: #65635e;
-  --line: #dad8d2;
-  --line-soft: #e9e7e1;
+  --ink: #12313A;
+  --ink-soft: #55636A;
+  --ink-faint: #5e6b71;
+  --line: #d6d8d3;
+  --line-soft: #e5e5df;
 
-  --accent: #d9a441;
-  --accent-ink: #875c10;
-  --accent-wash: #f6ecd4;
+  --accent: #E2A33D;
+  --accent-ink: #8c5c14;
+  --accent-wash: #f4e9d6;
 
   /* identificação dos períodos — só identificador, nunca bom/ruim.
      Azul e vermelho sóbrios, validados (daltonismo + contraste no fundo claro) */
@@ -37,7 +42,7 @@
   --c-brent: #16876a;
   --c-cambio: #7a4fb0;
   --c-ipca: #8a8883;
-  --bar-muted: #cfccc4;
+  --bar-muted: #cacdc9;
 
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -96,8 +101,9 @@ ul { margin: 0; }
 .wordmark {
   font-family: var(--serif); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.01em;
   text-transform: uppercase; text-decoration: none; color: var(--ink); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
 }
-.wordmark::after { content: ""; display: inline-block; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; margin-left: 6px; vertical-align: 2px; }
+.wordmark-symbol { width: 18px; height: 18px; flex-shrink: 0; }
 .masthead-nav { display: flex; align-items: center; gap: 22px; font-size: 0.85rem; }
 .masthead-note { color: var(--ink-soft); padding-right: 22px; border-right: 1px solid var(--line); }
 .masthead-nav a { color: var(--ink-soft); text-decoration: none; }
@@ -106,7 +112,7 @@ ul { margin: 0; }
 /* ------------------------------------------------------------ sticky bar */
 .sticky-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 20;
-  background: rgba(248, 247, 243, 0.95); backdrop-filter: blur(8px);
+  background: rgba(246, 243, 236, 0.95); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
   transform: translateY(-100%); transition: transform .22s ease;
 }
@@ -147,12 +153,12 @@ ul { margin: 0; }
   font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px;
   font-variant-numeric: tabular-nums; line-height: 1.2;
 }
-/* alta = ocre, baixa = azul-petróleo (não verde: verde-escuro x ocre-escuro
+/* alta = âmbar, baixa = azul-petróleo (não verde: verde-escuro x âmbar-escuro
    falham separação de daltonismo protan/deutan — validado com dataviz skill,
-   node validate_palette.js "#875c10,#0a5f8a" --mode light --surface "#f8f7f3" → PASS) */
-.chip-delta--up { background: rgba(217, 164, 65, 0.22); color: #875c10; }
+   node validate_palette.js "#8c5c14,#0a5f8a" --mode light --surface "#F6F3EC" → PASS) */
+.chip-delta--up { background: rgba(226, 163, 61, 0.22); color: #8c5c14; }
 .chip-delta--down { background: rgba(10, 95, 138, 0.16); color: #0a5f8a; }
-.chip-delta--flat { background: rgba(92, 91, 87, 0.14); color: #5c5b57; }
+.chip-delta--flat { background: rgba(85, 99, 106, 0.14); color: #55636A; }
 .product-chip.active .chip-delta--up { background: rgba(255, 255, 255, 0.25); color: #fff; }
 .product-chip.active .chip-delta--down { background: rgba(255, 255, 255, 0.25); color: #fff; }
 .product-chip.active .chip-delta--flat { background: rgba(255, 255, 255, 0.2); color: #ddd; }
@@ -292,7 +298,7 @@ ul { margin: 0; }
 .yr-col { height: 140px; display: flex; align-items: flex-end; }
 .yr-fill { width: 100%; max-width: 72px; margin: 0 auto; border-radius: 3px 3px 0 0; transition: height .5s cubic-bezier(.2,.7,.2,1); }
 /* colunas neutras com "tampa" na cor do período: a cor identifica sem dominar */
-.yr-fill { background: #d6d3cb; }
+.yr-fill { background: var(--bar-muted); }
 .yr.bolsonaro .yr-fill { border-top: 4px solid var(--p-bolsonaro); }
 .yr.lula .yr-fill { border-top: 4px solid var(--p-lula); }
 /* "parcial" por opacidade + traço tracejado no topo (mantém a cor do
