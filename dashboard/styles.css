@@ -139,8 +139,11 @@ ul { margin: 0; }
   font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px;
   font-variant-numeric: tabular-nums; line-height: 1.2;
 }
+/* alta = ocre, baixa = azul-petróleo (não verde: verde-escuro x ocre-escuro
+   falham separação de daltonismo protan/deutan — validado com dataviz skill,
+   node validate_palette.js "#875c10,#0a5f8a" --mode light --surface "#f8f7f3" → PASS) */
 .chip-delta--up { background: rgba(217, 164, 65, 0.22); color: #875c10; }
-.chip-delta--down { background: rgba(46, 125, 50, 0.18); color: #1b5e20; }
+.chip-delta--down { background: rgba(10, 95, 138, 0.16); color: #0a5f8a; }
 .chip-delta--flat { background: rgba(92, 91, 87, 0.14); color: #5c5b57; }
 .product-chip.active .chip-delta--up { background: rgba(255, 255, 255, 0.25); color: #fff; }
 .product-chip.active .chip-delta--down { background: rgba(255, 255, 255, 0.25); color: #fff; }
