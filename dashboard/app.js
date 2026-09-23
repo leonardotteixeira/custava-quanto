@@ -109,7 +109,7 @@ function leituraReal(realPct) {
 }
 
 async function init() {
-  const resp = await fetch(DATA_URL);
+  const resp = await fetch(DATA_URL, { cache: "no-cache" });
   DATA = await resp.json();
   renderSelector();
   bindToggles();
@@ -249,16 +249,16 @@ function selectProduct(codigo) {
   renderPurchasingPower(produto);
   renderGovernos(produto);
   renderContext(produto);
-  renderStepNumbers(isComb);
+  renderStepNumbers();
   renderStickyBar(produto);
 }
 
-function renderStepNumbers(isComb) {
-  // Sem a seção de poder de compra (alimentos), a numeração continua sem buracos.
-  const base = isComb ? 4 : 3;
-  document.getElementById("step-comparison").textContent = pad2(base);
-  document.getElementById("step-context").textContent = pad2(base + 1);
-  document.getElementById("step-method").textContent = pad2(base + 2);
+function renderStepNumbers() {
+  // "Poder de compra" (03) agora aparece para todo produto, então a
+  // numeração das seções seguintes é sempre a mesma.
+  document.getElementById("step-comparison").textContent = "04";
+  document.getElementById("step-context").textContent = "05";
+  document.getElementById("step-method").textContent = "06";
 }
 
 function renderStickyBar(produto) {
@@ -564,16 +564,46 @@ function renderYears(produto) {
 }
 
 // =====================================================================
-// 03 — Poder de compra (pictograma)
+// 03 — Poder de compra
+// Combustível: pictograma (quantidade real, R$ existe). Alimento: índice
+// (não existe preço absoluto em R$ na fonte, então não dá para fingir uma
+// quantidade em kg — mostramos um índice de poder de compra, deixando
+// isso explícito).
 // =====================================================================
 function renderPurchasingPower(produto) {
+  const isComb = produto.tipo === "combustivel";
   const section = document.getElementById("purchasing-power-section");
-  if (produto.tipo !== "combustivel") { section.style.display = "none"; return; }
   section.style.display = "";
-  const u = unidadeInfo(produto);
   const t = txt(state.product);
   const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
   const eraRef = eraReferencia(produto.serie_mensal);
+
+  if (!isComb) {
+    const pcIni = eraRef.indice_poder_compra, pcFim = ultimo.indice_poder_compra;
+    document.getElementById("pp-sub").innerHTML =
+      `Índice de quanto um ${term("salario", "salário mínimo")} rende ${t.sem} — não é uma quantidade em kg/litros, porque não há preço absoluto em R$ para este item (ver nota na abertura).`;
+
+    const max = Math.max(pcIni, pcFim, 0);
+    const linha = (r, valor, cls) => `
+      <div class="pp-row ${cls}">
+        <div><div class="pp-when">${fmtMesAno(r.ano_mes)}</div><div class="pp-wage">salário mínimo: ${fmtBRL.format(r.salario_minimo)}</div></div>
+        <div class="pp-index-track"><div class="pp-index-fill" style="width:${(valor / max * 100).toFixed(1)}%"></div></div>
+        <div class="pp-result"><span class="pp-value tnum">${fmtNum(valor, 1)}</span><span class="pp-unitname">índice</span><span class="pp-share">base 100 = jan/2019</span></div>
+      </div>`;
+
+    const variacao = (pcFim / pcIni - 1) * 100;
+    const leitura = Math.abs(variacao) < 1 ? "quantidade" : variacao > 0 ? "mais" : "menos";
+    const veredito = leitura === "quantidade"
+      ? `Em termos relativos, seu salário mínimo hoje rende <strong>praticamente o mesmo</strong> ${t.sem} do que em ${fmtMesAno(eraRef.ano_mes)}.`
+      : `Em termos relativos, seu salário mínimo hoje rende <strong>${fmtNum(Math.abs(variacao), 1)}% ${leitura}</strong> ${t.sem} do que em ${fmtMesAno(eraRef.ano_mes)}.`;
+
+    document.getElementById("pp-card").innerHTML =
+      linha(eraRef, pcIni, "") + linha(ultimo, pcFim, "now") +
+      `<div class="pp-footer"><p class="pp-verdict">${veredito}</p></div>`;
+    return;
+  }
+
+  const u = unidadeInfo(produto);
   const uIni = eraRef.unidades_por_salario_minimo, uFim = ultimo.unidades_por_salario_minimo;
 
   document.getElementById("pp-sub").innerHTML =
@@ -738,18 +768,29 @@ function renderContext(produto) {
   const [primeiro, ultimo] = primeiroUltimo(serie);
   const t = txt(state.product);
   const u = unidadeInfo(produto);
-  const desde = fmtMesAno(primeiro.ano_mes);
+  const eraRef = eraReferencia(serie);
+  const eraIdx = serie.findIndex((r) => r.ano_mes === eraRef.ano_mes);
+  const desde = fmtMesAno(eraRef.ano_mes);
+
+  // Rebaseia cada série para "Era" = 100 (razão simples sobre valores já
+  // prontos): assim a régua do gráfico bate com a manchete e o poder de
+  // compra, todos comparando a partir do fim do governo Bolsonaro — em vez
+  // de misturar os dois governos numa variação só desde jan/2019.
+  const rebase = (y) => {
+    const base = y[eraIdx];
+    return isNil(base) || base === 0 ? y.map(() => null) : y.map((v) => (isNil(v) ? null : (v / base) * 100));
+  };
 
   const series = [
-    { key: "produto", nome: t.titulo, y: serie.map((r) => (isComb ? r.preco_indice100 : r.indice_relativo)), cor: cssVar("--c-product"), dash: "solid", largura: 2.75,
+    { key: "produto", nome: t.titulo, y: rebase(serie.map((r) => (isComb ? r.preco_indice100 : r.indice_relativo))), cor: cssVar("--c-product"), dash: "solid", largura: 2.75,
       desc: isComb ? `preço ${u.por}` : "índice de preço" },
   ];
   if (isComb) {
     series.push(
-      { key: "brent", nome: "Brent", termo: "brent", y: serie.map((r) => r.brent_brl_indice100), cor: cssVar("--c-brent"), dash: "dash", largura: 2, desc: "petróleo internacional, em reais" },
-      { key: "cambio", nome: "Dólar", termo: "cambio", y: serie.map((r) => r.cambio_indice100), cor: cssVar("--c-cambio"), dash: "dashdot", largura: 2, desc: "quantos reais valia 1 dólar" });
+      { key: "brent", nome: "Brent", termo: "brent", y: rebase(serie.map((r) => r.brent_brl_indice100)), cor: cssVar("--c-brent"), dash: "dash", largura: 2, desc: "petróleo internacional, em reais" },
+      { key: "cambio", nome: "Dólar", termo: "cambio", y: rebase(serie.map((r) => r.cambio_indice100)), cor: cssVar("--c-cambio"), dash: "dashdot", largura: 2, desc: "quantos reais valia 1 dólar" });
   }
-  series.push({ key: "ipca", nome: "IPCA", termo: "ipca", y: serie.map((r) => r.ipca_indice100), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: "inflação: média de todos os preços" });
+  series.push({ key: "ipca", nome: "IPCA", termo: "ipca", y: rebase(serie.map((r) => r.ipca_indice100)), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: "inflação: média de todos os preços" });
 
   const varDe = (s) => { const v = ultimoValido(s.y); return isNil(v) ? null : v - 100; };
   const vProd = varDe(series[0]);

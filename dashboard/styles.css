@@ -248,6 +248,10 @@ ul { margin: 0; }
 .pp-unit { width: 14px; height: 14px; border-radius: 2px; background: var(--bar-muted); }
 .pp-row.now .pp-unit { background: var(--accent); }
 .pp-unit.partial { opacity: .4; }
+/* alimentos: índice de poder de compra em vez de pictograma de unidades */
+.pp-index-track { position: relative; height: 14px; border-radius: 3px; background: var(--line-soft); overflow: hidden; }
+.pp-index-fill { height: 100%; width: 0; border-radius: 3px; background: var(--bar-muted); transition: width .5s cubic-bezier(.2,.7,.2,1); }
+.pp-row.now .pp-index-fill { background: var(--accent); }
 .pp-result { text-align: right; }
 .pp-value { font-weight: 700; font-size: 2.6rem; line-height: 1; letter-spacing: -0.035em; }
 .pp-unitname { font-size: 0.9rem; color: var(--ink-soft); display: block; margin-top: 4px; }
@@ -409,7 +413,7 @@ ul { margin: 0; }
   .year-axis span { font-size: 0.72rem; }
 
   .pp-row { grid-template-columns: 1fr auto; gap: 12px 16px; padding: 20px 0; }
-  .pp-units { grid-column: 1 / -1; order: 3; }
+  .pp-units, .pp-index-track { grid-column: 1 / -1; order: 3; }
   .pp-unit { width: 11px; height: 11px; }
   .pp-value { font-size: 2rem; }
   .pp-verdict { font-size: 1.2rem; }
