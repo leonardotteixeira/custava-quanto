@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CUSTAVA QUANTO?</title>
+<meta name="color-scheme" content="light" />
+<title>CUSTAVA QUANTO? — análise de preços no Brasil</title>
 <meta name="description" content="Veja quanto as coisas custavam, quanto custam hoje e como esses preços evoluíram ao longo do tempo no Brasil." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 <link rel="stylesheet" href="styles.css" />
 </head>
@@ -15,158 +16,236 @@
 
 <header class="masthead">
   <div class="wrap masthead-row">
-    <span class="wordmark">Custava quanto?</span>
-    <span class="masthead-note">análise de preços no Brasil</span>
+    <a class="wordmark" href="#topo">Custava quanto?</a>
+    <nav class="masthead-nav" aria-label="Referências">
+      <span class="masthead-note">Análise de preços no Brasil</span>
+      <a href="#fontes" data-open="fontes">Fontes</a>
+      <a href="#metodologia" data-open="metodologia">Metodologia</a>
+    </nav>
   </div>
 </header>
 
-<main>
+<!-- Barra compacta ao rolar: produto atual + atalho para trocar -->
+<div class="sticky-bar" id="sticky-bar" aria-hidden="true">
+  <div class="wrap sticky-row">
+    <span class="sticky-product" id="sticky-product">—</span>
+    <span class="sticky-value tnum" id="sticky-value"></span>
+    <a class="sticky-change" href="#seletor">Trocar produto ↑</a>
+  </div>
+</div>
 
-  <section class="hero">
-    <div class="wrap hero-row">
-      <div class="hero-copy">
-        <h1 class="hero-line">Quanto custava.<br>Quanto custa.<br>O que mudou.</h1>
-        <p class="hero-sub">Explore a evolução dos preços no Brasil e compare o governo Bolsonaro (jan/2019–dez/2022) com o governo Lula (jan/2023–hoje), mês a mês.</p>
-      </div>
-      <div class="hero-selector">
-        <div class="category-tabs" id="category-tabs">
-          <button class="category-tab active" data-categoria="combustivel">Combustíveis</button>
-          <button class="category-tab" data-categoria="alimento_indice">Alimentos</button>
+<main id="topo">
+
+  <!-- ================================================================
+       ABERTURA — a resposta inteira cabe na primeira tela (teste de 5 s)
+       ================================================================ -->
+  <section class="opening">
+    <div class="wrap">
+      <h1 class="brand-line">Quanto custava. Quanto custa. <em>O que mudou.</em></h1>
+      <p class="brand-sub">Preços de combustíveis e alimentos no Brasil, de 2019 até hoje, e como eles mudaram nos governos Bolsonaro e Lula.</p>
+
+      <div class="selector" id="seletor">
+        <span class="selector-prompt">Escolha um produto</span>
+        <div class="selector-groups">
+          <div class="selector-group">
+            <span class="selector-label">Combustíveis</span>
+            <div class="product-rail" id="rail-combustivel" role="group" aria-label="Combustíveis"></div>
+          </div>
+          <div class="selector-group">
+            <span class="selector-label">Alimentos</span>
+            <div class="product-rail" id="rail-alimento_indice" role="group" aria-label="Alimentos"></div>
+          </div>
         </div>
-        <div class="product-rail" id="product-selector"></div>
       </div>
+
+      <article class="answer" aria-live="polite">
+        <header class="answer-head">
+          <h2 class="product-name" id="product-name">—</h2>
+          <p class="product-meta">
+            <span class="unit-tag" id="unit-tag">—</span>
+            <span id="product-measure">—</span>
+          </p>
+        </header>
+
+        <div class="answer-grid">
+          <div class="value-rows" id="value-rows">
+            <div class="value-row then">
+              <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">—</span></div>
+              <div class="vr-number tnum" id="era-value">—</div>
+              <div class="vr-bar"><div class="vr-fill" id="era-bar"></div></div>
+            </div>
+            <div class="value-row now">
+              <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">—</span></div>
+              <div class="vr-number tnum" id="agora-value">—</div>
+              <div class="vr-bar">
+                <div class="vr-fill" id="agora-bar"></div>
+                <div class="vr-marker" id="infl-marker"><span class="vr-marker-label" id="infl-marker-label"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="change" id="change">
+            <span class="change-kicker">O que mudou</span>
+            <div class="change-item">
+              <span class="change-big tnum" id="diff-a">—</span>
+              <span class="change-cap" id="diff-a-cap">—</span>
+            </div>
+            <div class="change-item">
+              <span class="change-big tnum" id="diff-b">—</span>
+              <span class="change-cap" id="diff-b-cap">—</span>
+            </div>
+          </aside>
+        </div>
+
+        <p class="lede" id="lede"></p>
+        <p class="index-note" id="index-note" hidden></p>
+      </article>
     </div>
   </section>
 
-  <section class="era-section">
+  <!-- ================================================================ 02 -->
+  <section class="chapter" id="evolucao">
     <div class="wrap">
-      <p class="product-kicker" id="product-kicker">Gasolina comum</p>
-
-      <div class="era-display" id="era-card">
-        <div class="era-block">
-          <span class="era-label">Era</span>
-          <span class="era-value" id="era-value">—</span>
-          <span class="era-date" id="era-date">—</span>
-        </div>
-        <div class="era-connector" aria-hidden="true">
-          <svg viewBox="0 0 64 24" class="era-arrow-svg"><path d="M2 12 H56 M46 2 L58 12 L46 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="era-block">
-          <span class="era-label">Agora</span>
-          <span class="era-value" id="agora-value">—</span>
-          <span class="era-date" id="agora-date">—</span>
-        </div>
-        <div class="era-diff" id="era-diff">
-          <span class="diff-pct">—</span>
-          <span class="diff-rs">—</span>
-        </div>
+      <div class="chapter-head">
+        <span class="chapter-n">02</span>
+        <h2>Como o preço chegou até aqui?</h2>
       </div>
 
-      <p class="nota-alimento" id="nota-alimento" hidden></p>
-    </div>
-  </section>
-
-  <section class="governos-section">
-    <div class="wrap governos-row" id="president-cards"></div>
-  </section>
-
-  <section class="chart-section">
-    <div class="wrap">
-      <div class="section-head">
+      <div class="chart-head">
         <div>
-          <p class="section-kicker">Trajetória</p>
-          <h2>Como o preço mudou ao longo do tempo</h2>
-          <p class="chart-subtitle" id="chart-subtitle"></p>
+          <h3 class="chart-title" id="chart-title">—</h3>
+          <p class="chart-sub" id="chart-subtitle"></p>
         </div>
-        <div class="segmented" id="metric-toggle">
-          <button data-metric="nominal" class="segmented-btn active">Preço nominal</button>
-          <button data-metric="real" class="segmented-btn">Preço real</button>
-          <button data-metric="pct_sm" class="segmented-btn">% salário mínimo</button>
+        <div class="segmented" id="metric-toggle" aria-label="Como medir o preço">
+          <button data-metric="nominal" class="segmented-btn active">Preço na época</button>
+          <button data-metric="real" class="segmented-btn">Corrigido pela inflação</button>
+          <button data-metric="pct_sm" class="segmented-btn">% do salário mínimo</button>
         </div>
       </div>
-      <div id="main-chart" class="plot"></div>
+      <p class="metric-help" id="metric-help"></p>
+      <div class="chart-legend" id="chart-legend"></div>
+      <div id="main-chart" class="plot" role="img" aria-label="Gráfico da evolução mensal do preço"></div>
+      <p class="source" id="chart-source"></p>
+
+      <div class="years">
+        <h3 class="mini-title" id="annual-title">Média de cada ano</h3>
+        <p class="mini-sub" id="annual-sub"></p>
+        <div class="year-strip" id="annual-grid"></div>
+        <p class="year-legend">
+          <span><i class="sw sw-b"></i>Governo Bolsonaro</span>
+          <span><i class="sw sw-l"></i>Governo Lula</span>
+          <span><i class="sw sw-p"></i>Ano incompleto</span>
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="purchasing-power-section" id="purchasing-power-section">
+  <!-- ================================================================ 03 -->
+  <section class="chapter" id="purchasing-power-section">
     <div class="wrap">
-      <p class="section-kicker">Poder de compra</p>
-      <h2>Quanto um salário mínimo comprava?</h2>
-      <div class="pp-display" id="pp-card"></div>
+      <div class="chapter-head">
+        <span class="chapter-n">03</span>
+        <h2>Quanto um salário mínimo comprava?</h2>
+      </div>
+      <p class="chapter-sub" id="pp-sub"></p>
+      <div class="pp" id="pp-card"></div>
     </div>
   </section>
 
-  <section class="comparison-section">
+  <!-- ================================================================ 04 -->
+  <section class="chapter" id="governos">
     <div class="wrap">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">Comparação</p>
-          <h2>Bolsonaro × Lula</h2>
-          <p class="chart-subtitle">Como os indicadores variaram em cada período — sem vencedor, sem nota.</p>
-        </div>
-        <div class="segmented segmented-wrap" id="cohort-toggle">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-comparison">04</span>
+        <h2>Como os dois governos se comparam?</h2>
+      </div>
+      <div class="gov-controls">
+        <p class="chapter-sub">Mesmo produto, mesma régua. Sem vencedor, sem nota: só o que os dados mostram em cada período.</p>
+        <div class="segmented" id="cohort-toggle" aria-label="Recorte de tempo">
           <button data-cohort="governo_inteiro" class="segmented-btn active">Governo inteiro</button>
-          <button data-cohort="primeiros_12m" class="segmented-btn">12 meses</button>
-          <button data-cohort="primeiros_24m" class="segmented-btn">24 meses</button>
-          <button data-cohort="primeiros_36m" class="segmented-btn">36 meses</button>
+          <button data-cohort="primeiros_12m" class="segmented-btn">1º ano</button>
+          <button data-cohort="primeiros_24m" class="segmented-btn">2 anos</button>
+          <button data-cohort="primeiros_36m" class="segmented-btn">3 anos</button>
         </div>
       </div>
       <p class="cohort-note" id="cohort-note"></p>
-      <div class="comparison-table-wrap">
-        <table class="comparison-table" id="comparison-table"></table>
-      </div>
-    </div>
-  </section>
 
-  <section class="context-section" id="context-section">
-    <div class="wrap">
-      <p class="section-kicker">Contexto</p>
-      <h2>O ambiente econômico no período</h2>
-      <p class="context-intro" id="context-intro"></p>
-      <div class="stat-strip" id="stat-strip"></div>
-      <div id="context-chart" class="plot plot-small"></div>
-    </div>
-  </section>
+      <div class="gov-cols" id="gov-cols"></div>
 
-  <section class="annual-section">
-    <div class="wrap">
-      <p class="section-kicker">Histórico</p>
-      <h2>Preço médio, ano a ano</h2>
-      <div class="annual-rail" id="annual-grid"></div>
-    </div>
-  </section>
+      <div class="variation" id="variation"></div>
 
-  <section class="methodology-section">
-    <div class="wrap">
-      <details class="accordion" open>
-        <summary>Como calculamos</summary>
-        <div class="accordion-body methodology-grid">
-          <div>
-            <h3>Fontes</h3>
-            <ul>
-              <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
-              <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
-              <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619).</li>
-              <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Definições</h3>
-            <ul>
-              <li><strong>Nominal</strong> — preço observado no mês.</li>
-              <li><strong>Real</strong> — nominal deflacionado pelo IPCA geral, a preços do mês mais recente disponível.</li>
-              <li><strong>% do salário mínimo</strong> — preço nominal ÷ salário mínimo vigente naquele mês (não um valor fixo atual).</li>
-              <li><strong>Cesta básica</strong> — sem preço médio absoluto em R$ na fonte: é um índice relativo (base 100 = jan/2019) encadeado a partir da variação mensal oficial do IPCA por item.</li>
-              <li><strong>Períodos</strong> — Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</li>
-            </ul>
-          </div>
+      <details class="more" id="more-table">
+        <summary>Ver todos os números</summary>
+        <div class="table-wrap">
+          <table class="comparison-table" id="comparison-table"></table>
         </div>
       </details>
-      <details class="accordion">
+      <p class="photo-credit" id="photo-credit"></p>
+    </div>
+  </section>
+
+  <!-- ================================================================ 05 -->
+  <section class="chapter" id="context-section">
+    <div class="wrap">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-context">05</span>
+        <h2>O que estava acontecendo na economia?</h2>
+      </div>
+      <p class="context-answer" id="context-answer"></p>
+      <div class="stat-strip" id="stat-strip"></div>
+      <h3 class="chart-title" id="context-chart-title">—</h3>
+      <p class="chart-sub" id="context-chart-sub"></p>
+      <div class="chart-legend" id="context-legend"></div>
+      <div id="context-chart" class="plot plot-small" role="img" aria-label="Gráfico comparando o produto com inflação, petróleo e dólar"></div>
+      <p class="caveat" id="context-intro"></p>
+    </div>
+  </section>
+
+  <!-- ================================================================ 06 -->
+  <section class="chapter methodology" id="como-calculamos">
+    <div class="wrap narrow">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-method">06</span>
+        <h2>Como calculamos?</h2>
+      </div>
+
+      <details class="accordion" id="metodologia">
+        <summary>Como calculamos</summary>
+        <div class="accordion-body">
+          <dl class="glossary">
+            <dt>Preço na época (nominal)</dt>
+            <dd>O preço observado no mês, como estava na bomba ou na prateleira.</dd>
+            <dt>Corrigido pela inflação (real)</dt>
+            <dd>O preço convertido para reais do mês mais recente usando o IPCA geral. Responde: “quanto isso custaria em dinheiro de hoje?”.</dd>
+            <dt>% do salário mínimo</dt>
+            <dd>Preço do produto dividido pelo salário mínimo vigente naquele mês (não um valor fixo atual).</dd>
+            <dt>Índice (alimentos)</dt>
+            <dd>Mostra como o preço variou em relação a jan/2019 = 100. Não representa preço em reais: é encadeado a partir da variação mensal oficial do IPCA por item.</dd>
+            <dt>Variação no período</dt>
+            <dd>Comparação entre o primeiro e o último mês disponível de cada recorte.</dd>
+            <dt>Períodos</dt>
+            <dd>Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</dd>
+          </dl>
+        </div>
+      </details>
+
+      <details class="accordion" id="fontes">
+        <summary>Fontes</summary>
+        <div class="accordion-body">
+          <ul>
+            <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
+            <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
+            <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619).</li>
+            <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="accordion" id="limitacoes">
         <summary>Limitações</summary>
         <div class="accordion-body">
           <ul>
-            <li>ANP é uma amostra semanal por posto, com defasagem; setembro/2020 está ausente na fonte.</li>
+            <li>ANP é uma amostra semanal por posto, com defasagem; setembro/2020 está ausente na fonte (por isso há um pequeno buraco na linha).</li>
             <li>"Carne bovina" usa o corte Patinho como referência — o IBGE não publica uma média única de carne bovina.</li>
             <li>Salário mínimo é o piso nacional nominal — não reflete pisos regionais mais altos em alguns estados.</li>
             <li>Região aqui é sempre Brasil (nacional) — os dados têm quebra regional, mas esta versão não expõe esse filtro ainda.</li>
@@ -180,10 +259,14 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <p>Custava quanto? é um projeto de análise de dados independente. Não representa posição de nenhum partido ou governo — os dados e a metodologia estão acima, para qualquer pessoa conferir.</p>
+  <div class="wrap footer-row">
+    <span class="wordmark wordmark-small">Custava quanto?</span>
+    <p>Projeto de análise de dados independente. Não representa posição de nenhum partido ou governo — os dados e a metodologia estão acima, para qualquer pessoa conferir.</p>
   </div>
 </footer>
+
+<!-- Explicação curta de termos técnicos (IPCA, Brent, preço real...) -->
+<div class="term-pop" id="term-pop" role="tooltip" hidden></div>
 
 <script src="app.js"></script>
 </body>
