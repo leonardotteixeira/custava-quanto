@@ -13,5 +13,7 @@ data/raw/
 .ipynb_checkpoints/
 data/anp_download*.log
 .claude/
+.agents/
+skills-lock.json
 # Design resources (external repos)
 design-resources/
