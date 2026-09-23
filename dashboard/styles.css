@@ -63,6 +63,7 @@ ul { margin: 0; }
 :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 2px; }
 .tnum { font-variant-numeric: tabular-nums lining-nums; }
 .cur { font-size: 0.42em; font-weight: 600; letter-spacing: 0; margin-right: 0.14em; vertical-align: 0.9em; color: var(--ink-soft); }
+.unit-suffix { font-size: 0.4em; font-weight: 600; letter-spacing: 0; margin-left: 0.2em; color: var(--ink-soft); }
 
 /* termo técnico com explicação ao tocar/passar o mouse */
 .term {
@@ -139,6 +140,21 @@ ul { margin: 0; }
   padding: 3px 8px; border-radius: 3px; border: 1px solid var(--ink); color: var(--ink);
 }
 .unit-tag.is-index { border-style: dashed; }
+
+.live-quote {
+  margin: 10px 0 0; font-size: 0.88rem; color: var(--ink-soft); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.live-quote strong { color: var(--ink); font-weight: 700; }
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #c0392b; flex: none;
+  box-shadow: 0 0 0 rgba(192, 57, 43, 0.5); animation: live-pulse 2s infinite;
+}
+.live-note { color: var(--ink-faint); }
+@keyframes live-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.45); }
+  70% { box-shadow: 0 0 0 6px rgba(192, 57, 43, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
+}
 
 .answer-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; align-items: stretch; }
 

@@ -9,13 +9,13 @@ const DATA_URL = "../data/processed/dashboard_data.json";
 const PRODUCT_ORDER = [
   "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
   "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
-  "DOLAR", "SELIC",
+  "DOLAR", "SELIC", "IBOVESPA",
 ];
 const PRODUCT_CHIP_LABEL = {
   "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "Gás (GLP)",
   "Arroz": "Arroz", "Feijão carioca": "Feijão", "Carne bovina (patinho)": "Carne",
   "Leite longa vida": "Leite", "Óleo de soja": "Óleo de soja", "Café moído": "Café",
-  "DOLAR": "Dólar", "SELIC": "Selic",
+  "DOLAR": "Dólar", "SELIC": "Selic", "IBOVESPA": "Ibovespa",
 };
 // Nome de exibição (título), forma usada no meio de frases ("do arroz") e sem artigo ("de arroz").
 const PRODUCT_TEXT = {
@@ -35,6 +35,7 @@ const PRODUCT_TEXT = {
   // que isso gera em algumas frases é inofensivo (HTML colapsa espaços).
   "DOLAR": { titulo: "Dólar comercial", de: "do dólar", sem: "" },
   "SELIC": { titulo: "Taxa Selic", de: "da Selic", sem: "da Selic" },
+  "IBOVESPA": { titulo: "Ibovespa", de: "do Ibovespa", sem: "do Ibovespa" },
 };
 // Categoria de cada produto no seletor — combustível/alimento vêm do próprio
 // tipo; Dólar e Selic são "indicadores", uma categoria à parte.
@@ -75,6 +76,10 @@ const fmtMesAno = (isoDate) => {
   return `${meses[parseInt(m, 10) - 1]}/${y}`;
 };
 const pad2 = (n) => String(n).padStart(2, "0");
+const fmtDataCurta = (isoDate) => {
+  const [y, m, d] = isoDate.split("-");
+  return `${d}/${m}/${y}`;
+};
 
 // Combustível e câmbio (Dólar) têm preço em R$ de verdade; alimento é índice
 // e taxa (Selic) é uma taxa — nenhum dos dois é "preço" no mesmo sentido.
@@ -252,14 +257,15 @@ function selectProduct(codigo) {
   state.categoria = PRODUCT_CATEGORIA(codigo);
   const isComb = temPreco(produto);
   const isTaxa = produto.tipo === "taxa";
+  const isPontos = produto.tipo === "pontos";
   document.querySelectorAll(".product-chip").forEach((c) => c.classList.toggle("active", c.dataset.produto === codigo));
   document.querySelectorAll("#metric-toggle .segmented-btn").forEach((b) => b.classList.toggle("active", b.dataset.metric === "nominal"));
 
-  // Selic é uma taxa só: não tem "preço real" nem "% do salário" — o
-  // controle de métrica inteiro não se aplica, então some com ele.
-  document.getElementById("metric-toggle").hidden = isTaxa;
-  document.getElementById("metric-help").hidden = isTaxa;
-  if (!isTaxa) {
+  // Selic (taxa) e Ibovespa (pontos) não têm "preço real" nem "% do
+  // salário" — o controle de métrica inteiro não se aplica, então some com ele.
+  document.getElementById("metric-toggle").hidden = isTaxa || isPontos;
+  document.getElementById("metric-help").hidden = isTaxa || isPontos;
+  if (!isTaxa && !isPontos) {
     // Alimentos são índice: os rótulos da métrica mudam e "% do salário" não se aplica.
     document.querySelector('#metric-toggle [data-metric="nominal"]').textContent = isComb ? "Preço na época" : "Índice";
     document.querySelector('#metric-toggle [data-metric="real"]').textContent = isComb ? "Corrigido pela inflação" : "Índice corrigido pela inflação";
@@ -269,6 +275,7 @@ function selectProduct(codigo) {
   }
 
   renderAnswer(produto);
+  renderLiveQuote(produto);
   renderChart();
   renderYears(produto);
   renderPurchasingPower(produto);
@@ -276,6 +283,23 @@ function selectProduct(codigo) {
   renderContext(produto);
   renderStepNumbers();
   renderStickyBar(produto);
+}
+
+// Dólar e Selic são publicados todo dia útil pelo BCB — bem mais rápido que
+// o IPCA, que fecha a série mensal usada no resto do dashboard. Por isso
+// mostramos a cotação/taxa mais recente à parte, deixando claro que é um
+// valor "de hoje" (um dia específico), não a média do mês que aparece no
+// gráfico e nas comparações abaixo.
+function renderLiveQuote(produto) {
+  const el = document.getElementById("live-quote");
+  const cot = produto.cotacao_hoje;
+  if (!cot) {
+    el.hidden = true;
+    return;
+  }
+  const valorFmt = produto.tipo === "taxa" ? `${fmtNum(cot.valor, 2)}% ao ano` : fmtBRL.format(cot.valor);
+  el.hidden = false;
+  el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação de hoje (${fmtDataCurta(cot.data)}): <strong>${valorFmt}</strong> <span class="live-note">— valor do dia, não é a média mensal usada no restante da página</span>`;
 }
 
 function renderStepNumbers() {
@@ -292,6 +316,7 @@ function renderStickyBar(produto) {
   document.getElementById("sticky-product").textContent = txt(state.product).titulo;
   document.getElementById("sticky-value").textContent =
     produto.tipo === "taxa" ? `${fmtNum(eraRef.taxa_aa, 2)}% → ${fmtNum(ultimo.taxa_aa, 2)}% ao ano (${eraRef.taxa_aa <= ultimo.taxa_aa ? "+" : "−"}${fmtNum(Math.abs(ultimo.taxa_aa - eraRef.taxa_aa), 2)} p.p.)`
+      : produto.tipo === "pontos" ? `${fmtNum(eraRef.pontos, 0)} → ${fmtNum(ultimo.pontos, 0)} pts (${fmtPct((ultimo.pontos / eraRef.pontos - 1) * 100)})`
       : temPreco(produto) ? `${fmtBRL.format(eraRef.preco_nominal)} → ${fmtBRL.format(ultimo.preco_nominal)} ${unidadeInfo(produto).por} (${fmtPct((ultimo.preco_nominal / eraRef.preco_nominal - 1) * 100)})`
       : `índice ${fmtNum(eraRef.indice_relativo, 1)} → ${fmtNum(ultimo.indice_relativo, 1)} (${fmtPct((ultimo.indice_relativo / eraRef.indice_relativo - 1) * 100)})`;
 }
@@ -352,6 +377,63 @@ function renderAnswer(produto) {
     const notaSelic = document.getElementById("index-note");
     notaSelic.hidden = false;
     notaSelic.innerHTML = `<strong>Por que não "poder de compra"?</strong> ${produto.nota}`;
+    return;
+  }
+
+  // Ibovespa é medido em pontos: não é preço nem taxa, então tem manchete
+  // própria — sem R$, sem "poder de compra", comparando com uma referência
+  // de "se tivesse só acompanhado a inflação" (mesma técnica do marcador
+  // usado para combustível/alimento, aplicada aos pontos).
+  if (produto.tipo === "pontos") {
+    const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+    const eraRef = eraReferencia(produto.serie_mensal);
+    const mEra = fmtMesAno(eraRef.ano_mes), mFim = fmtMesAno(ultimo.ano_mes);
+
+    document.getElementById("product-name").textContent = t.titulo;
+    const tag = document.getElementById("unit-tag");
+    tag.textContent = "PONTOS · NÃO É R$";
+    tag.classList.add("is-index");
+    document.getElementById("product-measure").innerHTML = `Fechamento mensal do índice Ibovespa (B3) · ${mEra} → ${mFim}`;
+    document.getElementById("era-date").textContent = mEra;
+    document.getElementById("agora-date").textContent = mFim;
+    document.getElementById("infl-marker").hidden = false;
+
+    const vIni = eraRef.pontos, vFim = ultimo.pontos;
+    const vRef = eraRef.pontos * (ultimo.ipca_indice / eraRef.ipca_indice);
+    const render = (v) => `${fmtNum(v, 0)}<span class="unit-suffix">pts</span>`;
+    animateNumber(document.getElementById("era-value"), vIni, render);
+    animateNumber(document.getElementById("agora-value"), vFim, render);
+
+    const max = Math.max(vIni, vFim, vRef);
+    document.getElementById("era-bar").style.width = `${(vIni / max * 100).toFixed(1)}%`;
+    document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
+    const marker = document.getElementById("infl-marker");
+    const posRef = vRef / max * 100;
+    marker.style.left = `${posRef.toFixed(1)}%`;
+    marker.classList.toggle("flip", posRef > 55);
+    document.getElementById("infl-marker-label").innerHTML =
+      `<b>${fmtNum(vRef, 0)} pts</b> se tivesse subido igual à ${term("inflacao", "inflação")}`;
+
+    const pct = (vFim / vIni - 1) * 100;
+    const inflacaoPeriodo = (ultimo.ipca_indice / eraRef.ipca_indice - 1) * 100;
+    const diffPts = vFim - vIni;
+    document.getElementById("diff-a").textContent = `${diffPts >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPts), 0)} pts`;
+    document.getElementById("diff-a-cap").textContent = `desde ${mEra}`;
+    document.getElementById("diff-b").textContent = fmtPct(inflacaoPeriodo);
+    document.getElementById("diff-b-cap").textContent = "foi a inflação (IPCA) no mesmo período";
+
+    const subiu = pct >= 0 ? "subiu" : "caiu";
+    const leitura = leituraReal(pct - inflacaoPeriodo);
+    let fraseReal;
+    if (leitura === "igual") fraseReal = `praticamente acompanhando a ${term("inflacao", "inflação")} do período (${fmtPct(inflacaoPeriodo)}).`;
+    else if (leitura === "acima") fraseReal = `bem acima da ${term("inflacao", "inflação")} do período (${fmtPct(inflacaoPeriodo)}).`;
+    else fraseReal = `abaixo da ${term("inflacao", "inflação")} do período (${fmtPct(inflacaoPeriodo)}).`;
+    document.getElementById("lede").innerHTML =
+      `Desde ${mEra}, o Ibovespa ${subiu} <strong>${fmtNum(Math.abs(pct), 1)}%</strong> — foi de ${fmtNum(vIni, 0)} para ${fmtNum(vFim, 0)} pontos, ${fraseReal}`;
+
+    const notaIbov = document.getElementById("index-note");
+    notaIbov.hidden = false;
+    notaIbov.innerHTML = `<strong>Por que "pontos" e não R$?</strong> ${produto.nota}`;
     return;
   }
 
@@ -505,6 +587,15 @@ function renderChart() {
     subtitulo = "Taxa básica de juros definida pelo Copom em cada reunião.";
     ajuda = `<strong>Selic:</strong> a taxa básica de juros da economia. Aqui é o valor nominal — para comparar com a inflação, veja "Contexto" mais abaixo.`;
     hovertext = serie.map((r, i) => (isNil(y[i]) ? "" : `<b>${fmtMesAno(r.ano_mes)}</b><br>Selic: <b>${fmtNum(y[i], 2)}%</b> ao ano`));
+  } else if (produto.tipo === "pontos") {
+    y = serie.map((r) => r.pontos);
+    fmtY = (v) => `${fmtNum(v, 0)} pts`;
+    yaxisExtra = { tickformat: ",.0f" };
+    unidadeEixo = "pontos";
+    titulo = "Ibovespa, fechamento mensal";
+    subtitulo = `Índice da bolsa brasileira (B3), ${mIni}–${mFim}.`;
+    ajuda = `<strong>Pontos:</strong> unidade própria do índice Ibovespa, não é dinheiro. Mostra a variação média de preço das ações mais negociadas na B3.`;
+    hovertext = serie.map((r, i) => (isNil(y[i]) ? "" : `<b>${fmtMesAno(r.ano_mes)}</b><br>Ibovespa: <b>${fmtNum(y[i], 0)} pts</b>`));
   } else if (isComb) {
     const brl = { tickprefix: "R$ ", tickformat: ",.2f" };
     if (state.metric === "nominal") {
@@ -565,6 +656,7 @@ function renderChart() {
   document.getElementById("metric-help").innerHTML = ajuda;
   document.getElementById("chart-source").textContent =
     produto.tipo === "taxa" ? "Fonte: Banco Central (Selic e IPCA)."
+      : produto.tipo === "pontos" ? "Fonte: B3/Yahoo Finance (fechamento mensal do Ibovespa)."
       : isCambio ? "Fonte: Banco Central (câmbio, salário mínimo), IBGE (IPCA)."
       : isComb ? "Fonte: ANP (preços), Banco Central (salário mínimo), IBGE (IPCA). Set/2020 ausente na fonte."
       : "Fonte: IBGE/SIDRA — variação mensal do IPCA por item, encadeada em índice.";
@@ -618,18 +710,21 @@ function renderChart() {
 // ---------- 02 · Média de cada ano (colunas) ----------
 function renderYears(produto) {
   const isTaxa = produto.tipo === "taxa";
+  const isPontos = produto.tipo === "pontos";
   const isComb = temPreco(produto);
   const u = unidadeInfo(produto);
-  document.getElementById("annual-title").textContent = isTaxa ? "Selic média de cada ano" : isComb ? "Preço médio de cada ano" : "Índice médio de cada ano";
+  document.getElementById("annual-title").textContent = isTaxa ? "Selic média de cada ano" : isPontos ? "Ibovespa médio de cada ano" : isComb ? "Preço médio de cada ano" : "Índice médio de cada ano";
   document.getElementById("annual-sub").textContent = isTaxa
     ? "Média mensal da taxa, % ao ano, em cada ano."
-    : isComb
+    : isPontos
+      ? "Média mensal do fechamento, em pontos, em cada ano. Não é dinheiro."
+      : isComb
       ? `Em ${u.curta}, preço na época (média dos meses de cada ano).`
       : "Índice (jan/2019 = 100), média dos meses de cada ano. Não é preço em R$.";
   const corteAno = parseInt(DATA.periodo_corte.slice(0, 4), 10);
-  const valores = produto.serie_anual.map((r) => (isTaxa ? r.taxa_media : isComb ? r.preco_nominal_medio : r.indice_nominal_medio));
+  const valores = produto.serie_anual.map((r) => (isTaxa ? r.taxa_media : isPontos ? r.pontos_medio : isComb ? r.preco_nominal_medio : r.indice_nominal_medio));
   const max = Math.max(...valores.filter((v) => !isNil(v)));
-  const fmtValor = (v) => (isTaxa ? `${fmtNum(v, 1)}%` : valorFormatado(produto, v));
+  const fmtValor = (v) => (isTaxa ? `${fmtNum(v, 1)}%` : isPontos ? `${fmtNum(v, 0)} pts` : valorFormatado(produto, v));
   const cols = produto.serie_anual.map((r, i) => {
     const v = valores[i];
     const cls = `${r.ano < corteAno ? "bolsonaro" : "lula"} ${r.n_meses < 12 ? "partial" : ""}`;
@@ -659,9 +754,9 @@ function renderYears(produto) {
 // =====================================================================
 function renderPurchasingPower(produto) {
   const section = document.getElementById("purchasing-power-section");
-  // Selic é uma taxa: "quanto o salário mínimo compra de Selic" não
-  // significa nada — a seção inteira não se aplica.
-  if (produto.tipo === "taxa") { section.style.display = "none"; return; }
+  // Selic (taxa) e Ibovespa (pontos): "quanto o salário mínimo compra"
+  // não significa nada para nenhum dos dois — a seção inteira não se aplica.
+  if (produto.tipo === "taxa" || produto.tipo === "pontos") { section.style.display = "none"; return; }
   section.style.display = "";
   const isComb = temPreco(produto);
   const t = txt(state.product);
@@ -728,14 +823,16 @@ function renderPurchasingPower(produto) {
 // =====================================================================
 function renderGovernos(produto) {
   const isTaxa = produto.tipo === "taxa";
+  const isPontos = produto.tipo === "pontos";
   const isComb = temPreco(produto);
   const u = unidadeInfo(produto);
   const periodos = ["Bolsonaro", "Lula"];
   const resumos = periodos.map((p) => produto.resumo_periodos[p]?.[state.cohort]);
   const rL = resumos[1];
-  // Formatação do valor "bruto" de cada governo — Selic é sempre "%", nunca
-  // R$/índice (reusar valorFormatado exigiria ensinar ele sobre taxas).
-  const fmtGov = (v) => (isTaxa ? (isNil(v) ? "—" : `${fmtNum(v, 2)}%`) : valorFormatado(produto, v));
+  // Formatação do valor "bruto" de cada governo — Selic é sempre "%" e
+  // Ibovespa sempre "pts", nunca R$/índice (reusar valorFormatado exigiria
+  // ensinar ele sobre taxas/pontos).
+  const fmtGov = (v) => (isTaxa ? (isNil(v) ? "—" : `${fmtNum(v, 2)}%`) : isPontos ? (isNil(v) ? "—" : `${fmtNum(v, 0)} pts`) : valorFormatado(produto, v));
 
   document.getElementById("cohort-note").textContent = !rL || rL.completo === false
     ? `O governo Lula ainda não completou ${COHORT_LABEL[state.cohort]}; o recorte usa os meses disponíveis até agora.`
@@ -744,7 +841,7 @@ function renderGovernos(produto) {
       : `Comparando os ${COHORT_LABEL[state.cohort]} de cada período.`;
 
   // --- minigráficos: mesma escala vertical e mesma largura por mês nos dois ---
-  const valorDe = (r) => (isTaxa ? r.taxa_aa : isComb ? r.preco_nominal : r.indice_relativo);
+  const valorDe = (r) => (isTaxa ? r.taxa_aa : isPontos ? r.pontos : isComb ? r.preco_nominal : r.indice_relativo);
   const janelas = resumos.map((r) => r ? produto.serie_mensal.filter((m) => m.ano_mes >= r.mes_inicio && m.ano_mes <= r.mes_fim) : []);
   const todos = janelas.flat().map(valorDe).filter((v) => !isNil(v));
   const yMin = Math.min(...todos), yMax = Math.max(...todos);
@@ -779,9 +876,9 @@ function renderGovernos(produto) {
     const r = resumos[k];
     const cls = p.toLowerCase();
     if (!r) return `<div class="gov ${cls}"><div class="gov-head"><img src="${pres.foto}" alt="${pres.nome}" loading="lazy" /><div><div class="gov-name"><span class="dot"></span>${p}</div><div class="gov-dates">dado não disponível</div></div></div></div>`;
-    const vIni = isTaxa ? r.taxa_inicio : isComb ? r.preco_nominal_inicio : r.indice_nominal_inicio;
-    const vFim = isTaxa ? r.taxa_fim : isComb ? r.preco_nominal_fim : r.indice_nominal_fim;
-    const suf = isTaxa || isComb ? "" : "<small>índice</small>";
+    const vIni = isTaxa ? r.taxa_inicio : isPontos ? r.pontos_inicio : isComb ? r.preco_nominal_inicio : r.indice_nominal_inicio;
+    const vFim = isTaxa ? r.taxa_fim : isPontos ? r.pontos_fim : isComb ? r.preco_nominal_fim : r.indice_nominal_fim;
+    const suf = isTaxa || isPontos || isComb ? "" : "<small>índice</small>";
     return `<div class="gov ${cls}">
       <div class="gov-head">
         <img src="${pres.foto}" alt="${pres.nome}" loading="lazy" />
@@ -804,6 +901,8 @@ function renderGovernos(produto) {
   // este projeto não faz) — só a variação em pontos percentuais.
   const grupos = isTaxa
     ? [{ titulo: "Variação", ajuda: "diferença entre o fim e o início do período, em pontos percentuais", campo: "variacao_pp", fmt: (v) => (isNil(v) ? "—" : `${v >= 0 ? "+" : "−"}${fmtNum(Math.abs(v), 2)} p.p.`) }]
+    : isPontos
+    ? [{ titulo: "Variação", ajuda: "variação do fechamento, do início ao fim do período", campo: "variacao_pct", fmt: fmtPct }]
     : [
         { titulo: isComb ? "Na bomba" : "Variação do índice", ajuda: isComb ? "variação do preço na época, do primeiro ao último mês" : "do primeiro ao último mês do recorte", campo: "variacao_nominal_pct", fmt: fmtPct },
         { titulo: "Descontada a inflação", ajuda: `variação ${term("real", "corrigida pela inflação")} — mostra se ficou mais caro de verdade`, campo: "variacao_real_pct", fmt: fmtPct },
@@ -839,6 +938,15 @@ function renderGovernos(produto) {
         ["Taxa média", "média de todos os meses do recorte", (r) => fmtGov(r?.taxa_media)],
         ["Menor taxa", "mês mais baixo do recorte", (r) => fmtGov(r?.taxa_min)],
         ["Maior taxa", "mês mais alto do recorte", (r) => fmtGov(r?.taxa_max)],
+      ]
+    : isPontos
+    ? [
+        ["Variação", "do fechamento, do início ao fim do recorte", (r) => fmtPct(r?.variacao_pct)],
+        ["Pontos no início", "", (r) => fmtGov(r?.pontos_inicio)],
+        ["Pontos no fim", "", (r) => fmtGov(r?.pontos_fim)],
+        ["Pontos, média", "média de todos os meses do recorte", (r) => fmtGov(r?.pontos_medio)],
+        ["Menor fechamento", "mês mais baixo do recorte", (r) => fmtGov(r?.pontos_min)],
+        ["Maior fechamento", "mês mais alto do recorte", (r) => fmtGov(r?.pontos_max)],
       ]
     : isComb
     ? [
@@ -952,9 +1060,10 @@ function renderContext(produto) {
     return isNil(base) || base === 0 ? y.map(() => null) : y.map((v) => (isNil(v) ? null : (v / base) * 100));
   };
 
+  const isPontos = produto.tipo === "pontos";
   const series = [
-    { key: "produto", nome: t.titulo, y: rebase(serie.map((r) => (isComb ? r.preco_indice100 : r.indice_relativo))), cor: cssVar("--c-product"), dash: "solid", largura: 2.75,
-      desc: isComb ? `preço ${u.por}` : "índice de preço" },
+    { key: "produto", nome: t.titulo, y: rebase(serie.map((r) => (isPontos ? r.pontos_indice100 : isComb ? r.preco_indice100 : r.indice_relativo))), cor: cssVar("--c-product"), dash: "solid", largura: 2.75,
+      desc: isPontos ? "pontos do Ibovespa (fechamento mensal)" : isComb ? `preço ${u.por}` : "índice de preço" },
   ];
   // Dólar é o próprio câmbio: não faz sentido comparar câmbio contra si
   // mesmo. Em vez de Brent/câmbio, mostramos Selic como contexto (custo do
@@ -965,6 +1074,10 @@ function renderContext(produto) {
       { key: "cambio", nome: "Dólar", termo: "cambio", y: rebase(serie.map((r) => r.cambio_indice100)), cor: cssVar("--c-cambio"), dash: "dashdot", largura: 2, desc: "quantos reais valia 1 dólar" });
   } else if (produto.tipo === "cambio") {
     series.push({ key: "selic", nome: "Selic", y: rebase(serie.map((r) => r.selic_indice100)), cor: cssVar("--c-brent"), dash: "dash", largura: 2, desc: "taxa básica de juros" });
+  } else if (isPontos) {
+    series.push(
+      { key: "cambio", nome: "Dólar", termo: "cambio", y: rebase(serie.map((r) => r.cambio_indice100)), cor: cssVar("--c-cambio"), dash: "dashdot", largura: 2, desc: "quantos reais valia 1 dólar" },
+      { key: "selic", nome: "Selic", y: rebase(serie.map((r) => r.selic_indice100)), cor: cssVar("--c-brent"), dash: "dash", largura: 2, desc: "taxa básica de juros" });
   }
   series.push({ key: "ipca", nome: "IPCA", termo: "ipca", y: rebase(serie.map((r) => r.ipca_indice100)), cor: cssVar("--c-ipca"), dash: "dot", largura: 2, desc: "inflação: média de todos os preços" });
 
@@ -978,7 +1091,8 @@ function renderContext(produto) {
   const veredito = leitura === "igual" ? "ou seja, acompanhou a inflação"
     : leitura === "acima" ? "ou seja, subiu mais que os preços em geral"
     : vProd >= 0 ? "ou seja, subiu menos que os preços em geral" : "ou seja, caiu enquanto os preços em geral subiram";
-  let resposta = `Desde ${desde}, o preço ${t.de} variou <strong>${fmtPct(vProd)}</strong> e a ${term("ipca", "inflação geral (IPCA)")}, <strong>${fmtPct(vIpca)}</strong> — ${veredito}.`;
+  const prodLabel = isPontos ? "o Ibovespa" : `o preço ${t.de}`;
+  let resposta = `Desde ${desde}, ${prodLabel} variou <strong>${fmtPct(vProd)}</strong> e a ${term("ipca", "inflação geral (IPCA)")}, <strong>${fmtPct(vIpca)}</strong> — ${veredito}.`;
   if (produto.tipo === "combustivel") {
     const vBrent = varDe(series.find((s) => s.key === "brent"));
     const vDolar = varDe(series.find((s) => s.key === "cambio"));
@@ -986,6 +1100,10 @@ function renderContext(produto) {
   } else if (produto.tipo === "cambio") {
     const vSelic = varDe(series.find((s) => s.key === "selic"));
     resposta += ` No mesmo período, a taxa Selic variou <strong>${fmtPct(vSelic)}</strong>.`;
+  } else if (isPontos) {
+    const vDolar = varDe(series.find((s) => s.key === "cambio"));
+    const vSelic = varDe(series.find((s) => s.key === "selic"));
+    resposta += ` No mesmo período, o ${term("cambio", "dólar")} variou <strong>${fmtPct(vDolar)}</strong> e a taxa Selic, <strong>${fmtPct(vSelic)}</strong>.`;
   }
   document.getElementById("context-answer").innerHTML = resposta;
 
@@ -1007,6 +1125,7 @@ function renderContext(produto) {
   document.getElementById("context-intro").textContent =
     produto.tipo === "combustivel" ? "Isto é contexto, não prova de causa: a política de preços da Petrobras, os impostos e a oferta e demanda internas também pesam no preço final."
       : produto.tipo === "cambio" ? "Isto é contexto, não prova de causa: o câmbio reage a juros, fluxo de capital estrangeiro, resultado comercial e expectativas — a Selic é só uma peça."
+      : isPontos ? "Isto é contexto, não prova de causa: o Ibovespa reflete expectativas sobre lucros das empresas, juros, câmbio e cenário internacional — não é resultado automático desses fatores."
       : "Isto é contexto, não prova de causa: safra, clima, exportações e demanda interna também pesam no preço de cada alimento.";
 
   const traces = series.map((s) => ({
