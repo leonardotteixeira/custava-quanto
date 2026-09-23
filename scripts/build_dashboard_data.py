@@ -7,9 +7,11 @@ verdade para os números).
 Regra importante: combustíveis têm preço em R$ (podem ser expressos como
 % do salário mínimo / unidades por salário mínimo). Itens da cesta básica
 aqui são um ÍNDICE relativo (não há preço médio absoluto em R$ na fonte
-IBGE/SIDRA para todo o período) — por isso esses dois grupos têm campos
-diferentes no JSON, e os campos de salário mínimo simplesmente não existem
-para alimentos (não viram null fingindo ser dado ausente).
+IBGE/SIDRA para todo o período) — por isso esses dois grupos têm campos de
+preço diferentes no JSON. Ambos os grupos têm salário mínimo: para
+combustível vira "quantas unidades" (preço é R$); para alimento vira um
+índice de poder de compra (não dá pra dizer "quantos kg", porque não há
+preço absoluto) — nunca um valor em reais fingindo ser preço de alimento.
 """
 from __future__ import annotations
 
@@ -201,14 +203,23 @@ def montar_combustiveis(salario: pd.DataFrame) -> dict:
     return produtos
 
 
-def montar_alimentos() -> dict:
+def montar_alimentos(salario: pd.DataFrame) -> dict:
     df = pd.read_csv(DATA_PROCESSED / "cesta_basica_final.csv", parse_dates=["ano_mes"])
+    df = df.merge(salario, on="ano_mes", how="left")
     produtos = {}
     for item, g in df.groupby("item"):
         g = g.dropna(subset=["indice_relativo"]).sort_values("ano_mes")
         if g.empty:
             continue
-        g = g.assign(ipca_indice100=_indice100(g["ipca_indice"]))
+        # Poder de compra em termos relativos: não temos preço absoluto em R$
+        # para alimentos, então não dá pra dizer "X kg por salário mínimo"
+        # como fazemos com combustível — mas dá pra montar um índice (base
+        # 100 = jan/2019) de quanto o salário mínimo rende frente a este
+        # item, combinando o salário (R$, real) com o índice de preço.
+        g = g.assign(
+            ipca_indice100=_indice100(g["ipca_indice"]),
+            indice_poder_compra=_indice100(g["salario_minimo"] / g["indice_relativo"]),
+        )
         serie = []
         for _, r in g.iterrows():
             serie.append({
@@ -218,6 +229,8 @@ def montar_alimentos() -> dict:
                 "indice_relativo_real": round(float(r["indice_relativo_real"]), 2) if pd.notna(r["indice_relativo_real"]) else None,
                 "ipca_indice": round(float(r["ipca_indice"]), 2) if pd.notna(r["ipca_indice"]) else None,
                 "ipca_indice100": round(float(r["ipca_indice100"]), 2) if pd.notna(r["ipca_indice100"]) else None,
+                "salario_minimo": round(float(r["salario_minimo"]), 2) if pd.notna(r["salario_minimo"]) else None,
+                "indice_poder_compra": round(float(r["indice_poder_compra"]), 2) if pd.notna(r["indice_poder_compra"]) else None,
             })
         resumo = {}
         for periodo in ("Bolsonaro", "Lula"):
@@ -242,7 +255,7 @@ def main() -> None:
     dados = {
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "periodo_corte": "2023-01-01",
-        "produtos": {**montar_combustiveis(salario), **montar_alimentos()},
+        "produtos": {**montar_combustiveis(salario), **montar_alimentos(salario)},
         "presidentes": {
             "Bolsonaro": {
                 "nome": "Jair Bolsonaro",
