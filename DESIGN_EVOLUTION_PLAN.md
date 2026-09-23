@@ -1,528 +1,967 @@
-# 🎯 Plano de Evolução de Design - CUSTAVA QUANTO?
+# 📖 Plano de Evolução da Experiência — CUSTAVA QUANTO?
 
-## Fase 1: AUDITORIA & ANÁLISE (Semana 1-2)
+## Visão do Produto
 
-### 1.1 - Audit Completo com `@impeccable`
-**Quando:** Agora
+**CUSTAVA QUANTO?** é uma experiência visual e interativa de dados econômicos que permite ao usuário voltar no tempo, comparar preços e indicadores, entender mudanças ao longo dos anos e descobrir o contexto histórico/econômico por trás desses números.
+
+Não é um dashboard financeiro genérico. É **data journalism interativo**. Uma publicação de dados que conta histórias.
+
+A experiência segue a progressão:
+
+**MOSTRAR → COMPARAR → EXPLICAR → CONTEXTUALIZAR → EXPLORAR**
+
+---
+
+## 🎯 Product Design Principles
+
+### 1. **Data First**
+Os dados são o protagonista. Tudo mais suporta o dado, não o contrário.
+
+### 2. **Show Before Explain**
+Mostrar o número antes de apresentar explicações longas. Visualização antes de prosa.
+
+### 3. **Progressive Disclosure**
+Informação simples primeiro; detalhes para quem quiser aprofundar.
+
+### 4. **Editorial, Not Dashboard**
+A experiência deve parecer uma publicação interativa de dados, não um painel administrativo genérico.
+
+### 5. **Context Matters**
+Um número isolado não conta toda a história. Sempre fornecer contexto: período anterior, indicadores relacionados, eventos contemporâneos.
+
+### 6. **No Invented Data**
+Nenhum número, notícia, fonte ou evento pode ser inventado. Se o dado não existe, o campo não existe.
+
+### 7. **No Implied Causality**
+Correlação temporal não deve ser apresentada como causalidade. Notícias próximas a um preço não causaram aquele preço.
+
+### 8. **Neutral Visual Language**
+A interface não deve induzir uma conclusão política através de cores, hierarquia ou linguagem visual. Períodos presidenciais são identificados (azul/vermelho), mas nunca como positivo/negativo.
+
+### 9. **Consistency**
+Mesmo tipo de informação tem comportamento visual consistente em toda a experiência.
+
+### 10. **Mobile Clarity**
+A experiência continua compreensível e útil em telas pequenas.
+
+---
+
+## FASE 0: Product Experience & Editorial Direction
+
+**Quando:** Antes de qualquer auditoria visual detalhada
+
+**Objetivo:** Definir a experiência do produto antes de decidir como cada componente ficará.
+
+### 0.1 — Product Experience Audit
+
+Avaliar conceitualmente como o usuário navega pela narrativa.
+
+**Perguntas a responder:**
+
+- Qual é a proposta central do CUSTAVA QUANTO?
+- O que o usuário deve entender nos primeiros 5 segundos?
+- O que deve entender nos primeiros 30 segundos?
+- O que deve conseguir explorar em 2 minutos?
+- Qual é a narrativa principal da página?
+- Qual é o "hero moment"?
+- Qual é a principal pergunta que a página responde?
+- Como o usuário passa de um número para contexto?
+- Como produtos, indicadores econômicos, notícias e timeline se conectam?
+- Como transformar a página em uma experiência contínua em vez de uma coleção de cards?
+- O que atualmente parece um dashboard genérico que deveria parecer editorial?
+- O que deveria ser eliminado, simplificado ou reorganizado?
+
+**Output esperado:**
+
+Uma análise de arquitetura de experiência documentando:
+- A narrativa primária da página
+- Os 3 "momentos" principais de compreensão (5s, 30s, 2min)
+- Fluxo conceitual do usuário
+- Pontos de atrito atuais
+- Oportunidades de storytelling
+
+**Não implementar nada nesta etapa.**
+
+---
+
+### 0.2 — Information Architecture
+
+Planejar a arquitetura editorial da experiência.
+
+**Contexto:** O produto trabalha com múltiplas categorias:
+
+- **Preços de Produtos**: combustíveis (gasolina, diesel, etanol), alimentos (arroz, feijão, carne, leite, óleo, café)
+- **Indicadores Econômicos**: Dólar (R$/USD), IPCA (inflação acumulada 12m), Salário Mínimo (R$)
+- **Indicadores de Mercado**: Selic Meta (% a.a.), Ibovespa (pontos)
+- **Contexto Histórico**: notícias contemporâneas, eventos econômicos, timeline
+- **Comparação**: periódico (Era × Agora)
+
+**Tarefas:**
+
+1. Distinguir corretamente entre:
+   - **Preço** (valor nominal de um bem): gasolina, alimentos
+   - **Indicador de taxa** (percentual): Selic, IPCA
+   - **Indicador de índice** (pontos): Ibovespa
+   - **Indicador de câmbio** (paridade): Dólar
+   - **Contexto histórico** (notícia, evento): para entender o "porquê"
+   - **Métrica de consumo** (poder de compra): salário mínimo como denominador
+
+2. Definir conceitualmente como essas categorias se relacionam.
+
+3. Planejar uma estrutura que permita:
+   - Buscar por produto específico
+   - Navegar por período de tempo
+   - Entender como indicadores se relacionam (ex: Selic × Dólar × Ibovespa)
+   - Descobrir o contexto histórico de um período
+
+**Output esperado:**
+
+Um diagrama conceitual ou documento descrevendo:
+- Tipos de informação e suas características
+- Como o usuário navega entre tipos
+- Relações primárias entre categorias
+- Padrões de acesso esperados (buscar um produto, explorar um período, comparar indicadores)
+
+---
+
+### 0.3 — Editorial Storytelling
+
+Planejar como a interface conta uma história com dados.
+
+**Progressão esperada no usuário:**
+
+1. **O que estamos olhando?** (título + contexto)
+2. **Quanto custava?** (preço/taxa histórica)
+3. **Quanto custa?** (preço/taxa atual)
+4. **Quanto mudou?** (comparação visual + percentual)
+5. **Como isso evoluiu?** (série temporal)
+6. **O que estava acontecendo?** (contexto histórico + notícias)
+7. **Qual indicador ajuda a entender?** (Dólar afetava preço? Selic subiu?)
+8. **Qual notícia estava relacionada?** (eventos no período)
+9. **O que você quer explorar em seguida?** (navegação intuitiva)
+
+**Regras críticas:**
+
+- **Notícias são contexto, nunca prova.** Nunca dizer "preço subiu porque X aconteceu" sem uma relação causal bem estabelecida.
+- **Não inventar relações.** Correlação temporal não implica causalidade.
+- **Integrar editorial à visualização.** A narrativa deve estar nas cores, posicionamento, hierarquia — não em blocos de texto separados.
+
+**Output esperado:**
+
+Um documento com wireframes conceituais (ou texto descritivo) mostrando:
+- Fluxo de informação na página
+- Onde narrativa é visual (gráfico, comparação)
+- Onde narrativa é textual (contexto, metodologia)
+- Como transições mantêm o foco
+- Oportunidades para "descoberta" (o que convida o usuário a explorar mais)
+
+---
+
+### 0.4 — Máquina do Tempo (Conceitual)
+
+Planeja uma experiência em que o usuário seleciona um período/data e visualiza, de forma coerente:
+
+- Preços nominais
+- Indicadores econômicos (Dólar, Selic, Ibovespa, IPCA)
+- Salário mínimo
+- Notícias/eventos relevantes daquele período
+
+**Conceitual apenas.** Não implementar.
+
+**Desafios a resolver no planejamento:**
+
+- Indicadores possuem frequências diferentes (diário, mensal). Como visualizar isso de forma coerente?
+- Qual é a "fotografia" ideal de um período?
+- Como evitar que a interface fica confusa com muitos dados ao mesmo tempo?
+- Como essa "máquina do tempo" se integra ao fluxo principal (não é um painel separado)?
+
+**Output esperado:**
+
+Conceitualmente, uma descrição de:
+- Quando e como o usuário acessa a "Máquina do Tempo"
+- O que é mostrado quando seleciona um período
+- Como dados de diferentes frequências são harmonizados visualmente
+- Integração com o fluxo principal (não quebra a narrativa)
+
+---
+
+## FASE 1: Auditoria & Análise
+
+**Quando:** Após aprovação da Fase 0
+
+**Objetivo:** Identificar todos os gaps de experiência e design
+
+### 1.1 — Experience Audit com `@impeccable`
+
 **Skill:** `@impeccable`
-**Objetivo:** Identificar todos os gaps de design
 
 ```
-@impeccable Audit the entire CUSTAVA QUANTO? dashboard for:
-1. Visual hierarchy - are important data points visually prominent?
-2. Color consistency - palette, contrast ratios, accessibility
-3. Typography - font sizes, weights, line heights, consistency
-4. Spacing & alignment - grid consistency, padding/margins
-5. Components - buttons, cards, forms, inputs reusability
-6. Responsive behavior - mobile, tablet, desktop
-7. Accessibility - WCAG compliance, focus states, labels
-8. Micro-interactions - feedback, animations, transitions
-9. Information architecture - content organization
-10. Edge cases - empty states, error states, loading states
+@impeccable Audit the current CUSTAVA QUANTO? experience (not just the design):
 
-Current sections to review:
-- Header (title, subtitle, product selector)
-- Market indicators (Dólar, Selic, Ibovespa, IPCA)
-- Comparison section (ERA vs AGORA with bars)
-- Timeline/context section
-- News section
-- Methodology accordion
+EXPERIENCE ARCHITECTURE:
+1. Does the first screen communicate "what is this?" clearly?
+2. Is there a clear narrative flow from first number to context?
+3. Do cards feel like isolated elements or part of a story?
+4. How well does the interface guide discovery?
+5. Are products/indicators/context presented in a logical order?
+6. Is the "Era vs Agora" comparison immediately understandable?
+7. Does the timeline/news feel integrated or tacked-on?
+8. Can the user answer "why did this change?" from the page?
 
-Provide: scored findings (1-10), top 10 issues, recommendations
+CONTENT CLARITY:
+1. Are data sources clear and consistent?
+2. Is the update frequency obvious?
+3. Is the time period always clear?
+4. Are units (R$, %, pontos) always explicit?
+5. Is the methodology understandable to a first-time user?
+
+VISUAL HIERARCHY:
+1. What's the most prominent element? Is it the right one?
+2. Does visual weight match importance?
+3. Are different types of information visually distinguished?
+4. Is the color usage neutral or does it imply judgment?
+
+PROVIDE: An experience audit scoring 1-10 on narrative clarity, 
+and top issues preventing this from feeling like "data journalism" 
+vs. "financial dashboard."
 ```
 
 **Output esperado:**
-- Scored report (color: red/yellow/green)
-- Top issues prioritized
+
+- Experience score (1-10)
+- Top 10 issues de narrativa/experiência
+- Recomendações de arquitetura
+- Diferença entre gaps de design vs. gaps de experiência
+
+---
+
+### 1.2 — Visual & Accessibility Audit
+
+**Skill:** `@impeccable`
+
+```
+@impeccable Audit the visual design and accessibility:
+
+VISUAL CONSISTENCY:
+1. Color palette - is it defined? neutral in political context?
+2. Typography - scale, weights, hierarchy consistent?
+3. Spacing - grid system? alignment?
+4. Components - buttons, cards, badges, reusable?
+5. Icons - style consistent?
+
+ACCESSIBILITY (WCAG AA):
+1. Color contrast ratios
+2. Focus indicators visibility
+3. Form labels and error messages
+4. Keyboard navigation completeness
+5. Screen reader friendliness
+6. Touch targets (44x44px minimum)
+7. Reduced motion preferences respected
+8. Mobile readability
+
+PROVIDE: scored report, top visual issues, accessibility gaps, 
+priority fixes vs. nice-to-haves.
+```
+
+**Output esperado:**
+
+- Scored report (colors, spacing, typography, components, accessibility)
+- Top 10 visual/accessibility issues
 - Quick wins vs. deep refactors
-- Accessibility gaps
-- Mobile-specific issues
+- Mobile-specific findings
 
 ---
 
-## Fase 2: DESIGN DIRECTION (Semana 2-3)
+## FASE 2: Design Direction & Editorial Voice
 
-### 2.1 - Define Design Direction
-**Quando:** Após audit
-**Skills:** `@design-taste-frontend` + `@minimalist-ui`
-**Objetivo:** Decidir o "look & feel" final
+**Quando:** Após aprovação da Fase 1
+
+**Objetivo:** Definir o "look & feel" editorial
+
+### 2.1 — Editorial Design Direction
+
+**Skills:** `@design-taste-frontend` + `@impeccable` (second pass)
 
 ```
-@design-taste-frontend Based on the audit findings, define the design 
-direction for CUSTAVA QUANTO? dashboard. We need:
+@design-taste-frontend Define the editorial design direction for 
+CUSTAVA QUANTO?, based on audit findings:
 
-Current state: Functional but looks templated, inconsistent spacing
-Target: Professional, data-driven, clear hierarchy, modern but not trendy
+CURRENT STATE: 
+Functional but feels like a template. Not distinctly editorial or data-journalistic.
 
-Consider:
-- Minimalist approach (less is more) or rich with interactions?
-- Color story - current is muted, should it be bolder?
-- Data visualization - spark charts work but need refinement
-- Typography - should we change fonts or better utilize existing ones?
-- Animation - how much micro-interaction? smooth transitions?
+TARGET STATE:
+A visual experience that says "this is a publication about data" not "this is a finance tool."
 
-Constraints:
-- Already have daily market data (real-time update)
-- Need to keep news/timeline section
+CONSIDER:
+- Minimalist approach (less is more) or rich editorial design?
+- Color story: neutral, with accents only for data clarity
+- Typography: should enhance reading, not compete with data
+- Data viz refinement: sparks work, but need to feel integrated
+- Layout: how can whitespace tell a story?
+- Overall tone: light, editorial, sophisticated, data-driven, jornalistic, clear
+
+Avoid: looks like Bloomberg, looks like TradingView, looks like Finviz.
+Aspire to: feels like FT, Economist, or NYT data section.
+
+CONSTRAINTS:
+- Already have daily market data (real-time)
+- Need notícias/timeline integrated (not separate section)
 - Mobile-first responsive
-- Dark mode friendly
+- No dark mode requirement (light/editorial is the direction)
+- Must work across all product types (prices, indicators, markets)
 
-Provide: Design direction statement, color palette, typography scale, 
-spacing grid, component design patterns
+PROVIDE: 
+- Design direction statement (2-3 sentences)
+- Color palette (primary, secondary, accents, grays, status)
+- Typography scale (H1-H6, body, labels, metadata)
+- Editorial character (what does this visual language say?)
 ```
 
-### 2.2 - Design System Foundation
-**Quando:** Após direction
-**Skill:** `@impeccable` (second pass)
-**Objetivo:** Definir design tokens
+**Output esperado:**
 
-```
-@impeccable Create a design system foundation for CUSTAVA QUANTO?:
-
-Design Tokens:
-1. Color palette (primary, secondary, accent, grays, status colors)
-2. Typography scale (h1-h6, body, labels, code)
-3. Spacing scale (4px, 8px, 16px, 24px, 32px...)
-4. Shadows (elevation system)
-5. Border radius (buttons, cards, inputs)
-6. Component variants (button sizes/states, card types)
-
-Current components to define:
-- Buttons (primary, secondary, ghost)
-- Cards (comparison cards, indicator cards, news cards)
-- Inputs & selectors
-- Badges & tags
-- Alerts & notifications
-- Tables
-- Charts/graphs
-
-Output: JSON-like structure we can use in code
-```
+- Design direction statement
+- Color palette with rationale
+- Typography scale
+- Visual examples or references
+- How to apply to different content types (price, indicator, market, context)
 
 ---
 
-## Fase 3: COMPONENT REDESIGN (Semana 3-5)
+### 2.2 — Design Tokens & System Foundation
 
-### 3.1 - Header & Navigation
-**Quando:** Week 3
-**Skills:** `@impeccable` + `@21st-ui`
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+```
+@impeccable Create a design system foundation for CUSTAVA QUANTO? 
+based on the editorial direction:
+
+DESIGN TOKENS:
+1. Color system (primary, secondary, accent, grays, status + political period colors)
+2. Typography scale (font sizes, weights, line heights)
+3. Spacing scale (4px, 8px, 16px, 24px, 32px...)
+4. Shadows / elevation (if used)
+5. Border radius (buttons, cards, inputs)
+6. Component variants (button sizes/states, card types, badge variants)
+
+COMPONENT DEFINITIONS:
+- Buttons (primary, secondary, ghost)
+- Cards (price card, indicator card, news card, comparison card)
+- Badges (status, period, source)
+- Inputs & selectors (dropdown, date picker, search)
+- Tables (if needed for data comparison)
+- Typography (headline, subheading, body, label, caption)
+- Charts/graphs (sparklines, comparison bars)
+
+NEUTRALITY REQUIREMENTS:
+- Período presidencial: azul (PL) / vermelho (PT) for identification ONLY
+- No automatic green=good, red=bad coloring on price changes
+- Status indicators (up/down): use symbols (+/-) + arrow + number
+- Always provide context before color interpretation
+
+PROVIDE: JSON structure or detailed token spec we can reference during implementation
+```
+
+**Output esperado:**
+
+- Complete design token system (JSON or similar)
+- Component library spec
+- Usage guidelines for each component
+- How to maintain neutrality in data visualization
+
+---
+
+## FASE 3: Component Architecture & Information Design
+
+**Quando:** Após aprovação da Fase 2
+
+**Objetivo:** Definir como a informação se organiza visualmente
+
+### 3.1 — Information Layout Architecture
+
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+Planejar como as seções da página se relacionam visualmente. Não desenhar ainda, apenas planejar.
+
+**Estrutura conceitual (a refinar):**
+
+```
+┌─────────────────────────────────────────────────┐
+│ HERO: "O que estamos olhando?"                  │
+│ Título, contexto, seletor de produto            │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│ SÉRIE TEMPORAL: gráfico com 4-5 anos            │
+│ + sparklines de indicadores relacionados        │
+│ + timeline de eventos visível no fundo          │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│ COMPARAÇÃO: "Era" vs "Agora"                    │
+│ Visual dominante, números grandes               │
+│ % de mudança, contexto de salário mínimo        │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│ CONTEXTO: "Como estava o Brasil?"               │
+│ Fotografia mensal de múltiplos indicadores      │
+│ Dólar, Selic, Ibovespa, IPCA, Salário Mínimo   │
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│ NARRATIVA: Notícias recentes + Eventos históricos
+│ Integrada temporalmente com gráfico             │
+│ Não um bloco separado                           │
+└─────────────────────────────────────────────────┘
+```
+
 **Tarefas:**
 
-```
-Step 1: @impeccable Review current header
-- Title/subtitle clarity
-- Product selector navigation
-- Spacing and alignment
-- Mobile behavior
+1. Validar que a progressão MOSTRAR → COMPARAR → EXPLICAR → CONTEXTUALIZAR → EXPLORAR está clara
+2. Planejar como notícias se integram (não separadas)
+3. Definir oportunidades para descoberta (links entre indicadores)
+4. Planejar a "Máquina do Tempo" conceitualmente (integrada, não painel)
 
-Step 2: @21st-ui Generate modern header alternatives
-@21st-ui Create 2-3 modern header designs for a data dashboard 
-showing economic indicators. Include:
-- Clean title area
-- Multi-category navigation (COMBUSTÍVEIS, ALIMENTOS, MERCADOS)
-- Product selector that works on mobile
-- Optional: breadcrumb or quick-access buttons
+**Output esperado:**
 
-Output: Design mockups with code
-
-Step 3: @design-taste-frontend Polish chosen design
-- Remove templated feeling
-- Add visual refinement
-- Ensure brand consistency
-```
-
-### 3.2 - Market Indicators Section
-**Quando:** Week 3-4
-**Skills:** `@design-taste-frontend` + `@impeccable` + `@21st-ui`
-
-```
-Current state: 4 indicator cards (Dólar, Selic, Ibovespa, IPCA)
-with live quotes shown separately
-
-Problems to solve:
-- Too many disparate UI elements
-- Live quote positioning not integrated
-- Mobile readability of numbers
-- Indicator colors inconsistent
-
-Step 1: @design-taste-frontend
-What would make these indicators feel premium but data-focused?
-- Should we use big numbers (like Bloomberg)?
-- Trend indicators (up/down arrows)?
-- Sparkline charts?
-- Real-time pulse animation?
-
-Step 2: @21st-ui Generate refined indicator designs
-@21st-ui Design modern financial indicator cards showing:
-- Large current value
-- Change from period start
-- Trend visualization (mini chart or arrow)
-- "Updated X minutes ago" badge
-- Works on mobile (stacked vs. grid)
-
-Step 3: Implement with shadcn/ui if available
-- Use Card component
-- Custom number formatting
-- Smooth transitions
-```
-
-### 3.3 - Comparison Section (ERA vs AGORA)
-**Quando:** Week 4
-**Skills:** `@impeccable` + `@improve-animations`
-
-```
-Current state: Side-by-side comparison with bars, percentages
-
-Issues:
-- Bars sometimes hard to compare visually
-- Too much text/numbers on mobile
-- Could use animation when switching products
-
-Step 1: @impeccable
-- What's the clearest way to show "before → after"?
-- Should bars be horizontal or vertical?
-- Color coding for up/down?
-- Mobile layout strategy?
-
-Step 2: @improve-animations
-Add delightful interactions when:
-- User switches products
-- Bars animate to new values
-- Text values transition with numbers
-- Mobile tap reveals more detail
-
-Step 3: Implement
-- Smoother transitions
-- Stagger animations for mobile
-- Better color usage (green for up, red for down)
-```
-
-### 3.4 - News & Timeline Section
-**Quando:** Week 4-5
-**Skills:** `@impeccable` + `@design-taste-frontend`
-
-```
-Current state: News cards + timeline with event markers
-
-Issues:
-- News cards look template-y
-- Timeline markers on small screens unclear
-- Date formatting inconsistent
-
-Step 1: @impeccable
-- How to make news feel fresh, not dated?
-- Timeline on mobile - what's the best UX?
-- Metadata (source, date) hierarchy?
-
-Step 2: @design-taste-frontend
-Make news section feel like premium journalism:
-- Better typography for headlines
-- Source/date treatment
-- Card depth and spacing
-- Hover states
-
-Step 3: Implement refinements
-- Better visual hierarchy
-- Consistent spacing
-- Improved mobile layout
-```
-
-### 3.5 - Typography & Spacing Refresh
-**Quando:** Week 5
-**Skills:** `@impeccable` + `@design-taste-frontend`
-
-```
-Step 1: @impeccable - Type audit
-- Font sizes: are they sufficient?
-- Line heights: readable?
-- Font weights: hierarchy clear?
-- Spacing between elements: consistent grid?
-
-Step 2: @design-taste-frontend
-Polish typography:
-- Upgrade font if needed (current good?)
-- Better type scale (heading sizes)
-- Improved line spacing
-- Better use of weights for hierarchy
-
-Step 3: Implement
-- Update CSS variables
-- Test all text on mobile
-- Verify contrast ratios
-```
+- Mapa conceitual da página com fluxo de informação
+- Hierarquia de importância de cada seção
+- Oportunidades de integração (notícia × gráfico, indicador × câmbio, etc.)
+- Solução para múltiplas frequências de dados
 
 ---
 
-## Fase 4: POLISH & INTERACTIONS (Semana 5-6)
+### 3.2 — Comparison Section (Era × Agora)
 
-### 4.1 - Micro-interactions
-**Quando:** Week 5
-**Skill:** `@improve-animations` + `@review-animations`
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+A comparação "Era vs Agora" é uma das narrativas principais. Deve comunicar rapidamente:
 
 ```
-Where to add motion:
-1. Product selector - smooth transitions
-2. Comparison bar animations - value changes
-3. Number counters - animate from old to new value
-4. Hover states - buttons, links, cards
-5. Loading states - skeleton screens with pulse
-6. Transitions between sections - smooth fade/slide
+ERA (último período fechado)
+R$ X
 
-Step 1: @improve-animations
-Where would motion enhance without overwhelming?
-- Keep it subtle (150-300ms)
+AGORA (última cotação disponível)
+R$ Y
+
+VARIAÇÃO
++X%
+```
+
+E quando apropriado:
+
+```
+"Isso representava X% do salário mínimo"
+```
+
+**Tarefas:**
+
+1. Definir visualmente como essa comparação é mais clara que barras lado-a-lado
+2. Planejar animações quando usuário muda produto
+3. Estratégia mobile (menos espaço, como não perder clareza?)
+4. Como representar tipos diferentes: preços (R$), taxas (%), índices (pontos), câmbio (paridade)
+
+**Output esperado:**
+
+- Definição visual clara da comparação
+- Especificação de animações (não implementar)
+- Mobile strategy
+- Como adaptar para diferentes tipos de dados
+
+---
+
+### 3.3 — Market Indicators Redesign
+
+**Skills:** `@design-taste-frontend` + `@impeccable`
+
+Dólar, Selic, Ibovespa, IPCA não são "produtos" — são **indicadores econômicos**.
+
+**Desafios:**
+
+- Dólar: cotação diária (R$/USD)
+- Selic: taxa oficial (%, frequência de mudança irregular)
+- Ibovespa: índice de bolsa (pontos, dias úteis)
+- IPCA: índice de inflação (%, mensal)
+- Salário Mínimo: política pública (R$, anual com reajustes ocasionais)
+
+Cada um possui frequência, fonte e significado diferentes.
+
+**Tarefas:**
+
+1. Definir como visualizar "Como estava o Brasil?" (fotografia mensal):
+   - Mostra Dólar, Selic, Ibovespa, IPCA, Salário Mínimo ao mesmo tempo
+   - Para um período específico
+   - Permite comparação "Era vs Agora" em múltiplos indicadores
+
+2. Respeitar frequências diferentes sem confundir o usuário
+3. Deixar claro qual é a fonte, qual é a atualização mais recente
+4. Planejar "cotação ao vivo" (selo de "atualizado em")
+
+**Output esperado:**
+
+- Visual spec de como cada indicador é apresentado
+- "Como estava o Brasil?" (fotografia mensal de múltiplos indicadores)
+- Estratégia para "cotação ao vivo" sem parecer propaganda
+- Como integrar com timeline
+
+---
+
+### 3.4 — Editorial Timeline & News Integration
+
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+Notícias e eventos históricos não devem ser um bloco separado. Devem estar integrados à narrativa.
+
+**Conceitualmente, explorar:**
+
+1. **Notícias próximas ao gráfico:**
+   - Quando usuário passa mouse em um período, aparecem notícias/eventos relevantes?
+   - Como não fica confuso?
+
+2. **Timeline como elemento visual:**
+   - Trilho horizontal com marcadores de eventos?
+   - Como navegar por período via timeline?
+
+3. **"Arquivo da época":**
+   - Ao selecionar um período, mostra notícias contemporâneas?
+   - Contexto histórico do "que estava acontecendo naquele mês"?
+
+4. **Notícias como cards editoriais:**
+   - Se notícia vem recente, onde mora na página?
+   - Como se integra com comparação/gráfico?
+
+**Regras críticas:**
+
+- **Sem causalidade inventada:** correlação temporal ≠ causa
+- **Fonte sempre visível:** veículo, data, link
+- **Recentes vs. históricas:** diferenciação clara
+- **Verificáveis:** nunca inventado, sempre com fonte real
+
+**Output esperado:**
+
+- Especificação conceitual de como notícias se integram
+- Múltiplas alternativas exploradas (não decidir ainda qual é a "certa")
+- Design sketches (conceitual, não polido)
+- Como garantir não parecer "news aggregation" mas "contexto editorial"
+
+---
+
+### 3.5 — Header & Navigation Redesign
+
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+Refinar o cabeçalho e navegação para refletir editorial, não dashboard.
+
+**Tarefas:**
+
+1. Título/subtítulo comunica "data journalism"?
+2. Navegação entre categorias (combustíveis, alimentos, mercados) é intuitiva?
+3. Seletor de produto mobile-friendly?
+4. Breadcrumb/contexto claro de onde o usuário está?
+
+**Output esperado:**
+
+- Header redesign spec
+- Navigation patterns
+- Mobile treatment
+- Micro-interactions spec (não implementar)
+
+---
+
+## FASE 4: Editorial Experience & Data Visualization
+
+**Quando:** Após aprovação da Fase 3
+
+**Objetivo:** Definir visualizações e padrões específicos
+
+### 4.1 — Graph & Data Visualization Spec
+
+**Skills:** `@design-taste-frontend` + `@impeccable`
+
+Como cada tipo de dado é visualizado:
+
+- **Séries de preço/taxa:** linhas, barras, sparklines?
+- **Comparação Era/Agora:** barras, números grandes, outros padrões?
+- **Múltiplos indicadores:** como não fica caótico?
+- **Timeline visual:** como inserir eventos no gráfico?
+
+**Output esperado:**
+
+- Spec de como cada tipo de dado é visualizado
+- Color coding guide (manter neutralidade)
+- Quando usar qual visualização
+
+---
+
+### 4.2 — Typography & Readability
+
+**Skills:** `@impeccable` + `@design-taste-frontend`
+
+Garantir que a leitura de dados + narrativa seja fluida:
+
+- Font sizes para diferentes contextos (headline, body, label, metadata)
+- Line heights para legibilidade
+- Contrast ratios WCAG AA
+- Hierarquia clara
+
+**Output esperado:**
+
+- Typography spec refinada
+- Test en diferentes tamanhos de tela
+- Line height/spacing for readability
+
+---
+
+## FASE 5: Interactions, Accessibility & Mobile
+
+**Quando:** Após aprovação da Fase 4
+
+**Objetivo:** Garantir experiência fluida e acessível
+
+### 5.1 — Micro-interactions
+
+**Skills:** `@improve-animations` + `@review-animations`
+
+Onde adicionar movimento sem distrair:
+
+- Produto selector → smooth transition
+- Comparison bar animation → value changes
+- Number counters → animação suave
+- Hover states → buttons, links, cards
+- Timeline navigation → reveal events
+
+**Restrições:**
+
+- Subtle (150-300ms)
 - Consistent easing
-- Mobile: reduce motion for performance
+- Mobile: respeitar `prefers-reduced-motion`
+- 60fps (não travar)
 
-Step 2: @review-animations
-Review all animations for:
-- Consistency
-- Performance (60fps)
-- Accessibility (respect prefers-reduced-motion)
-- Mobile impact
-```
+**Output esperado:**
 
-### 4.2 - Accessibility Deep Dive
-**Quando:** Week 6
-**Skill:** `@impeccable` (accessibility focus)
+- Animation spec por elemento
+- Performance guardrails
+- Accessibility checklist
 
-```
-@impeccable Run accessibility audit:
-1. WCAG AA compliance
-2. Color contrast ratios
-3. Focus indicators visibility
-4. Form labels and error messages
-5. Keyboard navigation
-6. Screen reader friendliness
-7. Mobile touch targets (44x44px minimum)
-8. Reduced motion preferences respected
+---
 
-Create checklist of fixes needed
-```
+### 5.2 — Accessibility Deep Dive
 
-### 4.3 - Mobile-First Refinement
-**Quando:** Week 6
-**Skill:** `@mobile-native` + `@impeccable`
+**Skills:** `@impeccable` (accessibility focus)
 
-```
-@mobile-native Optimize for mobile users:
-- Touch-friendly sizes
-- Readable at mobile sizes
+- WCAG AA compliance completo
+- Focus indicators visibility
+- Keyboard navigation end-to-end
+- Screen reader testing
+- Touch targets 44x44px
+- Color contrast
+- Form labels
+- Error messages
+
+**Output esperado:**
+
+- Accessibility checklist
+- Fixes needed
+- Testing protocol
+
+---
+
+### 5.3 — Mobile Experience
+
+**Skills:** `@mobile-native` + `@impeccable`
+
+- Touch-friendly interaction sizes
+- Readable at 375px width
 - Gesture interactions where appropriate
-- Bottom navigation for primary actions?
-- Tap-to-reveal for more details
+- Stacked layout clarity
+- Tap-to-reveal strategy
 
-Test all interactions on actual devices
-```
+**Output esperado:**
+
+- Mobile design spec
+- Testing protocol
 
 ---
 
-## Fase 5: IMPLEMENTATION (Semana 6-8)
+## FASE 6: Implementation
 
-### 5.1 - Convert to shadcn/ui Components
-**Quando:** Week 6-7
-**Skill:** `@pick-ui-library` (confirm shadcn/ui is right)
+**Quando:** Após aprovação de Fases 1-5
 
-```
-Step 1: @pick-ui-library
-For CUSTAVA QUANTO?, should we use shadcn/ui or keep custom?
-- Pros: consistency, accessibility built-in, faster dev
-- Cons: need to customize heavily for data viz
-- Recommendation?
+**Objetivo:** Converter designs em código
 
-Step 2: Component-by-component conversion
-- Card component
-- Button variants
-- Badge/tag for indicators
-- Accordion for methodology
-- Responsive grid system
+### 6.1 — Component Library Decision
 
-Step 3: Test with real data
-- Ensure responsive at all sizes
-- Performance impact?
-```
+**Antes de codificar:**
 
-### 5.2 - Code Implementation
-**Quando:** Week 7-8
+Não assumir que todo o produto será shadcn/ui. Diferenciar:
 
-Tasks:
-- [ ] Update CSS with new color palette
+**COMPONENTES DE UI (candidatos a shadcn/ui):**
+- Buttons
+- Inputs & Selects
+- Tabs
+- Accordion
+- Dialogs
+- Badges
+- Tables
+
+**COMPONENTES EDITORIAIS/DATA VIZ (provavelmente custom):**
+- Hero section
+- Comparação Era/Agora
+- Gráficos/sparklines
+- Timeline
+- Indicadores
+- News cards
+- Visualizações customizadas
+
+**Decisão:** Qual biblioteca usar para quê?
+
+**Output esperado:**
+
+- Recomendação: shadcn/ui para UI, custom para data viz
+- Path de implementação
+- Dependency choices
+
+---
+
+### 6.2 — Code Implementation
+
+**Tarefas:**
+
+- [ ] Update CSS com nova paleta de cores
 - [ ] Update typography scales
-- [ ] Update spacing/grid system
+- [ ] Update spacing/grid
 - [ ] Add transitions/animations
-- [ ] Implement new component designs
+- [ ] Implement component designs
 - [ ] Update responsive breakpoints
-- [ ] Test on mobile/tablet/desktop
-- [ ] Accessibility testing
+- [ ] Mobile/tablet/desktop test
+
+**Por componente:**
+
+1. Header & Navigation
+2. Market Indicators
+3. Comparison Section
+4. Timeline & News
+5. Supporting sections
 
 ---
 
-## Fase 6: REVIEW & REFINEMENT (Semana 8-9)
+## FASE 7: Review & QA
 
-### 6.1 - Final Visual Review
-**Quando:** Week 8
+**Quando:** Após implementação
+
+### 7.1 — Final Visual Review
+
 **Skills:** `@impeccable` + `@design-taste-frontend`
 
-```
-@impeccable Final design review:
-1. Everything feels cohesive?
-2. No visual jarring
-3. Consistent spacing/sizing
-4. Good use of hierarchy
-5. Accessibility still 100%?
+- Feels cohesive?
+- No jarring transitions?
+- Spacing/sizing consistent?
+- Hierarchy works?
+- Accessibility still 100%?
+- Neutral visual language maintained?
 
-@design-taste-frontend Make final polish passes
-- Any bland spots to enliven?
-- Should we be bolder anywhere?
-- Final color/contrast check
-```
+---
 
-### 6.2 - Performance & Interaction Review
-**Quando:** Week 8
+### 7.2 — Performance & Animation QA
+
 **Skills:** `@review-animations`
 
-```
-@review-animations Final QA:
 - All animations smooth (60fps)?
 - Transitions consistent?
-- Respects prefers-reduced-motion?
+- `prefers-reduced-motion` respected?
 - Mobile performance good?
-```
 
-### 6.3 - Cross-browser & Device Testing
-**Quando:** Week 9
+---
 
-Test:
+### 7.3 — Cross-browser & Device Testing
+
 - [ ] Chrome, Firefox, Safari, Edge
 - [ ] iPhone SE, iPhone 14, iPad, Android
 - [ ] Tablet landscape/portrait
-- [ ] Desktop (1920px, 1440px)
-- [ ] Dark mode (if added)
+- [ ] Desktop (1440px, 1920px)
+- [ ] Keyboard navigation
+- [ ] Touch interaction
+- [ ] Screen reader (NVDA, JAWS)
+
+---
+
+## Success Criteria
+
+### Editorial & Narrative
+✅ User understands "what is this?" in first 5 seconds
+✅ Page has clear narrative flow (Mostrar → Comparar → Explicar → Contextualizar → Explorar)
+✅ Data, gráficos, contexto parecem partes da mesma experiência
+✅ Notícias não parecem um bloco genérico
+✅ Timeline integrada, não separada
+✅ Sente como "data journalism", não "financial dashboard"
+
+### Comprehension & Data Literacy
+✅ 5-second comprehension test passes
+✅ 30-second comprehension test passes
+✅ 2-minute exploration test passes
+✅ Units always clear (R$, %, pontos)
+✅ Time periods clearly identified
+✅ Data frequency/source understandable
+✅ Nominal vs real distinguido quando relevante
+✅ Índices não confundidos com preços
+
+### Visual Design
+✅ No templated feeling
+✅ Clear visual hierarchy
+✅ Consistent spacing/colors
+✅ Professional, editorial appearance
+✅ Visual language is neutral (no implicit judgment through color)
+
+### Accessibility
+✅ WCAG AA compliant
+✅ 100% keyboard navigable
+✅ Screen reader friendly
+✅ Touch targets 44x44px
+✅ Color contrast OK
+
+### Performance & Interaction
+✅ 60fps animations
+✅ Mobile-optimized
+✅ Fast load times
+✅ Smooth transitions
+✅ Reduced motion respected
+
+### Functionality
+✅ All existing features work
+✅ Daily data updates work
+✅ Timeline/news integration works
+✅ All products render correctly
+✅ Mobile/tablet/desktop responsive
 
 ---
 
 ## Skills Usage Matrix
 
-| Skill | Purpose | When | Output |
-|-------|---------|------|--------|
-| `@impeccable` | Comprehensive audit, design review, accessibility | 1.1, 2.2, 3.x, 6.1 | Scored findings, recommendations |
-| `@design-taste-frontend` | Polish, refinement, premium feel | 2.1, 3.x, 6.1 | Design direction, visual polish |
-| `@21st-ui` | Rapid prototyping, component generation | 3.1, 3.2 | Design mockups with code |
-| `@improve-animations` | Add micro-interactions, motion design | 4.1 | Animation specs, code |
-| `@review-animations` | QA animations, performance | 4.1, 6.2 | Animation audit report |
-| `@mobile-native` | Mobile UX optimization | 4.3 | Mobile-specific recommendations |
-| `@pick-ui-library` | Component library decision | 5.1 | Library recommendation |
-| `@minimalist-ui` | Simpler design approach | 2.1 (optional) | Minimalist design direction |
+| Skill | Primary Purpose | Used in Phases | Output |
+|-------|-----------------|---|--------|
+| `@impeccable` | Audit, review, design guidance, accessibility | 1, 2, 3, 4, 5, 7 | Scored findings, recommendations |
+| `@design-taste-frontend` | Editorial direction, refinement, polish | 2, 3, 4, 7 | Design direction, visual guidelines |
+| `@21st-ui` | UI component ideas (optional) | 3 (if needed) | Component mockups |
+| `@improve-animations` | Micro-interactions spec | 5 | Animation specs |
+| `@review-animations` | Animation QA | 7 | Animation audit |
+| `@mobile-native` | Mobile UX optimization | 5 | Mobile-specific recommendations |
+| `@minimalist-ui` | Editorial design direction (optional) | 2 (if needed) | Minimalist direction |
+
+**Important:**
+
+- Skills should **guide**, not **dictate**. Final decisions remain with the project.
+- `@impeccable` audits and validates, doesn't impose aesthetics.
+- `@design-taste-frontend` works within editorial direction, doesn't set it alone.
+- `@21st-ui` is for UI components only, not the entire product look/feel.
 
 ---
 
 ## Timeline Overview
 
 ```
-Week 1-2:   📊 AUDIT
-            └─ @impeccable comprehensive review
+Phase 0:  📖 PRODUCT EXPERIENCE
+          └─ Editorial direction & narrative arc
 
-Week 2-3:   🎨 DIRECTION
-            ├─ @design-taste-frontend direction
-            └─ @impeccable design tokens
+Phase 1:  📊 AUDIT
+          └─ Experience + Visual + Accessibility
 
-Week 3-5:   🔧 COMPONENTS
-            ├─ Header & Navigation
-            ├─ Market Indicators
-            ├─ Comparison Section
-            ├─ News & Timeline
-            └─ Typography & Spacing
+Phase 2:  🎨 DESIGN DIRECTION
+          └─ Editorial voice + Design tokens
 
-Week 5-6:   ✨ POLISH
-            ├─ @improve-animations micro-interactions
-            ├─ @impeccable accessibility
-            └─ @mobile-native mobile optimization
+Phase 3:  🏗️ COMPONENT ARCHITECTURE
+          └─ Information layout + Specific components
 
-Week 6-8:   💻 IMPLEMENTATION
-            ├─ Convert to shadcn/ui
-            ├─ CSS updates
-            ├─ Component development
-            └─ Testing
+Phase 4:  📈 EDITORIAL & DATA VIZ
+          └─ Graphs, typography, readability
 
-Week 8-9:   🎯 REVIEW
-            ├─ Final visual review
-            ├─ Animation QA
-            └─ Cross-browser testing
+Phase 5:  ✨ INTERACTIONS & ACCESSIBILITY
+          └─ Animations, WCAG, mobile
 
-┌──────────────────────────────────────┐
-│ Total: ~8-9 weeks for full redesign  │
-│ Or: Incremental 2-week sprints       │
-└──────────────────────────────────────┘
+Phase 6:  💻 IMPLEMENTATION
+          └─ Code conversion
+
+Phase 7:  🎯 REVIEW & QA
+          └─ Final testing
 ```
+
+**Estimated:** 10-12 weeks for full evolution
+
+**Or:** Adopt incremental sprint approach (2 weeks per phase)
 
 ---
 
 ## Sprint-Based Alternative (Incremental)
 
-If full redesign is too much, do 2-week sprints:
+If full redesign is too much, do 2-week sprints per phase:
 
-### Sprint 1: Header & Navigation
-- Audit header only
-- Design new header
-- Implement
-- Test
+### Sprint 0: Product Experience (1 sprint)
+- Audit experience
+- Define narrative
+- Sketch information architecture
 
-### Sprint 2: Market Indicators
-- Polish indicator cards
-- Add animations
-- Responsive refinement
+### Sprint 1: Audit (1 sprint)
+- Experience audit
+- Visual + accessibility audit
 
-### Sprint 3: Comparison Section
-- Redesign comparison view
-- Add animations
-- Mobile optimization
+### Sprint 2: Direction (1 sprint)
+- Editorial design direction
+- Design tokens
 
-### Sprint 4: News & Timeline
-- Refresh news cards
-- Timeline UX improvement
-- Accessibility pass
+### Sprint 3-4: Architecture & Components (2 sprints)
+- Information layout
+- Component specs (comparison, indicators, header, timeline, news)
 
-### Sprint 5: Typography & Polish
-- System-wide refinements
-- Final accessibility
-- Cross-browser testing
+### Sprint 5: Data Viz & Editorial (1 sprint)
+- Graph specs
+- Typography
 
----
+### Sprint 6: Interactions (1 sprint)
+- Animations
+- Accessibility
+- Mobile
 
-## Success Criteria
+### Sprint 7: Implementation (1 sprint)
+- Code
 
-✅ **Visual**
-- No templated feeling
-- Clear visual hierarchy
-- Consistent spacing/colors
-- Professional appearance
-
-✅ **Functional**
-- All existing features work
-- Faster perceived performance
-- Better mobile experience
-
-✅ **Accessibility**
-- WCAG AA compliant
-- 100% keyboard navigable
-- Screen reader friendly
-
-✅ **Performance**
-- 60fps animations
-- Mobile-optimized
-- Fast load times
+### Sprint 8: QA (1 sprint)
+- Testing
 
 ---
 
-## Starting Points by Interest
+## Current Status
 
-**If you want fast results:** Start with Sprint 1 (Header)
-**If you want comprehensive:** Do full 8-week plan
-**If you want incremental:** Follow sprint-based approach
-**If you want specific area:** Jump to that phase
+### ⏹️ PLANNING ONLY
+
+No visual changes, no code changes, no skills executed.
+
+**Next step:** Review and approve this plan before moving to Phase 0.
+
+Once approved:
+1. Execute Phase 0 (Product Experience & Editorial Direction)
+2. Share findings
+3. Proceed with Phase 1 (Audit) if direction is clear
+
+**This plan is a blueprint, not a checklist to execute immediately.**
+
+Each phase requires approval before proceeding to the next.
 
 ---
 
-**Next step:** Schedule Week 1 audit with `@impeccable`
+## Key Differences from Previous Plan
 
-Ready to start? Just tag the appropriate skill with the specific task! 🚀
+- **Focus shifted:** From "redesign dashboard components" to "create data journalism experience"
+- **Phase 0 added:** Product experience BEFORE visual audit
+- **Narrative emphasis:** Explicit storytelling progression built in
+- **Information architecture:** How data relates, not just how it looks
+- **Editorial integration:** News/timeline not separate, integral to narrative
+- **Principles first:** Design principles guide all decisions
+- **Skills reorganized:** For supporting editorial vision, not imposing aesthetics
+- **Neutrality explicit:** Visual language must not imply political judgment
+- **Component architecture:** Distinguish UI components from editorial/data viz
+- **Success criteria:** Now include narrative, data literacy, editorial quality
+- **Timeline:** Longer, more thoughtful, emphasizes planning over execution
+
+---
+
+**Última atualização:** 23/09/2026
+**Status:** Aguardando aprovação do plano
