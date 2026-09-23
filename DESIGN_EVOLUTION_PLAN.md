@@ -104,7 +104,7 @@ Planejar a arquitetura editorial da experiência.
    - **Indicador de índice** (pontos): Ibovespa
    - **Indicador de câmbio** (paridade): Dólar
    - **Contexto histórico** (notícia, evento): para entender o "porquê"
-   - **Métrica de consumo** (poder de compra): salário mínimo como denominador
+   - **Indicador de renda / referência de poder de compra**: Salário Mínimo (R$)
 
 2. Definir conceitualmente como essas categorias se relacionam.
 
@@ -206,7 +206,7 @@ EXPERIENCE ARCHITECTURE:
 5. Are products/indicators/context presented in a logical order?
 6. Is the "Era vs Agora" comparison immediately understandable?
 7. Does the timeline/news feel integrated or tacked-on?
-8. Can the user answer "why did this change?" from the page?
+8. Can the user understand what happened around the period in which this changed?
 
 CONTENT CLARITY:
 1. Are data sources clear and consistent?
@@ -304,7 +304,7 @@ Avoid: looks like Bloomberg, looks like TradingView, looks like Finviz.
 Aspire to: feels like FT, Economist, or NYT data section.
 
 CONSTRAINTS:
-- Already have daily market data (real-time)
+- Already have frequently updated market data, with the latest available quote clearly timestamped
 - Need notícias/timeline integrated (not separate section)
 - Mobile-first responsive
 - No dark mode requirement (light/editorial is the direction)
@@ -414,6 +414,8 @@ Planejar como as seções da página se relacionam visualmente. Não desenhar ai
 │ Não um bloco separado                           │
 └─────────────────────────────────────────────────┘
 ```
+
+**⚠️ Importante:** Esta estrutura é uma hipótese inicial de arquitetura, não uma decisão final de layout. A Fase 3 deve explorar e comparar alternativas antes de definir a estrutura final da experiência.
 
 **Tarefas:**
 
@@ -536,6 +538,7 @@ Notícias e eventos históricos não devem ser um bloco separado. Devem estar in
 - **Fonte sempre visível:** veículo, data, link
 - **Recentes vs. históricas:** diferenciação clara
 - **Verificáveis:** nunca inventado, sempre com fonte real
+- **Temporal proximity ≠ causality:** A presença de uma notícia na timeline não significa que ela tenha relação causal com o indicador exibido. A proximidade temporal deve ser apresentada como contexto, não como explicação causal.
 
 **Output esperado:**
 
