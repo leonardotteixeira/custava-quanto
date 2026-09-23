@@ -651,7 +651,7 @@ function periodShapes(xIni, xFim, cutoff) {
   ];
 }
 // Telas estreitas: rótulos curtos, embaixo, e sem rótulos na ponta das linhas.
-const estreito = () => window.innerWidth < 640;
+const estreito = () => window.innerWidth <= 760;
 function periodAnnotations(xIni, cutoff) {
   const f = { size: 11, color: cssVar("--ink-soft"), family: "Inter, sans-serif" };
   const e = estreito();
