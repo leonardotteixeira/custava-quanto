@@ -207,11 +207,15 @@ function renderSelector() {
           }
 
           if (!isNil(delta)) {
+            // A cor tem que bater com o sinal exibido, sempre (Status Pair
+            // Rule) — "flat" só quando o valor JÁ ARREDONDADO na tela é
+            // zero, nunca por um limiar arbitrário que deixa um "−2%" com
+            // aparência de "nada mudou".
+            const digits = isRate ? 1 : 0;
+            const rounded = Math.round(Math.abs(delta) * 10 ** digits) / 10 ** digits;
             const sign = delta > 0 ? "+" : delta < 0 ? "−" : "";
-            const cls = delta > 3 ? "up" : delta < -3 ? "down" : "flat";
-            const label = isRate
-              ? `${sign}${fmtNum(Math.abs(delta), 1)} p.p.`
-              : `${sign}${fmtNum(Math.abs(delta), 0)}%`;
+            const cls = rounded === 0 ? "flat" : delta > 0 ? "up" : "down";
+            const label = isRate ? `${sign}${fmtNum(rounded, 1)} p.p.` : `${sign}${fmtNum(rounded, 0)}%`;
             deltaHtml = `<span class="chip-delta chip-delta--${cls}">${label}</span>`;
           }
         }
@@ -376,17 +380,17 @@ function renderLiveQuote(produto) {
     // Brasília, com a própria fonte já avisando que pode não ser tempo real.
     const dataHora = cot.data_hora ? cot.data_hora.slice(0, 16).replace("T", " ") : "";
     const [data, hora] = dataHora.split(" ");
-    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação mais recente (${data ? fmtDataCurta(data) : "—"}${hora ? `, ${hora}` : ""}): <strong>${fmtNum(cot.pontos, 0)} pontos</strong> <span class="live-note">— ${cot.fonte ? `fonte: ${cot.fonte}. ` : ""}${cot.nota || ""}</span>`;
+    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação mais recente (${data ? fmtDataCurta(data) : "—"}${hora ? `, ${hora}` : ""}): <strong>${fmtNum(cot.pontos, 0)} pontos</strong> <span class="live-note">${cot.fonte ? `fonte: ${cot.fonte}. ` : ""}${cot.nota || ""}</span>`;
     return;
   }
 
   if (produto.tipo === "taxa") {
     const vigente = cot.vigente_desde ? ` · <strong>vigente desde ${fmtDataCurta(cot.vigente_desde)}</strong> (última decisão do Copom)` : "";
-    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Taxa Selic hoje (${fmtDataCurta(cot.data)}): <strong>${fmtNum(cot.valor, 2)}% ao ano</strong>${vigente} <span class="live-note">— é a meta definida pelo Copom (Selic-meta), não a taxa efetiva diária do mercado</span>`;
+    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Taxa Selic hoje (${fmtDataCurta(cot.data)}): <strong>${fmtNum(cot.valor, 2)}% ao ano</strong>${vigente} <span class="live-note">é a meta definida pelo Copom (Selic-meta), não a taxa efetiva diária do mercado</span>`;
     return;
   }
 
-  el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação de hoje (${fmtDataCurta(cot.data)}): <strong>${fmtBRL.format(cot.valor)}</strong> <span class="live-note">— valor do dia, não é a média mensal usada no restante da página</span>`;
+  el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação de hoje (${fmtDataCurta(cot.data)}): <strong>${fmtBRL.format(cot.valor)}</strong> <span class="live-note">valor do dia, não é a média mensal usada no restante da página</span>`;
 }
 
 function renderStepNumbers() {
@@ -405,11 +409,14 @@ function renderStickyBar(produto) {
   const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
   const eraRef = eraReferencia(produto.serie_mensal);
   document.getElementById("sticky-product").textContent = txt(state.product).titulo;
+  // Compacto de propósito: a unidade (R$/litro, % ao ano, pts) já está no
+  // título ao lado (sticky-product); repeti-la aqui é o que estourava a
+  // barra em telas estreitas e forçava o corte em "R$ 4,...".
   document.getElementById("sticky-value").textContent =
-    produto.tipo === "taxa" ? `${fmtNum(eraRef.taxa_aa, 2)}% → ${fmtNum(ultimo.taxa_aa, 2)}% ao ano (${eraRef.taxa_aa <= ultimo.taxa_aa ? "+" : "−"}${fmtNum(Math.abs(ultimo.taxa_aa - eraRef.taxa_aa), 2)} p.p.)`
-      : produto.tipo === "pontos" ? `${fmtNum(eraRef.pontos, 0)} → ${fmtNum(ultimo.pontos, 0)} pts (${fmtPct((ultimo.pontos / eraRef.pontos - 1) * 100)})`
-      : temPreco(produto) ? `${fmtBRL.format(eraRef.preco_nominal)} → ${fmtBRL.format(ultimo.preco_nominal)} ${unidadeInfo(produto).por} (${fmtPct((ultimo.preco_nominal / eraRef.preco_nominal - 1) * 100)})`
-      : `índice ${fmtNum(eraRef.indice_relativo, 1)} → ${fmtNum(ultimo.indice_relativo, 1)} (${fmtPct((ultimo.indice_relativo / eraRef.indice_relativo - 1) * 100)})`;
+    produto.tipo === "taxa" ? `${fmtNum(eraRef.taxa_aa, 2)}% → ${fmtNum(ultimo.taxa_aa, 2)}% (${eraRef.taxa_aa <= ultimo.taxa_aa ? "+" : "−"}${fmtNum(Math.abs(ultimo.taxa_aa - eraRef.taxa_aa), 2)} p.p.)`
+      : produto.tipo === "pontos" ? `${fmtNum(eraRef.pontos, 0)} → ${fmtNum(ultimo.pontos, 0)} (${fmtPct((ultimo.pontos / eraRef.pontos - 1) * 100)})`
+      : temPreco(produto) ? `${fmtBRL.format(eraRef.preco_nominal)} → ${fmtBRL.format(ultimo.preco_nominal)} (${fmtPct((ultimo.preco_nominal / eraRef.preco_nominal - 1) * 100)})`
+      : `${fmtNum(eraRef.indice_relativo, 1)} → ${fmtNum(ultimo.indice_relativo, 1)} (${fmtPct((ultimo.indice_relativo / eraRef.indice_relativo - 1) * 100)})`;
 }
 
 // Último mês do governo Bolsonaro na série deste produto — é a referência
@@ -510,7 +517,7 @@ function renderAnswer(produto) {
     const subiu = diffPP >= 0 ? "subiu" : "caiu";
     const infl2 = state.product === "IPCA" ? "a inflação acumulada, ponta a ponta," : `a ${term("ipca", "inflação (IPCA)")} acumulada`;
     document.getElementById("lede").innerHTML =
-      `Desde ${mEra}, a ${info.sujeito} ${subiu} <strong>${fmtNum(Math.abs(diffPP), 2)} pontos percentuais</strong> — foi de ${fmtNum(vIni, 2)}% para ${fmtNum(vFim, 2)}% ao ano. No mesmo período, ${infl2} foi de <strong>${fmtPct(inflacaoPeriodo)}</strong>.`;
+      `Desde ${mEra}, a ${info.sujeito} ${subiu} <strong>${fmtNum(Math.abs(diffPP), 2)} pontos percentuais</strong>, de ${fmtNum(vIni, 2)}% para ${fmtNum(vFim, 2)}% ao ano. No mesmo período, ${infl2} foi de <strong>${fmtPct(inflacaoPeriodo)}</strong>.`;
 
     const notaTaxa = document.getElementById("index-note");
     notaTaxa.hidden = false;
@@ -571,7 +578,7 @@ function renderAnswer(produto) {
     else if (leitura === "acima") fraseReal = `bem acima da ${term("inflacao", "inflação")} do período (${fmtPct(inflacaoPeriodo)}).`;
     else fraseReal = `abaixo da ${term("inflacao", "inflação")} do período (${fmtPct(inflacaoPeriodo)}).`;
     document.getElementById("lede").innerHTML =
-      `Desde ${mEra}, o Ibovespa ${subiu} <strong>${fmtNum(Math.abs(pct), 1)}%</strong> — foi de ${fmtNum(vIni, 0)} para ${fmtNum(vFim, 0)} pontos, ${fraseReal}`;
+      `Desde ${mEra}, o Ibovespa ${subiu} <strong>${fmtNum(Math.abs(pct), 1)}%</strong>, de ${fmtNum(vIni, 0)} para ${fmtNum(vFim, 0)} pontos, ${fraseReal}`;
 
     const notaIbov = document.getElementById("index-note");
     notaIbov.hidden = false;
@@ -646,7 +653,7 @@ function renderAnswer(produto) {
   const leitura = leituraReal(realPct);
   let fraseReal;
   if (leitura === "igual") fraseReal = `Mas os preços em geral subiram quase o mesmo: <span class="hl">descontada a ${infl}, ficou praticamente igual (${fmtPct(realPct)})</span>.`;
-  else if (leitura === "acima") fraseReal = `Mesmo <span class="hl">descontando a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais caro</span> — subiu mais que os preços em geral.`;
+  else if (leitura === "acima") fraseReal = `Mesmo <span class="hl">descontando a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais caro</span>. Subiu mais que os preços em geral.`;
   else fraseReal = pct >= 0
     ? `Mas os preços em geral subiram mais: <span class="hl">descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`
     : `<span class="hl">Descontada a ${infl}, ficou ${fmtNum(Math.abs(realPct), 1)}% mais barato</span>.`;
@@ -760,7 +767,7 @@ function renderChart() {
       yRef = serie.map((r) => r.preco_nominal); refNome = "Preço na época";
       unidadeEixo = `R$ de ${mFim} ${u.por}`;
       titulo = `Preço ${t.de} em dinheiro de hoje`;
-      subtitulo = `Todos os meses convertidos para reais de ${mFim}. Se a linha sobe, o produto ficou mais caro de verdade — não só por causa da inflação.`;
+      subtitulo = `Todos os meses convertidos para reais de ${mFim}. Se a linha sobe, o produto ficou mais caro de verdade, não só por causa da inflação.`;
       ajuda = `<strong>${term("real", "Corrigido pela inflação")}:</strong> quanto o preço de cada mês valeria em dinheiro de hoje. A linha pontilhada é o preço como estava na época, para comparar.`;
     } else {
       y = serie.map((r) => r.pct_salario_minimo); fmtY = (v) => `${fmtNum(v, 2)}%`; yaxisExtra = { ticksuffix: "%", tickformat: ",.2f" };
@@ -846,7 +853,7 @@ function renderChart() {
 
   const layout = baseLayout();
   layout.showlegend = false;
-  layout.margin = { l: 8, r: 24, t: 44, b: 40 };
+  layout.margin = { l: 8, r: 24, t: 44, b: estreito() ? 52 : 40 };
   layout.xaxis.range = [x[0], x[x.length - 1]];
   if (estreito()) layout.xaxis.dtick = "M24";
   Object.assign(layout.yaxis, yaxisExtra, { rangemode: "tozero" });
@@ -929,7 +936,7 @@ function renderPurchasingPower(produto) {
   if (!isComb) {
     const pcIni = eraRef.indice_poder_compra, pcFim = ultimo.indice_poder_compra;
     document.getElementById("pp-sub").innerHTML =
-      `Índice de quanto um ${term("salario", "salário mínimo")} rende ${t.sem} — não é uma quantidade em kg/litros, porque não há preço absoluto em R$ para este item (ver nota na abertura).`;
+      `Índice de quanto um ${term("salario", "salário mínimo")} rende ${t.sem}: não é uma quantidade em kg/litros, porque não há preço absoluto em R$ para este item (ver nota na abertura).`;
 
     const max = Math.max(pcIni, pcFim, 0);
     const linha = (r, valor, cls) => `
@@ -1179,7 +1186,7 @@ function renderContext(produto) {
     const compLabel = comp.termo ? term(comp.termo, comp.nome) : `a ${comp.nome}`;
     document.getElementById("context-answer").innerHTML = isNil(diffPP)
       ? `Em ${fmtMesAno(ultimo.ano_mes)}, a ${info.sujeito} estava em <strong>${fmtNum(vProd, 2)}%</strong> ao ano.`
-      : `Em ${fmtMesAno(ultimo.ano_mes)}, a ${info.sujeito} estava em <strong>${fmtNum(vProd, 2)}%</strong> ao ano e ${compLabel} estava em <strong>${fmtNum(vComp, 2)}%</strong> — uma diferença de <strong>${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.</strong> entre Selic e IPCA em 12 meses (uma aproximação do juro real).`;
+      : `Em ${fmtMesAno(ultimo.ano_mes)}, a ${info.sujeito} estava em <strong>${fmtNum(vProd, 2)}%</strong> ao ano e ${compLabel} estava em <strong>${fmtNum(vComp, 2)}%</strong>, uma diferença de <strong>${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.</strong> entre Selic e IPCA em 12 meses (uma aproximação do juro real).`;
 
     const swClass = { solid: "", dot: "dotted", dash: "dashed", dashdot: "dashed" };
     const strip = document.getElementById("stat-strip");
@@ -1195,12 +1202,12 @@ function renderContext(produto) {
 
     document.getElementById("context-chart-title").textContent = `${info.curto} vs. ${comp.nome}, lado a lado`;
     document.getElementById("context-chart-sub").textContent =
-      "As duas na mesma escala (% ao ano) — dá para ver quando uma supera a outra.";
+      "As duas na mesma escala (% ao ano): dá para ver quando uma supera a outra.";
     document.getElementById("context-legend").innerHTML = series.map((s) =>
       `<span class="lg-item"><span class="lg-swatch ${swClass[s.dash]}" style="border-color:${s.cor}"></span>${s.nome}</span>`).join("");
     document.getElementById("context-intro").textContent = state.product === "SELIC"
       ? "Isto é contexto, não prova de causa: a Selic é definida pelo Copom considerando várias expectativas, não só a inflação passada."
-      : "Isto é contexto, não prova de causa: a inflação reflete oferta e demanda, câmbio, safra e outros fatores — a Selic definida pelo Copom é só uma peça.";
+      : "Isto é contexto, não prova de causa: a inflação reflete oferta e demanda, câmbio, safra e outros fatores; a Selic definida pelo Copom é só uma peça.";
 
     const traces = series.map((s) => ({
       x, y: s.y, name: s.nome, type: "scatter", mode: "lines",
@@ -1270,7 +1277,7 @@ function renderContext(produto) {
     : leitura === "acima" ? "ou seja, subiu mais que os preços em geral"
     : vProd >= 0 ? "ou seja, subiu menos que os preços em geral" : "ou seja, caiu enquanto os preços em geral subiram";
   const prodLabel = isPontos ? "o Ibovespa" : `o preço ${t.de}`;
-  let resposta = `Desde ${desde}, ${prodLabel} variou <strong>${fmtPct(vProd)}</strong> e a ${term("ipca", "inflação geral (IPCA)")}, <strong>${fmtPct(vIpca)}</strong> — ${veredito}.`;
+  let resposta = `Desde ${desde}, ${prodLabel} variou <strong>${fmtPct(vProd)}</strong> e a ${term("ipca", "inflação geral (IPCA)")}, <strong>${fmtPct(vIpca)}</strong>, ${veredito}.`;
   if (produto.tipo === "combustivel") {
     const vBrent = varDe(series.find((s) => s.key === "brent"));
     const vDolar = varDe(series.find((s) => s.key === "cambio"));
@@ -1302,8 +1309,8 @@ function renderContext(produto) {
     `<span class="lg-item"><span class="lg-swatch ${swClass[s.dash]}" style="border-color:${s.cor}"></span>${s.nome}</span>`).join("");
   document.getElementById("context-intro").textContent =
     produto.tipo === "combustivel" ? "Isto é contexto, não prova de causa: a política de preços da Petrobras, os impostos e a oferta e demanda internas também pesam no preço final."
-      : produto.tipo === "cambio" ? "Isto é contexto, não prova de causa: o câmbio reage a juros, fluxo de capital estrangeiro, resultado comercial e expectativas — a Selic é só uma peça."
-      : isPontos ? "Isto é contexto, não prova de causa: o Ibovespa reflete expectativas sobre lucros das empresas, juros, câmbio e cenário internacional — não é resultado automático desses fatores."
+      : produto.tipo === "cambio" ? "Isto é contexto, não prova de causa: o câmbio reage a juros, fluxo de capital estrangeiro, resultado comercial e expectativas; a Selic é só uma peça."
+      : isPontos ? "Isto é contexto, não prova de causa: o Ibovespa reflete expectativas sobre lucros das empresas, juros, câmbio e cenário internacional, não é resultado automático desses fatores."
       : "Isto é contexto, não prova de causa: safra, clima, exportações e demanda interna também pesam no preço de cada alimento.";
 
   const traces = series.map((s) => ({
