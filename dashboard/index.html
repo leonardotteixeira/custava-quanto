@@ -8,7 +8,7 @@
 <meta name="description" content="Veja quanto as coisas custavam, quanto custam hoje e como esses preços evoluíram ao longo do tempo no Brasil." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,500..700,0..100,0..1;1,9..144,500..700,0..100,0..1&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 <link rel="stylesheet" href="styles.css" />
 </head>
@@ -30,7 +30,7 @@
   <div class="wrap sticky-row">
     <span class="sticky-product" id="sticky-product">—</span>
     <span class="sticky-value tnum" id="sticky-value"></span>
-    <a class="sticky-change" href="#seletor">Trocar produto ↑</a>
+    <a class="sticky-change" href="#seletor"><span class="sticky-change-label">Trocar produto</span> ↑</a>
   </div>
 </div>
 
@@ -107,7 +107,7 @@
           </aside>
         </div>
 
-        <p class="lede" id="lede">Desde dez/2022, o preço da gasolina comum subiu <strong>32,3%</strong>. Mesmo descontando a <button type="button" class="term" data-term="inflacao" aria-expanded="false">inflação</button>, ficou <strong>11,0% mais caro</strong> — subiu mais que os preços em geral. Hoje, 1 litro custa <strong>0,43%</strong> do <button type="button" class="term" data-term="salario" aria-expanded="false">salário mínimo</button>.</p>
+        <p class="lede" id="lede">Desde dez/2022, o preço da gasolina comum subiu <strong>32,3%</strong>. Mesmo descontando a <button type="button" class="term" data-term="inflacao" aria-expanded="false">inflação</button>, ficou <strong>11,0% mais caro</strong>. Subiu mais que os preços em geral. Hoje, 1 litro custa <strong>0,43%</strong> do <button type="button" class="term" data-term="salario" aria-expanded="false">salário mínimo</button>.</p>
         <p class="index-note" id="index-note" hidden></p>
       </article>
     </div>
@@ -173,7 +173,7 @@
         </div>
         <div id="il-clip"></div>
       </div>
-      <p class="news-disclaimer">Notícia real da época, com link para a matéria original. Mostra o que estava sendo noticiado — não é prova de causa.</p>
+      <p class="news-disclaimer">Notícia real da época, com link para a matéria original. Mostra o que estava sendo noticiado: não é prova de causa.</p>
     </div>
   </section>
 
@@ -223,10 +223,10 @@
           <button type="button" class="month-btn" id="month-next" title="Próximo mês">►</button>
         </div>
         <div class="month-pills">
-          <button type="button" class="month-pill" data-miso="2020-05-01">😷 Pandemia (Mai/20)</button>
-          <button type="button" class="month-pill" data-miso="2022-06-01">⛽ Pico Gasolina (Jun/22)</button>
-          <button type="button" class="month-pill active" data-miso="2022-12-01">🏛️ Transição (Dez/22)</button>
-          <button type="button" class="month-pill" data-miso="2023-03-01">📈 Pico Selic (Mar/23)</button>
+          <button type="button" class="month-pill" data-miso="2020-05-01">Pandemia (Mai/20)</button>
+          <button type="button" class="month-pill" data-miso="2022-06-01">Pico Gasolina (Jun/22)</button>
+          <button type="button" class="month-pill active" data-miso="2022-12-01">Transição (Dez/22)</button>
+          <button type="button" class="month-pill" data-miso="2023-03-01">Pico Selic (Mar/23)</button>
         </div>
       </div>
 
@@ -306,13 +306,13 @@
             <dt>Períodos</dt>
             <dd>Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</dd>
             <dt>Cotação de hoje (Dólar/Selic)</dt>
-            <dd>O Banco Central publica câmbio e Selic todo dia útil — bem mais rápido que o IPCA, que fecha a série mensal usada no resto da página. Por isso Dólar e Selic mostram, à parte, o valor do dia mais recente disponível.</dd>
+            <dd>O Banco Central publica câmbio e Selic todo dia útil, bem mais rápido que o IPCA, que fecha a série mensal usada no resto da página. Por isso Dólar e Selic mostram, à parte, o valor do dia mais recente disponível.</dd>
             <dt>Selic-meta × Selic efetiva</dt>
-            <dd>O dashboard usa a Selic-meta (a taxa definida pelo Copom) em todo lugar — nunca a Selic efetiva (a taxa que de fato roda no mercado overnight, que fica muito próxima da meta, mas é uma série diferente). "Vigente desde" é a data da última mudança da meta, não necessariamente a data da reunião do Copom.</dd>
+            <dd>O dashboard usa a Selic-meta (a taxa definida pelo Copom) em todo lugar, nunca a Selic efetiva (a taxa que de fato roda no mercado overnight, que fica muito próxima da meta, mas é uma série diferente). "Vigente desde" é a data da última mudança da meta, não necessariamente a data da reunião do Copom.</dd>
             <dt>Cotação mais recente (Ibovespa)</dt>
-            <dd>Vem da Yahoo Finance, não da B3 diretamente. É a última cotação que a fonte disponibiliza — não uma garantia de tempo real.</dd>
+            <dd>Vem da Yahoo Finance, não da B3 diretamente. É a última cotação que a fonte disponibiliza, não uma garantia de tempo real.</dd>
             <dt>Como estava o Brasil?</dt>
-            <dd>Fotografia de Dólar, Ibovespa, Selic, IPCA, salário mínimo e Gasolina nos mesmos dois meses (Era e Agora) do produto selecionado — todos os valores já existem em outros produtos deste dashboard; nada é recalculado para essa seção.</dd>
+            <dd>Fotografia de Dólar, Ibovespa, Selic, IPCA, salário mínimo e Gasolina nos mesmos dois meses (Era e Agora) do produto selecionado. Todos os valores já existem em outros produtos deste dashboard; nada é recalculado para essa seção.</dd>
           </dl>
         </div>
       </details>
@@ -321,12 +321,12 @@
         <summary>Fontes</summary>
         <div class="accordion-body">
           <ul>
-            <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
-            <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
-            <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619). Câmbio e Selic também trazem a cotação diária mais recente, à parte da série mensal.</li>
-            <li><strong>Yahoo Finance</strong> — <a href="https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP" target="_blank" rel="noopener">fechamento mensal e cotação mais recente do Ibovespa</a> (símbolo ^BVSP). Fonte de mercado gratuita, não a B3 diretamente — a cotação "mais recente" não é garantidamente em tempo real.</li>
-            <li><strong>Notícias</strong> — matérias reais de veículos jornalísticos, cada uma com link para a publicação original. Título, veículo e data foram conferidos automaticamente na página de origem (<code>scripts/build_news.py</code>). Fotos só aparecem quando a licença permite reprodução com crédito (Agência Brasil, CC BY 4.0).</li>
-            <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
+            <li><strong>ANP</strong>: <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
+            <li><strong>IBGE/SIDRA</strong>: <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
+            <li><strong>Banco Central (SGS)</strong>: <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619). Câmbio e Selic também trazem a cotação diária mais recente, à parte da série mensal.</li>
+            <li><strong>Yahoo Finance</strong>: <a href="https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP" target="_blank" rel="noopener">fechamento mensal e cotação mais recente do Ibovespa</a> (símbolo ^BVSP). Fonte de mercado gratuita, não a B3 diretamente; a cotação "mais recente" não é garantidamente em tempo real.</li>
+            <li><strong>Notícias</strong>: matérias reais de veículos jornalísticos, cada uma com link para a publicação original. Título, veículo e data foram conferidos automaticamente na página de origem (<code>scripts/build_news.py</code>). Fotos só aparecem quando a licença permite reprodução com crédito (Agência Brasil, CC BY 4.0).</li>
+            <li><strong>FRED (St. Louis Fed)</strong>: <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
           </ul>
         </div>
       </details>
@@ -336,10 +336,10 @@
         <div class="accordion-body">
           <ul>
             <li>ANP é uma amostra semanal por posto, com defasagem; setembro/2020 está ausente na fonte (por isso há um pequeno buraco na linha).</li>
-            <li>"Carne bovina" usa o corte Patinho como referência — o IBGE não publica uma média única de carne bovina.</li>
-            <li>Salário mínimo é o piso nacional nominal — não reflete pisos regionais mais altos em alguns estados.</li>
-            <li>Região aqui é sempre Brasil (nacional) — os dados têm quebra regional, mas esta versão não expõe esse filtro ainda.</li>
-            <li>Nada aqui prova causalidade entre política de governo e preço — ver <a href="../output/RESUMO.md" target="_blank" rel="noopener">RESUMO.md</a> para a discussão completa.</li>
+            <li>"Carne bovina" usa o corte Patinho como referência. O IBGE não publica uma média única de carne bovina.</li>
+            <li>Salário mínimo é o piso nacional nominal, não reflete pisos regionais mais altos em alguns estados.</li>
+            <li>Região aqui é sempre Brasil (nacional); os dados têm quebra regional, mas esta versão não expõe esse filtro ainda.</li>
+            <li>Nada aqui prova causalidade entre política de governo e preço. Veja <a href="../output/RESUMO.md" target="_blank" rel="noopener">RESUMO.md</a> para a discussão completa.</li>
           </ul>
         </div>
       </details>
@@ -351,7 +351,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <span class="wordmark wordmark-small">Custava quanto?</span>
-    <p>Projeto de análise de dados independente. Não representa posição de nenhum partido ou governo — os dados e a metodologia estão acima, para qualquer pessoa conferir.</p>
+    <p>Projeto de análise de dados independente. Não representa posição de nenhum partido ou governo. Os dados e a metodologia estão acima, para qualquer pessoa conferir.</p>
   </div>
 </footer>
 
