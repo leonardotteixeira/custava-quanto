@@ -10,9 +10,10 @@ individual muda de comportamento — este arquivo só os chama em sequência e
 para na primeira falha de uma etapa crítica (o build final).
 
 --rapido pula ANP e IBGE (arquivos grandes, demoram minutos) e atualiza só o
-que muda todo dia: câmbio/Selic (BCB), Ibovespa (Yahoo Finance) e a
-consolidação/notícias. Use isso para "atualizar os indicadores de mercado
-agora" sem esperar a ANP inteira baixar de novo.
+que muda todo dia: câmbio/Selic/Ibovespa (via download_mercados.py com dados
+diários desde 2019), salário mínimo, Brent, e então a consolidação/notícias.
+Use isso para "atualizar os indicadores de mercado agora" sem esperar a ANP
+inteira baixar de novo.
 """
 from __future__ import annotations
 
@@ -44,8 +45,7 @@ def main() -> None:
     args = ap.parse_args()
 
     etapas_download = [
-        ("download_bcb.py", True),
-        ("download_ibovespa.py", True),
+        ("download_mercados.py", True),  # Dólar, Selic, Ibovespa (diários desde 2019)
         ("download_salario_minimo.py", False),
         ("download_brent.py", False),
     ]
