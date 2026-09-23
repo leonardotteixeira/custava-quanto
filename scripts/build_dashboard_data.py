@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from common import DASHBOARD_DIR, DATA_PROCESSED, ensure_dirs, get_logger
+from common import DASHBOARD_DIR, DATA_PROCESSED, PERIODO_CORTE, ensure_dirs, get_logger
 
 logger = get_logger("build_dashboard_data")
 
@@ -203,6 +203,131 @@ def montar_combustiveis(salario: pd.DataFrame) -> dict:
     return produtos
 
 
+def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame) -> dict:
+    """Dólar e Selic como "produtos" próprios — não são itens que se compra
+    como gasolina ou arroz, então cada um tem sua unidade e o que faz
+    sentido calcular: Dólar tem preço em R$ (dá pra deflacionar e ver
+    quantos dólares um salário mínimo compra, igual combustível). Selic é
+    uma taxa (% ao ano) — não é preço, não se deflaciona pelo IPCA do jeito
+    normal, não tem "quantidade comprada"."""
+    bcb = pd.read_csv(DATA_PROCESSED / "bcb_contexto_mensal.csv", parse_dates=["ano_mes"])
+    ultimo_mes_comum = ipca["ano_mes"].max()
+    bcb = bcb[bcb["ano_mes"] <= ultimo_mes_comum]
+
+    # Inflação acumulada em 12 meses (não é o número-índice cru): é o que se
+    # compara com a Selic de verdade, porque as duas ficam na mesma escala
+    # ("% ao ano"). Calculada sobre o histórico completo do IPCA (não só o
+    # recorte 2019+) para o "olhar 12 meses para trás" funcionar mesmo nos
+    # primeiros meses da série.
+    ipca_ord = ipca.sort_values("ano_mes").copy()
+    ipca_ord["ipca_var_12m"] = ipca_ord["ipca_indice"] / ipca_ord["ipca_indice"].shift(12) * 100 - 100
+    ipca = ipca_ord
+
+    df = bcb.merge(ipca, on="ano_mes", how="left").merge(salario, on="ano_mes", how="left")
+    ipca_base = ipca.dropna(subset=["ipca_indice"])["ipca_indice"].iloc[-1]
+    df["fator_deflator"] = ipca_base / df["ipca_indice"]
+    df["ano_mes_periodo"] = df["ano_mes"].apply(lambda d: "Bolsonaro" if d < pd.Timestamp(PERIODO_CORTE) else "Lula")
+
+    produtos = {}
+
+    # --- Dólar: comportamento igual combustível (preço em R$, deflacionável) ---
+    dolar = df.dropna(subset=["cambio_usd_brl"]).sort_values("ano_mes").copy()
+    dolar["preco_nominal"] = dolar["cambio_usd_brl"]
+    dolar["preco_real"] = dolar["preco_nominal"] * dolar["fator_deflator"]
+    dolar["pct_salario_minimo"] = dolar["preco_nominal"] / dolar["salario_minimo"] * 100
+    dolar["unidades_por_salario_minimo"] = dolar["salario_minimo"] / dolar["preco_nominal"]
+    dolar = dolar.assign(
+        preco_indice100=_indice100(dolar["preco_nominal"]),
+        ipca_indice100=_indice100(dolar["ipca_indice"]),
+        selic_indice100=_indice100(dolar["selic_meta_aa"]),
+    )
+    serie_dolar = []
+    for _, r in dolar.iterrows():
+        serie_dolar.append({
+            "ano_mes": _fmt_mes(r["ano_mes"]),
+            "periodo": r["ano_mes_periodo"],
+            "preco_nominal": round(float(r["preco_nominal"]), 4),
+            "preco_real": round(float(r["preco_real"]), 4) if pd.notna(r["preco_real"]) else None,
+            "ipca_indice": round(float(r["ipca_indice"]), 2) if pd.notna(r["ipca_indice"]) else None,
+            "ipca_indice100": round(float(r["ipca_indice100"]), 2) if pd.notna(r["ipca_indice100"]) else None,
+            "selic_meta_aa": round(float(r["selic_meta_aa"]), 2) if pd.notna(r["selic_meta_aa"]) else None,
+            "selic_indice100": round(float(r["selic_indice100"]), 2) if pd.notna(r["selic_indice100"]) else None,
+            "salario_minimo": round(float(r["salario_minimo"]), 2) if pd.notna(r["salario_minimo"]) else None,
+            "pct_salario_minimo": round(float(r["pct_salario_minimo"]), 2) if pd.notna(r["pct_salario_minimo"]) else None,
+            "unidades_por_salario_minimo": round(float(r["unidades_por_salario_minimo"]), 2) if pd.notna(r["unidades_por_salario_minimo"]) else None,
+            "preco_indice100": round(float(r["preco_indice100"]), 2) if pd.notna(r["preco_indice100"]) else None,
+        })
+    resumo_dolar = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo_dolar[periodo] = _cohorts_para_periodo(dolar[dolar["ano_mes_periodo"] == periodo], _resumo_combustivel)
+    produtos["DOLAR"] = {
+        "nome": "Dólar comercial",
+        "tipo": "cambio",
+        "unidade": "R$/US$",
+        "serie_mensal": serie_dolar,
+        "serie_anual": _serie_anual_combustivel(dolar),
+        "resumo_periodos": resumo_dolar,
+    }
+
+    # --- Selic: taxa, não preço — schema próprio, bem mais simples ---
+    selic = df.dropna(subset=["selic_meta_aa"]).sort_values("ano_mes").copy()
+    selic = selic.assign(ipca_indice100=_indice100(selic["ipca_indice"]), taxa_aa=selic["selic_meta_aa"])
+    serie_selic = []
+    for _, r in selic.iterrows():
+        serie_selic.append({
+            "ano_mes": _fmt_mes(r["ano_mes"]),
+            "periodo": r["ano_mes_periodo"],
+            "taxa_aa": round(float(r["selic_meta_aa"]), 2),
+            "ipca_indice": round(float(r["ipca_indice"]), 2) if pd.notna(r["ipca_indice"]) else None,
+            "ipca_indice100": round(float(r["ipca_indice100"]), 2) if pd.notna(r["ipca_indice100"]) else None,
+            "ipca_var_12m": round(float(r["ipca_var_12m"]), 2) if pd.notna(r["ipca_var_12m"]) else None,
+        })
+    resumo_selic = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo_selic[periodo] = _cohorts_para_periodo(selic[selic["ano_mes_periodo"] == periodo], _resumo_taxa)
+    produtos["SELIC"] = {
+        "nome": "Taxa Selic",
+        "tipo": "taxa",
+        "unidade": "% ao ano",
+        "nota": (
+            "A Selic é a taxa básica de juros da economia brasileira, definida "
+            "pelo Copom. Não é um preço — por isso não faz sentido falar em "
+            "\"poder de compra\" ou \"quantidade comprada\" da Selic."
+        ),
+        "serie_mensal": serie_selic,
+        "serie_anual": _serie_anual_taxa(selic),
+        "resumo_periodos": resumo_selic,
+    }
+    return produtos
+
+
+def _resumo_taxa(df: pd.DataFrame) -> dict:
+    df = df.dropna(subset=["taxa_aa"]).sort_values("ano_mes")
+    if df.empty:
+        return None
+    primeiro, ultimo = df.iloc[0], df.iloc[-1]
+    return {
+        "n_meses": len(df),
+        "mes_inicio": _fmt_mes(primeiro["ano_mes"]),
+        "mes_fim": _fmt_mes(ultimo["ano_mes"]),
+        "taxa_inicio": round(float(primeiro["taxa_aa"]), 2),
+        "taxa_fim": round(float(ultimo["taxa_aa"]), 2),
+        "variacao_pp": round(float(ultimo["taxa_aa"] - primeiro["taxa_aa"]), 2),
+        "taxa_media": round(float(df["taxa_aa"].mean()), 2),
+        "taxa_min": round(float(df["taxa_aa"].min()), 2),
+        "taxa_max": round(float(df["taxa_aa"].max()), 2),
+    }
+
+
+def _serie_anual_taxa(df: pd.DataFrame) -> list[dict]:
+    df = df.dropna(subset=["taxa_aa"]).copy()
+    df["ano"] = df["ano_mes"].dt.year
+    out = []
+    for ano, g in df.groupby("ano"):
+        out.append({"ano": int(ano), "taxa_media": round(float(g["taxa_aa"].mean()), 2), "n_meses": len(g)})
+    return out
+
+
 def montar_alimentos(salario: pd.DataFrame) -> dict:
     df = pd.read_csv(DATA_PROCESSED / "cesta_basica_final.csv", parse_dates=["ano_mes"])
     df = df.merge(salario, on="ano_mes", how="left")
@@ -251,11 +376,16 @@ def main() -> None:
     ensure_dirs(DATA_PROCESSED, DASHBOARD_DIR / "data")
 
     salario = pd.read_csv(DATA_PROCESSED / "salario_minimo_mensal.csv", parse_dates=["ano_mes"])
+    ipca = pd.read_csv(DATA_PROCESSED / "ipca_geral_mensal.csv", parse_dates=["ano_mes"])
 
     dados = {
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "periodo_corte": "2023-01-01",
-        "produtos": {**montar_combustiveis(salario), **montar_alimentos(salario)},
+        "produtos": {
+            **montar_combustiveis(salario),
+            **montar_alimentos(salario),
+            **montar_indicadores(salario, ipca),
+        },
         "presidentes": {
             "Bolsonaro": {
                 "nome": "Jair Bolsonaro",
