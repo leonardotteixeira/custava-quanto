@@ -1,6 +1,7 @@
 {
   "pontos": 187422.92,
-  "data_hora": "2026-09-22T17:17:00-0300",
-  "fonte": "Yahoo Finance",
-  "nota": "Cotação mais recente disponível na fonte; não é garantidamente em tempo real."
+  "data": "2026-09-22",
+  "data_hora": "2026-09-22T23:37:50-0300",
+  "fonte": "B3 (fechamento de pregão)",
+  "nota": "Cotação de fechamento do pregão anterior ou mais recente disponível; não é garantidamente em tempo real."
 }
