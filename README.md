@@ -54,8 +54,8 @@ baixa os dados mais recentes de cada fonte, consolida e reverifica as
 notícias — parando na primeira falha de uma etapa crítica:
 
 ```bash
-.venv/Scripts/python scripts/update_data.py            # pipeline completo
-.venv/Scripts/python scripts/update_data.py --rapido    # pula ANP/IBGE (lentos); só Dólar/Selic/Ibovespa/notícias
+.venv/Scripts/python scripts/update_data.py            # pipeline completo (inclui ANP, IBGE — demorado)
+.venv/Scripts/python scripts/update_data.py --rapido    # pula ANP/IBGE; só atualiza dados de mercado (via download_mercados.py) e notícias
 ```
 
 Os passos abaixo explicam o que cada etapa faz, para quem quiser rodar (ou
@@ -64,12 +64,11 @@ depurar) uma de cada vez.
 ### 1. Baixar os dados brutos
 
 ```bash
-.venv/Scripts/python scripts/download_anp.py      # demorado (~1-2GB, vários arquivos grandes da ANP)
+.venv/Scripts/python scripts/download_anp.py        # demorado (~1-2GB, vários arquivos grandes da ANP)
 .venv/Scripts/python scripts/download_ibge.py
-.venv/Scripts/python scripts/download_bcb.py
+.venv/Scripts/python scripts/download_mercados.py   # Dólar, Selic, Ibovespa (dados diários desde 2019)
 .venv/Scripts/python scripts/download_brent.py
 .venv/Scripts/python scripts/download_salario_minimo.py
-.venv/Scripts/python scripts/download_ibovespa.py
 ```
 
 Todos os scripts são **idempotentes**: usam cache em `data/raw/` e podem ser
@@ -130,22 +129,21 @@ um sua própria leitura — não fazem sentido nas mesmas contas de "preço" ou
 - **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
   todas as contas em Python e grava o resultado pronto em
   `dashboard_data.json`; `dashboard/app.js` só formata e desenha.
-- **Cotação de hoje (Dólar/Selic)**: `scripts/download_bcb.py` também grava
-  a última cotação diária disponível de cada série em
-  `data/processed/bcb_hoje.json` — mostrada à parte da série mensal (que
-  fica limitada ao último mês fechado pelo IPCA), para acompanhar o valor
-  mais recente sem esperar o mês fechar. Para a Selic, essa cotação diária
-  também traz `vigente_desde` (a primeira data da sequência atual do mesmo
-  valor) — mostrado como "vigente desde" no dashboard, separado da data da
-  própria decisão do Copom, e sempre rotulado como **Selic-meta** (a taxa
-  definida pelo Copom), não a Selic efetiva diária do mercado.
-- **Cotação mais recente do Ibovespa**: `scripts/download_ibovespa.py`
-  também lê, do mesmo request à Yahoo Finance, a cotação mais recente
-  disponível (`regularMarketPrice`/`regularMarketTime`) e grava em
-  `data/processed/ibovespa_hoje.json`. Não é tempo real garantido — é o que
-  a Yahoo Finance publica como última cotação do símbolo, sujeito ao atraso
-  normal de fontes de mercado gratuitas; o dashboard deixa isso explícito
-  no selo, em vez de dizer "tempo real".
+- **Cotação de hoje (Dólar/Selic)**: `scripts/download_mercados.py` baixa
+  dados diários desde 2019 do Banco Central (SGS séries 1 e 432) e grava a
+  última cotação disponível em `data/processed/bcb_hoje.json`. Mostrada à
+  parte da série mensal (que fica limitada ao último mês fechado), para
+  acompanhar o valor mais recente sem esperar o mês fechar. Para a Selic,
+  essa cotação diária também traz `vigente_desde` (primeira data da sequência
+  atual do mesmo valor) — mostrado como "vigente desde" no dashboard,
+  separado da data da própria decisão do Copom, e sempre rotulado como
+  **Selic-meta** (a taxa definida pelo Copom), não a Selic efetiva diária.
+- **Cotação de hoje do Ibovespa**: `scripts/download_mercados.py` também
+  baixa dados diários do Ibovespa (B3) desde 2019, com fechamento de cada
+  pregão, e grava em `data/processed/ibovespa_hoje.json`. Não é tempo real
+  garantido — é a cotação mais recente que B3 publica, sujeito aos atrasos
+  normais de mercado; o dashboard deixa isso explícito no selo. Para
+  histórico: os meses fechados estão em `ibovespa_mensal.csv`.
 - **"Como estava o Brasil?"**: uma fotografia cross-indicador (Dólar,
   Ibovespa, Selic, IPCA, salário mínimo, Gasolina) para os meses Era/Agora
   do produto selecionado — montada em `montar_fotografia_mensal()`
