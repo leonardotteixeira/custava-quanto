@@ -186,7 +186,10 @@ function renderSelector() {
       .forEach((codigo) => {
         const prod = DATA.produtos[codigo];
         const btn = document.createElement("button");
-        btn.className = "product-chip" + (codigo === state.product ? " active" : "");
+        btn.type = "button";
+        const ativo = codigo === state.product;
+        btn.className = "product-chip" + (ativo ? " active" : "");
+        btn.setAttribute("aria-pressed", String(ativo));
         btn.dataset.produto = codigo;
 
         let deltaHtml = "";
@@ -258,8 +261,12 @@ function bindToggles() {
 }
 
 function updateToggleActive(groupId, activeBtn) {
-  document.querySelectorAll(`#${groupId} .segmented-btn`).forEach((b) => b.classList.remove("active"));
+  document.querySelectorAll(`#${groupId} .segmented-btn`).forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
+  });
   activeBtn.classList.add("active");
+  activeBtn.setAttribute("aria-pressed", "true");
 }
 
 // Links "Fontes" / "Metodologia" do cabeçalho abrem o accordion correspondente.
@@ -295,6 +302,7 @@ function bindTerms() {
     if (atual !== btn || pop.hidden) abertoEm = performance.now();
     atual = btn;
     btn.setAttribute("aria-expanded", "true");
+    btn.setAttribute("aria-describedby", "term-pop");
     pop.innerHTML = `<strong>${def[0]}</strong>${def[1]}`;
     pop.hidden = false;
     const r = btn.getBoundingClientRect();
@@ -304,7 +312,7 @@ function bindTerms() {
     pop.style.top = `${window.scrollY + r.bottom + 8}px`;
   };
   const esconder = () => {
-    if (atual) atual.setAttribute("aria-expanded", "false");
+    if (atual) { atual.setAttribute("aria-expanded", "false"); atual.removeAttribute("aria-describedby"); }
     atual = null;
     pop.hidden = true;
   };
@@ -330,8 +338,16 @@ function selectProduct(codigo) {
   const isComb = temPreco(produto);
   const isTaxa = produto.tipo === "taxa";
   const isPontos = produto.tipo === "pontos";
-  document.querySelectorAll(".product-chip").forEach((c) => c.classList.toggle("active", c.dataset.produto === codigo));
-  document.querySelectorAll("#metric-toggle .segmented-btn").forEach((b) => b.classList.toggle("active", b.dataset.metric === "nominal"));
+  document.querySelectorAll(".product-chip").forEach((c) => {
+    const ativo = c.dataset.produto === codigo;
+    c.classList.toggle("active", ativo);
+    c.setAttribute("aria-pressed", String(ativo));
+  });
+  document.querySelectorAll("#metric-toggle .segmented-btn").forEach((b) => {
+    const ativo = b.dataset.metric === "nominal";
+    b.classList.toggle("active", ativo);
+    b.setAttribute("aria-pressed", String(ativo));
+  });
 
   // Selic (taxa) e Ibovespa (pontos) não têm "preço real" nem "% do
   // salário" — o controle de métrica inteiro não se aplica, então some com ele.
@@ -501,8 +517,8 @@ function renderAnswer(produto) {
     animateNumber(document.getElementById("agora-value"), vFim, render);
 
     const max = Math.max(vIni, vFim, 1);
-    document.getElementById("era-bar").style.width = `${(vIni / max * 100).toFixed(1)}%`;
-    document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
+    document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
+    document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
     document.getElementById("infl-marker").hidden = true;
 
     // "Inflação acumulada desde a Era" (ponta a ponta) é uma leitura
@@ -558,8 +574,8 @@ function renderAnswer(produto) {
     animateNumber(document.getElementById("agora-value"), vFim, render);
 
     const max = Math.max(vIni, vFim, vRef);
-    document.getElementById("era-bar").style.width = `${(vIni / max * 100).toFixed(1)}%`;
-    document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
+    document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
+    document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
     const marker = document.getElementById("infl-marker");
     const posRef = vRef / max * 100;
     marker.style.left = `${posRef.toFixed(1)}%`;
@@ -624,8 +640,8 @@ function renderAnswer(produto) {
   animateNumber(document.getElementById("agora-value"), vFim, render);
 
   const max = Math.max(vIni, vFim, vRef || 0);
-  document.getElementById("era-bar").style.width = `${(vIni / max * 100).toFixed(1)}%`;
-  document.getElementById("agora-bar").style.width = `${(vFim / max * 100).toFixed(1)}%`;
+  document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
+  document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
   const marker = document.getElementById("infl-marker");
   const posRef = vRef / max * 100;
   marker.style.left = `${posRef.toFixed(1)}%`;
@@ -951,7 +967,7 @@ function renderPurchasingPower(produto) {
     const linha = (r, valor, cls) => `
       <div class="pp-row ${cls}">
         <div><div class="pp-when">${fmtMesAno(r.ano_mes)}</div><div class="pp-wage">salário mínimo: ${fmtBRL.format(r.salario_minimo)}</div></div>
-        <div class="pp-index-track"><div class="pp-index-fill" style="width:${(valor / max * 100).toFixed(1)}%"></div></div>
+        <div class="pp-index-track"><div class="pp-index-fill" style="transform: scaleX(${(valor / max).toFixed(3)})"></div></div>
         <div class="pp-result"><span class="pp-value tnum">${fmtNum(valor, 1)}</span><span class="pp-unitname">índice</span><span class="pp-share">base 100 = jan/2019</span></div>
       </div>`;
 
@@ -1421,7 +1437,11 @@ function bindSnapshotControls(produto) {
   const updateSnapshot = (iso) => {
     selectedSnapshotIso = iso;
     if (drop) drop.value = iso;
-    document.querySelectorAll(".month-pill").forEach((p) => p.classList.toggle("active", p.dataset.miso === iso));
+    document.querySelectorAll(".month-pill").forEach((p) => {
+      const ativo = p.dataset.miso === iso;
+      p.classList.toggle("active", ativo);
+      p.setAttribute("aria-pressed", String(ativo));
+    });
     renderSnapshot(state.product ? DATA.produtos[state.product] : produto);
   };
 
