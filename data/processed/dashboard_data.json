@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T02:05:21+00:00",
+  "gerado_em": "2026-09-23T02:25:03+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -19201,8 +19201,8 @@
         {
           "ano_mes": "2020-11-01",
           "periodo": "Bolsonaro",
-          "pontos": 108888.0,
-          "pontos_indice100": 111.8,
+          "pontos": 108893.0,
+          "pontos_indice100": 111.81,
           "ipca_indice": 5486.52,
           "ipca_indice100": 107.22,
           "selic_meta_aa": 2.0,
@@ -19213,8 +19213,8 @@
         {
           "ano_mes": "2020-12-01",
           "periodo": "Bolsonaro",
-          "pontos": 119306.0,
-          "pontos_indice100": 122.5,
+          "pontos": 119017.0,
+          "pontos_indice100": 122.2,
           "ipca_indice": 5560.59,
           "ipca_indice100": 108.67,
           "selic_meta_aa": 2.0,
@@ -19225,8 +19225,8 @@
         {
           "ano_mes": "2021-01-01",
           "periodo": "Bolsonaro",
-          "pontos": 116007.0,
-          "pontos_indice100": 119.11,
+          "pontos": 115068.0,
+          "pontos_indice100": 118.15,
           "ipca_indice": 5574.49,
           "ipca_indice100": 108.94,
           "selic_meta_aa": 2.0,
@@ -19369,8 +19369,8 @@
         {
           "ano_mes": "2022-01-01",
           "periodo": "Bolsonaro",
-          "pontos": 112388.0,
-          "pontos_indice100": 115.4,
+          "pontos": 112144.0,
+          "pontos_indice100": 115.14,
           "ipca_indice": 6153.09,
           "ipca_indice100": 120.25,
           "selic_meta_aa": 9.25,
@@ -19501,8 +19501,8 @@
         {
           "ano_mes": "2022-12-01",
           "periodo": "Bolsonaro",
-          "pontos": 110031.0,
-          "pontos_indice100": 112.98,
+          "pontos": 109735.0,
+          "pontos_indice100": 112.67,
           "ipca_indice": 6474.09,
           "ipca_indice100": 126.52,
           "selic_meta_aa": 13.75,
@@ -19513,8 +19513,8 @@
         {
           "ano_mes": "2023-01-01",
           "periodo": "Lula",
-          "pontos": 113532.0,
-          "pontos_indice100": 116.57,
+          "pontos": 113431.0,
+          "pontos_indice100": 116.47,
           "ipca_indice": 6508.4,
           "ipca_indice100": 127.19,
           "selic_meta_aa": 13.75,
@@ -19814,7 +19814,7 @@
           "ano_mes": "2025-02-01",
           "periodo": "Lula",
           "pontos": 122799.0,
-          "pontos_indice100": 126.08,
+          "pontos_indice100": 126.09,
           "ipca_indice": 7205.03,
           "ipca_indice100": 140.81,
           "selic_meta_aa": 13.25,
@@ -19993,7 +19993,7 @@
         {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
-          "pontos": 173788.0,
+          "pontos": 173787.0,
           "pontos_indice100": 178.44,
           "ipca_indice": 7640.15,
           "ipca_indice100": 149.31,
@@ -20042,27 +20042,27 @@
       "serie_anual": [
         {
           "ano": 2019,
-          "pontos_medio": 101794.0,
+          "pontos_medio": 101795.0,
           "n_meses": 12
         },
         {
           "ano": 2020,
-          "pontos_medio": 97746.0,
+          "pontos_medio": 97722.0,
           "n_meses": 12
         },
         {
           "ano": 2021,
-          "pontos_medio": 114699.0,
+          "pontos_medio": 114621.0,
           "n_meses": 12
         },
         {
           "ano": 2022,
-          "pontos_medio": 110381.0,
+          "pontos_medio": 110336.0,
           "n_meses": 12
         },
         {
           "ano": 2023,
-          "pontos_medio": 115009.0,
+          "pontos_medio": 115001.0,
           "n_meses": 12
         },
         {
@@ -20088,9 +20088,9 @@
             "mes_inicio": "2019-01-01",
             "mes_fim": "2022-12-01",
             "pontos_inicio": 97394.0,
-            "pontos_fim": 110031.0,
-            "variacao_pct": 12.98,
-            "pontos_medio": 106155.0,
+            "pontos_fim": 109735.0,
+            "variacao_pct": 12.67,
+            "pontos_medio": 106118.0,
             "pontos_min": 73020.0,
             "pontos_max": 126802.0
           },
@@ -20101,7 +20101,7 @@
             "pontos_inicio": 97394.0,
             "pontos_fim": 115645.0,
             "variacao_pct": 18.74,
-            "pontos_medio": 101794.0,
+            "pontos_medio": 101795.0,
             "pontos_min": 95415.0,
             "pontos_max": 115645.0,
             "completo": true
@@ -20111,11 +20111,11 @@
             "mes_inicio": "2019-01-01",
             "mes_fim": "2020-12-01",
             "pontos_inicio": 97394.0,
-            "pontos_fim": 119306.0,
-            "variacao_pct": 22.5,
-            "pontos_medio": 99770.0,
+            "pontos_fim": 119017.0,
+            "variacao_pct": 22.2,
+            "pontos_medio": 99758.0,
             "pontos_min": 73020.0,
-            "pontos_max": 119306.0,
+            "pontos_max": 119017.0,
             "completo": true
           },
           "primeiros_36m": {
@@ -20125,7 +20125,7 @@
             "pontos_inicio": 97394.0,
             "pontos_fim": 104822.0,
             "variacao_pct": 7.63,
-            "pontos_medio": 104746.0,
+            "pontos_medio": 104712.0,
             "pontos_min": 73020.0,
             "pontos_max": 126802.0,
             "completo": true
@@ -20136,10 +20136,10 @@
             "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
-            "pontos_inicio": 113532.0,
+            "pontos_inicio": 113431.0,
             "pontos_fim": 177419.0,
-            "variacao_pct": 56.27,
-            "pontos_medio": 137155.0,
+            "variacao_pct": 56.41,
+            "pontos_medio": 137153.0,
             "pontos_min": 101882.0,
             "pontos_max": 188787.0
           },
@@ -20147,10 +20147,10 @@
             "n_meses": 12,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2023-12-01",
-            "pontos_inicio": 113532.0,
+            "pontos_inicio": 113431.0,
             "pontos_fim": 134185.0,
-            "variacao_pct": 18.19,
-            "pontos_medio": 115009.0,
+            "variacao_pct": 18.3,
+            "pontos_medio": 115001.0,
             "pontos_min": 101882.0,
             "pontos_max": 134185.0,
             "completo": true
@@ -20159,10 +20159,10 @@
             "n_meses": 24,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2024-12-01",
-            "pontos_inicio": 113532.0,
+            "pontos_inicio": 113431.0,
             "pontos_fim": 120283.0,
-            "variacao_pct": 5.95,
-            "pontos_medio": 121169.0,
+            "variacao_pct": 6.04,
+            "pontos_medio": 121165.0,
             "pontos_min": 101882.0,
             "pontos_max": 136004.0,
             "completo": true
@@ -20171,10 +20171,10 @@
             "n_meses": 36,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2025-12-01",
-            "pontos_inicio": 113532.0,
+            "pontos_inicio": 113431.0,
             "pontos_fim": 161125.0,
-            "variacao_pct": 41.92,
-            "pontos_medio": 127463.0,
+            "variacao_pct": 42.05,
+            "pontos_medio": 127460.0,
             "pontos_min": 101882.0,
             "pontos_max": 161125.0,
             "completo": true
@@ -20354,7 +20354,7 @@
     },
     "2020-11-01": {
       "dolar": 5.4178,
-      "ibovespa": 108888.0,
+      "ibovespa": 108893.0,
       "selic": 2.0,
       "ipca": 4.31,
       "gasolina": 4.4036,
@@ -20362,7 +20362,7 @@
     },
     "2020-12-01": {
       "dolar": 5.1456,
-      "ibovespa": 119306.0,
+      "ibovespa": 119017.0,
       "selic": 2.0,
       "ipca": 4.52,
       "gasolina": 4.4742,
@@ -20370,7 +20370,7 @@
     },
     "2021-01-01": {
       "dolar": 5.3562,
-      "ibovespa": 116007.0,
+      "ibovespa": 115068.0,
       "selic": 2.0,
       "ipca": 4.56,
       "gasolina": 4.5857,
@@ -20466,7 +20466,7 @@
     },
     "2022-01-01": {
       "dolar": 5.5341,
-      "ibovespa": 112388.0,
+      "ibovespa": 112144.0,
       "selic": 9.25,
       "ipca": 10.38,
       "gasolina": 6.6448,
@@ -20554,7 +20554,7 @@
     },
     "2022-12-01": {
       "dolar": 5.2424,
-      "ibovespa": 110031.0,
+      "ibovespa": 109735.0,
       "selic": 13.75,
       "ipca": 5.79,
       "gasolina": 4.9635,
@@ -20562,7 +20562,7 @@
     },
     "2023-01-01": {
       "dolar": 5.2007,
-      "ibovespa": 113532.0,
+      "ibovespa": 113431.0,
       "selic": 13.75,
       "ipca": 5.77,
       "gasolina": 5.0445,
@@ -20880,7 +20880,7 @@
     },
     "2026-05-01": {
       "dolar": 4.9837,
-      "ibovespa": 173788.0,
+      "ibovespa": 173787.0,
       "selic": 14.5,
       "ipca": 4.72,
       "gasolina": 6.6779,

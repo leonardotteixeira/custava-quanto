@@ -7,7 +7,9 @@
     "resumo": "Os segmentos de Alimentação e bebidas e de Transportes foram os maiores responsáveis pela alta dos preços no mês, de acordo com o IBGE",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Feijão carioca"],
+    "produtos": [
+      "Feijão carioca"
+    ],
     "confirmado": true
   },
   {
@@ -18,7 +20,9 @@
     "resumo": "Do início de setembro para cá, o valor da carne bovina no atacado já subiu quase 50%; analistas apostam em até 4 meses para que volte ao normal",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Carne bovina (patinho)"],
+    "produtos": [
+      "Carne bovina (patinho)"
+    ],
     "confirmado": true
   },
   {
@@ -29,7 +33,9 @@
     "resumo": "Vendas devem somar 1,8 milhão de toneladas e render US$ 7,5 milhões",
     "imagem": "https://imagens.ebc.com.br/6feez0_tqBu2Ikc4hCDDrzo82SU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/carne2.jpg?itok=qgHyVmnH",
     "credito_imagem": "Divulgação/Abiec",
-    "produtos": ["Carne bovina (patinho)"],
+    "produtos": [
+      "Carne bovina (patinho)"
+    ],
     "confirmado": true
   },
   {
@@ -40,7 +46,9 @@
     "resumo": "Redução está restrita a 400 mil toneladas de arroz em casca e beneficiado; isenção valerá até 31 de dezembro. Tarifa sobre o produto era de 10% para arroz em casca.",
     "imagem": "https://imagens.ebc.com.br/WNf2OVerTYTUVQNfiXecUl-v-TY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/arroz_1009201524.jpg?itok=qW86bIT5",
     "credito_imagem": "Marcello Casal JrAgência Brasil",
-    "produtos": ["Arroz"],
+    "produtos": [
+      "Arroz"
+    ],
     "confirmado": true
   },
   {
@@ -51,7 +59,9 @@
     "resumo": "A inflação do produto passa de 19% na média nacional neste ano",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Arroz"],
+    "produtos": [
+      "Arroz"
+    ],
     "confirmado": true
   },
   {
@@ -62,7 +72,10 @@
     "resumo": "Dados sobre a inflação, divulgados pelo IBGE nesta terça (12), mostram que setor de alimentos pesou mais do que qualquer outro no bolso dos brasileiros em 2020",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Óleo de soja", "Arroz"],
+    "produtos": [
+      "Óleo de soja",
+      "Arroz"
+    ],
     "confirmado": true
   },
   {
@@ -73,7 +86,10 @@
     "resumo": "Por outro lado, o preço do milho, também uma das commodities mais utilizadas pela indústria de alimentos, recuou em abril ante março no mercado interno",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Óleo de soja", "Café moído"],
+    "produtos": [
+      "Óleo de soja",
+      "Café moído"
+    ],
     "confirmado": true
   },
   {
@@ -84,7 +100,9 @@
     "resumo": "Segundo o IBGE, a alta de 25,46% no leite longa vida e de 14,06% em leites e derivados, pressionou o grupo, que ficou 1,30% mais caro em julho.",
     "imagem": "https://imagens.ebc.com.br/W14p8Lo5IaK9IdWSmcONkRja0nw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/supermercado_economia_20220729_0887.jpg?itok=inNuKwP0",
     "credito_imagem": "Valter Campanato/Agência Brasil",
-    "produtos": ["Leite longa vida"],
+    "produtos": [
+      "Leite longa vida"
+    ],
     "confirmado": true
   },
   {
@@ -95,7 +113,10 @@
     "resumo": "Estimativa era de que a colheita do feijão fosse de aproximadamente 3 milhões de toneladas, mas a safra deve registrar retração de mais ou menos 2,5%",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Feijão carioca", "Arroz"],
+    "produtos": [
+      "Feijão carioca",
+      "Arroz"
+    ],
     "confirmado": true
   },
   {
@@ -106,7 +127,10 @@
     "resumo": "Após fechar 2022 com maior alta, cebola foi segundo produto que mais barateou no ano",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Óleo de soja", "Carne bovina (patinho)"],
+    "produtos": [
+      "Óleo de soja",
+      "Carne bovina (patinho)"
+    ],
     "confirmado": true
   },
   {
@@ -117,7 +141,9 @@
     "resumo": "Segundo ministério da Agricultura, produto estará disponível a R$ 20 em até 95 dias; medida foi anunciada após enchentes no RS. Leia no Poder360.",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Arroz"],
+    "produtos": [
+      "Arroz"
+    ],
     "confirmado": true
   },
   {
@@ -128,7 +154,9 @@
     "resumo": "Apesar das altas de preços registradas em vários itens, o IPCA registrou, em junho, uma inflação menos intensa, de 0,21%, do que em maio, de 0,46%.",
     "imagem": "https://imagens.ebc.com.br/yMdAWG2c_WDj5HsZgWsLU3yaSnk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_de_imagens_vac_abr_2907221191.jpg?itok=vNDxuM1Y",
     "credito_imagem": "Valter Campanato/Agência Brasil",
-    "produtos": ["Leite longa vida"],
+    "produtos": [
+      "Leite longa vida"
+    ],
     "confirmado": true
   },
   {
@@ -139,7 +167,9 @@
     "resumo": "Maior pressão de alta de preços em 2024 veio do grupo alimentos e bebidas, que subiu 7,69%, o que representa um impacto de 1,63 pontos percentuais (p.p.) no IPCA.",
     "imagem": "https://imagens.ebc.com.br/Yg1ulJ7uKOyFFhu44X657Fdcbjk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/01/10/inlacao1.jpg?itok=NvMJZWYD",
     "credito_imagem": "Joédson Alves/Agência Brasil",
-    "produtos": ["Carne bovina (patinho)"],
+    "produtos": [
+      "Carne bovina (patinho)"
+    ],
     "confirmado": true
   },
   {
@@ -150,7 +180,9 @@
     "resumo": "Preços dos alimentos em geral vêm pressionando a inflação no Brasil, em meio a questões climáticas",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Café moído"],
+    "produtos": [
+      "Café moído"
+    ],
     "confirmado": true
   },
   {
@@ -161,7 +193,9 @@
     "resumo": "Índice Nacional de Preços ao Consumidor Amplo (IPCA) mostra que o preço do café recuou 1,01%. Nos 18 meses anteriores, a alta do produto chegou a 99,46%, ou seja, praticamente dobrou de preço.",
     "imagem": "https://imagens.ebc.com.br/SMRK89zL4TbyDTTkOUkvrlpwmWg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_17061917250.jpg?itok=YNihncoY",
     "credito_imagem": "Marcello Casal jr/Agência Brasil",
-    "produtos": ["Café moído"],
+    "produtos": [
+      "Café moído"
+    ],
     "confirmado": true
   },
   {
@@ -172,7 +206,9 @@
     "resumo": "Alimentos com queda mais acentuada de preços foram tomate (-11,52%), cebola (-10,16%), alho (-8,70%), batata (-8,55%) e arroz (-2,14%). No caso da alimentação no domicílio, deflação ficou em -0,41% contra queda de -0,83% em agosto.",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["alimentos"],
+    "produtos": [
+      "alimentos"
+    ],
     "confirmado": true
   },
   {
@@ -183,7 +219,10 @@
     "resumo": "Arroz e feijão tiveram deflação (queda de preço) no ano, segundo o levantamento; picanha subiu 2,82%. Leia no Poder360.",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Arroz", "Feijão carioca"],
+    "produtos": [
+      "Arroz",
+      "Feijão carioca"
+    ],
     "confirmado": true
   },
   {
@@ -194,7 +233,79 @@
     "resumo": "Enquanto o carioca quase dobra, o jalo e o vermelho registram queda nos sete primeiros meses de 2026",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["Feijão carioca"],
+    "produtos": [
+      "Feijão carioca"
+    ],
     "confirmado": true
+  },
+  {
+    "titulo": "Cesta básica em 18 capitais teve alta em abril, aponta Dieese",
+    "veiculo": "Agência Brasil",
+    "data": "2019-05-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-05/cesta-basica-em-18-capitais-tiveram-alta-em-abril-aponta-dieese",
+    "resumo": "O Dieese registrou alta no custo da cesta básica em todas as 18 capitais pesquisadas em abril de 2019.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Alimentos puxam alta de preços em setembro, aponta o IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2020-10-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-10/alimentos-puxam-alta-de-precos-em-setembro-aponta-o-ibge",
+    "resumo": "O IBGE apontou os alimentos como principal fator de alta de preços em setembro de 2020, no auge da pandemia.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Cesta básica tem alta em 11 capitais, diz Dieese",
+    "veiculo": "Agência Brasil",
+    "data": "2021-10-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-10/cesta-basica-tem-alta-em-11-capitais-diz-dieese",
+    "resumo": "O Dieese registrou alta no valor da cesta básica em 11 das capitais pesquisadas.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Preço da cesta básica paulistana aumenta 1,36%, diz Procon-SP",
+    "veiculo": "Agência Brasil",
+    "data": "2022-06-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/preco-da-cesta-basica-paulistana-aumenta-136-diz-procon-sp",
+    "resumo": "O Procon-SP registrou alta de 1,36% no valor da cesta básica em São Paulo.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Dieese: preço da cesta básica cai em 14 de 17 capitais pesquisadas",
+    "veiculo": "Agência Brasil",
+    "data": "2023-10-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-10/dieese-preco-da-cesta-basica-cai-em-14-de-17-capitais-pesquisadas",
+    "resumo": "O Dieese registrou queda no valor da cesta básica na maioria das capitais pesquisadas em 2023.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
+    "veiculo": "Agência Brasil",
+    "data": "2026-04-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-04/cesta-basica-fica-mais-cara-em-todas-capitais-brasileiras-em-marco",
+    "resumo": "Levantamento apontou alta no valor da cesta básica em todas as capitais pesquisadas em março de 2026.",
+    "produtos": [
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Brasil exporta 46 milhões de sacas de café, atingindo recorde em 2024",
+    "veiculo": "Agência Brasil",
+    "data": "2024-12-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-12/brasil-exporta-46-milhoes-de-sacas-de-cafe-atingindo-recorde-em-2024",
+    "resumo": "O Brasil bateu recorde de exportação de café em 2024, em meio a forte alta do preço do produto no mercado interno.",
+    "produtos": [
+      "Café moído"
+    ]
   }
 ]

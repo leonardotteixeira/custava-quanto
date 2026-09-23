@@ -7,7 +7,9 @@
     "resumo": "Dólar caiu para R$ 3,85, no menor valor em dois meses",
     "imagem": "https://imagens.ebc.com.br/UW9mh-59pgH2TtngTgCCuH1oojw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/ibovespa.jpg?itok=15elne7C",
     "credito_imagem": "Arquivo/ Rovena Rosa/Agência Brasil",
-    "produtos": ["IBOVESPA"],
+    "produtos": [
+      "IBOVESPA"
+    ],
     "confirmado": true
   },
   {
@@ -18,7 +20,9 @@
     "resumo": "Bolsa reverte alta e encerra o dia em queda",
     "imagem": "https://imagens.ebc.com.br/qbTul4piB-wKP_JqLNKpI2216f4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_10071918650.jpg?itok=S5SikUaD",
     "credito_imagem": "Marcello Casal Jr/Agência Brasil",
-    "produtos": ["DOLAR"],
+    "produtos": [
+      "DOLAR"
+    ],
     "confirmado": true
   },
   {
@@ -29,7 +33,9 @@
     "resumo": "Os investidores assumem uma postura negativa em relação ao surto de coronavírus. Como resultado, o Ibovespa desabou e acionou novamente o circuit breaker",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IBOVESPA"],
+    "produtos": [
+      "IBOVESPA"
+    ],
     "confirmado": true
   },
   {
@@ -40,7 +46,9 @@
     "resumo": "Em dia de oscilação, bolsa de valores fecha com queda de 0,13%",
     "imagem": "https://imagens.ebc.com.br/8jzJ5UG0dPGpZwUSkJOv-s9iihg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/dolar_6.jpg?itok=fCtVah81",
     "credito_imagem": "Marcello Casal Jr./Agência Brasil",
-    "produtos": ["DOLAR"],
+    "produtos": [
+      "DOLAR"
+    ],
     "confirmado": true
   },
   {
@@ -51,7 +59,9 @@
     "resumo": "Selic está no menor nível da história depois de nove cortes seguidos",
     "imagem": "https://imagens.ebc.com.br/3VXrOhYg0p-Bt2kaFhwd1s2UePI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_economia_0413202009.jpg?itok=FonBpLQc",
     "credito_imagem": "Marcello Casal jr/Agência Brasil",
-    "produtos": ["SELIC"],
+    "produtos": [
+      "SELIC"
+    ],
     "confirmado": true
   },
   {
@@ -62,7 +72,9 @@
     "resumo": "Dados de emprego dos EUA decepcionam, impulsionando bolsas e derrubando dólar",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IBOVESPA"],
+    "produtos": [
+      "IBOVESPA"
+    ],
     "confirmado": true
   },
   {
@@ -73,7 +85,9 @@
     "resumo": "Índice é o maior para o mês desde 1994",
     "imagem": "https://imagens.ebc.com.br/JllSqU-KiK380BD8VcCKMQ9ByaM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210416_0.jpg?itok=inPdEN_q",
     "credito_imagem": "Marcello Casal Jr/Agência Brasil",
-    "produtos": ["IPCA"],
+    "produtos": [
+      "IPCA"
+    ],
     "confirmado": true
   },
   {
@@ -84,7 +98,9 @@
     "resumo": "Taxa básica de juros está no maior nível desde janeiro de 2017",
     "imagem": "https://imagens.ebc.com.br/GTGJFRkOFeeont_HLFwXEpkx-nA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_mcajr_abr_0104222279_0.jpg?itok=4Mw2u0dl",
     "credito_imagem": "Marcello Casal Jr/Agência Brasil",
-    "produtos": ["SELIC"],
+    "produtos": [
+      "SELIC"
+    ],
     "confirmado": true
   },
   {
@@ -95,7 +111,9 @@
     "resumo": "Queda na inflação oficial foi puxada pela redução nos combustíveis",
     "imagem": "https://imagens.ebc.com.br/edXhlA_iXSD5sD95m2wU72O5eS8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/real_moedadinheiro_jfcrz_abr_1701220048_1.jpg?itok=H30i3fvq",
     "credito_imagem": "José Cruz/Agência Brasil",
-    "produtos": ["IPCA"],
+    "produtos": [
+      "IPCA"
+    ],
     "confirmado": true
   },
   {
@@ -106,7 +124,9 @@
     "resumo": "Decisão ocorre em meio a grande expectativa tanto do mercado como do governo pelo início do ciclo de afrouxamento monetário",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["SELIC"],
+    "produtos": [
+      "SELIC"
+    ],
     "confirmado": true
   },
   {
@@ -117,7 +137,9 @@
     "resumo": "Em dezembro, inflação do país foi de 0,56%, sexto mês seguido em alta; meta para este ano era de inflação de 3,25%, com margem de tolerância que poderia ir de 1,5% até 4,75%",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IPCA"],
+    "produtos": [
+      "IPCA"
+    ],
     "confirmado": true
   },
   {
@@ -128,7 +150,9 @@
     "resumo": "Firme alta da Petrobras compensou as perdas na sessão em dia de aversão ao risco no exterior; mercado repercute falas do Campos Neto e Caged",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IBOVESPA"],
+    "produtos": [
+      "IBOVESPA"
+    ],
     "confirmado": true
   },
   {
@@ -139,7 +163,9 @@
     "resumo": "Mercado reage ao pacote fiscal pouco detalhado de Haddad; agentes financeiros dizem que governo inflou expectativa de economia de R$ 70 bi",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["DOLAR"],
+    "produtos": [
+      "DOLAR"
+    ],
     "confirmado": true
   },
   {
@@ -150,7 +176,10 @@
     "resumo": "Inflação nos EUA e ata do Copom tranquilizam mercado",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IBOVESPA", "DOLAR"],
+    "produtos": [
+      "IBOVESPA",
+      "DOLAR"
+    ],
     "confirmado": true
   },
   {
@@ -161,7 +190,9 @@
     "resumo": "Copom votou de forma unânime por alta de 0,25 ponto percentual",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["SELIC"],
+    "produtos": [
+      "SELIC"
+    ],
     "confirmado": true
   },
   {
@@ -172,7 +203,9 @@
     "resumo": "Na sessão, queda foi de 1,58%",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["DOLAR"],
+    "produtos": [
+      "DOLAR"
+    ],
     "confirmado": true
   },
   {
@@ -183,7 +216,9 @@
     "resumo": "Dados foram divulgados nesta sexta, pelo IBGE",
     "imagem": "https://imagens.ebc.com.br/BvL6tQQdt_Ew12RtZEA43y_8L8A=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210423_0.jpg?itok=IAozND8N",
     "credito_imagem": "Marcello Casal Jr/Agência Brasil",
-    "produtos": ["IPCA"],
+    "produtos": [
+      "IPCA"
+    ],
     "confirmado": true
   },
   {
@@ -194,7 +229,10 @@
     "resumo": "Ibovespa supera 198 mil pontos após declarações de Trump",
     "imagem": "https://imagens.ebc.com.br/mrDjTR2zqhBRdsHsB9DYyyoKlEs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221206.jpg?itok=Lfnkvs7j",
     "credito_imagem": "Valter Campanato/Agência Brasil",
-    "produtos": ["DOLAR", "IBOVESPA"],
+    "produtos": [
+      "DOLAR",
+      "IBOVESPA"
+    ],
     "confirmado": true
   },
   {
@@ -205,7 +243,9 @@
     "resumo": "Apesar de guerra no Oriente Médio, Copom voltou a cortar juros",
     "imagem": "https://imagens.ebc.com.br/BilWMySlh6B20qJXlgb3bmq70tU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_abr_30091923895.jpg?itok=36m4EcUc",
     "credito_imagem": "Marcello Casal Jr/Agência Brasil",
-    "produtos": ["SELIC"],
+    "produtos": [
+      "SELIC"
+    ],
     "confirmado": true
   },
   {
@@ -216,7 +256,120 @@
     "resumo": "No acumulado de 12 meses até maio, o IPCA teve alta de 4,72%",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["IPCA"],
+    "produtos": [
+      "IPCA"
+    ],
     "confirmado": true
+  },
+  {
+    "titulo": "Dólar encosta em R$ 5,80 e fecha no maior valor em 10 meses",
+    "veiculo": "Agência Brasil",
+    "data": "2021-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/dolar-encosta-em-r-580-e-fecha-no-maior-valor-em-10-meses",
+    "resumo": "O dólar fechou perto de R$ 5,80, no maior valor em dez meses, em meio à crise sanitária e fiscal.",
+    "produtos": [
+      "DOLAR"
+    ]
+  },
+  {
+    "titulo": "Ibovespa fecha ano com alta de 4,69% e dólar com queda de 5,3%",
+    "veiculo": "Agência Brasil",
+    "data": "2022-12-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-12/ibovespa-fecha-ano-com-alta-de-469-e-dolar-com-queda-de-53",
+    "resumo": "O Ibovespa fechou 2022 em alta de 4,69% e o dólar caiu 5,3% no ano, a primeira queda anual da moeda desde 2016.",
+    "produtos": [
+      "DOLAR",
+      "IBOVESPA"
+    ]
+  },
+  {
+    "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em dez meses",
+    "veiculo": "Agência Brasil",
+    "data": "2023-04-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-04/dolar-fecha-abaixo-de-r-5-pela-primeira-vez-em-dez-meses",
+    "resumo": "O dólar fechou abaixo de R$ 5 pela primeira vez em dez meses, refletindo o cenário externo e doméstico.",
+    "produtos": [
+      "DOLAR"
+    ]
+  },
+  {
+    "titulo": "Copom reduz juros básicos para 5% ao ano, o menor nível da história",
+    "veiculo": "Agência Brasil",
+    "data": "2019-10-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-10/copom-reduz-juros-basicos-para-5-ao-ano-o-menor-nivel-da-historia",
+    "resumo": "O Copom reduziu a Selic para 5% ao ano, o menor patamar da série histórica iniciada em 1986.",
+    "produtos": [
+      "SELIC"
+    ]
+  },
+  {
+    "titulo": "Copom eleva juros básicos da economia pela primeira vez em seis anos",
+    "veiculo": "Agência Brasil",
+    "data": "2021-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/copom-eleva-juros-basicos-da-economia-pela-primeira-vez-em-seis-anos",
+    "resumo": "O Copom iniciou o ciclo de alta da Selic, a primeira elevação da taxa básica de juros em seis anos.",
+    "produtos": [
+      "SELIC"
+    ]
+  },
+  {
+    "titulo": "Ibovespa fecha 2023 com valorização de mais de 20%",
+    "veiculo": "Agência Brasil",
+    "data": "2023-12-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-12/ibovespa-fecha-2023-com-valorizacao-de-mais-de-20",
+    "resumo": "O Ibovespa encerrou 2023 com valorização superior a 20%, a maior alta anual desde 2019.",
+    "produtos": [
+      "IBOVESPA"
+    ]
+  },
+  {
+    "titulo": "Inflação oficial sobe para 0,75% em março, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2019-04-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-04/inflacao-oficial-sobe-para-075-em-marco-diz-ibge",
+    "resumo": "O IPCA de março de 2019 acelerou para 0,75%, segundo o IBGE.",
+    "produtos": [
+      "IPCA"
+    ]
+  },
+  {
+    "titulo": "Inflação oficial fica em 0,24% em agosto, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2020-09-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/inflacao-oficial-fica-em-024-em-agosto-diz-ibge",
+    "resumo": "O IPCA de agosto de 2020 ficou em 0,24%, segundo o IBGE.",
+    "produtos": [
+      "IPCA"
+    ]
+  },
+  {
+    "titulo": "Prévia da inflação oficial recua para 0,36% em maio, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2025-05-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-05/previa-da-inflacao-oficial-recua-para-036-em-maio-diz-ibge",
+    "resumo": "O IPCA-15 de maio de 2025 recuou para 0,36%, segundo o IBGE.",
+    "produtos": [
+      "IPCA"
+    ]
+  },
+  {
+    "titulo": "Copom mantém juros básicos em 10,5% ao ano",
+    "veiculo": "Agência Brasil",
+    "data": "2024-07-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-07/copom-mantem-juros-basicos-em-105-ao-ano",
+    "resumo": "O Copom manteve a Selic em 10,5% ao ano, encerrando o ciclo de cortes iniciado em 2023.",
+    "produtos": [
+      "SELIC"
+    ]
+  },
+  {
+    "titulo": "Prévia da inflação oficial fica em 0,21% em outubro, informa IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2023-10-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-10/previa-da-inflacao-oficial-fica-em-021-em-outubro-informa-ibge",
+    "resumo": "O IPCA-15 de outubro de 2023 ficou em 0,21%, segundo o IBGE.",
+    "produtos": [
+      "IPCA"
+    ]
   }
 ]
