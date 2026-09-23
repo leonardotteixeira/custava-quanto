@@ -7,131 +7,173 @@
 <meta name="description" content="Veja quanto as coisas custavam, quanto custam hoje e como esses preços evoluíram ao longo do tempo no Brasil." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header class="site-header">
-  <div class="wrap">
-    <div class="brand">
-      <span class="brand-mark">R$</span>
-      <div>
-        <h1>CUSTAVA QUANTO?</h1>
-        <p class="tagline">Quanto custava. Quanto custa. O que mudou.</p>
-      </div>
-    </div>
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <span class="wordmark">Custava quanto?</span>
+    <span class="masthead-note">análise de preços no Brasil</span>
   </div>
 </header>
 
-<main class="wrap">
+<main>
 
-  <section class="selector-section" aria-label="Escolha um produto">
-    <p class="section-label">O que você quer consultar?</p>
-    <div id="product-selector" class="product-grid"></div>
-  </section>
-
-  <section class="hero-section">
-    <div class="president-cards" id="president-cards"></div>
-
-    <div class="era-card" id="era-card">
-      <div class="era-block">
-        <span class="era-label">ERA</span>
-        <span class="era-value" id="era-value">—</span>
-        <span class="era-date" id="era-date">—</span>
+  <section class="hero">
+    <div class="wrap hero-row">
+      <div class="hero-copy">
+        <h1 class="hero-line">Quanto custava.<br>Quanto custa.<br>O que mudou.</h1>
+        <p class="hero-sub">Explore a evolução dos preços no Brasil e compare o governo Bolsonaro (jan/2019–dez/2022) com o governo Lula (jan/2023–hoje), mês a mês.</p>
       </div>
-      <div class="era-arrow">→</div>
-      <div class="era-block">
-        <span class="era-label">AGORA</span>
-        <span class="era-value" id="agora-value">—</span>
-        <span class="era-date" id="agora-date">—</span>
-      </div>
-      <div class="era-diff" id="era-diff">
-        <span class="diff-rs">—</span>
-        <span class="diff-pct">—</span>
+      <div class="hero-selector">
+        <div class="category-tabs" id="category-tabs">
+          <button class="category-tab active" data-categoria="combustivel">Combustíveis</button>
+          <button class="category-tab" data-categoria="alimento_indice">Alimentos</button>
+        </div>
+        <div class="product-rail" id="product-selector"></div>
       </div>
     </div>
-    <p class="nota-alimento" id="nota-alimento" hidden></p>
+  </section>
+
+  <section class="era-section">
+    <div class="wrap">
+      <p class="product-kicker" id="product-kicker">Gasolina comum</p>
+
+      <div class="era-display" id="era-card">
+        <div class="era-block">
+          <span class="era-label">Era</span>
+          <span class="era-value" id="era-value">—</span>
+          <span class="era-date" id="era-date">—</span>
+        </div>
+        <div class="era-connector" aria-hidden="true">
+          <svg viewBox="0 0 64 24" class="era-arrow-svg"><path d="M2 12 H56 M46 2 L58 12 L46 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="era-block">
+          <span class="era-label">Agora</span>
+          <span class="era-value" id="agora-value">—</span>
+          <span class="era-date" id="agora-date">—</span>
+        </div>
+        <div class="era-diff" id="era-diff">
+          <span class="diff-pct">—</span>
+          <span class="diff-rs">—</span>
+        </div>
+      </div>
+
+      <p class="nota-alimento" id="nota-alimento" hidden></p>
+    </div>
+  </section>
+
+  <section class="governos-section">
+    <div class="wrap governos-row" id="president-cards"></div>
   </section>
 
   <section class="chart-section">
-    <div class="section-head">
-      <h2>Preço ao longo do tempo</h2>
-      <div class="toggle-group" id="metric-toggle">
-        <button data-metric="nominal" class="toggle-btn active">Nominal</button>
-        <button data-metric="real" class="toggle-btn">Real</button>
-        <button data-metric="pct_sm" class="toggle-btn">% salário mínimo</button>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Trajetória</p>
+          <h2>Como o preço mudou ao longo do tempo</h2>
+          <p class="chart-subtitle" id="chart-subtitle"></p>
+        </div>
+        <div class="segmented" id="metric-toggle">
+          <button data-metric="nominal" class="segmented-btn active">Preço nominal</button>
+          <button data-metric="real" class="segmented-btn">Preço real</button>
+          <button data-metric="pct_sm" class="segmented-btn">% salário mínimo</button>
+        </div>
       </div>
+      <div id="main-chart" class="plot"></div>
     </div>
-    <p class="chart-subtitle" id="chart-subtitle"></p>
-    <div id="main-chart" class="plot"></div>
   </section>
 
   <section class="purchasing-power-section" id="purchasing-power-section">
-    <h2>Poder de compra</h2>
-    <div class="pp-card" id="pp-card"></div>
+    <div class="wrap">
+      <p class="section-kicker">Poder de compra</p>
+      <h2>Quanto um salário mínimo comprava?</h2>
+      <div class="pp-display" id="pp-card"></div>
+    </div>
   </section>
 
   <section class="comparison-section">
-    <div class="section-head">
-      <h2>Bolsonaro × Lula</h2>
-      <div class="toggle-group" id="cohort-toggle">
-        <button data-cohort="governo_inteiro" class="toggle-btn active">Governo inteiro</button>
-        <button data-cohort="primeiros_12m" class="toggle-btn">Primeiros 12 meses</button>
-        <button data-cohort="primeiros_24m" class="toggle-btn">Primeiros 24 meses</button>
-        <button data-cohort="primeiros_36m" class="toggle-btn">Primeiros 36 meses</button>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Comparação</p>
+          <h2>Bolsonaro × Lula</h2>
+          <p class="chart-subtitle">Como os indicadores variaram em cada período — sem vencedor, sem nota.</p>
+        </div>
+        <div class="segmented segmented-wrap" id="cohort-toggle">
+          <button data-cohort="governo_inteiro" class="segmented-btn active">Governo inteiro</button>
+          <button data-cohort="primeiros_12m" class="segmented-btn">12 meses</button>
+          <button data-cohort="primeiros_24m" class="segmented-btn">24 meses</button>
+          <button data-cohort="primeiros_36m" class="segmented-btn">36 meses</button>
+        </div>
       </div>
-    </div>
-    <p class="cohort-note" id="cohort-note"></p>
-    <div class="comparison-table-wrap">
-      <table class="comparison-table" id="comparison-table"></table>
+      <p class="cohort-note" id="cohort-note"></p>
+      <div class="comparison-table-wrap">
+        <table class="comparison-table" id="comparison-table"></table>
+      </div>
     </div>
   </section>
 
   <section class="context-section" id="context-section">
-    <h2>Contexto</h2>
-    <p class="context-intro" id="context-intro"></p>
-    <div id="context-chart" class="plot plot-small"></div>
+    <div class="wrap">
+      <p class="section-kicker">Contexto</p>
+      <h2>O ambiente econômico no período</h2>
+      <p class="context-intro" id="context-intro"></p>
+      <div class="stat-strip" id="stat-strip"></div>
+      <div id="context-chart" class="plot plot-small"></div>
+    </div>
   </section>
 
   <section class="annual-section">
-    <h2>Histórico anual</h2>
-    <div class="annual-grid" id="annual-grid"></div>
+    <div class="wrap">
+      <p class="section-kicker">Histórico</p>
+      <h2>Preço médio, ano a ano</h2>
+      <div class="annual-rail" id="annual-grid"></div>
+    </div>
   </section>
 
-  <section class="methodology-section" id="methodology">
-    <h2>Metodologia</h2>
-    <div class="methodology-grid">
-      <div>
-        <h3>Fontes</h3>
-        <ul>
-          <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
-          <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
-          <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619).</li>
-          <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Como os números são calculados</h3>
-        <ul>
-          <li><strong>Nominal</strong>: preço observado no mês.</li>
-          <li><strong>Real</strong>: nominal deflacionado pelo IPCA geral, a preços do mês mais recente disponível.</li>
-          <li><strong>% do salário mínimo</strong>: preço nominal ÷ salário mínimo vigente naquele mês (não um valor fixo atual).</li>
-          <li><strong>Cesta básica</strong>: sem preço médio absoluto em R$ na fonte — é um índice relativo (base 100 = jan/2019) encadeado a partir da variação mensal oficial do IPCA por item.</li>
-          <li><strong>Períodos</strong>: Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Limitações</h3>
-        <ul>
-          <li>ANP é uma amostra semanal por posto, com defasagem; setembro/2020 está ausente na fonte.</li>
-          <li>"Carne bovina" usa o corte Patinho como referência — o IBGE não publica uma média única de carne bovina.</li>
-          <li>Salário mínimo é o piso nacional nominal — não reflete pisos regionais mais altos em alguns estados.</li>
-          <li>Região aqui é sempre Brasil (nacional) — os dados têm quebra regional, mas o MVP não expõe esse filtro ainda.</li>
-          <li>Nada aqui prova causalidade entre política de governo e preço — ver <a href="../output/RESUMO.md" target="_blank" rel="noopener">RESUMO.md</a> para a discussão completa.</li>
-        </ul>
-      </div>
+  <section class="methodology-section">
+    <div class="wrap">
+      <details class="accordion" open>
+        <summary>Como calculamos</summary>
+        <div class="accordion-body methodology-grid">
+          <div>
+            <h3>Fontes</h3>
+            <ul>
+              <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
+              <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
+              <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619).</li>
+              <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Definições</h3>
+            <ul>
+              <li><strong>Nominal</strong> — preço observado no mês.</li>
+              <li><strong>Real</strong> — nominal deflacionado pelo IPCA geral, a preços do mês mais recente disponível.</li>
+              <li><strong>% do salário mínimo</strong> — preço nominal ÷ salário mínimo vigente naquele mês (não um valor fixo atual).</li>
+              <li><strong>Cesta básica</strong> — sem preço médio absoluto em R$ na fonte: é um índice relativo (base 100 = jan/2019) encadeado a partir da variação mensal oficial do IPCA por item.</li>
+              <li><strong>Períodos</strong> — Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+      <details class="accordion">
+        <summary>Limitações</summary>
+        <div class="accordion-body">
+          <ul>
+            <li>ANP é uma amostra semanal por posto, com defasagem; setembro/2020 está ausente na fonte.</li>
+            <li>"Carne bovina" usa o corte Patinho como referência — o IBGE não publica uma média única de carne bovina.</li>
+            <li>Salário mínimo é o piso nacional nominal — não reflete pisos regionais mais altos em alguns estados.</li>
+            <li>Região aqui é sempre Brasil (nacional) — os dados têm quebra regional, mas esta versão não expõe esse filtro ainda.</li>
+            <li>Nada aqui prova causalidade entre política de governo e preço — ver <a href="../output/RESUMO.md" target="_blank" rel="noopener">RESUMO.md</a> para a discussão completa.</li>
+          </ul>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -139,7 +181,7 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <p>CUSTAVA QUANTO? — projeto de análise de dados independente. Não representa posição de nenhum partido ou governo. Dados oficiais, ver metodologia acima.</p>
+    <p>Custava quanto? é um projeto de análise de dados independente. Não representa posição de nenhum partido ou governo — os dados e a metodologia estão acima, para qualquer pessoa conferir.</p>
   </div>
 </footer>
 
