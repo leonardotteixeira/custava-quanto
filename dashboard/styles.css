@@ -24,15 +24,18 @@
   --accent-ink: #875c10;
   --accent-wash: #f6ecd4;
 
-  --p-bolsonaro: #5b6b7a;
-  --p-lula: #8b6b55;
-  --p-bolsonaro-wash: rgba(91, 107, 122, 0.06);
-  --p-lula-wash: rgba(139, 107, 85, 0.06);
+  /* identificação dos períodos — só identificador, nunca bom/ruim.
+     Azul e vermelho sóbrios, validados (daltonismo + contraste no fundo claro) */
+  --p-bolsonaro: #2b5c92;
+  --p-lula: #b33a3a;
+  --p-bolsonaro-wash: rgba(43, 92, 146, 0.035);
+  --p-lula-wash: rgba(179, 58, 58, 0.035);
 
   /* séries de gráfico (validadas: separação para daltonismo + contraste) */
   --c-product: #b7791f;
-  --c-brent: #3a6fb8;
-  --c-cambio: #b0508a;
+  /* sem azul/vermelho aqui: essas cores identificam os períodos */
+  --c-brent: #16876a;
+  --c-cambio: #7a4fb0;
   --c-ipca: #8a8883;
   --bar-muted: #cfccc4;
 
@@ -235,6 +238,17 @@ ul { margin: 0; }
 .lg-swatch.dotted { border-top-style: dotted; }
 .lg-swatch.dashed { border-top-style: dashed; }
 
+/* --- "Como estava o Brasil?": fotografia cross-indicador --- */
+.snapshot { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
+.snapshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.snap-card { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 18px 22px; }
+.snap-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line-soft); }
+.snap-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+.snap-when { font-size: 0.9rem; color: var(--ink-soft); }
+.snap-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 6px 0; }
+.snap-label { font-size: 0.9rem; color: var(--ink-soft); }
+.snap-value { font-size: 0.98rem; font-weight: 600; }
+
 /* --- média de cada ano: colunas --- */
 .years { margin-top: 64px; }
 .mini-title { font-family: var(--sans); font-size: 1rem; font-weight: 700; }
@@ -244,8 +258,10 @@ ul { margin: 0; }
 .yr-val { font-size: 0.95rem; font-weight: 700; text-align: center; }
 .yr-col { height: 140px; display: flex; align-items: flex-end; }
 .yr-fill { width: 100%; max-width: 72px; margin: 0 auto; border-radius: 3px 3px 0 0; transition: height .5s cubic-bezier(.2,.7,.2,1); }
-.yr.bolsonaro .yr-fill { background: var(--p-bolsonaro); }
-.yr.lula .yr-fill { background: var(--p-lula); }
+/* colunas neutras com "tampa" na cor do período: a cor identifica sem dominar */
+.yr-fill { background: #d6d3cb; }
+.yr.bolsonaro .yr-fill { border-top: 4px solid var(--p-bolsonaro); }
+.yr.lula .yr-fill { border-top: 4px solid var(--p-lula); }
 .yr.partial .yr-fill { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.55) 0 4px, transparent 4px 8px); }
 .year-axis { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 10px; margin-top: 6px; }
 .year-axis span { text-align: center; font-size: 0.85rem; color: var(--ink-soft); font-weight: 500; }
@@ -425,6 +441,8 @@ ul { margin: 0; }
   .plot { height: 340px; }
   .plot-small { height: 320px; }
 
+  .snapshot-grid { grid-template-columns: 1fr; }
+
   .year-strip, .year-axis { gap: 4px; }
   .yr-val { font-size: 0.72rem; }
   .yr-col { height: 110px; }
@@ -452,4 +470,145 @@ ul { margin: 0; }
   .glossary { grid-template-columns: 1fr; gap: 2px; }
   .glossary dd { margin-bottom: 12px; }
   .footer-row { flex-direction: column; gap: 10px; }
+}
+
+/* =====================================================================
+   NOTÍCIAS DA ÉPOCA — recortes de jornal integrados à narrativa
+   Tipografia de "clipping": veículo em versalete, manchete em serifa,
+   filete superior grosso. Foto só quando a licença permite (Agência Brasil).
+   ===================================================================== */
+[hidden] { display: none !important; }
+
+.clip { position: relative; border-top: 3px solid var(--ink); padding-top: 14px; }
+.clip-fig { margin: 0 0 14px; }
+.clip-fig img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; filter: grayscale(0.15) contrast(1.02); background: var(--line-soft); }
+.clip-fig figcaption { font-size: 0.7rem; color: var(--ink-faint); margin-top: 4px; }
+.clip-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.clip-outlet { font-weight: 700; color: var(--ink); }
+.clip-title { font-family: var(--serif); font-weight: 600; font-size: 1.2rem; line-height: 1.25; letter-spacing: -0.01em; margin: 8px 0 0; }
+.clip-title a { text-decoration: none; color: var(--ink); }
+.clip-title a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.clip-summary { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.55; margin: 10px 0 0; }
+.clip-link { display: inline-block; margin-top: 12px; font-size: 0.85rem; font-weight: 600; color: var(--accent-ink); text-decoration: none; }
+.clip-link:hover { text-decoration: underline; }
+.clip-value { display: inline-block; margin-top: 10px; font-size: 0.82rem; color: var(--ink-soft); padding: 3px 8px; background: var(--accent-wash); border-radius: 3px; }
+.clip-value b { color: var(--ink); }
+.news-disclaimer { font-size: 0.8rem; color: var(--ink-faint); margin: 20px 0 0; max-width: 80ch; }
+
+/* --- interlúdio: um grande número + a notícia do momento --- */
+.interlude { padding-top: 96px; }
+.interlude .wrap { position: relative; }
+.interlude-kicker {
+  font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.35rem; color: var(--accent-ink);
+  margin: 0 0 22px; display: flex; align-items: center; gap: 16px;
+}
+.interlude-kicker::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.interlude-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 56px; align-items: start; }
+.il-figure { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; }
+.il-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+.il-number { font-weight: 700; letter-spacing: -0.045em; font-size: clamp(3rem, 1.6rem + 4vw, 5.6rem); line-height: 0.95; }
+.il-date { font-size: 0.95rem; color: var(--ink-soft); }
+.clip-feature { display: grid; grid-template-columns: minmax(0, 1fr); }
+.clip-feature.has-img { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 28px; }
+.clip-feature.has-img .clip-fig { grid-row: span 6; margin: 0; }
+.clip-feature .clip-title { font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.8rem); }
+
+/* --- trilha de notícias sob o gráfico --- */
+.news-track { margin-top: 28px; border-top: 1px solid var(--line); padding-top: 16px; }
+.news-track-head { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+.nt-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ink); background: var(--surface); display: inline-block; }
+.news-track-list { display: flex; gap: 8px; flex-wrap: wrap; }
+.nt-item {
+  display: inline-flex; align-items: center; gap: 8px; max-width: 280px;
+  padding: 6px 12px 6px 6px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  font-size: 0.8rem; color: var(--ink-soft); cursor: pointer; text-align: left;
+  transition: border-color .15s, background .15s;
+}
+.nt-item:hover { border-color: var(--ink); color: var(--ink); }
+.nt-item[aria-selected="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.nt-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font-weight: 700; font-size: 0.75rem; background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); }
+.nt-item[aria-selected="true"] .nt-num { background: var(--accent); border-color: var(--accent); }
+.nt-when { white-space: nowrap; font-weight: 600; }
+.news-panel { margin-top: 18px; }
+.news-panel .clip { display: grid; grid-template-columns: 170px minmax(0, 1fr); column-gap: 28px; border-top-width: 1px; border-top-color: var(--line); padding-top: 18px; }
+.news-panel .clip.has-img { grid-template-columns: 170px minmax(0, 1fr) 260px; }
+.np-when { grid-row: span 6; display: flex; flex-direction: column; gap: 4px; }
+.np-when .d { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.np-when .v { font-weight: 700; font-size: 1.9rem; letter-spacing: -0.03em; line-height: 1.05; }
+.np-when .c { font-size: 0.8rem; color: var(--ink-soft); }
+.news-panel .clip-fig { grid-column: 3; grid-row: 1 / span 6; margin: 0; }
+
+/* --- arquivo da época --- */
+.archive { margin-top: 44px; display: grid; gap: 0; }
+.arch-year { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 32px; padding: 28px 0; border-top: 1px solid var(--line); }
+.arch-year-label { font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; line-height: 1; position: sticky; top: 70px; align-self: start; }
+.arch-year-label small { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-top: 6px; }
+.arch-year-label .dot { margin-right: 4px; }
+.arch-clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px 32px; }
+.arch-clips .clip.has-img { grid-column: span 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; }
+.arch-clips .clip.has-img .clip-fig { grid-row: span 6; margin: 0; }
+.arch-clips .clip-title { font-size: 1.08rem; }
+
+@media (max-width: 1100px) {
+  .interlude-grid { grid-template-columns: 1fr; gap: 28px; }
+  .news-panel .clip.has-img { grid-template-columns: 150px minmax(0, 1fr); }
+  .news-panel .clip-fig { grid-column: 2; grid-row: auto; margin: 14px 0 0; }
+}
+@media (max-width: 760px) {
+  .interlude { padding-top: 64px; }
+  .clip-feature.has-img { grid-template-columns: 1fr; }
+  .clip-feature.has-img .clip-fig { grid-row: auto; margin-bottom: 14px; }
+  .news-track-list { flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 4px; scrollbar-width: none; }
+  .news-track-list::-webkit-scrollbar { display: none; }
+  .nt-item { flex-shrink: 0; max-width: 220px; }
+  .news-panel .clip, .news-panel .clip.has-img { grid-template-columns: 1fr; }
+  .np-when { grid-row: auto; flex-direction: row; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .np-when .v { font-size: 1.4rem; }
+  .news-panel .clip-fig { grid-column: 1; margin: 0 0 12px; }
+  .arch-year { grid-template-columns: 1fr; gap: 16px; padding: 22px 0; }
+  .arch-year-label { position: static; font-size: 1.6rem; }
+  .arch-clips { grid-template-columns: 1fr; }
+  .arch-clips .clip.has-img { grid-column: auto; grid-template-columns: 1fr; }
+  .arch-clips .clip.has-img .clip-fig { grid-row: auto; margin-bottom: 12px; }
+}
+
+
+/* =====================================================================
+   IDENTIFICAÇÃO DOS PERÍODOS DE GOVERNO
+   Mesmo retrato (720 px, mesmo recorte e tratamento — ver
+   scripts/process_portraits.py), mesma área e hierarquia para os dois.
+   A cor aparece só em marcadores, anéis e filetes.
+   ===================================================================== */
+.gov-mark { display: inline-block; width: 18px; height: 4px; border-radius: 2px; background: currentColor; flex-shrink: 0; }
+.bolsonaro .gov-mark { color: var(--p-bolsonaro); }
+.lula .gov-mark { color: var(--p-lula); }
+
+.per-tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.per-tag .gov-mark { width: 12px; height: 3px; }
+
+.gov-cols { border-top: none; gap: 0 56px; }
+.gov, .gov + .gov { padding: 28px 0 8px; border-left: none; }
+.gov { border-top: 3px solid var(--line); }
+.gov.bolsonaro { border-top-color: var(--p-bolsonaro); }
+.gov.lula { border-top-color: var(--p-lula); }
+
+.gov-id { display: flex; align-items: center; gap: 24px; }
+.portrait { margin: 0; flex-shrink: 0; width: 132px; height: 132px; border-radius: 50%; padding: 4px; background: var(--paper); box-shadow: 0 0 0 2px currentColor; }
+.bolsonaro .portrait { color: var(--p-bolsonaro); }
+.lula .portrait { color: var(--p-lula); }
+.portrait img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.gov-id-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gov-label { display: inline-flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+.gov-years { font-family: var(--serif); font-size: 2.1rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink); }
+.gov-fullname { font-size: 0.9rem; color: var(--ink-soft); margin-top: 4px; }
+.gov-dates { font-size: 0.82rem; color: var(--ink-faint); }
+.gov .spark { margin-top: 26px; }
+
+@media (max-width: 760px) {
+  .gov-cols { gap: 0; }
+  .gov + .gov { margin-top: 28px; border-top: 3px solid var(--p-lula); }
+  .gov-id { gap: 18px; }
+  .portrait { width: 96px; height: 96px; padding: 3px; }
+  .gov-label { font-size: 0.92rem; }
+  .gov-years { font-size: 1.65rem; }
 }

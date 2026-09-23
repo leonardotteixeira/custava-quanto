@@ -56,8 +56,8 @@
             <div class="product-rail" id="rail-alimento_indice" role="group" aria-label="Alimentos"></div>
           </div>
           <div class="selector-group">
-            <span class="selector-label">Indicadores</span>
-            <div class="product-rail" id="rail-indicador" role="group" aria-label="Indicadores econômicos"></div>
+            <span class="selector-label">Mercados</span>
+            <div class="product-rail" id="rail-indicador" role="group" aria-label="Mercados"></div>
           </div>
         </div>
       </div>
@@ -75,12 +75,12 @@
         <div class="answer-grid">
           <div class="value-rows" id="value-rows">
             <div class="value-row then">
-              <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">—</span></div>
+              <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">—</span><span class="per-tag bolsonaro"><span class="gov-mark" aria-hidden="true"></span>fim do governo Bolsonaro</span></div>
               <div class="vr-number tnum" id="era-value">—</div>
               <div class="vr-bar"><div class="vr-fill" id="era-bar"></div></div>
             </div>
             <div class="value-row now">
-              <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">—</span></div>
+              <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">—</span><span class="per-tag lula"><span class="gov-mark" aria-hidden="true"></span>governo Lula</span></div>
               <div class="vr-number tnum" id="agora-value">—</div>
               <div class="vr-bar">
                 <div class="vr-fill" id="agora-bar"></div>
@@ -108,6 +108,24 @@
     </div>
   </section>
 
+  <!-- ================================================================
+       INTERLÚDIO — um número + a notícia real daquele momento
+       ================================================================ -->
+  <section class="interlude" id="interlude" hidden>
+    <div class="wrap">
+      <p class="interlude-kicker">O que estava acontecendo?</p>
+      <div class="interlude-grid">
+        <div class="il-figure">
+          <span class="il-label" id="il-label">—</span>
+          <span class="il-number tnum" id="il-number">—</span>
+          <span class="il-date" id="il-date">—</span>
+        </div>
+        <div id="il-clip"></div>
+      </div>
+      <p class="news-disclaimer">Notícia real da época, com link para a matéria original. Mostra o que estava sendo noticiado — não é prova de causa.</p>
+    </div>
+  </section>
+
   <!-- ================================================================ 02 -->
   <section class="chapter" id="evolucao">
     <div class="wrap">
@@ -131,6 +149,12 @@
       <div class="chart-legend" id="chart-legend"></div>
       <div id="main-chart" class="plot" role="img" aria-label="Gráfico da evolução mensal do preço"></div>
       <p class="source" id="chart-source"></p>
+
+      <div class="news-track" id="news-track" hidden>
+        <p class="news-track-head"><span class="nt-dot" aria-hidden="true"></span>Notícias da época marcadas no gráfico — toque em um número</p>
+        <div class="news-track-list" id="news-track-list" role="tablist" aria-label="Notícias da época"></div>
+        <div class="news-panel" id="news-panel" aria-live="polite"></div>
+      </div>
 
       <div class="years">
         <h3 class="mini-title" id="annual-title">Média de cada ano</h3>
@@ -203,14 +227,33 @@
       <div class="chart-legend" id="context-legend"></div>
       <div id="context-chart" class="plot plot-small" role="img" aria-label="Gráfico comparando o produto com inflação, petróleo e dólar"></div>
       <p class="caveat" id="context-intro"></p>
+
+      <div class="snapshot" id="snapshot-section">
+        <h3 class="mini-title">Como estava o Brasil?</h3>
+        <p class="mini-sub" id="snapshot-sub">Uma fotografia dos principais indicadores em cada momento — dá para comparar mesmo quem não tem relação direta com este produto.</p>
+        <div class="snapshot-grid" id="snapshot-grid"></div>
+      </div>
     </div>
   </section>
 
   <!-- ================================================================ 06 -->
+  <section class="chapter" id="arquivo" hidden>
+    <div class="wrap">
+      <div class="chapter-head">
+        <span class="chapter-n" id="step-archive">06</span>
+        <h2>O que estava sendo noticiado?</h2>
+      </div>
+      <p class="chapter-sub" id="archive-sub"></p>
+      <div class="archive" id="archive"></div>
+      <p class="news-disclaimer">Seleção de matérias reais, de diferentes veículos, conferidas na fonte original. Elas contam o que estava sendo noticiado em cada momento; os números acima continuam sendo a medida do que aconteceu com o preço.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================ 07 -->
   <section class="chapter methodology" id="como-calculamos">
     <div class="wrap narrow">
       <div class="chapter-head">
-        <span class="chapter-n" id="step-method">06</span>
+        <span class="chapter-n" id="step-method">07</span>
         <h2>Como calculamos?</h2>
       </div>
 
@@ -230,6 +273,14 @@
             <dd>Comparação entre o primeiro e o último mês disponível de cada recorte.</dd>
             <dt>Períodos</dt>
             <dd>Bolsonaro = jan/2019–dez/2022. Lula = jan/2023–mês mais recente disponível (ainda em curso).</dd>
+            <dt>Cotação de hoje (Dólar/Selic)</dt>
+            <dd>O Banco Central publica câmbio e Selic todo dia útil — bem mais rápido que o IPCA, que fecha a série mensal usada no resto da página. Por isso Dólar e Selic mostram, à parte, o valor do dia mais recente disponível.</dd>
+            <dt>Selic-meta × Selic efetiva</dt>
+            <dd>O dashboard usa a Selic-meta (a taxa definida pelo Copom) em todo lugar — nunca a Selic efetiva (a taxa que de fato roda no mercado overnight, que fica muito próxima da meta, mas é uma série diferente). "Vigente desde" é a data da última mudança da meta, não necessariamente a data da reunião do Copom.</dd>
+            <dt>Cotação mais recente (Ibovespa)</dt>
+            <dd>Vem da Yahoo Finance, não da B3 diretamente. É a última cotação que a fonte disponibiliza — não uma garantia de tempo real.</dd>
+            <dt>Como estava o Brasil?</dt>
+            <dd>Fotografia de Dólar, Ibovespa, Selic, IPCA, salário mínimo e Gasolina nos mesmos dois meses (Era e Agora) do produto selecionado — todos os valores já existem em outros produtos deste dashboard; nada é recalculado para essa seção.</dd>
           </dl>
         </div>
       </details>
@@ -240,7 +291,9 @@
           <ul>
             <li><strong>ANP</strong> — <a href="https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis" target="_blank" rel="noopener">Série Histórica de Preços de Combustíveis</a>, preço por posto revendedor agregado aqui em média mensal nacional.</li>
             <li><strong>IBGE/SIDRA</strong> — <a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (deflator) e variação mensal oficial por item da cesta básica.</li>
-            <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619).</li>
+            <li><strong>Banco Central (SGS)</strong> — <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">câmbio USD/BRL, Selic e salário mínimo</a> (série 1619). Câmbio e Selic também trazem a cotação diária mais recente, à parte da série mensal.</li>
+            <li><strong>Yahoo Finance</strong> — <a href="https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP" target="_blank" rel="noopener">fechamento mensal e cotação mais recente do Ibovespa</a> (símbolo ^BVSP). Fonte de mercado gratuita, não a B3 diretamente — a cotação "mais recente" não é garantidamente em tempo real.</li>
+            <li><strong>Notícias</strong> — matérias reais de veículos jornalísticos, cada uma com link para a publicação original. Título, veículo e data foram conferidos automaticamente na página de origem (<code>scripts/build_news.py</code>). Fotos só aparecem quando a licença permite reprodução com crédito (Agência Brasil, CC BY 4.0).</li>
             <li><strong>FRED (St. Louis Fed)</strong> — <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">petróleo Brent</a>, USD/barril.</li>
           </ul>
         </div>
@@ -273,6 +326,7 @@
 <!-- Explicação curta de termos técnicos (IPCA, Brent, preço real...) -->
 <div class="term-pop" id="term-pop" role="tooltip" hidden></div>
 
+<script src="news.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

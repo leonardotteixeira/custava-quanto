@@ -15,7 +15,7 @@ const PRODUCT_CHIP_LABEL = {
   "GASOLINA": "Gasolina", "ETANOL": "Etanol", "DIESEL": "Diesel", "DIESEL S10": "Diesel S10", "GLP": "Gás (GLP)",
   "Arroz": "Arroz", "Feijão carioca": "Feijão", "Carne bovina (patinho)": "Carne",
   "Leite longa vida": "Leite", "Óleo de soja": "Óleo de soja", "Café moído": "Café",
-  "DOLAR": "Dólar", "SELIC": "Selic", "IBOVESPA": "Ibovespa", "IPCA": "IPCA",
+  "DOLAR": "💵 Dólar", "SELIC": "🏦 Selic", "IBOVESPA": "📈 Ibovespa", "IPCA": "📊 IPCA",
 };
 // Nome de exibição (título), forma usada no meio de frases ("do arroz") e sem artigo ("de arroz").
 const PRODUCT_TEXT = {
@@ -158,7 +158,9 @@ function leituraReal(realPct) {
 async function init() {
   const resp = await fetch(DATA_URL, { cache: "no-cache" });
   DATA = await resp.json();
+  NEWS = await carregarNoticias();
   renderSelector();
+  bindNewsInteractions();
   bindToggles();
   bindHeaderLinks();
   bindStickyBar();
@@ -298,13 +300,17 @@ function selectProduct(codigo) {
     pctBtn.hidden = !isComb;
   }
 
+  state.newsId = null;
   renderAnswer(produto);
   renderLiveQuote(produto);
+  renderInterlude(produto);
   renderChart();
   renderYears(produto);
   renderPurchasingPower(produto);
   renderGovernos(produto);
   renderContext(produto);
+  renderSnapshot(produto);
+  renderArchive(produto);
   renderStepNumbers();
   renderStickyBar(produto);
 }
@@ -321,9 +327,24 @@ function renderLiveQuote(produto) {
     el.hidden = true;
     return;
   }
-  const valorFmt = produto.tipo === "taxa" ? `${fmtNum(cot.valor, 2)}% ao ano` : fmtBRL.format(cot.valor);
   el.hidden = false;
-  el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação de hoje (${fmtDataCurta(cot.data)}): <strong>${valorFmt}</strong> <span class="live-note">— valor do dia, não é a média mensal usada no restante da página</span>`;
+
+  if (produto.tipo === "pontos") {
+    // Ibovespa vem de outra fonte (Yahoo Finance): pontos + data/hora de
+    // Brasília, com a própria fonte já avisando que pode não ser tempo real.
+    const dataHora = cot.data_hora ? cot.data_hora.slice(0, 16).replace("T", " ") : "";
+    const [data, hora] = dataHora.split(" ");
+    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação mais recente (${data ? fmtDataCurta(data) : "—"}${hora ? `, ${hora}` : ""}): <strong>${fmtNum(cot.pontos, 0)} pontos</strong> <span class="live-note">— ${cot.fonte ? `fonte: ${cot.fonte}. ` : ""}${cot.nota || ""}</span>`;
+    return;
+  }
+
+  if (produto.tipo === "taxa") {
+    const vigente = cot.vigente_desde ? ` · <strong>vigente desde ${fmtDataCurta(cot.vigente_desde)}</strong> (última decisão do Copom)` : "";
+    el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Taxa Selic hoje (${fmtDataCurta(cot.data)}): <strong>${fmtNum(cot.valor, 2)}% ao ano</strong>${vigente} <span class="live-note">— é a meta definida pelo Copom (Selic-meta), não a taxa efetiva diária do mercado</span>`;
+    return;
+  }
+
+  el.innerHTML = `<span class="live-dot" aria-hidden="true"></span> Cotação de hoje (${fmtDataCurta(cot.data)}): <strong>${fmtBRL.format(cot.valor)}</strong> <span class="live-note">— valor do dia, não é a média mensal usada no restante da página</span>`;
 }
 
 function renderStepNumbers() {
@@ -331,7 +352,8 @@ function renderStepNumbers() {
   // numeração das seções seguintes é sempre a mesma.
   document.getElementById("step-comparison").textContent = "04";
   document.getElementById("step-context").textContent = "05";
-  document.getElementById("step-method").textContent = "06";
+  document.getElementById("step-archive").textContent = "06";
+  document.getElementById("step-method").textContent = "07";
 }
 
 function renderStickyBar(produto) {
@@ -576,6 +598,9 @@ function periodShapes(xIni, xFim, cutoff) {
     { type: "rect", xref: "x", yref: "paper", x0: xIni, x1: cutoff, y0: 0, y1: 1, fillcolor: cssVar("--p-bolsonaro-wash"), line: { width: 0 }, layer: "below" },
     { type: "rect", xref: "x", yref: "paper", x0: cutoff, x1: xFim, y0: 0, y1: 1, fillcolor: cssVar("--p-lula-wash"), line: { width: 0 }, layer: "below" },
     { type: "line", xref: "x", yref: "paper", x0: cutoff, x1: cutoff, y0: 0, y1: 1, line: { color: cssVar("--ink"), width: 1 } },
+    // faixa fina no topo: identifica o período pela cor sem tingir o gráfico
+    { type: "rect", xref: "x", yref: "paper", x0: xIni, x1: cutoff, y0: 1, y1: 1.012, fillcolor: cssVar("--p-bolsonaro"), line: { width: 0 } },
+    { type: "rect", xref: "x", yref: "paper", x0: cutoff, x1: xFim, y0: 1, y1: 1.012, fillcolor: cssVar("--p-lula"), line: { width: 0 } },
   ];
 }
 // Telas estreitas: rótulos curtos, embaixo, e sem rótulos na ponta das linhas.
@@ -585,8 +610,8 @@ function periodAnnotations(xIni, cutoff) {
   const e = estreito();
   const pos = e ? { y: 0, yanchor: "bottom", yshift: 6 } : { y: 1, yanchor: "top", yshift: -6 };
   return [
-    { x: xIni, xref: "x", yref: "paper", text: e ? "<b>BOLSONARO</b>" : "<b>GOVERNO BOLSONARO</b>", showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
-    { x: cutoff, xref: "x", yref: "paper", text: e ? "<b>LULA</b>" : "<b>GOVERNO LULA</b>", showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
+    { x: xIni, xref: "x", yref: "paper", text: `<span style="color:${cssVar("--p-bolsonaro")}">●</span> <b>${e ? "BOLSONARO" : "GOVERNO BOLSONARO"}</b>`, showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
+    { x: cutoff, xref: "x", yref: "paper", text: `<span style="color:${cssVar("--p-lula")}">●</span> <b>${e ? "LULA" : "GOVERNO LULA"}</b>`, showarrow: false, xanchor: "left", xshift: 6, font: f, ...pos },
   ];
 }
 function endLabel(x, y, texto, lado) {
@@ -713,6 +738,15 @@ function renderChart() {
     { x: [x[idxIni], x[idxFim]], y: [y[idxIni], y[idxFim]], type: "scatter", mode: "markers", marker: { size: 10, color: accent, line: { color: "#ffffff", width: 2 } }, hoverinfo: "skip" },
   );
 
+  // contexto para o painel de notícias: valor do gráfico no mês da matéria
+  const capMetrica = produto.tipo === "taxa" ? produto.unidade
+    : produto.tipo === "pontos" ? "fechamento do mês"
+    : isComb ? (state.metric === "real" ? `em reais de ${mFim}, ${u.por}` : state.metric === "pct_sm" ? `do salário mínimo naquele mês (${u.um})` : isCambio ? "cotação média do mês" : `preço médio no mês, ${u.por}`)
+    : state.metric === "real" ? "índice corrigido pela inflação (não é R$)" : "índice no mês (não é R$)";
+  chartCtx = { x, y, fmtY, cap: capMetrica };
+  const marcadores = newsMarkerTrace(x, y);
+  if (marcadores) traces.push(marcadores);
+
   document.getElementById("chart-legend").innerHTML = yRef
     ? `<span class="lg-item"><span class="lg-swatch" style="border-color:${accent}"></span>${isComb ? "Em dinheiro de hoje" : "Índice corrigido"}</span>
        <span class="lg-item"><span class="lg-swatch dotted" style="border-color:${cssVar("--ink-faint")}"></span>${refNome}</span>`
@@ -739,6 +773,8 @@ function renderChart() {
     });
   }
   Plotly.react("main-chart", traces, layout, { responsive: true, displayModeBar: false });
+  bindChartClicks();
+  renderNewsTrack();
 }
 
 // ---------- 02 · Média de cada ano (colunas) ----------
@@ -906,22 +942,31 @@ function renderGovernos(produto) {
     </svg>`;
   }
 
-  document.getElementById("gov-cols").innerHTML = periodos.map((p, k) => {
+  // Identificação dos períodos: mesma área, mesmo retrato, mesma hierarquia
+  // para os dois. A cor (azul/vermelho) é só um identificador do período.
+  const anos = (r, p) => `${r.mes_inicio.slice(0, 4)}–${p === "Lula" ? "atual" : r.mes_fim.slice(0, 4)}`;
+  const idHtml = (p, r) => {
     const pres = DATA.presidentes[p];
+    return `<header class="gov-id">
+      <figure class="portrait"><img src="${pres.foto}" alt="Retrato oficial de ${pres.nome}" width="720" height="720" loading="lazy" decoding="async" /></figure>
+      <div class="gov-id-text">
+        <span class="gov-label"><span class="gov-mark" aria-hidden="true"></span>${p}</span>
+        <span class="gov-years tnum">${r ? anos(r, p) : "—"}</span>
+        <span class="gov-fullname">${pres.nome}</span>
+        <span class="gov-dates">${r ? `${fmtMesAno(r.mes_inicio)} – ${fmtMesAno(r.mes_fim)}${p === "Lula" ? " · em curso" : ""}` : "dado não disponível"}</span>
+      </div>
+    </header>`;
+  };
+
+  document.getElementById("gov-cols").innerHTML = periodos.map((p, k) => {
     const r = resumos[k];
     const cls = p.toLowerCase();
-    if (!r) return `<div class="gov ${cls}"><div class="gov-head"><img src="${pres.foto}" alt="${pres.nome}" loading="lazy" /><div><div class="gov-name"><span class="dot"></span>${p}</div><div class="gov-dates">dado não disponível</div></div></div></div>`;
+    if (!r) return `<div class="gov ${cls}">${idHtml(p, null)}</div>`;
     const vIni = isTaxa ? r.taxa_inicio : isPontos ? r.pontos_inicio : isComb ? r.preco_nominal_inicio : r.indice_nominal_inicio;
     const vFim = isTaxa ? r.taxa_fim : isPontos ? r.pontos_fim : isComb ? r.preco_nominal_fim : r.indice_nominal_fim;
     const suf = isTaxa || isPontos || isComb ? "" : "<small>índice</small>";
     return `<div class="gov ${cls}">
-      <div class="gov-head">
-        <img src="${pres.foto}" alt="${pres.nome}" loading="lazy" />
-        <div>
-          <div class="gov-name"><span class="dot"></span>${p}</div>
-          <div class="gov-dates">${fmtMesAno(r.mes_inicio)} – ${fmtMesAno(r.mes_fim)}${p === "Lula" ? " · em curso" : ""}</div>
-        </div>
-      </div>
+      ${idHtml(p, r)}
       ${spark(janelas[k], p)}
       <div class="gov-ends">
         <div class="gov-end"><span class="when">início · ${fmtMesAno(r.mes_inicio)}</span><span class="val tnum">${fmtGov(vIni)}${suf}</span></div>
@@ -1005,7 +1050,9 @@ function renderGovernos(produto) {
     <thead><tr><th></th><th>Bolsonaro</th><th>Lula</th></tr></thead>
     <tbody>${linhas.map(([label, help, fn]) => `<tr><td>${label}<span class="row-help">${help}</span></td><td>${fn(rB)}</td><td>${fn(rL)}</td></tr>`).join("")}</tbody>`;
 
-  document.getElementById("photo-credit").textContent = `${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}`;
+  // CC BY 2.0 pede que alterações sejam indicadas (ver scripts/process_portraits.py)
+  document.getElementById("photo-credit").textContent =
+    `Retratos: ${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}. Imagens recortadas e convertidas para preto e branco, com o mesmo tratamento para as duas.`;
 }
 
 // =====================================================================
@@ -1201,6 +1248,40 @@ function renderContext(produto) {
     })),
   ];
   Plotly.react("context-chart", traces, layout, { responsive: true, displayModeBar: false });
+}
+
+// =====================================================================
+// "Como estava o Brasil?" — fotografia cross-indicador dos meses Era/Agora
+// do produto selecionado. Só lê DATA.fotografia_mensal (já pronto em
+// Python, a partir dos outros produtos) — nenhuma conta nova aqui.
+// =====================================================================
+const SNAPSHOT_CAMPOS = [
+  { chave: "dolar", label: "Dólar", fmt: (v) => fmtBRL.format(v) },
+  { chave: "ibovespa", label: "Ibovespa", fmt: (v) => `${fmtNum(v, 0)} pts` },
+  { chave: "selic", label: "Selic", fmt: (v) => `${fmtNum(v, 2)}% a.a.` },
+  { chave: "ipca", label: "Inflação (12m)", fmt: (v) => `${fmtNum(v, 2)}%` },
+  { chave: "salario_minimo", label: "Salário mínimo", fmt: (v) => fmtBRL.format(v) },
+  { chave: "gasolina", label: "Gasolina", fmt: (v) => `${fmtBRL.format(v)}/L` },
+];
+
+function renderSnapshot(produto) {
+  const grid = document.getElementById("snapshot-grid");
+  const eraRef = eraReferencia(produto.serie_mensal);
+  const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+  const momentos = [
+    { label: "Era", sub: fmtMesAno(eraRef.ano_mes), dados: DATA.fotografia_mensal[eraRef.ano_mes] },
+    { label: "Agora", sub: fmtMesAno(ultimo.ano_mes), dados: DATA.fotografia_mensal[ultimo.ano_mes] },
+  ];
+  grid.innerHTML = momentos.map((m) => `
+    <div class="snap-card">
+      <div class="snap-head"><span class="snap-kicker">${m.label}</span><span class="snap-when">${m.sub}</span></div>
+      <div class="snap-rows">
+        ${SNAPSHOT_CAMPOS.map((c) => {
+          const v = m.dados ? m.dados[c.chave] : null;
+          return `<div class="snap-row"><span class="snap-label">${c.label}</span><span class="snap-value tnum">${isNil(v) ? "—" : c.fmt(v)}</span></div>`;
+        }).join("")}
+      </div>
+    </div>`).join("");
 }
 
 init();

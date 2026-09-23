@@ -53,9 +53,18 @@ def main() -> None:
     hoje = {}
     for codigo, nome in SERIES.items():
         logger.info(f"Baixando série BCB {codigo} ({nome})...")
-        df = baixar_serie(codigo, data_inicial, data_final)
-        ultimo = df.sort_values("data").iloc[-1]
-        hoje[nome] = {"data": ultimo["data"].strftime("%Y-%m-%d"), "valor": float(ultimo["valor"])}
+        df = baixar_serie(codigo, data_inicial, data_final).sort_values("data")
+        ultimo = df.iloc[-1]
+        registro = {"data": ultimo["data"].strftime("%Y-%m-%d"), "valor": float(ultimo["valor"])}
+        if codigo == "432":
+            # Selic-meta só muda quando o Copom decide — "vigente desde" é a
+            # primeira data da sequência atual do mesmo valor (não confundir
+            # com a data da própria decisão, que pode ser alguns dias antes
+            # de entrar em vigor).
+            mudou = df["valor"].ne(df["valor"].shift()).cumsum()
+            vigente_desde = df[mudou == mudou.iloc[-1]]["data"].min()
+            registro["vigente_desde"] = vigente_desde.strftime("%Y-%m-%d")
+        hoje[nome] = registro
         df["ano_mes"] = df["data"].dt.to_period("M").dt.to_timestamp()
         agg = df.groupby("ano_mes")["valor"].mean().rename(nome).reset_index()
         mensal = agg if mensal is None else mensal.merge(agg, on="ano_mes", how="outer")
