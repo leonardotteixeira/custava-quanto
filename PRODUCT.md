@@ -86,14 +86,21 @@ tempo real.
 
 ## Brand Commitments
 
-- **Nome fixo**: "CUSTAVA QUANTO?"
+- **Nome fixo**: "CUSTAVA QUANTO?" — confirmado mesmo após uma versão
+  inicial do Brand Book (abaixo) explorar "Custavo Quanto" (masculino,
+  corrigido depois) como uma de três direções conceituais. O produto usa
+  só a paleta e o símbolo do brand book, não o nome nem a tipografia dele.
 - **Tagline fixa**: "Quanto custava. Quanto custa. O que mudou."
 - **Voz editorial** (definida em Phase 0.3): "O Analista Neutro e Rigoroso"
   — clara, objetiva, humana, empática, rigorosamente isenta, sem
   sensacionalismo, sem adjetivos de IA.
-- Tudo além de nome/tagline/voz (paleta, tipografia, componentes visuais) é
-  **aberto para evolução** em Phase 2 — a identidade visual atual (serif
-  editorial + paleta terrosa) é ponto de partida, não compromisso fixo.
+- **Paleta de cor fixa** (Phase 2, desde set/2026): petróleo + âmbar, do
+  Custava Quanto Brand Book (direção "Índice") — ver DESIGN.md.
+- **Símbolo fixo**: arco de 270° com tick radial, do mesmo brand book —
+  usado no masthead e como favicon (`dashboard/assets/brand/`).
+- Tipografia (Fraunces/Inter) e radius pequenos (3–6px) **não** seguem o
+  brand book — decisão confirmada do produto (brand book pede Piazzolla/
+  Space Grotesk e zero-radius); ver DESIGN.md Do's and Don'ts.
 
 ## Evidence on Hand
 
@@ -105,6 +112,11 @@ tempo real.
   Wikimedia Commons) — crédito visível.
 - `output/RESUMO.md` documenta conclusões e limitações da análise original
   (camada de gráficos estáticos, anterior ao dashboard).
+- `Custava Quanto - Brand Book.pdf` (raiz do projeto) + assets em
+  `Definindo parâmetros de exploração/design_handoff_custava_quanto/` —
+  brand book formal (3 direções conceituais exploradas, "Índice" escolhida).
+  Fonte da paleta petróleo/âmbar e do símbolo; nome/tipografia do brand book
+  não foram adotados, ver Brand Commitments acima.
 - Ausência confirmada: sem dado da DIEESE (cesta básica em R$), sem filtro
   regional, sem modelo econométrico causal — nenhum destes deve ser
   fabricado ou simulado.

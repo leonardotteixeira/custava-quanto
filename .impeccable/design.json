@@ -1,25 +1,25 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-23T00:00:00Z",
+  "generatedAt": "2026-09-23T15:00:00Z",
   "title": "Design System: CUSTAVA QUANTO?",
   "extensions": {
     "colorMeta": {
-      "paper": { "role": "neutral", "displayName": "Papel", "canonical": "#f8f7f3", "tonalRamp": ["#151515", "#2c2b28", "#4a4844", "#5c5b57", "#8a8883", "#c5c3bc", "#e9e7e1", "#f8f7f3"] },
-      "surface": { "role": "neutral", "displayName": "Superfície", "canonical": "#ffffff", "tonalRamp": ["#151515", "#333230", "#59564f", "#807d75", "#a8a59c", "#d0cdc4", "#ebe9e4", "#ffffff"] },
-      "ink": { "role": "neutral", "displayName": "Tinta", "canonical": "#151515", "tonalRamp": ["#000000", "#151515", "#2b2b2a", "#464543", "#66655f", "#8a8883", "#b5b3ab", "#dad8d2"] },
-      "ink-soft": { "role": "neutral", "displayName": "Grafite Suave", "canonical": "#5c5b57", "tonalRamp": ["#151515", "#2c2b28", "#454340", "#5c5b57", "#79776f", "#9c9a90", "#c3c1b7", "#e9e7e1"] },
-      "ink-faint": { "role": "neutral", "displayName": "Grafite Desbotado", "canonical": "#65635e", "tonalRamp": ["#151515", "#302f2c", "#4a4844", "#65635e", "#847f76", "#a6a297", "#cac6ba", "#e9e7e1"] },
-      "line": { "role": "neutral", "displayName": "Linha", "canonical": "#dad8d2", "tonalRamp": ["#5c5b57", "#78766f", "#948f85", "#b0aca0", "#c5c1b6", "#dad8d2", "#e9e7e1", "#f8f7f3"] },
-      "accent-ochre": { "role": "primary", "displayName": "Ocre Editorial", "canonical": "#d9a441", "tonalRamp": ["#4a3106", "#6b480a", "#875c10", "#a6771f", "#c1902f", "#d9a441", "#e8c47c", "#f6ecd4"] },
-      "accent-ochre-deep": { "role": "primary", "displayName": "Ocre Profundo", "canonical": "#875c10", "tonalRamp": ["#2e1e04", "#4a3106", "#6b480a", "#875c10", "#a6771f", "#c1902f", "#d9a441", "#e8c47c"] },
+      "paper": { "role": "neutral", "displayName": "Papel", "canonical": "#F6F3EC", "tonalRamp": ["#12313A", "#2b4750", "#455e67", "#5f757d", "#798c93", "#a3aeab", "#cdd0c8", "#F6F3EC"] },
+      "surface": { "role": "neutral", "displayName": "Superfície", "canonical": "#ffffff", "tonalRamp": ["#12313A", "#334c53", "#59696f", "#80868b", "#a8a8a3", "#d0cebb", "#ebe9d2", "#ffffff"] },
+      "ink": { "role": "neutral", "displayName": "Tinta Petróleo", "canonical": "#12313A", "tonalRamp": ["#050f12", "#12313A", "#1d454f", "#2e5b66", "#45747f", "#6c9198", "#a3bdc0", "#d6e2e2"] },
+      "ink-soft": { "role": "neutral", "displayName": "Texto Secundário", "canonical": "#55636A", "tonalRamp": ["#12313A", "#294048", "#3e545c", "#55636A", "#75818a", "#9aa4aa", "#c2c8cb", "#e5e5df"] },
+      "ink-faint": { "role": "neutral", "displayName": "Texto Terciário", "canonical": "#5e6b71", "tonalRamp": ["#12313A", "#2c454c", "#455962", "#5e6b71", "#7e888d", "#a1a8ac", "#c6cbcd", "#e5e5df"] },
+      "line": { "role": "neutral", "displayName": "Linha", "canonical": "#d6d8d3", "tonalRamp": ["#55636A", "#707e83", "#8c979b", "#a8b0b2", "#bfc5c1", "#d6d8d3", "#e5e5df", "#F6F3EC"] },
+      "accent-ochre": { "role": "primary", "displayName": "Âmbar Editorial", "canonical": "#E2A33D", "tonalRamp": ["#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c", "#f4e9d6"] },
+      "accent-ochre-deep": { "role": "primary", "displayName": "Âmbar Profundo", "canonical": "#8c5c14", "tonalRamp": ["#331f04", "#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c"] },
       "period-bolsonaro": { "role": "secondary", "displayName": "Azul Institucional", "canonical": "#2b5c92", "tonalRamp": ["#0f2438", "#173858", "#1f4a76", "#2b5c92", "#4778ae", "#7099c4", "#a3bfdb", "#d3e1ee"] },
       "period-lula": { "role": "secondary", "displayName": "Vermelho Institucional", "canonical": "#b33a3a", "tonalRamp": ["#3d1414", "#5c1f1f", "#872b2b", "#b33a3a", "#c65f5f", "#d78a8a", "#e6b4b4", "#f3dbdb"] },
-      "chart-brent": { "role": "tertiary", "displayName": "Verde Petróleo", "canonical": "#16876a", "tonalRamp": ["#052e24", "#0a4a3a", "#0f6650", "#16876a", "#2ba888", "#63c4ab", "#a3ddca", "#d9f2e9"] },
+      "chart-brent": { "role": "tertiary", "displayName": "Verde Brent", "canonical": "#16876a", "tonalRamp": ["#052e24", "#0a4a3a", "#0f6650", "#16876a", "#2ba888", "#63c4ab", "#a3ddca", "#d9f2e9"] },
       "chart-cambio": { "role": "tertiary", "displayName": "Roxo Câmbio", "canonical": "#7a4fb0", "tonalRamp": ["#2a1a3c", "#412a5c", "#5a3980", "#7a4fb0", "#9670c4", "#b596d6", "#d4c0e8", "#ecdff6"] },
-      "chart-ipca": { "role": "tertiary", "displayName": "Cinza Inflação", "canonical": "#8a8883", "tonalRamp": ["#151515", "#302f2c", "#4a4844", "#65635e", "#8a8883", "#a6a297", "#cac6ba", "#e9e7e1"] },
-      "status-up": { "role": "status", "displayName": "Ocre (alta)", "canonical": "#875c10", "tonalRamp": ["#2e1e04", "#4a3106", "#6b480a", "#875c10", "#a6771f", "#c1902f", "#d9a441", "#e8c47c"] },
+      "chart-ipca": { "role": "tertiary", "displayName": "Cinza Inflação", "canonical": "#8a8883", "tonalRamp": ["#12313A", "#2c2b28", "#4a4844", "#65635e", "#8a8883", "#a6a297", "#cac6ba", "#e9e7e1"] },
+      "status-up": { "role": "status", "displayName": "Âmbar (alta)", "canonical": "#8c5c14", "tonalRamp": ["#331f04", "#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c"] },
       "status-down": { "role": "status", "displayName": "Azul-Petróleo (baixa)", "canonical": "#0a5f8a", "tonalRamp": ["#031e2c", "#063349", "#08496a", "#0a5f8a", "#2a7ea8", "#5ba0c4", "#96c4dc", "#d0e6f0"] },
-      "status-flat": { "role": "status", "displayName": "Grafite (estável)", "canonical": "#5c5b57", "tonalRamp": ["#151515", "#2c2b28", "#454340", "#5c5b57", "#79776f", "#9c9a90", "#c3c1b7", "#e9e7e1"] }
+      "status-flat": { "role": "status", "displayName": "Cinza (estável)", "canonical": "#55636A", "tonalRamp": ["#12313A", "#294048", "#3e545c", "#55636A", "#75818a", "#9aa4aa", "#c2c8cb", "#e5e5df"] }
     },
     "typographyMeta": {
       "display": { "displayName": "Display", "purpose": "Frase de abertura do hero — voz editorial máxima." },
@@ -29,7 +29,7 @@
       "label": { "displayName": "Label", "purpose": "Kickers de seção, rótulos de categoria, uppercase." }
     },
     "shadows": [
-      { "name": "floating-popover", "value": "0 8px 28px -12px rgba(20, 16, 8, 0.28)", "purpose": "Único uso de sombra do sistema: popover de termo técnico flutuando sobre o conteúdo." }
+      { "name": "floating-popover", "value": "0 10px 32px -10px rgba(20, 16, 8, 0.32)", "purpose": "Único uso de sombra do sistema: popover de termo técnico flutuando sobre o conteúdo." }
     ],
     "motion": [
       { "name": "ease-fill", "value": "cubic-bezier(0.2, 0.7, 0.2, 1)", "purpose": "Preenchimento de barras (vr-fill, pp-index-fill, yr-fill) e marcadores." },
@@ -42,12 +42,20 @@
   },
   "components": [
     {
+      "name": "Wordmark Symbol",
+      "kind": "custom",
+      "refersTo": "wordmark-symbol",
+      "description": "Arco de 270° com tick radial — símbolo do Custavo Quanto Brand Book, direção 'Índice'. Usado no masthead e como favicon.",
+      "html": "<svg class=\"ds-symbol\" viewBox=\"0 0 64 64\" aria-hidden=\"true\"><path d=\"M32 8 A24 24 0 1 1 12 44\" stroke=\"currentColor\" stroke-width=\"5.5\" fill=\"none\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"44\" x2=\"21\" y2=\"50\" stroke=\"currentColor\" stroke-width=\"5.5\" stroke-linecap=\"round\"/></svg>",
+      "css": ".ds-symbol { width: 18px; height: 18px; color: #12313A; }"
+    },
+    {
       "name": "Product Chip",
       "kind": "chip",
       "refersTo": "product-chip",
       "description": "Seletor de produto com badge de variação pré-clique.",
       "html": "<button class=\"ds-chip\">Gasolina <span class=\"ds-chip-delta\">+32%</span></button>",
-      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 3px; border: 1px solid #dad8d2; background: #fff; font-size: 0.9rem; font-weight: 500; color: #151515; font-family: Inter, sans-serif; cursor: pointer; transition: border-color .15s, background .15s, color .15s; } .ds-chip:hover { border-color: #151515; } .ds-chip-delta { font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(217, 164, 65, 0.22); color: #875c10; }"
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 3px; border: 1px solid #d6d8d3; background: #fff; font-size: 0.9rem; font-weight: 500; color: #12313A; font-family: Inter, sans-serif; cursor: pointer; transition: border-color .15s, background .15s, color .15s; } .ds-chip:hover { border-color: #12313A; } .ds-chip-delta { font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(226, 163, 61, 0.22); color: #8c5c14; }"
     },
     {
       "name": "Product Chip Active",
@@ -55,7 +63,7 @@
       "refersTo": "product-chip-active",
       "description": "Estado selecionado do chip — inversão total de cor, não apenas borda.",
       "html": "<button class=\"ds-chip-active\">Gasolina <span class=\"ds-chip-delta-active\">+32%</span></button>",
-      "css": ".ds-chip-active { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 3px; border: 1px solid #151515; background: #151515; font-size: 0.9rem; font-weight: 500; color: #f8f7f3; font-family: Inter, sans-serif; cursor: pointer; } .ds-chip-delta-active { font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(255,255,255,0.25); color: #fff; }"
+      "css": ".ds-chip-active { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 3px; border: 1px solid #12313A; background: #12313A; font-size: 0.9rem; font-weight: 500; color: #F6F3EC; font-family: Inter, sans-serif; cursor: pointer; } .ds-chip-delta-active { font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(255,255,255,0.25); color: #fff; }"
     },
     {
       "name": "Segmented Control",
@@ -63,7 +71,7 @@
       "refersTo": "segmented-btn-active",
       "description": "Alternador de métrica (nominal/real/% salário) — mesmo padrão de inversão dos chips.",
       "html": "<div class=\"ds-segmented\"><button class=\"ds-seg-btn ds-seg-btn-active\">Preço na época</button><button class=\"ds-seg-btn\">Corrigido pela inflação</button></div>",
-      "css": ".ds-segmented { display: inline-flex; border: 1px solid #dad8d2; border-radius: 4px; padding: 3px; gap: 2px; background: #fff; } .ds-seg-btn { border: none; background: transparent; border-radius: 3px; font-size: 0.86rem; font-weight: 500; color: #5c5b57; padding: 8px 14px; cursor: pointer; font-family: Inter, sans-serif; transition: background .15s, color .15s; } .ds-seg-btn:hover { color: #151515; background: #f8f7f3; } .ds-seg-btn-active { background: #151515; color: #f8f7f3; font-weight: 600; }"
+      "css": ".ds-segmented { display: inline-flex; border: 1px solid #d6d8d3; border-radius: 4px; padding: 3px; gap: 2px; background: #fff; } .ds-seg-btn { border: none; background: transparent; border-radius: 3px; font-size: 0.86rem; font-weight: 500; color: #55636A; padding: 8px 14px; cursor: pointer; font-family: Inter, sans-serif; transition: background .15s, color .15s; } .ds-seg-btn:hover { color: #12313A; background: #F6F3EC; } .ds-seg-btn-active { background: #12313A; color: #F6F3EC; font-weight: 600; }"
     },
     {
       "name": "Snapshot Card",
@@ -71,15 +79,15 @@
       "refersTo": "snap-card",
       "description": "Card da Cápsula do Tempo — mês selecionado ou 'agora'.",
       "html": "<div class=\"ds-card\"><div class=\"ds-card-head\"><span class=\"ds-card-kicker\">Mês selecionado</span><span class=\"ds-card-when\">dez/2022</span></div><div class=\"ds-card-row\"><span>Dólar</span><strong>R$ 5,24</strong></div></div>",
-      "css": ".ds-card { border: 1px solid #dad8d2; border-radius: 6px; background: #fff; padding: 18px 22px; font-family: Inter, sans-serif; } .ds-card-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e9e7e1; } .ds-card-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #151515; } .ds-card-when { font-size: 0.9rem; color: #5c5b57; } .ds-card-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 0.9rem; color: #5c5b57; } .ds-card-row strong { font-size: 0.98rem; font-weight: 600; color: #151515; }"
+      "css": ".ds-card { border: 1px solid #d6d8d3; border-radius: 6px; background: #fff; padding: 18px 22px; font-family: Inter, sans-serif; } .ds-card-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e5e5df; } .ds-card-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #12313A; } .ds-card-when { font-size: 0.9rem; color: #55636A; } .ds-card-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 0.9rem; color: #55636A; } .ds-card-row strong { font-size: 0.98rem; font-weight: 600; color: #12313A; }"
     },
     {
       "name": "Month Pill",
       "kind": "chip",
       "refersTo": "month-pill-active",
-      "description": "Atalho rápido de mês na Cápsula do Tempo — único lugar onde o wash ocre aparece em fundo de botão.",
-      "html": "<button class=\"ds-pill-active\">🦠 Pandemia (Mai/20)</button>",
-      "css": ".ds-pill-active { padding: 5px 10px; border-radius: 999px; border: 1px solid #d9a441; background: #f6ecd4; font-size: 0.78rem; font-weight: 600; color: #875c10; cursor: pointer; font-family: Inter, sans-serif; }"
+      "description": "Atalho rápido de mês na Cápsula do Tempo — único lugar onde o wash âmbar aparece em fundo de botão.",
+      "html": "<button class=\"ds-pill-active\">Pandemia (Mai/20)</button>",
+      "css": ".ds-pill-active { padding: 5px 10px; border-radius: 999px; border: 1px solid #E2A33D; background: #f4e9d6; font-size: 0.78rem; font-weight: 600; color: #8c5c14; cursor: pointer; font-family: Inter, sans-serif; }"
     },
     {
       "name": "News Clip",
@@ -87,14 +95,14 @@
       "refersTo": "clip",
       "description": "Recorte de notícia real — filete superior grosso, veículo em versalete, manchete em serifa.",
       "html": "<article class=\"ds-clip\"><div class=\"ds-clip-meta\"><span class=\"ds-clip-outlet\">AGÊNCIA BRASIL</span><span>18 SET 2019</span></div><h3 class=\"ds-clip-title\">Petrobras eleva preço da gasolina em 3,5%</h3></article>",
-      "css": ".ds-clip { border-top: 3px solid #151515; padding-top: 14px; font-family: Inter, sans-serif; } .ds-clip-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #5c5b57; } .ds-clip-outlet { font-weight: 700; color: #151515; } .ds-clip-title { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.2rem; line-height: 1.25; letter-spacing: -0.01em; margin: 8px 0 0; color: #151515; }"
+      "css": ".ds-clip { border-top: 3px solid #12313A; padding-top: 14px; font-family: Inter, sans-serif; } .ds-clip-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #55636A; } .ds-clip-outlet { font-weight: 700; color: #12313A; } .ds-clip-title { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.2rem; line-height: 1.38; letter-spacing: -0.01em; margin: 8px 0 0; color: #12313A; }"
     }
   ],
   "narrative": {
     "northStar": "O Arquivo do Jornal",
-    "overview": "CUSTAVA QUANTO? se comporta como um arquivo de jornal editorial que virou produto de dados: papel off-white, tinta grafite, colunas com filete superior grosso como manchete de recorte, e um único acento ocre reservado para \"o valor que importa\" em cada tela. A serifa (Fraunces) fala — faz perguntas, título de capítulo, frase-resumo — enquanto a sem-serifa tabular (Inter) mostra os números, porque algarismos alinhados sem floreio se leem mais rápido que os de uma serifa de alto contraste. Nenhuma sombra dramática, nenhuma cor de \"bom/ruim\": a identidade visual existe para deixar o dado falar primeiro e a interface desaparecer.",
+    "overview": "CUSTAVA QUANTO? se comporta como um arquivo de jornal editorial que virou produto de dados: papel off-white, tinta petróleo, colunas com filete superior grosso como manchete de recorte, e um único acento âmbar reservado para \"o valor que importa\" em cada tela. A paleta petróleo/âmbar e o símbolo (arco de 270°) vêm do Custavo Quanto Brand Book (v1, set/2026, direção \"Índice\") — adotados só nesses dois pontos; nome do produto e tipografia (Fraunces/Inter) seguem decisões próprias do dashboard, documentadas em PRODUCT.md. A serifa (Fraunces) fala — faz perguntas, título de capítulo, frase-resumo — enquanto a sem-serifa tabular (Inter) mostra os números, porque algarismos alinhados sem floreio se leem mais rápido que os de uma serifa de alto contraste. Nenhuma sombra dramática, nenhuma cor de \"bom/ruim\": a identidade visual existe para deixar o dado falar primeiro e a interface desaparecer.",
     "keyCharacteristics": [
-      "Papel + tinta, um único acento ocre usado com raridade deliberada",
+      "Papel + tinta petróleo, um único acento âmbar usado com raridade deliberada",
       "Serifa = voz editorial; sem-serifa tabular = todo número e toda interface",
       "Quase flat: bordas finas separam, sombra é exceção pontual (tooltip)",
       "Azul/vermelho identificam período de governo, nunca julgamento",
@@ -102,14 +110,15 @@
     ],
     "rules": [
       { "name": "The Neutral Identifier Rule", "body": "Azul (Bolsonaro) e vermelho (Lula) identificam qual período um dado pertence e nada mais. Nunca usar essas duas cores para indicar positivo/negativo, certo/errado, ou qualquer julgamento de valor.", "section": "colors" },
-      { "name": "The Rare Ochre Rule", "body": "O acento ocre aparece em no máximo ~10% de qualquer tela. Sua raridade é o que faz \"Agora\" e os valores-chave saltarem aos olhos sem competir com dado nenhum.", "section": "colors" },
+      { "name": "The Rare Ochre Rule", "body": "O acento âmbar aparece em no máximo ~10% de qualquer tela. Sua raridade é o que faz \"Agora\" e os valores-chave saltarem aos olhos sem competir com dado nenhum.", "section": "colors" },
       { "name": "The Fixed-Role Rule", "body": "Fraunces é voz editorial (perguntas, títulos, frases de resumo); Inter é todo número e toda interface, sem exceção.", "section": "typography" },
       { "name": "The Flat-by-Default Rule", "body": "Nenhum card, chip ou botão recebe sombra em repouso. Sombra só aparece em elementos que fisicamente flutuam sobre o conteúdo (popovers).", "section": "elevation" },
-      { "name": "The Status Pair Rule", "body": "chip-delta usa ocre (#875c10, alta) e azul-petróleo (#0a5f8a, baixa), não verde — o par ocre/verde-escuro original falhava separação de daltonismo (validado com dataviz skill: ΔE 3.9-5.5, abaixo do piso 6.0). Estável usa grafite neutro deliberadamente.", "section": "colors" },
-      { "name": "The Dash-Pattern Backup Rule", "body": "IPCA no gráfico de contexto é deliberadamente dessaturado (falha o piso de chroma isolado) mas nunca depende só da cor: usa dash:\"dot\" contra produto sólido, Brent tracejado, Câmbio traço-ponto, sempre com legenda visível. Nova série do gráfico precisa de padrão de traço próprio.", "section": "colors" }
+      { "name": "The Status Pair Rule", "body": "chip-delta usa âmbar (#8c5c14, alta) e azul-petróleo (#0a5f8a, baixa), não verde — o par âmbar/verde-escuro falha separação de daltonismo (validado com dataviz skill: ΔE 3.9-5.5, abaixo do piso 6.0). Estável usa cinza neutro deliberadamente.", "section": "colors" },
+      { "name": "The Dash-Pattern Backup Rule", "body": "IPCA no gráfico de contexto é deliberadamente dessaturado (falha o piso de chroma isolado) mas nunca depende só da cor: usa dash:\"dot\" contra produto sólido, Brent tracejado, Câmbio traço-ponto, sempre com legenda visível. Nova série do gráfico precisa de padrão de traço próprio.", "section": "colors" },
+      { "name": "The Symbol Integrity Rule", "body": "O arco de 270° do símbolo nunca gira, espelha ou fecha em círculo completo — herdado do Custavo Quanto Brand Book.", "section": "components" }
     ],
     "dos": [
-      "Do reservar o acento ocre para o valor \"Agora\" e números-chave — raridade é o que dá força",
+      "Do reservar o acento âmbar para o valor \"Agora\" e números-chave — raridade é o que dá força",
       "Do manter Fraunces só em títulos/perguntas/frases-resumo e Inter em todo número/interface",
       "Do separar blocos com borda fina de 1px em vez de sombra",
       "Do usar azul/vermelho de governo só como identificador de período, com peso visual idêntico para os dois",
@@ -120,7 +129,8 @@
       "Don't adicionar sombra decorativa a cards, chips ou botões em repouso",
       "Don't usar Fraunces para exibir um número, nem Inter para uma manchete ou pergunta de capítulo",
       "Don't introduzir radius grande (12px+) tipo \"app card\" — quebra a referência de recorte de jornal",
-      "Don't deixar o acento ocre dominar mais de ~10% de uma tela"
+      "Don't deixar o acento âmbar dominar mais de ~10% de uma tela",
+      "Don't girar, espelhar ou fechar o arco do símbolo em círculo completo"
     ]
   }
 }
