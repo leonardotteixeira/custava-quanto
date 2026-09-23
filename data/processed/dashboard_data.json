@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T01:24:56+00:00",
+  "gerado_em": "2026-09-23T01:37:37+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -18220,6 +18220,711 @@
       "cotacao_hoje": {
         "data": "2026-09-22",
         "valor": 13.75
+      }
+    },
+    "IPCA": {
+      "nome": "Inflação (IPCA)",
+      "tipo": "taxa",
+      "unidade": "% ao ano (12 meses)",
+      "nota": "Aqui \"IPCA\" é a inflação acumulada nos últimos 12 meses — a mesma métrica usada para comparar com a Selic no restante do dashboard — não o índice de preços em si. Como depende de 12 meses anteriores, só começa em jan/2020 (o dado de 2019 fica sem par no histórico). Não é um preço — por isso não faz sentido falar em \"poder de compra\" da inflação.",
+      "serie_mensal": [
+        {
+          "ano_mes": "2020-01-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.19,
+          "ipca_indice": 5331.42,
+          "selic_meta_aa": 4.5
+        },
+        {
+          "ano_mes": "2020-02-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.01,
+          "ipca_indice": 5344.75,
+          "selic_meta_aa": 4.29
+        },
+        {
+          "ano_mes": "2020-03-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.3,
+          "ipca_indice": 5348.49,
+          "selic_meta_aa": 4.04
+        },
+        {
+          "ano_mes": "2020-04-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 2.4,
+          "ipca_indice": 5331.91,
+          "selic_meta_aa": 3.75
+        },
+        {
+          "ano_mes": "2020-05-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.88,
+          "ipca_indice": 5311.65,
+          "selic_meta_aa": 3.15
+        },
+        {
+          "ano_mes": "2020-06-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 2.13,
+          "ipca_indice": 5325.46,
+          "selic_meta_aa": 2.67
+        },
+        {
+          "ano_mes": "2020-07-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 2.31,
+          "ipca_indice": 5344.63,
+          "selic_meta_aa": 2.25
+        },
+        {
+          "ano_mes": "2020-08-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 2.44,
+          "ipca_indice": 5357.46,
+          "selic_meta_aa": 2.04
+        },
+        {
+          "ano_mes": "2020-09-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.14,
+          "ipca_indice": 5391.75,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2020-10-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.92,
+          "ipca_indice": 5438.12,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2020-11-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.31,
+          "ipca_indice": 5486.52,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2020-12-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.52,
+          "ipca_indice": 5560.59,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2021-01-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.56,
+          "ipca_indice": 5574.49,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2021-02-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 5.2,
+          "ipca_indice": 5622.43,
+          "selic_meta_aa": 2.0
+        },
+        {
+          "ano_mes": "2021-03-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 6.1,
+          "ipca_indice": 5674.72,
+          "selic_meta_aa": 2.34
+        },
+        {
+          "ano_mes": "2021-04-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 6.76,
+          "ipca_indice": 5692.31,
+          "selic_meta_aa": 2.75
+        },
+        {
+          "ano_mes": "2021-05-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 8.06,
+          "ipca_indice": 5739.56,
+          "selic_meta_aa": 3.38
+        },
+        {
+          "ano_mes": "2021-06-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 8.35,
+          "ipca_indice": 5769.98,
+          "selic_meta_aa": 3.85
+        },
+        {
+          "ano_mes": "2021-07-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 8.99,
+          "ipca_indice": 5825.37,
+          "selic_meta_aa": 4.25
+        },
+        {
+          "ano_mes": "2021-08-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 9.68,
+          "ipca_indice": 5876.05,
+          "selic_meta_aa": 5.12
+        },
+        {
+          "ano_mes": "2021-09-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.25,
+          "ipca_indice": 5944.21,
+          "selic_meta_aa": 5.52
+        },
+        {
+          "ano_mes": "2021-10-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.67,
+          "ipca_indice": 6018.51,
+          "selic_meta_aa": 6.44
+        },
+        {
+          "ano_mes": "2021-11-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.74,
+          "ipca_indice": 6075.69,
+          "selic_meta_aa": 7.75
+        },
+        {
+          "ano_mes": "2021-12-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.06,
+          "ipca_indice": 6120.04,
+          "selic_meta_aa": 8.86
+        },
+        {
+          "ano_mes": "2022-01-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.38,
+          "ipca_indice": 6153.09,
+          "selic_meta_aa": 9.25
+        },
+        {
+          "ano_mes": "2022-02-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.54,
+          "ipca_indice": 6215.24,
+          "selic_meta_aa": 10.64
+        },
+        {
+          "ano_mes": "2022-03-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 11.3,
+          "ipca_indice": 6315.93,
+          "selic_meta_aa": 11.23
+        },
+        {
+          "ano_mes": "2022-04-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 12.13,
+          "ipca_indice": 6382.88,
+          "selic_meta_aa": 11.75
+        },
+        {
+          "ano_mes": "2022-05-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 11.73,
+          "ipca_indice": 6412.88,
+          "selic_meta_aa": 12.62
+        },
+        {
+          "ano_mes": "2022-06-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 11.89,
+          "ipca_indice": 6455.85,
+          "selic_meta_aa": 13.0
+        },
+        {
+          "ano_mes": "2022-07-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 10.07,
+          "ipca_indice": 6411.95,
+          "selic_meta_aa": 13.25
+        },
+        {
+          "ano_mes": "2022-08-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 8.73,
+          "ipca_indice": 6388.87,
+          "selic_meta_aa": 13.7
+        },
+        {
+          "ano_mes": "2022-09-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 7.17,
+          "ipca_indice": 6370.34,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2022-10-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 6.47,
+          "ipca_indice": 6407.93,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2022-11-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 5.9,
+          "ipca_indice": 6434.2,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2022-12-01",
+          "periodo": "Bolsonaro",
+          "taxa_aa": 5.79,
+          "ipca_indice": 6474.09,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-01-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.77,
+          "ipca_indice": 6508.4,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-02-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.6,
+          "ipca_indice": 6563.07,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-03-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.65,
+          "ipca_indice": 6609.67,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-04-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.18,
+          "ipca_indice": 6649.99,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-05-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.94,
+          "ipca_indice": 6665.28,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-06-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.16,
+          "ipca_indice": 6659.95,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-07-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.99,
+          "ipca_indice": 6667.94,
+          "selic_meta_aa": 13.75
+        },
+        {
+          "ano_mes": "2023-08-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.61,
+          "ipca_indice": 6683.28,
+          "selic_meta_aa": 13.28
+        },
+        {
+          "ano_mes": "2023-09-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.19,
+          "ipca_indice": 6700.66,
+          "selic_meta_aa": 13.08
+        },
+        {
+          "ano_mes": "2023-10-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.82,
+          "ipca_indice": 6716.74,
+          "selic_meta_aa": 12.75
+        },
+        {
+          "ano_mes": "2023-11-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.68,
+          "ipca_indice": 6735.55,
+          "selic_meta_aa": 12.27
+        },
+        {
+          "ano_mes": "2023-12-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.62,
+          "ipca_indice": 6773.27,
+          "selic_meta_aa": 11.96
+        },
+        {
+          "ano_mes": "2024-01-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.51,
+          "ipca_indice": 6801.72,
+          "selic_meta_aa": 11.75
+        },
+        {
+          "ano_mes": "2024-02-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.5,
+          "ipca_indice": 6858.17,
+          "selic_meta_aa": 11.25
+        },
+        {
+          "ano_mes": "2024-03-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.93,
+          "ipca_indice": 6869.14,
+          "selic_meta_aa": 11.07
+        },
+        {
+          "ano_mes": "2024-04-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.69,
+          "ipca_indice": 6895.24,
+          "selic_meta_aa": 10.75
+        },
+        {
+          "ano_mes": "2024-05-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.93,
+          "ipca_indice": 6926.96,
+          "selic_meta_aa": 10.56
+        },
+        {
+          "ano_mes": "2024-06-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.23,
+          "ipca_indice": 6941.51,
+          "selic_meta_aa": 10.5
+        },
+        {
+          "ano_mes": "2024-07-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.5,
+          "ipca_indice": 6967.89,
+          "selic_meta_aa": 10.5
+        },
+        {
+          "ano_mes": "2024-08-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.24,
+          "ipca_indice": 6966.5,
+          "selic_meta_aa": 10.5
+        },
+        {
+          "ano_mes": "2024-09-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.42,
+          "ipca_indice": 6997.15,
+          "selic_meta_aa": 10.6
+        },
+        {
+          "ano_mes": "2024-10-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.76,
+          "ipca_indice": 7036.33,
+          "selic_meta_aa": 10.75
+        },
+        {
+          "ano_mes": "2024-11-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.87,
+          "ipca_indice": 7063.77,
+          "selic_meta_aa": 11.15
+        },
+        {
+          "ano_mes": "2024-12-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.83,
+          "ipca_indice": 7100.5,
+          "selic_meta_aa": 11.9
+        },
+        {
+          "ano_mes": "2025-01-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.56,
+          "ipca_indice": 7111.86,
+          "selic_meta_aa": 12.31
+        },
+        {
+          "ano_mes": "2025-02-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.06,
+          "ipca_indice": 7205.03,
+          "selic_meta_aa": 13.25
+        },
+        {
+          "ano_mes": "2025-03-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.48,
+          "ipca_indice": 7245.38,
+          "selic_meta_aa": 13.64
+        },
+        {
+          "ano_mes": "2025-04-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.53,
+          "ipca_indice": 7276.54,
+          "selic_meta_aa": 14.25
+        },
+        {
+          "ano_mes": "2025-05-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.32,
+          "ipca_indice": 7295.46,
+          "selic_meta_aa": 14.64
+        },
+        {
+          "ano_mes": "2025-06-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.35,
+          "ipca_indice": 7312.97,
+          "selic_meta_aa": 14.85
+        },
+        {
+          "ano_mes": "2025-07-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.23,
+          "ipca_indice": 7331.98,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2025-08-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.13,
+          "ipca_indice": 7323.91,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2025-09-01",
+          "periodo": "Lula",
+          "taxa_aa": 5.17,
+          "ipca_indice": 7359.06,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2025-10-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.68,
+          "ipca_indice": 7365.68,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2025-11-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.46,
+          "ipca_indice": 7378.94,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2025-12-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.26,
+          "ipca_indice": 7403.29,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2026-01-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.44,
+          "ipca_indice": 7427.72,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2026-02-01",
+          "periodo": "Lula",
+          "taxa_aa": 3.81,
+          "ipca_indice": 7479.71,
+          "selic_meta_aa": 15.0
+        },
+        {
+          "ano_mes": "2026-03-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.14,
+          "ipca_indice": 7545.53,
+          "selic_meta_aa": 14.9
+        },
+        {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.39,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74
+        },
+        {
+          "ano_mes": "2026-05-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.72,
+          "ipca_indice": 7640.15,
+          "selic_meta_aa": 14.5
+        },
+        {
+          "ano_mes": "2026-06-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.64,
+          "ipca_indice": 7652.37,
+          "selic_meta_aa": 14.39
+        },
+        {
+          "ano_mes": "2026-07-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.44,
+          "ipca_indice": 7657.73,
+          "selic_meta_aa": 14.25
+        },
+        {
+          "ano_mes": "2026-08-01",
+          "periodo": "Lula",
+          "taxa_aa": 4.22,
+          "ipca_indice": 7633.23,
+          "selic_meta_aa": 14.04
+        }
+      ],
+      "serie_anual": [
+        {
+          "ano": 2020,
+          "taxa_media": 3.21,
+          "n_meses": 12
+        },
+        {
+          "ano": 2021,
+          "taxa_media": 8.28,
+          "n_meses": 12
+        },
+        {
+          "ano": 2022,
+          "taxa_media": 9.34,
+          "n_meses": 12
+        },
+        {
+          "ano": 2023,
+          "taxa_media": 4.6,
+          "n_meses": 12
+        },
+        {
+          "ano": 2024,
+          "taxa_media": 4.37,
+          "n_meses": 12
+        },
+        {
+          "ano": 2025,
+          "taxa_media": 5.02,
+          "n_meses": 12
+        },
+        {
+          "ano": 2026,
+          "taxa_media": 4.35,
+          "n_meses": 8
+        }
+      ],
+      "resumo_periodos": {
+        "Bolsonaro": {
+          "governo_inteiro": {
+            "n_meses": 36,
+            "mes_inicio": "2020-01-01",
+            "mes_fim": "2022-12-01",
+            "taxa_inicio": 4.19,
+            "taxa_fim": 5.79,
+            "variacao_pp": 1.59,
+            "taxa_media": 6.95,
+            "taxa_min": 1.88,
+            "taxa_max": 12.13
+          },
+          "primeiros_12m": {
+            "n_meses": 12,
+            "mes_inicio": "2020-01-01",
+            "mes_fim": "2020-12-01",
+            "taxa_inicio": 4.19,
+            "taxa_fim": 4.52,
+            "variacao_pp": 0.33,
+            "taxa_media": 3.21,
+            "taxa_min": 1.88,
+            "taxa_max": 4.52,
+            "completo": true
+          },
+          "primeiros_24m": {
+            "n_meses": 24,
+            "mes_inicio": "2020-01-01",
+            "mes_fim": "2021-12-01",
+            "taxa_inicio": 4.19,
+            "taxa_fim": 10.06,
+            "variacao_pp": 5.87,
+            "taxa_media": 5.75,
+            "taxa_min": 1.88,
+            "taxa_max": 10.74,
+            "completo": true
+          },
+          "primeiros_36m": {
+            "n_meses": 36,
+            "mes_inicio": "2020-01-01",
+            "mes_fim": "2022-12-01",
+            "taxa_inicio": 4.19,
+            "taxa_fim": 5.79,
+            "variacao_pp": 1.59,
+            "taxa_media": 6.95,
+            "taxa_min": 1.88,
+            "taxa_max": 12.13,
+            "completo": true
+          }
+        },
+        "Lula": {
+          "governo_inteiro": {
+            "n_meses": 44,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2026-08-01",
+            "taxa_inicio": 5.77,
+            "taxa_fim": 4.22,
+            "variacao_pp": -1.55,
+            "taxa_media": 4.61,
+            "taxa_min": 3.16,
+            "taxa_max": 5.77
+          },
+          "primeiros_12m": {
+            "n_meses": 12,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2023-12-01",
+            "taxa_inicio": 5.77,
+            "taxa_fim": 4.62,
+            "variacao_pp": -1.15,
+            "taxa_media": 4.6,
+            "taxa_min": 3.16,
+            "taxa_max": 5.77,
+            "completo": true
+          },
+          "primeiros_24m": {
+            "n_meses": 24,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2024-12-01",
+            "taxa_inicio": 5.77,
+            "taxa_fim": 4.83,
+            "variacao_pp": -0.94,
+            "taxa_media": 4.48,
+            "taxa_min": 3.16,
+            "taxa_max": 5.77,
+            "completo": true
+          },
+          "primeiros_36m": {
+            "n_meses": 36,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2025-12-01",
+            "taxa_inicio": 5.77,
+            "taxa_fim": 4.26,
+            "variacao_pp": -1.51,
+            "taxa_media": 4.66,
+            "taxa_min": 3.16,
+            "taxa_max": 5.77,
+            "completo": true
+          }
+        }
       }
     },
     "IBOVESPA": {

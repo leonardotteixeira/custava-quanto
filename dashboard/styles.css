@@ -144,6 +144,7 @@ ul { margin: 0; }
 .live-quote {
   margin: 10px 0 0; font-size: 0.88rem; color: var(--ink-soft); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
+.live-quote[hidden] { display: none; }
 .live-quote strong { color: var(--ink); font-weight: 700; }
 .live-dot {
   width: 7px; height: 7px; border-radius: 50%; background: #c0392b; flex: none;

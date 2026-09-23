@@ -308,6 +308,41 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame, ibovespa: pd.D
         "cotacao_hoje": cotacao_hoje.get("selic_meta_aa"),
     }
 
+    # --- IPCA como "produto": mesma régua da Selic (% ao ano), mas aqui é a
+    # inflação acumulada em 12 meses, não o índice de preços em si (esse
+    # continua sendo usado só como deflator, nos bastidores). Reusa
+    # _resumo_taxa/_serie_anual_taxa porque a coluna "taxa_aa" é genérica.
+    ipca_prod = df.dropna(subset=["ipca_var_12m"]).sort_values("ano_mes").copy()
+    ipca_prod = ipca_prod.assign(taxa_aa=ipca_prod["ipca_var_12m"])
+    serie_ipca = []
+    for _, r in ipca_prod.iterrows():
+        serie_ipca.append({
+            "ano_mes": _fmt_mes(r["ano_mes"]),
+            "periodo": r["ano_mes_periodo"],
+            "taxa_aa": round(float(r["ipca_var_12m"]), 2),
+            "ipca_indice": round(float(r["ipca_indice"]), 2) if pd.notna(r["ipca_indice"]) else None,
+            "selic_meta_aa": round(float(r["selic_meta_aa"]), 2) if pd.notna(r["selic_meta_aa"]) else None,
+        })
+    resumo_ipca_prod = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo_ipca_prod[periodo] = _cohorts_para_periodo(ipca_prod[ipca_prod["ano_mes_periodo"] == periodo], _resumo_taxa)
+    produtos["IPCA"] = {
+        "nome": "Inflação (IPCA)",
+        "tipo": "taxa",
+        "unidade": "% ao ano (12 meses)",
+        "nota": (
+            "Aqui \"IPCA\" é a inflação acumulada nos últimos 12 meses — a "
+            "mesma métrica usada para comparar com a Selic no restante do "
+            "dashboard — não o índice de preços em si. Como depende de 12 "
+            "meses anteriores, só começa em jan/2020 (o dado de 2019 fica "
+            "sem par no histórico). Não é um preço — por isso não faz "
+            "sentido falar em \"poder de compra\" da inflação."
+        ),
+        "serie_mensal": serie_ipca,
+        "serie_anual": _serie_anual_taxa(ipca_prod),
+        "resumo_periodos": resumo_ipca_prod,
+    }
+
     # --- Ibovespa: pontos, não é preço nem taxa — schema próprio ---
     ibov = df.dropna(subset=["ibovespa_pontos"]).sort_values("ano_mes").copy()
     ibov = ibov.assign(
