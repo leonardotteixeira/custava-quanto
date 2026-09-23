@@ -7,7 +7,10 @@
     "resumo": "A Petrobras anunciou, na noite desta quarta-feira (18), reajuste nos preços da gasolina e do óleo diesel. Os novos valores passam a valer nesta quinta-feira (19) nas vendas de refinarias para distribuidoras. O litro da gasolina foi reajustado em 3,5% e o do diesel, em 4,2%. Para o consumidor final, porém, sobre esses valores, serão acrescidos encargos tributários e trabalhistas e as margens de lucro dos postos de combustíveis.",
     "imagem": "https://imagens.ebc.com.br/dfREycXmsXhxu5Ufhbn7DyNBPPk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807919.jpg?itok=c388OzRu",
     "credito_imagem": "Tomaz Silva/Agência Brasil",
-    "produtos": ["GASOLINA", "DIESEL"],
+    "produtos": [
+      "GASOLINA",
+      "DIESEL"
+    ],
     "confirmado": true
   },
   {
@@ -18,7 +21,13 @@
     "resumo": "Queda foi observada em 16 semanas consecutivas",
     "imagem": "https://imagens.ebc.com.br/3iSJoBlKQYwWxc42S9vCmXe0zdo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/caminhao-tanque_em_refinaria_da_petrobras_em_canoas_rs.jpg?itok=NLxlR3qV",
     "credito_imagem": "Reuters/Diego Vara/Direitos Reservados",
-    "produtos": ["combustiveis", "GASOLINA", "ETANOL", "DIESEL", "GLP"],
+    "produtos": [
+      "combustiveis",
+      "GASOLINA",
+      "ETANOL",
+      "DIESEL",
+      "GLP"
+    ],
     "confirmado": true
   },
   {
@@ -29,7 +38,10 @@
     "resumo": "Preço de venda para distribuidora passa R$ 2,78 para R$ 2,98 por litro",
     "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
     "credito_imagem": "Fernando Frazão/Agência Brasil",
-    "produtos": ["GASOLINA", "GLP"],
+    "produtos": [
+      "GASOLINA",
+      "GLP"
+    ],
     "confirmado": true
   },
   {
@@ -40,7 +52,10 @@
     "resumo": "Preço médio da gasolina sobe para R$ 3,86 e o do diesel, para R$ 4,51",
     "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
     "credito_imagem": "Fernando Frazão/Agência Brasil",
-    "produtos": ["GASOLINA", "DIESEL"],
+    "produtos": [
+      "GASOLINA",
+      "DIESEL"
+    ],
     "confirmado": true
   },
   {
@@ -51,7 +66,9 @@
     "resumo": "Preço reflete o último reajuste de 16,1% no valor do gás de cozinha anunciado pela Petrobras",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["GLP"],
+    "produtos": [
+      "GLP"
+    ],
     "confirmado": true
   },
   {
@@ -62,7 +79,9 @@
     "resumo": "Valor sobe pela segunda semana consecutiva",
     "imagem": "https://imagens.ebc.com.br/3cQCn6xsSSy6CLwIvD9_TYNIgxE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/aumento_gazolina_rj_0506202742.jpg?itok=S4GWGDfI",
     "credito_imagem": "Fernando Frazão/Agência Brasil",
-    "produtos": ["GASOLINA"],
+    "produtos": [
+      "GASOLINA"
+    ],
     "confirmado": true
   },
   {
@@ -73,7 +92,9 @@
     "resumo": "Dados fazem parte de levantamento feito pela ANP",
     "imagem": "https://imagens.ebc.com.br/_mN1h3nkq59vMBSGlCFH3_Ljvoc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_posto_de_combustivel_mcajr_abr_1609210451.jpg?itok=U3txCMXD",
     "credito_imagem": "Marcello Casal jr/Agência Brasil",
-    "produtos": ["GASOLINA"],
+    "produtos": [
+      "GASOLINA"
+    ],
     "confirmado": true
   },
   {
@@ -84,7 +105,9 @@
     "resumo": "Segundo a agência, preço do combustível subiu 1,05%, de R$ 6,65 para R$ 6,72 na semana de 16 e 22 de outubro",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["DIESEL S10"],
+    "produtos": [
+      "DIESEL S10"
+    ],
     "confirmado": true
   },
   {
@@ -95,7 +118,10 @@
     "resumo": "Etanol passa a ter alíquota de R$ 0,02; mudanças valem já a partir de 4ª feira (1º.mar.2023)",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["GASOLINA", "ETANOL"],
+    "produtos": [
+      "GASOLINA",
+      "ETANOL"
+    ],
     "confirmado": true
   },
   {
@@ -106,7 +132,11 @@
     "resumo": "Paridade de importação de preços – que alinha os preços locais aos internacionais – foi adotada durante o governo Michel Temer (MDB)",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["combustiveis", "GASOLINA", "DIESEL"],
+    "produtos": [
+      "combustiveis",
+      "GASOLINA",
+      "DIESEL"
+    ],
     "confirmado": true
   },
   {
@@ -117,7 +147,9 @@
     "resumo": "Apesar de cenário externo favorável, gasolina subiu 12% até novembro",
     "imagem": "https://imagens.ebc.com.br/3iSJoBlKQYwWxc42S9vCmXe0zdo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/caminhao-tanque_em_refinaria_da_petrobras_em_canoas_rs.jpg?itok=NLxlR3qV",
     "credito_imagem": "Reuters/Diego Vara/Direitos Reservados",
-    "produtos": ["combustiveis"],
+    "produtos": [
+      "combustiveis"
+    ],
     "confirmado": true
   },
   {
@@ -128,7 +160,10 @@
     "resumo": "Impacto para consumidor deve ser de R$ 0,15 por litro do combustível",
     "imagem": "https://imagens.ebc.com.br/MfGYzZrLJwsYXyyWSeDIe97mFTM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807918.jpg?itok=tobSJlmc",
     "credito_imagem": "Tomaz Silva/Agência Brasil",
-    "produtos": ["GASOLINA", "GLP"],
+    "produtos": [
+      "GASOLINA",
+      "GLP"
+    ],
     "confirmado": true
   },
   {
@@ -139,7 +174,9 @@
     "resumo": "Novo valor será de R$ 3,27 por litro a partir desta terça-feira (6)",
     "imagem": "https://imagens.ebc.com.br/MuZhbRKBhjx_Pw_LekK5dUfcbAw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/02/29/tanque_de_diesel_r5_na_rpbc_-_foto_wilson_melo_agencia_petrobras.jpg?itok=DURYnQE5",
     "credito_imagem": "Petrobras/Divulgação/Arquivo",
-    "produtos": ["DIESEL"],
+    "produtos": [
+      "DIESEL"
+    ],
     "confirmado": true
   },
   {
@@ -150,7 +187,9 @@
     "resumo": "Com o reajuste anunciado, esta é a segunda redução dos preços de gasolina em 2025, disse a empresa",
     "imagem": null,
     "credito_imagem": null,
-    "produtos": ["GASOLINA"],
+    "produtos": [
+      "GASOLINA"
+    ],
     "confirmado": true
   },
   {
@@ -161,7 +200,9 @@
     "resumo": "Novos valores para venda a distribuidoras passam a vigorar no sábado",
     "imagem": "https://imagens.ebc.com.br/jKlflsgIFQA9sf8IXH5NskwocVQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/11/08/dji_0374-2.jpg?itok=ISHxLKnO",
     "credito_imagem": "Fernando Frazão/Agência Brasil",
-    "produtos": ["DIESEL"],
+    "produtos": [
+      "DIESEL"
+    ],
     "confirmado": true
   },
   {
@@ -172,7 +213,112 @@
     "resumo": "Subvenção por 30 dias de R$ 1 anula o reajuste nas refinarias",
     "imagem": "https://imagens.ebc.com.br/vlPCyTNYNOglbobWxriy4XX2QTg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2019-05-07t131900z_6993045_rc15f3e59060_rtrmadp_3_petrobras-divestiture-refineries.jpg?itok=y-fNX2V2",
     "credito_imagem": "Reuters / Diego Vara / Direitos Reservados",
-    "produtos": ["DIESEL"],
+    "produtos": [
+      "DIESEL"
+    ],
     "confirmado": true
+  },
+  {
+    "titulo": "Petrobras reajusta gás de cozinha em 3,43% a partir de domingo",
+    "veiculo": "Agência Brasil",
+    "data": "2019-05-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-05/petrobras-reajusta-gas-de-cozinha-em-343-partir-de-domingo",
+    "resumo": "A Petrobras anunciou reajuste de 3,43% no preço do gás de cozinha (GLP) vendido às distribuidoras.",
+    "produtos": [
+      "GLP"
+    ]
+  },
+  {
+    "titulo": "Produção de etanol na safra 2019/2020 deve aumentar 7,1%, diz Unica",
+    "veiculo": "Agência Brasil",
+    "data": "2019-12-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-12/producao-de-etanol-na-safra-20192020-deve-aumentar-71-diz-unica",
+    "resumo": "A Unica projetou aumento de 7,1% na produção de etanol na safra 2019/2020 em relação à temporada anterior.",
+    "produtos": [
+      "ETANOL"
+    ]
+  },
+  {
+    "titulo": "Petrobras anuncia nova alta nos preços da gasolina, diesel e gás",
+    "veiculo": "Agência Brasil",
+    "data": "2021-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/petrobras-anuncia-nova-alta-nos-precos-da-gasolina-diesel-e-gas",
+    "resumo": "A Petrobras anunciou novo reajuste nos preços de gasolina, diesel e GLP vendidos às distribuidoras.",
+    "produtos": [
+      "GASOLINA",
+      "DIESEL",
+      "GLP"
+    ]
+  },
+  {
+    "titulo": "Aumento da gasolina também causa impacto no preço do etanol",
+    "veiculo": "Agência Brasil",
+    "data": "2021-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/aumento-da-gasolina-tambem-causa-impacto-no-preco-do-etanol",
+    "resumo": "O reajuste da gasolina pela Petrobras pressionou também o preço do etanol nos postos.",
+    "produtos": [
+      "ETANOL"
+    ]
+  },
+  {
+    "titulo": "Troca de gasolina por etanol pode não ser vantajosa para o consumidor",
+    "veiculo": "Agência Brasil",
+    "data": "2022-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-03/troca-de-gasolina-por-etanol-pode-nao-ser-vantajosa-para-o-consumidor",
+    "resumo": "Com a alta do etanol em 2022, especialistas avaliaram se trocar a gasolina pelo álcool ainda compensava no país.",
+    "produtos": [
+      "ETANOL"
+    ]
+  },
+  {
+    "titulo": "Preço da gasolina e do diesel sobem nesta quinta com novo ICMS",
+    "veiculo": "Agência Brasil",
+    "data": "2024-01-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-01/preco-da-gasolina-e-do-diesel-sobem-nesta-quinta-com-novo-icms",
+    "resumo": "Mudança nas regras do ICMS sobre combustíveis elevou o preço de gasolina e diesel nos postos a partir de janeiro de 2024.",
+    "produtos": [
+      "GASOLINA",
+      "DIESEL"
+    ]
+  },
+  {
+    "titulo": "Governo aumenta mistura do etanol na gasolina para 30%",
+    "veiculo": "Agência Brasil",
+    "data": "2025-06-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-06/governo-aumento-mistura-do-etanol-na-gasolina-para-30",
+    "resumo": "O CNPE aprovou o aumento da mistura obrigatória de etanol anidro na gasolina de 27% para 30%, com efeitos no preço do combustível.",
+    "produtos": [
+      "ETANOL"
+    ]
+  },
+  {
+    "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
+    "veiculo": "Agência Brasil",
+    "data": "2026-05-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/petrobras-anuncia-alta-de-r-004-na-gasolina-vendida-distribuidoras",
+    "resumo": "A Petrobras reajustou o preço da gasolina A vendida às distribuidoras, com impacto reduzido ao consumidor final por causa de subvenção do governo.",
+    "produtos": [
+      "GASOLINA"
+    ]
+  },
+  {
+    "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
+    "veiculo": "Agência Brasil",
+    "data": "2026-06-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-06/governo-preve-aumento-de-etanol-na-gasolina-de-30-para-ate-32",
+    "resumo": "O governo estudou nova elevação do percentual de etanol misturado à gasolina, de 30% para até 32%, com efeito esperado no preço do combustível.",
+    "produtos": [
+      "ETANOL"
+    ]
+  },
+  {
+    "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
+    "veiculo": "Agência Brasil",
+    "data": "2026-04-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-04/petrobras-devolvera-diferenca-de-preco-de-leilao-de-gas",
+    "resumo": "A Petrobras devolveu a diferença de preço cobrada a mais em leilão de GLP após controvérsia sobre valores acima da tabela da estatal.",
+    "produtos": [
+      "GLP"
+    ]
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T02:03:52+00:00",
+  "gerado_em": "2026-09-23T02:24:58+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -18,6 +18,51 @@
       "id": "n001"
     },
     {
+      "titulo": "Inflação oficial sobe para 0,75% em março, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2019-04-10",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-04/inflacao-oficial-sobe-para-075-em-marco-diz-ibge",
+      "resumo": "O Índice Nacional de Preços ao Consumidor Amplo (IPCA), que mede a inflação oficial subiu para 0,75% em março deste ano. Em fevereiro, a taxa havia sido de 0,43%. A taxa também ficou acima do 0,09% de março do ano passado. Segundo dados divulgados hoje (10) pelo Instituto Brasileiro de Geografia e Estatística (IBGE), o IPCA acumula taxas de inflação de 1,51% no ano e 4,58% em 12 meses. A taxa de março foi a maior para o mês desde 2015 (1,32%). O acumulado do ano é o maior para um primeiro trimestre desde 2016 (2,62%). O acumulado em 12 meses é o maior desde fevereiro de 2017 (4,76%).",
+      "produtos": [
+        "IPCA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n002"
+    },
+    {
+      "titulo": "Petrobras reajusta gás de cozinha em 3,43% a partir de domingo",
+      "veiculo": "Agência Brasil",
+      "data": "2019-05-03",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-05/petrobras-reajusta-gas-de-cozinha-em-343-partir-de-domingo",
+      "resumo": "A Petrobras vai reajustar em 3,43%, em média, a partir do próximo domingo (5), o preço do Gás Liquefeito de Petróleo (GLP Residencial), o gás de cozinha, para botijão de 13 quilos (kg) às distribuidoras sem a cobrança de tributos. O preço do botijão de 13kg vai custar R$ 26,20. O último reajuste ocorreu no dia 5 de fevereiro, exatamente há três meses, quando o valor do gás de cozinha subiu para R$ 25,33 para as distribuidoras.",
+      "produtos": [
+        "GLP"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n003"
+    },
+    {
+      "titulo": "Cesta básica em 18 capitais teve alta em abril, aponta Dieese",
+      "veiculo": "Agência Brasil",
+      "data": "2019-05-07",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-05/cesta-basica-em-18-capitais-tiveram-alta-em-abril-aponta-dieese",
+      "resumo": "Em abril, o custo da cesta básica subiu em todas as 18 capitais analisadas pela Pesquisa Nacional da Cesta Básica, divulgada hoje (7), pelo Departamento Intersindical de Estatística e Estudos Socioeconômicos (Dieese). As altas mais expressivas ocorreram em Campo Grande (10,07%), São Luís (7,10%) e Aracaju (4,94%). A cesta mais cara do país foi a de São Paulo, onde o conjunto de alimentos essenciais custava, em média, R$ 522,05, seguida pela cesta do Rio de Janeiro, R$ 515,58, e de Porto Alegre, R$ 499,38. As cestas mais baratas, em abril, eram as de Salvador, R$ 396,75, e Aracaju, R$ 404,68.",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n004"
+    },
+    {
       "titulo": "Bolsa fecha pela primeira vez acima dos 100 mil pontos",
       "veiculo": "Agência Brasil",
       "data": "2019-06-19",
@@ -30,7 +75,7 @@
       "credito_imagem": "Arquivo/ Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n002"
+      "id": "n005"
     },
     {
       "titulo": "Petrobras eleva preço da gasolina em 3,5% e do diesel em 4,2%",
@@ -46,7 +91,22 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n003"
+      "id": "n006"
+    },
+    {
+      "titulo": "Copom reduz juros básicos para 5% ao ano, o menor nível da história",
+      "veiculo": "Agência Brasil",
+      "data": "2019-10-30",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-10/copom-reduz-juros-basicos-para-5-ao-ano-o-menor-nivel-da-historia",
+      "resumo": "Pela terceira vez seguida, o Banco Central (BC) diminuiu os juros básicos da economia. Por unanimidade, o Comitê de Política Monetária (Copom) reduziu a taxa Selic para 5% ao ano, com corte de 0,5 ponto percentual. A decisão era esperada pelos analistas financeiros. Com a decisão de hoje (30), a Selic está no menor nível desde o início da série histórica do Banco Central, em 1986. De outubro de 2012 a abril de 2013, a taxa foi mantida em 7,25% ao ano e passou a ser reajustada gradualmente até alcançar 14,25% ao ano em julho de 2015.",
+      "produtos": [
+        "SELIC"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n007"
     },
     {
       "titulo": "Dólar ultrapassa R$ 4,20 e fecha no maior valor desde criação do real",
@@ -61,7 +121,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n004"
+      "id": "n008"
     },
     {
       "titulo": "Preço da carne atinge maior nível dos últimos 30 anos — até quando?",
@@ -76,7 +136,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n005"
+      "id": "n009"
     },
     {
       "titulo": "Exportações de carne podem fechar 2019 com resultado recorde",
@@ -91,7 +151,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n006"
+      "id": "n010"
+    },
+    {
+      "titulo": "Produção de etanol na safra 2019/2020 deve aumentar 7,1%, diz Unica",
+      "veiculo": "Agência Brasil",
+      "data": "2019-12-17",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2019-12/producao-de-etanol-na-safra-20192020-deve-aumentar-71-diz-unica",
+      "resumo": "A produção de etanol na safra 2019/2020 deve atingir 33,1 bilhões de litros, o que representa uma expansão de 7,1% com relação à temporada passada (30,95 bilhões de litros). Deste valor, as projeções são de que 9,72 bilhões sejam de etanol anidro e 23,42 bilhões de litros sejam de etanol hidratado. Segundo a União da Agroindústria Canavieira do estado de São Paulo (Unica), que divulgou os dados hoje (17), na capital paulista, esse é um valor recorde no atual ciclo agrícola.",
+      "produtos": [
+        "ETANOL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n011"
     },
     {
       "titulo": "Circuit breaker é acionado pela sexta vez em março, igualando a marca da crise de 2008",
@@ -106,7 +181,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n007"
+      "id": "n012"
     },
     {
       "titulo": "Dólar fecha acima de R$ 5,90 pela primeira vez na história",
@@ -121,7 +196,7 @@
       "credito_imagem": "Marcello Casal Jr./Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n008"
+      "id": "n013"
     },
     {
       "titulo": "ANP: preço médio de revenda da gasolina acumula queda de 17,11%",
@@ -140,7 +215,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n009"
+      "id": "n014"
     },
     {
       "titulo": "Copom reduz juros básicos da economia para 2% ao ano",
@@ -155,7 +230,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n010"
+      "id": "n015"
     },
     {
       "titulo": "Governo zera imposto de importação do arroz até o final do ano",
@@ -170,7 +245,22 @@
       "credito_imagem": "Marcello Casal JrAgência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n011"
+      "id": "n016"
+    },
+    {
+      "titulo": "Inflação oficial fica em 0,24% em agosto, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2020-09-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/inflacao-oficial-fica-em-024-em-agosto-diz-ibge",
+      "resumo": "Em agosto, a inflação foi influenciada principalmente pelo aumento do custo dos transportes (gasolina e óleo diesel) e dos alimentos (tomate, leite, carnes e arroz).",
+      "produtos": [
+        "IPCA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n017"
     },
     {
       "titulo": "Arroz chega a custar R$ 35 em supermercados de São Paulo",
@@ -185,7 +275,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n012"
+      "id": "n018"
+    },
+    {
+      "titulo": "Alimentos puxam alta de preços em setembro, aponta o IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2020-10-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-10/alimentos-puxam-alta-de-precos-em-setembro-aponta-o-ibge",
+      "resumo": "O câmbio num patamar mais elevado estimula as exportações, e quando se exporta mais, reduz os produtos para o mercado interno, e, com isso, tem-se uma alta nos preços.",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n019"
     },
     {
       "titulo": "Óleo de soja mais que dobra de preço e arroz sobe 76% no acumulado de 2020",
@@ -201,7 +306,69 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n013"
+      "id": "n020"
+    },
+    {
+      "titulo": "Petrobras anuncia nova alta nos preços da gasolina, diesel e gás",
+      "veiculo": "Agência Brasil",
+      "data": "2021-03-01",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/petrobras-anuncia-nova-alta-nos-precos-da-gasolina-diesel-e-gas",
+      "resumo": "Gás de cozinha ficará 5,2% mais caro a partir de amanhã. O preço para as distribuidoras será de R$ 3,05 por quilo (R$ 0,15 mais caro), ou seja R$ 36,69 por 13 kg (ou R$ 1,90 mais caro).",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL",
+        "GLP"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n021"
+    },
+    {
+      "titulo": "Aumento da gasolina também causa impacto no preço do etanol",
+      "veiculo": "Agência Brasil",
+      "data": "2021-03-06",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/aumento-da-gasolina-tambem-causa-impacto-no-preco-do-etanol",
+      "resumo": "Em alguns estados, o preço do etanol quase se iguala ao da gasolina. As maiores proporções foram registradas no Amapá, Rio Grande do Sul, em Santa Catarina e no Pará.",
+      "produtos": [
+        "ETANOL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n022"
+    },
+    {
+      "titulo": "Dólar encosta em R$ 5,80 e fecha no maior valor em 10 meses",
+      "veiculo": "Agência Brasil",
+      "data": "2021-03-08",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/dolar-encosta-em-r-580-e-fecha-no-maior-valor-em-10-meses",
+      "resumo": "A cotação do dólar está no nível mais alto desde 15 de maio de 2020, quando a moeda norte-americana tinha fechado em R$ 5,839. A divisa acumula alta de 11,36% em 2021.",
+      "produtos": [
+        "DOLAR"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n023"
+    },
+    {
+      "titulo": "Copom eleva juros básicos da economia pela primeira vez em seis anos",
+      "veiculo": "Agência Brasil",
+      "data": "2021-03-17",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/copom-eleva-juros-basicos-da-economia-pela-primeira-vez-em-seis-anos",
+      "resumo": "Em meio ao aumento da inflação de alimentos que começa a estender-se por outros setores, o Banco Central subiu os juros básicos da economia de 2% para 2,75% ao ano.",
+      "produtos": [
+        "SELIC"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n024"
     },
     {
       "titulo": "Ibovespa supera 130 mil pontos pela primeira vez na história",
@@ -216,7 +383,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n014"
+      "id": "n025"
+    },
+    {
+      "titulo": "Cesta básica tem alta em 11 capitais, diz Dieese",
+      "veiculo": "Agência Brasil",
+      "data": "2021-10-06",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-10/cesta-basica-tem-alta-em-11-capitais-diz-dieese",
+      "resumo": "Segundo levantamento divulgado hoje, as maiores altas foram registradas em Brasília (3,88%) Campo Grande (3,53%), São Paulo (3,53%) e Belo Horizonte (3,49%).",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n026"
     },
     {
       "titulo": "Inflação oficial fica em 1,16% em setembro, diz IBGE",
@@ -231,7 +413,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n015"
+      "id": "n027"
     },
     {
       "titulo": "Petrobras reajusta hoje preços do gás de cozinha e da gasolina",
@@ -247,7 +429,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n016"
+      "id": "n028"
     },
     {
       "titulo": "Petrobras reajusta preços da gasolina e diesel para as distribuidoras",
@@ -263,7 +445,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n017"
+      "id": "n029"
     },
     {
       "titulo": "Preço de gás de cozinha dispara e botijão já é vendido a R$ 160",
@@ -278,7 +460,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n018"
+      "id": "n030"
+    },
+    {
+      "titulo": "Troca de gasolina por etanol pode não ser vantajosa para o consumidor",
+      "veiculo": "Agência Brasil",
+      "data": "2022-03-27",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-03/troca-de-gasolina-por-etanol-pode-nao-ser-vantajosa-para-o-consumidor",
+      "resumo": "Entre janeiro e fevereiro deste ano, as vendas do etanol hidratado subiram 26,20%. Os dados são da Associação Brasileira da Indústria da Cana de Açúcar (Unica). Na avaliação do diretor técnico da Unica, Antonio de Padua Rodrigues, isso “É um indicativo da recuperação do consumo do biocombustível”. Com o recente reajuste no preço da gasolina de 18,57%, o etanol pode ser uma alternativa para o abastecimento. A troca, no entanto, pode não ser vantajosa.",
+      "produtos": [
+        "ETANOL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n031"
     },
     {
       "titulo": "Preço da gasolina chega a R$ 7,27 e é o mais alto registrado pela ANP",
@@ -293,7 +490,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n019"
+      "id": "n032"
     },
     {
       "titulo": "Trigo, café e óleo de soja continuam subindo no Brasil com guerra, diz Abia",
@@ -309,7 +506,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n020"
+      "id": "n033"
+    },
+    {
+      "titulo": "Preço da cesta básica paulistana aumenta 1,36%, diz Procon-SP",
+      "veiculo": "Agência Brasil",
+      "data": "2022-06-24",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/preco-da-cesta-basica-paulistana-aumenta-136-diz-procon-sp",
+      "resumo": "A cesta chegou a R$ 1.226,12, em 31 de maio, valor maior do que o do salário mínimo (R$ 1.212). Em abril, a cesta básica custava R$ 1.209,71.",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n034"
     },
     {
       "titulo": "Preço médio da gasolina cai R$ 0,90 no país em três semanas",
@@ -324,7 +536,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n021"
+      "id": "n035"
     },
     {
       "titulo": "Copom eleva juros básicos da economia para 13,75% ao ano",
@@ -339,7 +551,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n022"
+      "id": "n036"
     },
     {
       "titulo": "IPCA: deflação foi puxada por combustíveis; preços de alimentos sobem",
@@ -354,7 +566,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n023"
+      "id": "n037"
     },
     {
       "titulo": "IPCA tem deflação de 0,68% em julho, menor taxa da série histórica",
@@ -369,7 +581,7 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n024"
+      "id": "n038"
     },
     {
       "titulo": "Preço médio diesel S10 em bombas sobe após 16 semanas de queda, diz ANP",
@@ -384,7 +596,23 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n025"
+      "id": "n039"
+    },
+    {
+      "titulo": "Ibovespa fecha ano com alta de 4,69% e dólar com queda de 5,3%",
+      "veiculo": "Agência Brasil",
+      "data": "2022-12-30",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-12/ibovespa-fecha-ano-com-alta-de-469-e-dolar-com-queda-de-53",
+      "resumo": "Diferentemente do Brasil, Wall Street caminha para uma perda em 2022, com o S&P 500 registrando até o momento declínio de 19%. No entanto, amanhã ainda haverá pregão nos Estados Unidos.",
+      "produtos": [
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n040"
     },
     {
       "titulo": "Governo Lula cobrará R$ 0,47 de imposto sobre o litro da gasolina",
@@ -400,7 +628,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n026"
+      "id": "n041"
+    },
+    {
+      "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em dez meses",
+      "veiculo": "Agência Brasil",
+      "data": "2023-04-12",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-04/dolar-fecha-abaixo-de-r-5-pela-primeira-vez-em-dez-meses",
+      "resumo": "A moeda norte-americana está no menor nível desde 9 de junho, quando fechou em R$ 4,91. Com a queda nesta quarta-feira, o dólar cai 2,51% em abril e recua 6,4% neste ano.",
+      "produtos": [
+        "DOLAR"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n042"
     },
     {
       "titulo": "Petrobras anuncia fim da paridade internacional de preços do petróleo",
@@ -417,7 +660,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n027"
+      "id": "n043"
     },
     {
       "titulo": "Pela 1ª vez em três anos, Banco Central corta taxa de juros; Selic vai a 13,25% ao ano",
@@ -432,7 +675,37 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n028"
+      "id": "n044"
+    },
+    {
+      "titulo": "Dieese: preço da cesta básica cai em 14 de 17 capitais pesquisadas",
+      "veiculo": "Agência Brasil",
+      "data": "2023-10-05",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-10/dieese-preco-da-cesta-basica-cai-em-14-de-17-capitais-pesquisadas",
+      "resumo": "No acumulado dos nove primeiros meses do ano, de janeiro a setembro, o custo caiu em 12 capitais, com destaque para Goiânia, Campo Grande e Brasília..",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n045"
+    },
+    {
+      "titulo": "Prévia da inflação oficial fica em 0,21% em outubro, informa IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2023-10-26",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-10/previa-da-inflacao-oficial-fica-em-021-em-outubro-informa-ibge",
+      "resumo": "No ano, o IPCA-15 teve alta de 3,96% e no acumulado em 12 meses o índice ficou em 5,05%, acima dos 5% de setembro. Alta no preço das passagens aéreas, que subiram23,75%, influenciou resultados..",
+      "produtos": [
+        "IPCA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n046"
     },
     {
       "titulo": "Entenda como os preços dos combustíveis variaram em 2023",
@@ -447,7 +720,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n029"
+      "id": "n047"
+    },
+    {
+      "titulo": "Ibovespa fecha 2023 com valorização de mais de 20%",
+      "veiculo": "Agência Brasil",
+      "data": "2023-12-29",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-12/ibovespa-fecha-2023-com-valorizacao-de-mais-de-20",
+      "resumo": "Foi a maior alta anual desde 2019. Em novembro, mês com melhor resultado, Ibovespa teve ganho de 12,5%.",
+      "produtos": [
+        "IBOVESPA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n048"
     },
     {
       "titulo": "Após arroz subir 18%, feijão deve ficar mais caro em 2024",
@@ -463,7 +751,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n030"
+      "id": "n049"
     },
     {
       "titulo": "IPCA 2023: veja o que mais caiu e mais subiu no ano",
@@ -479,7 +767,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n031"
+      "id": "n050"
     },
     {
       "titulo": "IPCA fecha 2023 em 4,62% e fica abaixo do teto da meta pela 1ª vez desde 2020",
@@ -494,7 +782,23 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n032"
+      "id": "n051"
+    },
+    {
+      "titulo": "Preço da gasolina e do diesel sobem nesta quinta com novo ICMS",
+      "veiculo": "Agência Brasil",
+      "data": "2024-02-01",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-01/preco-da-gasolina-e-do-diesel-sobem-nesta-quinta-com-novo-icms",
+      "resumo": "ICMS incidia conforme percentual do preço definido por cada unidade da federação. Agora, é cobrado por valor fixo por litro, no caso da gasolina ou do diesel, ou por quilograma, no caso do gás de cozinha.",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n052"
     },
     {
       "titulo": "Governo encerra leilão e compra 263 mil toneladas de arroz",
@@ -509,7 +813,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n033"
+      "id": "n053"
     },
     {
       "titulo": "Petrobras reajusta em 7,12% preço da gasolina para distribuidoras",
@@ -525,7 +829,7 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n034"
+      "id": "n054"
     },
     {
       "titulo": "Batata-inglesa e leite longa vida puxam inflação em junho",
@@ -540,7 +844,22 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n035"
+      "id": "n055"
+    },
+    {
+      "titulo": "Copom mantém juros básicos em 10,5% ao ano",
+      "veiculo": "Agência Brasil",
+      "data": "2024-07-31",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-07/copom-mantem-juros-basicos-em-105-ao-ano",
+      "resumo": "Em junho, o comitê já tinha interrompido o ciclo de cortes de juros iniciado há quase um ano. De agosto do ano passado até março deste ano, o Copom tinha reduzido os juros básicos em 0,5 ponto percentual a cada reunião.",
+      "produtos": [
+        "SELIC"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n056"
     },
     {
       "titulo": "Ibovespa sobe e renova recorde com Petrobras; Haddad confirma Galípolo para presidente do BC",
@@ -555,7 +874,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n036"
+      "id": "n057"
     },
     {
       "titulo": "Dólar fecha a R$ 6 pela 1ª vez e tem alta de 24% no ano",
@@ -570,7 +889,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n037"
+      "id": "n058"
+    },
+    {
+      "titulo": "Brasil exporta 46 milhões de sacas de café, atingindo recorde em 2024",
+      "veiculo": "Agência Brasil",
+      "data": "2024-12-10",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-12/brasil-exporta-46-milhoes-de-sacas-de-cafe-atingindo-recorde-em-2024",
+      "resumo": "Principais importadores são Estados Unidos, Alemanha e Bélgica.",
+      "produtos": [
+        "Café moído"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n059"
     },
     {
       "titulo": "Clima, dólar e preço da carne explicam inflação acima da meta em 2024",
@@ -585,7 +919,7 @@
       "credito_imagem": "Joédson Alves/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n038"
+      "id": "n060"
     },
     {
       "titulo": "Petrobras reduz preço do diesel para as distribuidoras",
@@ -600,7 +934,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n039"
+      "id": "n061"
     },
     {
       "titulo": "Preço do café moído sobe 80% em 12 meses e tem maior alta desde início do Plano Real",
@@ -615,7 +949,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n040"
+      "id": "n062"
     },
     {
       "titulo": "Dólar cai para R$ 5,60, e bolsa fecha em máxima histórica",
@@ -631,7 +965,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n041"
+      "id": "n063"
+    },
+    {
+      "titulo": "Prévia da inflação oficial recua para 0,36% em maio, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2025-05-27",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-05/previa-da-inflacao-oficial-recua-para-036-em-maio-diz-ibge",
+      "resumo": "Com resultado o IPCA-15 acumula taxa de 2,80% no ano. Em 12 meses, o IPCA-15 acumulado chega a 5,40%, abaixo dos 5,49% acumulados até abril deste ano.",
+      "produtos": [
+        "IPCA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n064"
     },
     {
       "titulo": "BC sobe juros para 15% ao ano e sinaliza fim do ciclo de alta",
@@ -646,7 +995,22 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n042"
+      "id": "n065"
+    },
+    {
+      "titulo": "Governo aumenta mistura do etanol na gasolina para 30%",
+      "veiculo": "Agência Brasil",
+      "data": "2025-06-25",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-06/governo-aumento-mistura-do-etanol-na-gasolina-para-30",
+      "resumo": "Nova mistura pode reduzir em 0,20 o preço da gasolina no posto. Brasil voltará a ser autossuficiente no combustível após 15 anos.",
+      "produtos": [
+        "ETANOL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 0.86,
+      "id": "n066"
     },
     {
       "titulo": "Preço do café cai pela primeira vez depois de 18 meses, diz IBGE",
@@ -661,7 +1025,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n043"
+      "id": "n067"
     },
     {
       "titulo": "Preços dos alimentos caem pelo 4º mês consecutivo, diz IBGE",
@@ -676,7 +1040,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n044"
+      "id": "n068"
     },
     {
       "titulo": "Petrobras (PETR4) reduz em R$ 0,14, ou 4,9%, o preço da gasolina para distribuidoras",
@@ -691,7 +1055,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n045"
+      "id": "n069"
     },
     {
       "titulo": "Dólar cai 11,17% em 2025, maior queda desde 2016, e encerra ano cotado a R$ 5,48",
@@ -706,7 +1070,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n046"
+      "id": "n070"
     },
     {
       "titulo": "Alimentos contribuem para a inflação mais baixa em 2025, diz IBGE",
@@ -722,7 +1086,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n047"
+      "id": "n071"
     },
     {
       "titulo": "IPCA vai a 0,33% em dezembro e fecha 2025 em 4,26%, abaixo da meta",
@@ -737,7 +1101,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n048"
+      "id": "n072"
     },
     {
       "titulo": "Petrobras reajusta preço do diesel em R$ 0,38 por litro",
@@ -752,7 +1116,37 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n049"
+      "id": "n073"
+    },
+    {
+      "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
+      "veiculo": "Agência Brasil",
+      "data": "2026-04-08",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-04/cesta-basica-fica-mais-cara-em-todas-capitais-brasileiras-em-marco",
+      "resumo": "No acumulado de 2026, todas as capitais registraram alta nos preços da cesta básica, com taxas que oscilaram entre 0,77%, em São Luís, e 10,93%, em Aracaju.",
+      "produtos": [
+        "alimentos"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n074"
+    },
+    {
+      "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
+      "veiculo": "Agência Brasil",
+      "data": "2026-04-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-04/petrobras-devolvera-diferenca-de-preco-de-leilao-de-gas",
+      "resumo": "Produto foi repassado a revendedoras por mais que o dobro do valor de tabela.",
+      "produtos": [
+        "GLP"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n075"
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em mais de dois anos",
@@ -768,7 +1162,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n050"
+      "id": "n076"
     },
     {
       "titulo": "Banco Central reduz juros básicos para 14,5% ao ano",
@@ -783,7 +1177,37 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n051"
+      "id": "n077"
+    },
+    {
+      "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
+      "veiculo": "Agência Brasil",
+      "data": "2026-05-28",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/petrobras-anuncia-alta-de-r-004-na-gasolina-vendida-distribuidoras",
+      "resumo": "Preço médio passará de R$ 2,57 para R$ 2,61 por litro a partir de sexta-feira (29).",
+      "produtos": [
+        "GASOLINA"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n078"
+    },
+    {
+      "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
+      "veiculo": "Agência Brasil",
+      "data": "2026-06-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-06/governo-preve-aumento-de-etanol-na-gasolina-de-30-para-ate-32",
+      "resumo": "Medida atende à demanda do setor de biocombustíveis e deve ser avaliada nos próximos 15 dias, segundo o ministro de Minas e Energia, Alexandre Silveira.",
+      "produtos": [
+        "ETANOL"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n079"
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -798,7 +1222,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n052"
+      "id": "n080"
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -813,7 +1237,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n053"
+      "id": "n081"
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -828,7 +1252,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n054"
+      "id": "n082"
     }
   ]
 }
