@@ -184,10 +184,39 @@ function renderSelector() {
     PRODUCT_ORDER
       .filter((p) => DATA.produtos[p] && PRODUCT_CATEGORIA(p) === categoria)
       .forEach((codigo) => {
+        const prod = DATA.produtos[codigo];
         const btn = document.createElement("button");
         btn.className = "product-chip" + (codigo === state.product ? " active" : "");
         btn.dataset.produto = codigo;
-        btn.textContent = PRODUCT_CHIP_LABEL[codigo] || codigo;
+
+        let deltaHtml = "";
+        if (prod && prod.serie_mensal?.length) {
+          const era = eraReferencia(prod.serie_mensal);
+          const agora = prod.serie_mensal[prod.serie_mensal.length - 1];
+          let delta, isRate = false;
+
+          if (prod.tipo === "taxa") {
+            delta = (agora.taxa_aa - era.taxa_aa);
+            isRate = true;
+          } else if (prod.tipo === "pontos") {
+            delta = (agora.pontos / era.pontos - 1) * 100;
+          } else if (temPreco(prod)) {
+            delta = (agora.preco_nominal / era.preco_nominal - 1) * 100;
+          } else {
+            delta = (agora.indice_relativo / era.indice_relativo - 1) * 100;
+          }
+
+          if (!isNil(delta)) {
+            const sign = delta > 0 ? "+" : delta < 0 ? "−" : "";
+            const cls = delta > 3 ? "up" : delta < -3 ? "down" : "flat";
+            const label = isRate
+              ? `${sign}${fmtNum(Math.abs(delta), 1)} p.p.`
+              : `${sign}${fmtNum(Math.abs(delta), 0)}%`;
+            deltaHtml = `<span class="chip-delta chip-delta--${cls}">${label}</span>`;
+          }
+        }
+
+        btn.innerHTML = `${PRODUCT_CHIP_LABEL[codigo] || codigo} ${deltaHtml}`;
         btn.addEventListener("click", () => selectProduct(codigo));
         el.appendChild(btn);
       });
@@ -195,6 +224,19 @@ function renderSelector() {
 }
 
 function bindToggles() {
+  const modeToggle = document.getElementById("mode-toggle");
+  if (modeToggle) {
+    modeToggle.addEventListener("click", (e) => {
+      const btn = e.target.closest(".segmented-btn");
+      if (!btn) return;
+      updateToggleActive("mode-toggle", btn);
+      if (btn.id === "mode-month") {
+        const target = document.getElementById("brasil-snapshot");
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
   document.getElementById("metric-toggle").addEventListener("click", (e) => {
     const btn = e.target.closest(".segmented-btn");
     if (!btn || btn.disabled) return;
@@ -1314,14 +1356,30 @@ const SNAPSHOT_CAMPOS = [
   { chave: "gasolina", label: "Gasolina", fmt: (v) => `${fmtBRL.format(v)}/L` },
 ];
 
+let snapshotBound = false;
+let selectedSnapshotIso = "2022-12-01";
+
 function renderSnapshot(produto) {
   const grid = document.getElementById("snapshot-grid");
+  if (!grid) return;
+
   const eraRef = eraReferencia(produto.serie_mensal);
   const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
+
+  // Popula o dropdown de meses se ainda não populou
+  const drop = document.getElementById("month-dropdown");
+  if (drop && DATA.fotografia_mensal && drop.children.length === 0) {
+    const meses = Object.keys(DATA.fotografia_mensal).sort();
+    drop.innerHTML = meses.map((iso) => `<option value="${iso}">${fmtMesAno(iso)}</option>`).join("");
+    drop.value = selectedSnapshotIso;
+  }
+
+  const mIso = selectedSnapshotIso || eraRef.ano_mes;
   const momentos = [
-    { label: "Era", sub: fmtMesAno(eraRef.ano_mes), dados: DATA.fotografia_mensal[eraRef.ano_mes] },
+    { label: "Mês Selecionado", sub: fmtMesAno(mIso), dados: DATA.fotografia_mensal[mIso] },
     { label: "Agora", sub: fmtMesAno(ultimo.ano_mes), dados: DATA.fotografia_mensal[ultimo.ano_mes] },
   ];
+
   grid.innerHTML = momentos.map((m) => `
     <div class="snap-card">
       <div class="snap-head"><span class="snap-kicker">${m.label}</span><span class="snap-when">${m.sub}</span></div>
@@ -1332,6 +1390,45 @@ function renderSnapshot(produto) {
         }).join("")}
       </div>
     </div>`).join("");
+
+  bindSnapshotControls(produto);
+}
+
+function bindSnapshotControls(produto) {
+  if (snapshotBound) return;
+  snapshotBound = true;
+
+  const drop = document.getElementById("month-dropdown");
+  const prev = document.getElementById("month-prev");
+  const next = document.getElementById("month-next");
+
+  const updateSnapshot = (iso) => {
+    selectedSnapshotIso = iso;
+    if (drop) drop.value = iso;
+    document.querySelectorAll(".month-pill").forEach((p) => p.classList.toggle("active", p.dataset.miso === iso));
+    renderSnapshot(state.product ? DATA.produtos[state.product] : produto);
+  };
+
+  if (drop) {
+    drop.addEventListener("change", (e) => updateSnapshot(e.target.value));
+  }
+  if (prev) {
+    prev.addEventListener("click", () => {
+      const meses = Object.keys(DATA.fotografia_mensal).sort();
+      const idx = meses.indexOf(selectedSnapshotIso);
+      if (idx > 0) updateSnapshot(meses[idx - 1]);
+    });
+  }
+  if (next) {
+    next.addEventListener("click", () => {
+      const meses = Object.keys(DATA.fotografia_mensal).sort();
+      const idx = meses.indexOf(selectedSnapshotIso);
+      if (idx >= 0 && idx < meses.length - 1) updateSnapshot(meses[idx + 1]);
+    });
+  }
+  document.querySelectorAll(".month-pill").forEach((pill) => {
+    pill.addEventListener("click", () => updateSnapshot(pill.dataset.miso));
+  });
 }
 
 init();
