@@ -129,9 +129,33 @@ ul { margin: 0; }
   background: var(--surface); cursor: pointer;
   font-size: 0.9rem; font-weight: 500; color: var(--ink);
   transition: border-color .15s, background .15s, color .15s;
+  display: inline-flex; align-items: center; gap: 6px;
 }
 .product-chip:hover { border-color: var(--ink); }
 .product-chip.active { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.product-chip.active .chip-delta { opacity: 0.9; }
+
+.chip-delta {
+  font-size: 0.74rem; font-weight: 700; padding: 1px 5px; border-radius: 3px;
+  font-variant-numeric: tabular-nums; line-height: 1.2;
+}
+.chip-delta--up { background: rgba(217, 164, 65, 0.22); color: #875c10; }
+.chip-delta--down { background: rgba(46, 125, 50, 0.18); color: #1b5e20; }
+.chip-delta--flat { background: rgba(92, 91, 87, 0.14); color: #5c5b57; }
+.product-chip.active .chip-delta--up { background: rgba(255, 255, 255, 0.25); color: #fff; }
+.product-chip.active .chip-delta--down { background: rgba(255, 255, 255, 0.25); color: #fff; }
+.product-chip.active .chip-delta--flat { background: rgba(255, 255, 255, 0.2); color: #ddd; }
+
+.mode-toggle { display: inline-flex; margin-bottom: 24px; }
+.month-selector { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 24px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.month-selector-label { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.month-controls { display: flex; align-items: center; gap: 8px; }
+.month-select { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; }
+.month-btn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; font-size: 0.86rem; font-weight: 600; }
+.month-btn:hover, .month-select:hover { border-color: var(--ink); }
+.month-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.month-pill { padding: 5px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); font-size: 0.78rem; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all .15s; }
+.month-pill:hover, .month-pill.active { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
 
 /* --- a resposta --- */
 .answer { padding-top: 40px; }

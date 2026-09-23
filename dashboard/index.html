@@ -44,6 +44,11 @@
       <h1 class="brand-line">Quanto custava. Quanto custa. <em>O que mudou.</em></h1>
       <p class="brand-sub">Preços de combustíveis e alimentos no Brasil, de 2019 até hoje, e como eles mudaram nos governos Bolsonaro e Lula.</p>
 
+      <div class="mode-toggle" id="mode-toggle" aria-label="Modo de Leitura">
+        <button type="button" class="segmented-btn active" id="mode-product">Por Produto (Visão 1D)</button>
+        <button type="button" class="segmented-btn" id="mode-month">Cápsula por Mês (Visão nD)</button>
+      </div>
+
       <div class="selector" id="seletor">
         <span class="selector-prompt">Escolha um produto</span>
         <div class="selector-groups">
@@ -64,10 +69,10 @@
 
       <article class="answer" aria-live="polite">
         <header class="answer-head">
-          <h2 class="product-name" id="product-name">—</h2>
+          <h2 class="product-name" id="product-name">Gasolina comum</h2>
           <p class="product-meta">
-            <span class="unit-tag" id="unit-tag">—</span>
-            <span id="product-measure">—</span>
+            <span class="unit-tag" id="unit-tag">R$ por litro</span>
+            <span id="product-measure">Preço médio nacional · dez/2022 → ago/2026</span>
           </p>
           <p class="live-quote" id="live-quote" hidden></p>
         </header>
@@ -75,16 +80,16 @@
         <div class="answer-grid">
           <div class="value-rows" id="value-rows">
             <div class="value-row then">
-              <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">—</span><span class="per-tag bolsonaro"><span class="gov-mark" aria-hidden="true"></span>fim do governo Bolsonaro</span></div>
-              <div class="vr-number tnum" id="era-value">—</div>
-              <div class="vr-bar"><div class="vr-fill" id="era-bar"></div></div>
+              <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">dez/2022</span><span class="per-tag bolsonaro"><span class="gov-mark" aria-hidden="true"></span>fim do governo Bolsonaro</span></div>
+              <div class="vr-number tnum" id="era-value"><span class="cur">R$</span>4,96</div>
+              <div class="vr-bar"><div class="vr-fill" id="era-bar" style="width: 75.6%;"></div></div>
             </div>
             <div class="value-row now">
-              <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">—</span><span class="per-tag lula"><span class="gov-mark" aria-hidden="true"></span>governo Lula</span></div>
-              <div class="vr-number tnum" id="agora-value">—</div>
+              <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">ago/2026</span><span class="per-tag lula"><span class="gov-mark" aria-hidden="true"></span>governo Lula</span></div>
+              <div class="vr-number tnum" id="agora-value"><span class="cur">R$</span>6,57</div>
               <div class="vr-bar">
-                <div class="vr-fill" id="agora-bar"></div>
-                <div class="vr-marker" id="infl-marker"><span class="vr-marker-label" id="infl-marker-label"></span></div>
+                <div class="vr-fill" id="agora-bar" style="width: 100%;"></div>
+                <div class="vr-marker" id="infl-marker" style="left: 89.1%;"><span class="vr-marker-label" id="infl-marker-label"><b>R$ 5,85</b> se tivesse subido igual à <button type="button" class="term" data-term="inflacao" aria-expanded="false">inflação</button></span></div>
               </div>
             </div>
           </div>
@@ -92,17 +97,17 @@
           <aside class="change" id="change">
             <span class="change-kicker">O que mudou</span>
             <div class="change-item">
-              <span class="change-big tnum" id="diff-a">—</span>
-              <span class="change-cap" id="diff-a-cap">—</span>
+              <span class="change-big tnum" id="diff-a">+R$ 1,60</span>
+              <span class="change-cap" id="diff-a-cap">a mais por litro</span>
             </div>
             <div class="change-item">
-              <span class="change-big tnum" id="diff-b">—</span>
-              <span class="change-cap" id="diff-b-cap">—</span>
+              <span class="change-big tnum" id="diff-b">+32,3%</span>
+              <span class="change-cap" id="diff-b-cap">no preço desde dez/2022</span>
             </div>
           </aside>
         </div>
 
-        <p class="lede" id="lede"></p>
+        <p class="lede" id="lede">Desde dez/2022, o preço da gasolina comum subiu <strong>32,3%</strong>. Mesmo descontando a <button type="button" class="term" data-term="inflacao" aria-expanded="false">inflação</button>, ficou <strong>11,0% mais caro</strong> — subiu mais que os preços em geral. Hoje, 1 litro custa <strong>0,43%</strong> do <button type="button" class="term" data-term="salario" aria-expanded="false">salário mínimo</button>.</p>
         <p class="index-note" id="index-note" hidden></p>
       </article>
     </div>
@@ -201,15 +206,31 @@
     </div>
   </section>
 
-  <!-- ================================================================ 05 (EXTRAÍDO: FOTOGRAFIA DO BRASIL) -->
+  <!-- ================================================================ 05 (EXTRAÍDO: FOTOGRAFIA DO BRASIL / MÁQUINA DO TEMPO) -->
   <section class="chapter" id="brasil-snapshot">
     <div class="wrap">
       <div class="chapter-head">
         <span class="chapter-n" id="step-snapshot">05</span>
-        <h2>Como estava o Brasil?</h2>
+        <h2>Como estava o Brasil? (Cápsula do Tempo)</h2>
       </div>
-      <p class="chapter-sub" id="snapshot-sub">Uma fotografia dos principais indicadores em cada momento — dá para comparar mesmo quem não tem relação direta com este produto.</p>
-      <div class="snapshot" id="snapshot-section">
+      <p class="chapter-sub" id="snapshot-sub">Uma fotografia dos principais indicadores em cada momento — navegue mês a mês pela história econômica recente do país.</p>
+
+      <div class="month-selector" id="month-selector">
+        <span class="month-selector-label">Mês da Cápsula</span>
+        <div class="month-controls">
+          <button type="button" class="month-btn" id="month-prev" title="Mês anterior">◄</button>
+          <select class="month-select" id="month-dropdown" aria-label="Selecione o mês da cápsula"></select>
+          <button type="button" class="month-btn" id="month-next" title="Próximo mês">►</button>
+        </div>
+        <div class="month-pills">
+          <button type="button" class="month-pill" data-miso="2020-05-01">😷 Pandemia (Mai/20)</button>
+          <button type="button" class="month-pill" data-miso="2022-06-01">⛽ Pico Gasolina (Jun/22)</button>
+          <button type="button" class="month-pill active" data-miso="2022-12-01">🏛️ Transição (Dez/22)</button>
+          <button type="button" class="month-pill" data-miso="2023-03-01">📈 Pico Selic (Mar/23)</button>
+        </div>
+      </div>
+
+      <div class="snapshot" id="snapshot-section" style="margin-top:20px; padding-top:0; border-top:none;">
         <div class="snapshot-grid" id="snapshot-grid"></div>
       </div>
     </div>
