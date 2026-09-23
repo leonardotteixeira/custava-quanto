@@ -208,8 +208,14 @@ ul { margin: 0; }
   font-size: clamp(3rem, 1.3rem + 4.6vw, 6.2rem); line-height: 0.95; white-space: nowrap;
 }
 .value-row.then .vr-number { color: var(--ink-soft); }
+/* .vr-bar NÃO pode cortar overflow: o marcador de inflação (.vr-marker)
+   se estende acima/abaixo dele e o rótulo fica abaixo — por isso o
+   clip+radius vive num wrapper próprio (.vr-track) só para o fill, que
+   sempre tem width:100% e escala via transform (compositor) em vez de
+   width (layout thrash a cada frame) */
 .vr-bar { position: relative; height: 22px; }
-.vr-fill { height: 100%; width: 0; border-radius: 0 4px 4px 0; transition: width .6s cubic-bezier(.2,.7,.2,1); }
+.vr-track { height: 100%; border-radius: 0 4px 4px 0; overflow: hidden; }
+.vr-fill { height: 100%; width: 100%; transform: scaleX(0); transform-origin: left; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .value-row.then .vr-fill { background: var(--bar-muted); }
 .value-row.now .vr-fill { background: var(--accent); }
 .vr-marker {
@@ -280,7 +286,11 @@ ul { margin: 0; }
 /* --- "Como estava o Brasil?": fotografia cross-indicador --- */
 .snapshot { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
 .snapshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.snap-card { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 18px 22px; }
+/* recriado via innerHTML a cada troca de mês — a keyframe dispara sozinha
+   em toda inserção no DOM, sem JS extra. Confirma que a Cápsula do Tempo
+   respondeu à pergunta, não é decoração contínua (roda uma vez, para). */
+@keyframes snap-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.snap-card { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 18px 22px; animation: snap-reveal .35s ease-out; }
 .snap-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line-soft); }
 .snap-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
 .snap-when { font-size: 0.9rem; color: var(--ink-soft); }
@@ -326,7 +336,7 @@ ul { margin: 0; }
 .pp-unit.partial { opacity: .4; }
 /* alimentos: índice de poder de compra em vez de pictograma de unidades */
 .pp-index-track { position: relative; height: 14px; border-radius: 3px; background: var(--line-soft); overflow: hidden; }
-.pp-index-fill { height: 100%; width: 0; border-radius: 3px; background: var(--bar-muted); transition: width .5s cubic-bezier(.2,.7,.2,1); }
+.pp-index-fill { height: 100%; width: 100%; transform: scaleX(0); transform-origin: left; background: var(--bar-muted); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .pp-row.now .pp-index-fill { background: var(--accent); }
 .pp-result { text-align: right; }
 .pp-value { font-weight: 700; font-size: 2.6rem; line-height: 1; letter-spacing: -0.035em; }
@@ -428,7 +438,7 @@ ul { margin: 0; }
 .site-footer p { color: var(--ink-faint); font-size: 0.82rem; margin: 0; max-width: 72ch; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
   html { scroll-behavior: auto; }
 }
 

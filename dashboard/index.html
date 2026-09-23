@@ -49,8 +49,8 @@
       <p class="brand-sub">Preços de combustíveis e alimentos no Brasil, de 2019 até hoje, e como eles mudaram nos governos Bolsonaro e Lula.</p>
 
       <div class="mode-toggle" id="mode-toggle" aria-label="Modo de Leitura">
-        <button type="button" class="segmented-btn active" id="mode-product">Por Produto (Visão 1D)</button>
-        <button type="button" class="segmented-btn" id="mode-month">Cápsula por Mês (Visão nD)</button>
+        <button type="button" class="segmented-btn active" id="mode-product" aria-pressed="true">Por Produto (Visão 1D)</button>
+        <button type="button" class="segmented-btn" id="mode-month" aria-pressed="false">Cápsula por Mês (Visão nD)</button>
       </div>
 
       <div class="selector" id="seletor">
@@ -86,13 +86,13 @@
             <div class="value-row then">
               <div class="vr-label"><span class="vr-kicker">Era</span><span class="vr-date" id="era-date">dez/2022</span><span class="per-tag bolsonaro"><span class="gov-mark" aria-hidden="true"></span>fim do governo Bolsonaro</span></div>
               <div class="vr-number tnum" id="era-value"><span class="cur">R$</span>4,96</div>
-              <div class="vr-bar"><div class="vr-fill" id="era-bar" style="width: 75.6%;"></div></div>
+              <div class="vr-bar"><div class="vr-track"><div class="vr-fill" id="era-bar" style="transform: scaleX(0.756);"></div></div></div>
             </div>
             <div class="value-row now">
               <div class="vr-label"><span class="vr-kicker">Agora</span><span class="vr-date" id="agora-date">ago/2026</span><span class="per-tag lula"><span class="gov-mark" aria-hidden="true"></span>governo Lula</span></div>
               <div class="vr-number tnum" id="agora-value"><span class="cur">R$</span>6,57</div>
               <div class="vr-bar">
-                <div class="vr-fill" id="agora-bar" style="width: 100%;"></div>
+                <div class="vr-track"><div class="vr-fill" id="agora-bar" style="transform: scaleX(1);"></div></div>
                 <div class="vr-marker" id="infl-marker" style="left: 89.1%;"><span class="vr-marker-label" id="infl-marker-label"><b>R$ 5,85</b> se tivesse subido igual à <button type="button" class="term" data-term="inflacao" aria-expanded="false">inflação</button></span></div>
               </div>
             </div>
@@ -134,9 +134,9 @@
           <p class="chart-sub" id="chart-subtitle"></p>
         </div>
         <div class="segmented" id="metric-toggle" aria-label="Como medir o preço">
-          <button data-metric="nominal" class="segmented-btn active">Preço na época</button>
-          <button data-metric="real" class="segmented-btn">Corrigido pela inflação</button>
-          <button data-metric="pct_sm" class="segmented-btn">% do salário mínimo</button>
+          <button data-metric="nominal" class="segmented-btn active" aria-pressed="true">Preço na época</button>
+          <button data-metric="real" class="segmented-btn" aria-pressed="false">Corrigido pela inflação</button>
+          <button data-metric="pct_sm" class="segmented-btn" aria-pressed="false">% do salário mínimo</button>
         </div>
       </div>
       <p class="metric-help" id="metric-help"></p>
@@ -222,15 +222,15 @@
       <div class="month-selector" id="month-selector">
         <span class="month-selector-label">Mês da Cápsula</span>
         <div class="month-controls">
-          <button type="button" class="month-btn" id="month-prev" title="Mês anterior">◄</button>
+          <button type="button" class="month-btn" id="month-prev" aria-label="Mês anterior">◄</button>
           <select class="month-select" id="month-dropdown" aria-label="Selecione o mês da cápsula"></select>
-          <button type="button" class="month-btn" id="month-next" title="Próximo mês">►</button>
+          <button type="button" class="month-btn" id="month-next" aria-label="Próximo mês">►</button>
         </div>
         <div class="month-pills">
-          <button type="button" class="month-pill" data-miso="2020-05-01">Pandemia (Mai/20)</button>
-          <button type="button" class="month-pill" data-miso="2022-06-01">Pico Gasolina (Jun/22)</button>
-          <button type="button" class="month-pill active" data-miso="2022-12-01">Transição (Dez/22)</button>
-          <button type="button" class="month-pill" data-miso="2023-03-01">Pico Selic (Mar/23)</button>
+          <button type="button" class="month-pill" data-miso="2020-05-01" aria-pressed="false">Pandemia (Mai/20)</button>
+          <button type="button" class="month-pill" data-miso="2022-06-01" aria-pressed="false">Pico Gasolina (Jun/22)</button>
+          <button type="button" class="month-pill active" data-miso="2022-12-01" aria-pressed="true">Transição (Dez/22)</button>
+          <button type="button" class="month-pill" data-miso="2023-03-01" aria-pressed="false">Pico Selic (Mar/23)</button>
         </div>
       </div>
 
@@ -250,10 +250,10 @@
       <div class="gov-controls">
         <p class="chapter-sub">Mesmo produto, mesma régua. Sem vencedor, sem nota: só o que os dados mostram em cada período.</p>
         <div class="segmented" id="cohort-toggle" aria-label="Recorte de tempo">
-          <button data-cohort="governo_inteiro" class="segmented-btn active">Governo inteiro</button>
-          <button data-cohort="primeiros_12m" class="segmented-btn">1º ano</button>
-          <button data-cohort="primeiros_24m" class="segmented-btn">2 anos</button>
-          <button data-cohort="primeiros_36m" class="segmented-btn">3 anos</button>
+          <button data-cohort="governo_inteiro" class="segmented-btn active" aria-pressed="true">Governo inteiro</button>
+          <button data-cohort="primeiros_12m" class="segmented-btn" aria-pressed="false">1º ano</button>
+          <button data-cohort="primeiros_24m" class="segmented-btn" aria-pressed="false">2 anos</button>
+          <button data-cohort="primeiros_36m" class="segmented-btn" aria-pressed="false">3 anos</button>
         </div>
       </div>
       <p class="cohort-note" id="cohort-note"></p>
