@@ -203,16 +203,23 @@ def montar_combustiveis(salario: pd.DataFrame) -> dict:
     return produtos
 
 
-def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame) -> dict:
-    """Dólar e Selic como "produtos" próprios — não são itens que se compra
-    como gasolina ou arroz, então cada um tem sua unidade e o que faz
-    sentido calcular: Dólar tem preço em R$ (dá pra deflacionar e ver
+def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame, ibovespa: pd.DataFrame) -> dict:
+    """Dólar, Selic e Ibovespa como "produtos" próprios — não são itens que
+    se compra como gasolina ou arroz, então cada um tem sua unidade e o que
+    faz sentido calcular: Dólar tem preço em R$ (dá pra deflacionar e ver
     quantos dólares um salário mínimo compra, igual combustível). Selic é
     uma taxa (% ao ano) — não é preço, não se deflaciona pelo IPCA do jeito
-    normal, não tem "quantidade comprada"."""
+    normal, não tem "quantidade comprada". Ibovespa é medido em pontos, que
+    não são reais nem uma taxa — outro schema próprio."""
     bcb = pd.read_csv(DATA_PROCESSED / "bcb_contexto_mensal.csv", parse_dates=["ano_mes"])
     ultimo_mes_comum = ipca["ano_mes"].max()
     bcb = bcb[bcb["ano_mes"] <= ultimo_mes_comum]
+
+    # Cotação diária mais recente (Dólar/Selic são publicados todo dia útil,
+    # bem mais rápido que o IPCA) — mostrada à parte da série mensal, que
+    # segue limitada ao último mês fechado pelo IPCA acima.
+    hoje_path = DATA_PROCESSED / "bcb_hoje.json"
+    cotacao_hoje = json.loads(hoje_path.read_text(encoding="utf-8")) if hoje_path.exists() else {}
 
     # Inflação acumulada em 12 meses (não é o número-índice cru): é o que se
     # compara com a Selic de verdade, porque as duas ficam na mesma escala
@@ -223,7 +230,7 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame) -> dict:
     ipca_ord["ipca_var_12m"] = ipca_ord["ipca_indice"] / ipca_ord["ipca_indice"].shift(12) * 100 - 100
     ipca = ipca_ord
 
-    df = bcb.merge(ipca, on="ano_mes", how="left").merge(salario, on="ano_mes", how="left")
+    df = bcb.merge(ipca, on="ano_mes", how="left").merge(salario, on="ano_mes", how="left").merge(ibovespa, on="ano_mes", how="left")
     ipca_base = ipca.dropna(subset=["ipca_indice"])["ipca_indice"].iloc[-1]
     df["fator_deflator"] = ipca_base / df["ipca_indice"]
     df["ano_mes_periodo"] = df["ano_mes"].apply(lambda d: "Bolsonaro" if d < pd.Timestamp(PERIODO_CORTE) else "Lula")
@@ -267,6 +274,7 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame) -> dict:
         "serie_mensal": serie_dolar,
         "serie_anual": _serie_anual_combustivel(dolar),
         "resumo_periodos": resumo_dolar,
+        "cotacao_hoje": cotacao_hoje.get("cambio_usd_brl"),
     }
 
     # --- Selic: taxa, não preço — schema próprio, bem mais simples ---
@@ -297,6 +305,48 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame) -> dict:
         "serie_mensal": serie_selic,
         "serie_anual": _serie_anual_taxa(selic),
         "resumo_periodos": resumo_selic,
+        "cotacao_hoje": cotacao_hoje.get("selic_meta_aa"),
+    }
+
+    # --- Ibovespa: pontos, não é preço nem taxa — schema próprio ---
+    ibov = df.dropna(subset=["ibovespa_pontos"]).sort_values("ano_mes").copy()
+    ibov = ibov.assign(
+        pontos=ibov["ibovespa_pontos"],
+        pontos_indice100=_indice100(ibov["ibovespa_pontos"]),
+        ipca_indice100=_indice100(ibov["ipca_indice"]),
+        selic_indice100=_indice100(ibov["selic_meta_aa"]),
+        cambio_indice100=_indice100(ibov["cambio_usd_brl"]),
+    )
+    serie_ibov = []
+    for _, r in ibov.iterrows():
+        serie_ibov.append({
+            "ano_mes": _fmt_mes(r["ano_mes"]),
+            "periodo": r["ano_mes_periodo"],
+            "pontos": round(float(r["ibovespa_pontos"]), 0),
+            "pontos_indice100": round(float(r["pontos_indice100"]), 2) if pd.notna(r["pontos_indice100"]) else None,
+            "ipca_indice": round(float(r["ipca_indice"]), 2) if pd.notna(r["ipca_indice"]) else None,
+            "ipca_indice100": round(float(r["ipca_indice100"]), 2) if pd.notna(r["ipca_indice100"]) else None,
+            "selic_meta_aa": round(float(r["selic_meta_aa"]), 2) if pd.notna(r["selic_meta_aa"]) else None,
+            "selic_indice100": round(float(r["selic_indice100"]), 2) if pd.notna(r["selic_indice100"]) else None,
+            "cambio_usd_brl": round(float(r["cambio_usd_brl"]), 4) if pd.notna(r["cambio_usd_brl"]) else None,
+            "cambio_indice100": round(float(r["cambio_indice100"]), 2) if pd.notna(r["cambio_indice100"]) else None,
+        })
+    resumo_ibov = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo_ibov[periodo] = _cohorts_para_periodo(ibov[ibov["ano_mes_periodo"] == periodo], _resumo_pontos)
+    produtos["IBOVESPA"] = {
+        "nome": "Ibovespa",
+        "tipo": "pontos",
+        "unidade": "pontos",
+        "nota": (
+            "O Ibovespa é o principal índice da bolsa de valores brasileira (B3): "
+            "mede a variação média de preço de uma carteira das ações mais "
+            "negociadas. \"Pontos\" não é dinheiro — é uma unidade própria do "
+            "índice, criada em 1968 (quando valia 100 pontos)."
+        ),
+        "serie_mensal": serie_ibov,
+        "serie_anual": _serie_anual_pontos(ibov),
+        "resumo_periodos": resumo_ibov,
     }
     return produtos
 
@@ -325,6 +375,33 @@ def _serie_anual_taxa(df: pd.DataFrame) -> list[dict]:
     out = []
     for ano, g in df.groupby("ano"):
         out.append({"ano": int(ano), "taxa_media": round(float(g["taxa_aa"].mean()), 2), "n_meses": len(g)})
+    return out
+
+
+def _resumo_pontos(df: pd.DataFrame) -> dict:
+    df = df.dropna(subset=["pontos"]).sort_values("ano_mes")
+    if df.empty:
+        return None
+    primeiro, ultimo = df.iloc[0], df.iloc[-1]
+    return {
+        "n_meses": len(df),
+        "mes_inicio": _fmt_mes(primeiro["ano_mes"]),
+        "mes_fim": _fmt_mes(ultimo["ano_mes"]),
+        "pontos_inicio": round(float(primeiro["pontos"]), 0),
+        "pontos_fim": round(float(ultimo["pontos"]), 0),
+        "variacao_pct": round(float((ultimo["pontos"] / primeiro["pontos"] - 1) * 100), 2),
+        "pontos_medio": round(float(df["pontos"].mean()), 0),
+        "pontos_min": round(float(df["pontos"].min()), 0),
+        "pontos_max": round(float(df["pontos"].max()), 0),
+    }
+
+
+def _serie_anual_pontos(df: pd.DataFrame) -> list[dict]:
+    df = df.dropna(subset=["pontos"]).copy()
+    df["ano"] = df["ano_mes"].dt.year
+    out = []
+    for ano, g in df.groupby("ano"):
+        out.append({"ano": int(ano), "pontos_medio": round(float(g["pontos"].mean()), 0), "n_meses": len(g)})
     return out
 
 
@@ -377,6 +454,7 @@ def main() -> None:
 
     salario = pd.read_csv(DATA_PROCESSED / "salario_minimo_mensal.csv", parse_dates=["ano_mes"])
     ipca = pd.read_csv(DATA_PROCESSED / "ipca_geral_mensal.csv", parse_dates=["ano_mes"])
+    ibovespa = pd.read_csv(DATA_PROCESSED / "ibovespa_mensal.csv", parse_dates=["ano_mes"])
 
     dados = {
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -384,7 +462,7 @@ def main() -> None:
         "produtos": {
             **montar_combustiveis(salario),
             **montar_alimentos(salario),
-            **montar_indicadores(salario, ipca),
+            **montar_indicadores(salario, ipca, ibovespa),
         },
         "presidentes": {
             "Bolsonaro": {

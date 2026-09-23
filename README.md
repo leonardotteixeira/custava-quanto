@@ -18,8 +18,9 @@ e os gráficos estáticos originais em `output/`.
 |---|---|---|
 | [ANP](https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis) | Gasolina comum, etanol hidratado, diesel (comum e S10), GLP (botijão 13kg) — preço por posto revendedor, agregado aqui por mês/região | 2019–hoje |
 | [IBGE/SIDRA](https://sidra.ibge.gov.br) | IPCA geral (deflator) e variação mensal de itens específicos (arroz, feijão, carne, leite, óleo de soja, café) | 2019–hoje |
-| [Banco Central (SGS)](https://www3.bcb.gov.br/sgspub/) | Câmbio USD/BRL, Selic e salário mínimo nacional (série 1619) — contexto, não resultado | 2019–hoje |
+| [Banco Central (SGS)](https://www3.bcb.gov.br/sgspub/) | Câmbio USD/BRL e Selic (também tratados como "produtos" próprios no dashboard) e salário mínimo nacional (série 1619) | 2019–hoje |
 | [FRED (Brent)](https://fred.stlouisfed.org/series/DCOILBRENTEU) | Petróleo Brent, USD/barril — contexto | 2019–hoje |
+| [Yahoo Finance (^BVSP)](https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP) | Ibovespa, fechamento mensal em pontos — "produto" próprio no dashboard | 2019–hoje |
 | DIEESE (Cesta Básica Nacional) | **Não incluída no pipeline automático** — ver [Sobre o DIEESE](#sobre-o-dieese) | — |
 
 ## Estrutura do projeto
@@ -55,6 +56,7 @@ python -m venv .venv
 .venv/Scripts/python scripts/download_bcb.py
 .venv/Scripts/python scripts/download_brent.py
 .venv/Scripts/python scripts/download_salario_minimo.py
+.venv/Scripts/python scripts/download_ibovespa.py
 ```
 
 Todos os scripts são **idempotentes**: usam cache em `data/raw/` e podem ser
@@ -103,14 +105,22 @@ Code desktop app com preview de navegador.)
 ## Dashboard CUSTAVA QUANTO?
 
 Camada de apresentação interativa sobre os mesmos dados do pipeline: escolha
-um produto (5 combustíveis + 6 itens da cesta básica) e veja preço ao longo
-do tempo (nominal, real ou % do salário mínimo), comparação Bolsonaro x Lula
-(governo inteiro ou primeiros 12/24/36 meses), poder de compra, contexto
-(Brent/câmbio/IPCA indexados) e histórico anual.
+um produto (5 combustíveis, 6 itens da cesta básica ou um indicador — Dólar,
+Selic, Ibovespa) e veja a evolução no tempo, comparação Bolsonaro x Lula
+(governo inteiro ou primeiros 12/24/36 meses), contexto e histórico anual.
+Combustíveis e Dólar também têm preço em R$ (nominal, real ou % do salário
+mínimo) e poder de compra; Selic (taxa, % ao ano) e Ibovespa (pontos, não é
+R$) têm cada um sua própria leitura — não fazem sentido nas mesmas contas de
+"preço" ou "poder de compra" dos outros produtos.
 
 - **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
   todas as contas em Python e grava o resultado pronto em
   `dashboard_data.json`; `dashboard/app.js` só formata e desenha.
+- **Cotação de hoje (Dólar/Selic)**: `scripts/download_bcb.py` também grava
+  a última cotação diária disponível de cada série em
+  `data/processed/bcb_hoje.json` — mostrada à parte da série mensal (que
+  fica limitada ao último mês fechado pelo IPCA), para acompanhar o valor
+  mais recente sem esperar o mês fechar.
 - **Salário mínimo**: Banco Central, SGS série 1619 (piso nacional, nominal
   — não reflete pisos regionais mais altos em alguns estados).
 - **Fotos dos presidentes**: retratos oficiais do acervo do Palácio do
