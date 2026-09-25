@@ -116,5 +116,44 @@
     ],
     "tema": "pib",
     "confirmado": true
+  },
+  {
+    "titulo": "PIB fecha 2019 com crescimento de 1,1% em relação a 2018",
+    "veiculo": "Agência Brasil",
+    "data": "2020-03-04",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-03/pib-fecha-2019-com-crescimento-de-11-em-relacao-2018",
+    "resumo": "O IBGE divulgou que o PIB fechou 2019 com alta de 1,1% sobre 2018, após variação de 0,5% no quarto trimestre; a reportagem informa PIB de R$ 7,3 trilhões em valores correntes.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB recua 9,7% no segundo trimestre",
+    "veiculo": "Agência Brasil",
+    "data": "2020-09-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/pib-recua-97-no-segundo-trimestre",
+    "resumo": "O IBGE informou queda de 9,7% do PIB no 2º trimestre de 2020 frente ao trimestre anterior (11,4% contra o 2º trimestre de 2019), as maiores quedas da série iniciada em 1996; o consumo das famílias recuou 12,5%.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB cresce 7,7% do segundo para o terceiro trimestre, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2020-12-03",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-12/pib-cresce-77-do-segundo-para-o-terceiro-trimestre-diz-ibge",
+    "resumo": "O IBGE divulgou alta de 7,7% do PIB no 3º trimestre de 2020 contra o trimestre anterior.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
   }
 ]

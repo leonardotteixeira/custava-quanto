@@ -910,3 +910,31 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .year-card { grid-template-columns: 1fr; }
   .pib-glance dd { font-size: 1.45rem; }
 }
+
+/* PIB · referência histórica (2010) e grade do contexto (6 colunas) */
+.pib-ref { margin-top: clamp(36px, 5vw, 64px); padding: 18px 22px 20px; background: var(--paper-2, #e9e3d6); border-left: 3px solid var(--signal); }
+.ref-kicker { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--t-micro, 0.7rem); }
+.ref-grid { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 12px 32px; margin-top: 10px; align-items: start; }
+.ref-big { display: flex; flex-direction: column; gap: 2px; font-weight: 800; font-variation-settings: "wdth" 72; font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 1; }
+.ref-year { font-weight: 400; font-size: 0.8rem; color: var(--fg-3); }
+.ref-body p { max-width: 68ch; font-size: 0.95rem; line-height: 1.5; }
+.ref-src { margin-top: 8px; font-size: 0.8rem !important; color: var(--fg-3); }
+.pib-sub { color: var(--fg-3); font-size: var(--t-micro, 0.72rem); margin: 2px 0 10px; }
+.multiples--pib { grid-template-columns: repeat(6, 1fr); border-top: 0; }
+.multiples--pib .mult { grid-column: span 2; border-right: 0; border-top: 1px solid var(--line); padding: 14px 20px 14px 0; }
+.multiples--pib .mult:first-child { padding-left: 0; }
+.multiples--pib .mult--lead { grid-column: 1 / -1; }
+.multiples--pib .mult--w3 { grid-column: span 3; }
+.multiples--pib .mult .chart { height: clamp(190px, 17vw, 250px); }
+.multiples--pib .mult--lead .chart { height: clamp(220px, 20vw, 300px); }
+.multiples--pib .mult--lead .mult-val { font-size: clamp(2.2rem, 3.4vw, 3.2rem); }
+@media (max-width: 900px) {
+  .multiples--pib { grid-template-columns: repeat(2, 1fr); }
+  .multiples--pib .mult, .multiples--pib .mult--w3 { grid-column: span 1; padding-right: 14px; }
+  .multiples--pib .mult--lead { grid-column: 1 / -1; }
+  .ref-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .multiples--pib { grid-template-columns: 1fr; }
+  .multiples--pib .mult, .multiples--pib .mult--w3 { grid-column: 1 / -1; padding: 14px 0; }
+}

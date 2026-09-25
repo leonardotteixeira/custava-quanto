@@ -12,6 +12,11 @@ import {
 } from "./util.js";
 import { lineChart } from "./charts.js";
 
+// Recorte editorial único de TODOS os gráficos de análise do PIB: jan/2019 -> último
+// dado. A série completa (desde 1996) continua nos dados; só a apresentação filtra.
+export const PIB_JANELA_INICIO = "2019-01-01";
+export const noRecorte = (iso) => iso >= PIB_JANELA_INICIO;
+
 // ---------------------------------------------------------------- rótulos
 const TRI_ORD = { 1: "1º", 2: "2º", 3: "3º", 4: "4º" };
 export const triLabel = (t) => { // "2026-T2" -> "2º trimestre de 2026"
@@ -44,7 +49,7 @@ export const PIB_2010 = {
 const DIVULGADO = { 2010: 7.5, 2015: -3.8, 2020: -4.1, 2021: 4.6, 2022: 2.9, 2023: 2.9, 2024: 3.4, 2025: 2.3 };
 
 // ---------------------------------------------------------- dados derivados
-const anuais = (prod) => prod.serie_mensal.filter((r) => !isNil(r.taxa_aa));
+const anuais = (prod) => prod.serie_mensal.filter((r) => !isNil(r.taxa_aa) && noRecorte(r.ano_mes));
 const comp = (prod, cod) => (prod.componentes || []).find((c) => c.codigo === cod);
 const compAno = (c, ano) => c?.serie_anual.find((x) => x.ano === ano)?.taxa ?? null;
 
@@ -73,11 +78,27 @@ export function renderPibIntro(prod) {
       isNil(ul.acumulado_ano) ? "" : `${pct(ul.acumulado_ano)} acumulado no ano`,
     ].filter(Boolean).join(" · ") : ""],
     ["Periodicidade", "Trimestral", "O resultado do ano é a taxa acumulada no 4º trimestre."],
-    ["Maior crescimento anual da série exibida", pct(hi.taxa_aa), `em ${hi.ano} · variação real contra o ano anterior`],
-    ["Maior retração anual da série exibida", pct(lo.taxa_aa), `em ${lo.ano} · variação real contra o ano anterior`],
+    ["Maior crescimento anual do recorte", pct(hi.taxa_aa), `em ${hi.ano} · variação real contra o ano anterior · recorte 2019 em diante`],
+    ["Maior retração anual do recorte", pct(lo.taxa_aa), `em ${lo.ano} · variação real contra o ano anterior · recorte 2019 em diante`],
     ["Último ano completo", String(ultimoAno.ano), `${pct(ultimoAno.taxa_aa)} · resultado do 4º trimestre`],
   ].map(([t, v, s]) => `<div><dt>${t}</dt><dd>${v}</dd><dd class="pg-sub">${s}</dd></div>`).join("");
-  $("#pib-intro-note").innerHTML = `Os valores históricos do PIB podem ser revistos pelo IBGE. "Maior" e "menor" descrevem a série exibida; não são avaliação. <a href="${esc(prod.fonte.explica_url)}" target="_blank" rel="noopener">O que é o PIB (IBGE Explica)</a>.`;
+  $("#pib-intro-note").innerHTML = `Os valores históricos do PIB podem ser revistos pelo IBGE. "Maior" e "menor" descrevem o recorte exibido (2019 até o último dado); não são avaliação. <a href="${esc(prod.fonte.explica_url)}" target="_blank" rel="noopener">O que é o PIB (IBGE Explica)</a>.`;
+}
+
+// "Uma referência histórica": o +7,5% de 2010 fica fora do recorte principal.
+function renderReferencia(prod) {
+  const box = $("#pib-ref");
+  if (!box) return;
+  const c = PIB_2010, atual = compAno(comp(prod, "90707"), 2010);
+  const a2009 = compAno(comp(prod, "90707"), 2009);
+  box.innerHTML = `<p class="ref-kicker mono">Uma referência histórica · fora do recorte principal</p>
+    <div class="ref-grid">
+      <p class="ref-big" aria-label="+7,5% em 2010"><span class="ref-year mono">2010</span><span class="tnum">+${fmtNum(c.release.valores["90707"], 1)}%</span></p>
+      <div class="ref-body">
+        <p>Em 2010, o PIB cresceu ${fmtNum(c.release.valores["90707"], 1)}% frente a 2009, segundo o IBGE, o maior resultado anual da série que o projeto guarda desde 1996. O resultado veio depois de um 2009 fraco${isNil(a2009) ? "" : ` (${pct(a2009)} na série atual)`}, então parte do avanço reflete a comparação com uma base menor. O crescimento apareceu nos três grandes setores: agropecuária ${pct(c.release.valores["90687"])}, indústria ${pct(c.release.valores["90691"])} e serviços ${pct(c.release.valores["90696"])}; na demanda, consumo das famílias ${pct(c.release.valores["93404"])} e investimento (FBCF) ${pct(c.release.valores["93406"])}.</p>
+        <p class="ref-src">Fontes: <a href="${esc(c.release.url)}" target="_blank" rel="noopener">IBGE, ${c.release.data}: ${esc(c.release.titulo)}</a> · <a href="${esc(c.bcb.url)}" target="_blank" rel="noopener">Banco Central, Relatório Anual 2010</a>.${isNil(atual) ? "" : ` Na série atual do IBGE, revisada, o resultado de 2010 é ${pct(atual)}.`} Contexto, não causa.</p>
+      </div>
+    </div>`;
 }
 
 export function hidePibBlocks() {
@@ -92,6 +113,7 @@ export function renderPibExtra(prod, ctx) {
   $("#pib-extra").hidden = false;
   $("#pib-metodo").hidden = false;
   renderYearCard(prod, ctx);
+  renderReferencia(prod);
   renderQuarterly(prod);
   const f = prod.fonte;
   $("#pib-source").innerHTML = `<div><dt>Fonte</dt><dd>${esc(f.nome)}</dd></div>
@@ -114,13 +136,13 @@ function renderYearCard(prod, ctx) {
   const pibC = comp(prod, "90707");
   const hi = an.reduce((x, y) => (y.taxa_aa > x.taxa_aa ? y : x), an[0]);
   const lo = an.reduce((x, y) => (y.taxa_aa < x.taxa_aa ? y : x), an[0]);
-  const titulo = r.ano === hi.ano ? `${r.ano}: um dos maiores crescimentos da série`
-    : r.ano === lo.ano ? `${r.ano}: a maior retração anual da série exibida`
+  const titulo = r.ano === hi.ano ? `${r.ano}: o maior crescimento anual do recorte`
+    : r.ano === lo.ano ? `${r.ano}: a maior retração anual do recorte`
     : `${r.ano}: variação real do PIB no ano`;
-  const periodo = r.ano >= 2023 ? "Governo Lula · em curso" : r.ano >= 2019 ? "Governo Bolsonaro" : "Antes de 2019 · fora dos períodos comparados";
+  const periodo = r.ano >= 2023 ? "Governo Lula · em curso" : "Governo Bolsonaro";
   const divulgado = DIVULGADO[r.ano];
   const noticias = noticiasDoAno(ctx.NEWS, r.ano);
-  const eh2010 = r.ano === 2010;
+  const eh2010 = false;
 
   const linhas = LINHAS_COMP.map(([cod, nome]) => {
     const atual = compAno(comp(prod, cod), r.ano);
@@ -176,12 +198,15 @@ function renderQuarterly(prod) {
     dessazonalizada: { campo: "variacao_dessazonalizada", base: "contra o trimestre imediatamente anterior, com ajuste sazonal", nota: "Compara cada trimestre com o anterior, depois de retirar o efeito sazonal (dessazonalizado)." },
   };
   const m = medidas[quarterMeasure];
-  const rows = serie.map((q) => ({ iso: q.ano_mes, v: q[m.campo] })).filter((r) => !isNil(r.v));
+  const rows = serie.filter((q) => noRecorte(q.ano_mes)).map((q) => ({ iso: q.ano_mes, v: q[m.campo] })).filter((r) => !isNil(r.v));
+  const ult0 = rows[rows.length - 1];
+  const sub = $("#pib-quarter-sub");
+  if (sub && ult0) sub.textContent = `De 2019 ao ${triLabel(serie.find((q) => q.ano_mes === ult0.iso).trimestre)} · dados trimestrais, sem interpolação`;
   $("#pib-quarter-basis").innerHTML = `<strong>Trimestral · ${m.base}.</strong> ${m.nota}`;
   const ultimo = rows[rows.length - 1];
   quarterChart = lineChart(box, {
     series: [{ rows, area: false, maxGap: 3 }],
-    cutoff: PERIODO_CORTE, bands: "full", includeZero: true, headroom: 0.15, refY: 0,
+    cutoff: PERIODO_CORTE, bands: "full", includeZero: true, headroom: 0.15, refY: 0, m0: monthIdx(PIB_JANELA_INICIO), m1: monthIdx(rows[rows.length - 1].iso),
     yFmt: (t, s) => `${fmtNum(t, s < 1 ? 1 : 0)}%`,
     annotations: ultimo ? [{ iso: ultimo.iso, v: ultimo.v, text: pct(ultimo.v), sub: triLabel(serie.find((q) => q.ano_mes === ultimo.iso).trimestre), signal: true }] : [],
     tooltip: (mi) => {
@@ -205,41 +230,46 @@ export function bindPibControls(getProd) {
 }
 
 // --------------------------------------------- "O que se movia dentro do PIB"
+// Mesmo recorte (2019 -> ultimo ano) e mesmo eixo em todos os quadros. PIB e o
+// quadro-lider; oferta em tres quadros iguais; demanda em 3 + 2 (larguras 2/6 e 3/6).
 export function renderPibContext(prod) {
   const box = $("#multiples");
   const GRUPOS = [
-    ["Produção (oferta)", ["90707", "90687", "90691", "90696"]],
+    ["Produção / oferta", ["90707", "90687", "90691", "90696"]],
     ["Demanda", ["93404", "93405", "93406", "93407", "93408"]],
   ];
-  const cols = window.innerWidth <= 900 ? 1 : 3;
-  box.style.setProperty("--cols", cols);
+  box.classList.add("multiples--pib");
+  const noJanela = (c) => c.serie_anual.filter((a) => noRecorte(`${a.ano}-01-01`));
   const cs = GRUPOS.flatMap(([, cods]) => cods).map((c) => comp(prod, c)).filter(Boolean);
-  const all = cs.flatMap((c) => c.serie_anual.map((a) => monthIdx(`${a.ano}-01-01`)));
-  const m0 = Math.min(...all), m1 = Math.max(...all);
-  $("#context-deck").textContent = "Cada quadro mostra a variação real anual (resultado do 4º trimestre) de uma parte do PIB, na escala do próprio quadro. Todos usam os dados anuais reais do IBGE; nenhum valor foi estimado, repetido ou convertido para mensal.";
+  const anos = cs.flatMap((c) => noJanela(c).map((a) => a.ano));
+  const ultAno = Math.max(...anos);
+  const m0 = monthIdx(PIB_JANELA_INICIO), m1 = monthIdx(`${ultAno}-01-01`);
+  $("#context-deck").textContent = `Cada quadro mostra a variação real anual (resultado do 4º trimestre) de uma parte do PIB, de 2019 a ${ultAno}, na escala do próprio quadro. Frequência anual; todos usam os dados reais do IBGE, sem valores estimados, repetidos ou convertidos para mensal.`;
   $("#context-caveat").innerHTML = `Indicadores que aparecem próximos no tempo ajudam a contextualizar um período, mas a coincidência entre movimentos não prova que um indicador tenha causado o outro. O PIB reflete consumo, investimento, gasto público e comércio exterior somados; nenhum fator isolado o explica.`;
   let html = "";
   let idx = 0;
   const charts = [];
-  GRUPOS.forEach(([titulo, cods]) => {
+  GRUPOS.forEach(([titulo, cods], gi) => {
     html += `<h3 class="mult-group">${titulo}</h3>`;
-    cods.forEach((cod) => {
+    cods.forEach((cod, ci) => {
       const c = comp(prod, cod);
       if (!c) return;
-      const ult = c.serie_anual[c.serie_anual.length - 1];
-      html += `<div class="mult${cod === "90707" ? " is-product" : ""}"><div class="mult-head"><span class="mult-name">${esc(c.nome)}</span><span class="mult-val">${pct(ult.taxa)}</span></div><p class="mult-desc">variação real · anual · contra o ano anterior · último: ${ult.ano}</p><div class="chart" id="pibc-${idx}" role="img" tabindex="0" aria-label="${esc(c.nome)}: variação real anual, ${ult.ano}: ${pct(ult.taxa)}."></div></div>`;
-      charts.push({ id: `pibc-${idx}`, c });
+      const serie = noJanela(c);
+      const ult = serie[serie.length - 1];
+      const larg = cod === "90707" ? "mult--lead" : gi === 0 ? "mult--w2" : ci < 3 ? "mult--w2" : "mult--w3";
+      html += `<div class="mult ${larg}${cod === "90707" ? " is-product" : ""}"><div class="mult-head"><span class="mult-name">${esc(c.nome)}</span><span class="mult-val">${pct(ult.taxa)}</span></div><p class="mult-desc">variação real · anual · contra o ano anterior · último: ${ult.ano}</p><div class="chart" id="pibc-${idx}" role="img" tabindex="0" aria-label="${esc(c.nome)}: variação real anual de 2019 a ${ult.ano}; ${ult.ano}: ${pct(ult.taxa)}."></div></div>`;
+      charts.push({ id: `pibc-${idx}`, c, serie });
       idx++;
     });
   });
   box.innerHTML = html;
-  charts.forEach(({ id, c }) => {
+  charts.forEach(({ id, serie }) => {
     lineChart($(`#${id}`), {
-      series: [{ rows: c.serie_anual.map((a) => ({ iso: `${a.ano}-01-01`, v: a.taxa })), maxGap: 12 }],
+      series: [{ rows: serie.map((a) => ({ iso: `${a.ano}-01-01`, v: a.taxa })), maxGap: 12 }],
       cutoff: PERIODO_CORTE, bands: "short", includeZero: true, refY: 0, yTickCount: 3, m0, m1,
       yFmt: (t) => `${fmtNum(t, 0)}%`,
       tooltip: (mi) => {
-        const a = c.serie_anual.find((x) => monthIdx(`${x.ano}-01-01`) === mi);
+        const a = serie.find((x) => monthIdx(`${x.ano}-01-01`) === mi);
         return a ? `<div class="t-when">${a.ano} · anual</div><div class="t-val">${pct(a.taxa, 1)}</div><div class="t-row"><span>base</span><b>contra ${a.ano - 1}, real</b></div><div class="t-row"><span>fonte</span><b>IBGE</b></div>` : "";
       },
     });
