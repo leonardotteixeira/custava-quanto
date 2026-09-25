@@ -553,6 +553,10 @@ function renderBolso() {
     ? `O IBGE não publica preço em reais para alimentos, então não dá para contar quilos. Dá para medir quanto o salário mínimo rende frente ao preço ${m.de}, em índice (jan/2019 = 100). Arraste para comparar qualquer mês com o último dado.`
     : `Quantos ${u.plural} ${code === "DOLAR" ? "" : m.sem + " "}dava para comprar gastando um salário mínimo inteiro, no mês que você escolher e no último dado disponível.`;
 
+  const cav = $("#pp-caveat");
+  cav.hidden = !isIdx;
+  if (isIdx) cav.innerHTML = `<strong>Índice, não reais nem quilos.</strong> 100 é quanto o salário mínimo rendia ${m.sem} em ${mesAno(PERIODOS.serieInicio)}. Acima de 100, rende mais que naquele mês; abaixo, menos. Serve para comparar meses entre si, não para dizer quanto se compra.`;
+
   const last = rows[rows.length - 1];
   const maxV = Math.max(...rows.map(get));
   const step = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => Math.ceil(maxV / s) <= 60) || 100;
@@ -584,7 +588,7 @@ function updateBolso(first = false) {
     el.querySelector(".pp-when").innerHTML = `${pmark(row.periodo)}<b>${mesAnoLongo(row.ano_mes)}</b>${row === b ? " · último dado" : ""}`;
     countTo(el.querySelector(".pp-num"), v, (x) => (isIdx ? fmtNum(x, 1) : fmtInt(x)), first ? 900 : 380);
     el.querySelector(".pp-wage").textContent = isIdx
-      ? `salário mínimo de ${fmtBRL(row.salario_minimo, 0)} · jan/2019 = 100`
+      ? `${v >= 100 ? "rende " + fmtNum(v - 100, 1) + "% mais" : "rende " + fmtNum(100 - v, 1) + "% menos"} que em ${mesAno(PERIODOS.serieInicio)} · salário mínimo de ${fmtBRL(row.salario_minimo, 0)}`
       : `gastando o salário mínimo de ${fmtBRL(row.salario_minimo, 0)} · ${u.um} = ${fmtBRL(row.preco_nominal)}`;
     if (isIdx) {
       const max = Math.max(...rows.map(get), 100) * 1.05;
@@ -705,7 +709,7 @@ function renderContext() {
   const all = series.flatMap((s) => s.rows.map((r) => r.v)).filter((v) => !isNil(v));
   const yDomain = [Math.min(...all, 100), Math.max(...all, 100)];
   const bL = mesAno(base.ano_mes);
-  $("#context-deck").textContent = `Todas as linhas começam em 100 em ${bL} e dividem a mesma escala vertical: uma linha em 130 subiu 30% desde então. Troque o ponto de partida no Índice.`;
+  $("#context-deck").textContent = `Todas as linhas começam em 100 em ${bL} e dividem a mesma escala vertical: uma linha em 130 subiu 30% desde então. Aqui tudo é média mensal, por isso Dólar e Ibovespa podem diferir um pouco da comparação diária do Índice. Troque o ponto de partida no Índice.`;
   box.style.setProperty("--cols", series.length);
   box.innerHTML = series.map((s, i) => {
     const lv = lastValid(s.rows, (r) => r.v);
@@ -786,7 +790,8 @@ function renderMachine(rebuild = false) {
     const v = r ? it.get(r) : null;
     const lr = lastValid(it.prod.serie_mensal, it.get);
     countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? "—" : it.html(x)), 420);
-    el.querySelector(".inst-now").innerHTML = lr ? `${iso === lr.ano_mes ? "é o último dado" : `em ${mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
+    const qual = it.code === "SALARIO" ? "vigente em" : it.code === "IBOVESPA" ? "fechamento de" : it.code === "IPCA" ? "12 meses até" : kind(it.prod) === "indice" ? "índice em" : "média de";
+    el.querySelector(".inst-now").innerHTML = lr ? `${iso === lr.ano_mes ? "é o último mês com dado" : `${qual} ${mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
     const extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : isNil(v) ? "sem dado neste mês" : "";
     el.querySelector(".inst-extra").textContent = extra;
     el.querySelector(".inst-spark").innerHTML = spark(it.prod.serie_mensal.map((q) => ({ iso: q.ano_mes, v: it.get(q) })), {
@@ -978,6 +983,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   renderPeriods();
   renderArchive();
   renumber();
+  renderNextLinks();
   updateMast();
   if (scroll) $("#historia").scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
 }
@@ -1068,6 +1074,26 @@ function bindScroll() {
     });
   }, { rootMargin: "-40% 0px -55% 0px" });
   $$("[data-chapter]").forEach((s) => io.observe(s));
+}
+
+// Fim de cada capítulo: uma linha dizendo para onde a leitura segue, com a
+// pergunta do próximo capítulo (o título dele). Pula capítulos ocultos.
+function renderNextLinks() {
+  $$(".ch-next").forEach((a) => a.remove());
+  const chs = $$("section.chapter[data-chapter]").filter((c) => !c.hidden);
+  chs.forEach((c, i) => {
+    const nx = chs[i + 1];
+    if (!nx || c.id === "indice") return; // o Índice já leva à história ao escolher
+    const n = nx.querySelector(".ch-kicker span")?.textContent || "";
+    const name = nx.querySelector(".ch-kicker")?.textContent.replace(n, "").trim() || "";
+    const title = nx.id === "maquina" ? "Como estava o Brasil no mês que você escolher"
+      : (nx.querySelector("h2")?.textContent || "").replace(/\s+/g, " ").trim();
+    const a = document.createElement("a");
+    a.className = "ch-next";
+    a.href = `#${nx.id}`;
+    a.innerHTML = `<span class="mono">A seguir · ${esc(n)} ${esc(name)}</span><b>${esc(title)}</b><i aria-hidden="true">↓</i>`;
+    c.querySelector(".shell").appendChild(a);
+  });
 }
 
 function bindReveal() {

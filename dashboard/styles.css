@@ -60,6 +60,11 @@
   --sans: "Archivo", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
+  /* escala das notas: corpo editorial > nota de leitura > metadado */
+  --t-note: 0.86rem;   /* explicações que mudam a leitura do número */
+  --t-meta: 0.78rem;   /* fonte, data, crédito */
+  --t-micro: 0.7rem;   /* rótulo curto em caixa-alta (mono) */
+
   --gutter: clamp(16px, 4vw, 56px);
   --max: 1680px;
   --mast-h: 56px;
@@ -137,7 +142,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
   font-size: 0.82rem; font-weight: 500; color: var(--on-night-2);
   border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
 }
-.mast-nav a i { font-style: normal; font-family: var(--mono); font-size: 0.66rem; margin-right: 6px; color: var(--on-night-3); }
+.mast-nav a i { font-style: normal; font-family: var(--mono); font-size: 0.72rem; margin-right: 6px; color: var(--on-night-3); }
 .mast-nav a:hover { color: var(--on-night); }
 .mast-nav a[aria-current="true"] { color: var(--on-night); border-bottom-color: var(--signal); }
 .mast-product {
@@ -323,7 +328,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .live { margin-top: 18px; color: var(--ink-2); text-transform: none; letter-spacing: 0; font-size: 0.78rem; padding: 10px 12px; background: var(--paper-2); display: flex; gap: 10px; align-items: baseline; }
 .live::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--signal-ink); transform: translateY(-1px); }
 .live b { color: var(--ink); font-weight: 500; }
-.story-note { margin-top: 16px; font-size: 0.86rem; color: var(--ink-2); line-height: 1.5; border-left: 3px solid var(--signal); padding-left: 12px; }
+.story-note { margin-top: 16px; }
 
 /* ---------------------------------------------------------------- 02 preço */
 .price-sec { background: var(--paper); border-top: 1px solid var(--rule); }
@@ -408,7 +413,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .nr-item[aria-current="true"] .nr-num { background: var(--signal); border-color: var(--fg); color: var(--night); }
 .nr-t { font-size: 0.86rem; line-height: 1.3; }
 .nr-t time { display: block; font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; color: var(--fg-3); }
-.nr-disclaimer { margin-top: 16px; font-size: 0.78rem; color: var(--fg-3); line-height: 1.45; }
 
 /* clip (matéria) */
 .clip { display: grid; gap: 8px; }
@@ -487,8 +491,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
 
 /* ---------------------------------------------------------------- 04 contexto */
 .context-sec { background: var(--paper); }
-.caveat { font-size: 0.9rem; line-height: 1.5; color: var(--fg-2); padding: 12px 14px; border-left: 3px solid var(--signal); background: var(--bg-2); }
-.caveat strong { color: var(--fg); }
 .multiples { display: grid; grid-template-columns: repeat(var(--cols, 4), 1fr); gap: 0; border-top: 3px solid var(--fg); }
 .mult { padding: 14px 18px 12px; border-right: 1px solid var(--line); min-width: 0; }
 .mult:first-child { padding-left: 0; }
@@ -558,7 +560,10 @@ code { font-family: var(--mono); font-size: 0.88em; }
 
 /* ---------------------------------------------------------------- 06 períodos */
 .periods-sec { background: var(--paper-2); --bg: var(--paper-2); --bg-2: var(--paper-3); }
-.spread { display: grid; grid-template-columns: minmax(170px, 1.1fr) minmax(0, 3.2fr) minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(14px, 2vw, 32px); }
+.spread { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(0, 2.5fr) minmax(0, 1.25fr) minmax(0, 1.25fr); column-gap: clamp(14px, 2vw, 32px); }
+/* os dois períodos com a mesma altura de cabeçalho: nenhum bloco fica "acima" do outro */
+.sp-head > .sp-gov { align-self: stretch; align-items: end; }
+@media (min-width: 901px) { .sp-gov-dates { white-space: nowrap; } }
 .sp-head { display: contents; }
 .sp-head > * { padding-bottom: 14px; border-bottom: 3px solid var(--fg); align-self: end; }
 .sp-gov { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: end; }
@@ -575,7 +580,8 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .sp-name small { display: block; font-weight: 400; font-size: 0.74rem; color: var(--fg-3); margin-top: 2px; }
 .sp-row.is-product .sp-name { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; }
 .sp-row.is-product > * { background: var(--paper); }
-.sp-row.is-product > *:first-child { padding-left: 12px; box-shadow: inset 4px 0 0 var(--signal); }
+.sp-row.is-product > * { box-shadow: inset 0 2px 0 var(--signal); }
+.sp-row.is-product > *:first-child { padding-left: 12px; }
 .sp-track { height: 64px; }
 .sp-track svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .sp-row.is-product .sp-track { height: 84px; }
@@ -643,6 +649,43 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .foot-text { grid-column: 8 / span 5; font-family: var(--serif); font-size: 1.05rem; color: var(--fg-2); line-height: 1.45; }
 .foot-meta { grid-column: 1 / -1; color: var(--fg-3); padding-top: 16px; border-top: 1px solid var(--line); text-transform: none; letter-spacing: 0; font-size: 0.72rem; }
 .noscript { padding: 20px; background: var(--signal); color: var(--night); }
+
+/* ---------------------------------------------------------------- notas de leitura
+   Texto corrido nunca em monoespaçada: a mono fica só para rótulos curtos
+   (datas, capítulos, unidades). Notas longas voltam para a grotesca, em
+   tamanho legível sem zoom. */
+.toc-note, .tm-foot, .pp-legend, .hero-texture figcaption, .live, .updated, .cohort-note {
+  font-family: var(--sans); font-size: var(--t-note); line-height: 1.5; text-transform: none; letter-spacing: 0; color: var(--fg-2);
+}
+.source, .kbd-hint, .photo-credit, .foot-meta {
+  font-family: var(--sans); font-size: var(--t-meta); line-height: 1.5; text-transform: none; letter-spacing: 0; color: var(--fg-3);
+}
+.toc-note, .tm-foot, .source { max-width: 78ch; }
+.hero-texture figcaption { color: var(--fg-3); }
+.clip-fig figcaption { font-size: 0.66rem; }
+.inst-label, .toc-change small, .sp-gov-dates, .sp-mobile-lab, .mp-label, .ay-stat-label, .toc-col h3 .mono { font-size: var(--t-micro); }
+
+/* avisos editoriais: nível 1 (muda a interpretação) — filete âmbar no topo,
+   fundo discreto; nunca caixa de alerta, nunca faixa lateral */
+.caveat, .nr-disclaimer, .story-note, .tm-caveat, .pp-caveat {
+  font-family: var(--sans); font-size: var(--t-note); line-height: 1.5; color: var(--fg-2);
+  padding: 10px 12px 11px; border: 0; border-top: 2px solid var(--signal); background: var(--bg-2);
+}
+.caveat strong, .nr-disclaimer strong, .tm-caveat strong, .pp-caveat strong, .story-note strong { color: var(--fg); font-weight: 700; }
+.nr-disclaimer { margin-top: 18px; }
+.tm-caveat { margin: 0 0 16px; }
+.pp-caveat { margin-top: 18px; max-width: 62ch; }
+.archive-caveat { margin-top: 4px; }
+
+/* fim de capítulo: para onde a leitura segue */
+.ch-next {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: clamp(40px, 5vw, 64px); padding-top: 14px;
+  border-top: 1px solid var(--line); text-decoration: none; color: var(--fg-2); max-width: 100%;
+}
+.ch-next .mono { color: var(--fg-3); }
+.ch-next b { font-family: var(--serif); font-weight: 500; font-size: clamp(1.15rem, 1.6vw, 1.45rem); color: var(--fg); letter-spacing: -0.01em; }
+.ch-next i { font-style: normal; color: var(--accent-text); }
+.ch-next:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 
 /* ---------------------------------------------------------------- revelação ao rolar (só com JS e sem redução de movimento) */
 .js-reveal .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
@@ -776,9 +819,11 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .sp-gov-name { font-size: 1.1rem; white-space: nowrap; }
   .sp-gov-full { display: none; }
   .sp-row.is-product > * { background: transparent; }
-  .sp-row.is-product > .sp-name { box-shadow: inset 4px 0 0 var(--signal); }
+  .sp-row.is-product > .sp-name { box-shadow: inset 0 2px 0 var(--signal); }
 }
 @media (max-width: 600px) {
+  /* rótulo "se tivesse acompanhado a inflação": no celular vai para baixo da barra, sem estourar a tela */
+  .tnb-ref-label { position: static; display: block; transform: none !important; white-space: normal; padding-top: 22px; }
   .dateline span + span::before { content: none; }
   .dateline { gap: 2px 14px; }
   .thennow { display: grid; grid-template-columns: 1fr 1fr; }
