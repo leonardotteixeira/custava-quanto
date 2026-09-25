@@ -392,7 +392,37 @@ def montar_indicadores(salario: pd.DataFrame, ipca: pd.DataFrame, ibovespa: pd.D
         "resumo_periodos": resumo_ibov,
         "cotacao_hoje": _carregar_json_opcional(DATA_PROCESSED / "ibovespa_hoje.json"),
     }
+    # Pontos diários de comparação (Dólar, Selic, Ibovespa): a comparação entre
+    # governos usa o ÚLTIMO DADO de dez/2022 contra o ÚLTIMO DADO disponível,
+    # respeitando a frequência diária de cada série, não a média mensal.
+    for codigo, arquivo in (("DOLAR", "dolar_ptax.csv"), ("SELIC", "selic_meta.csv"), ("IBOVESPA", "ibovespa.csv")):
+        d = _pontos_diarios(DATA_PROCESSED / "mercados_diario" / arquivo)
+        if d:
+            produtos[codigo]["diario"] = d
     return produtos
+
+
+def _pontos_diarios(caminho) -> dict | None:
+    """Primeiro dado da série, último dado antes da troca de governo e último
+    dado disponível, todos com a data real do registro."""
+    if not caminho.exists():
+        return None
+    df = pd.read_csv(caminho, parse_dates=["data"]).dropna(subset=["valor"]).sort_values("data")
+    if df.empty:
+        return None
+    corte = pd.Timestamp(PERIODO_CORTE)
+    antes = df[df["data"] < corte]
+    depois = df[df["data"] >= corte]
+
+    def reg(linha):
+        return {"data": linha["data"].strftime("%Y-%m-%d"), "valor": float(linha["valor"])}
+
+    return {
+        "inicio": reg(df.iloc[0]),
+        "troca": reg(antes.iloc[-1]) if not antes.empty else None,
+        "inicio_lula": reg(depois.iloc[0]) if not depois.empty else None,
+        "ultimo": reg(df.iloc[-1]),
+    }
 
 
 def _resumo_taxa(df: pd.DataFrame) -> dict:
