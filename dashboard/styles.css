@@ -572,6 +572,26 @@ ul { margin: 0; }
 .row-help { display: block; font-size: 0.8rem; color: var(--ink-faint); font-weight: 400; }
 .photo-credit { font-size: 0.72rem; color: var(--ink-faint); margin: 18px 0 0; }
 
+/* ================================================================ GUERRA NO IRÃ E OS COMBUSTÍVEIS */
+.ormuz-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: 56px; align-items: start; }
+.ormuz-lead { position: sticky; top: 72px; }
+.ormuz-lead .chapter-title { font-size: clamp(1.9rem, 1.2rem + 2vw, 3rem); max-width: 14ch; }
+.ormuz-lead .chapter-sub { font-size: 0.98rem; }
+.ormuz-list { list-style: none; margin: 0; padding: 0; border-top: 3px solid var(--ink); }
+.oz-item { display: grid; grid-template-columns: 72px minmax(0, 1fr) 132px; column-gap: 24px; padding: 24px 0 26px; border-bottom: 1px solid var(--line); }
+.oz-date { display: flex; flex-direction: column; line-height: 1; }
+.oz-day { font-family: var(--serif); font-weight: 700; font-size: 2.5rem; letter-spacing: -0.03em; }
+.oz-mon { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-top: 6px; }
+.oz-outlet { margin: 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.oz-title { font-family: var(--serif); font-weight: 600; font-size: 1.3rem; line-height: 1.28; letter-spacing: -0.01em; margin: 6px 0 0; }
+.oz-title a { color: var(--ink); text-decoration: none; }
+.oz-title a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.oz-summary { margin: 10px 0 0; font-size: 0.93rem; color: var(--ink-soft); line-height: 1.6; max-width: 62ch; }
+.oz-num { display: flex; flex-direction: column; align-items: flex-end; text-align: right; gap: 4px; }
+.oz-value { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.03em; line-height: 1; }
+.oz-value-cap { font-size: 0.76rem; color: var(--ink-soft); max-width: 16ch; }
+.ormuz-note { grid-column: 2; }
+
 /* ================================================================ ARQUIVO */
 .archive-intro { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: end; }
 .archive-intro .chapter-sub { margin: 0; }
@@ -643,6 +663,9 @@ ul { margin: 0; }
   .news-panel .clip-fig { grid-column: 2; grid-row: auto; margin: 16px 0 0; }
   .arch-year { grid-template-columns: 140px minmax(0, 1fr); gap: 28px; }
   .arch-clips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ormuz-grid { grid-template-columns: 1fr; row-gap: 32px; }
+  .ormuz-lead { position: static; }
+  .ormuz-note { grid-column: 1; }
 }
 
 @media (max-width: 760px) {
@@ -763,6 +786,11 @@ ul { margin: 0; }
   .var-row { grid-template-columns: 84px 1fr 70px; gap: 10px; }
   .var-val { font-size: 1rem; }
 
+  .oz-item { grid-template-columns: 52px minmax(0, 1fr); column-gap: 14px; }
+  .oz-day { font-size: 1.9rem; }
+  .oz-title { font-size: 1.14rem; }
+  .oz-num { grid-column: 2; flex-direction: row; align-items: baseline; justify-content: flex-start; text-align: left; gap: 10px; margin-top: 12px; }
+  .oz-value-cap { max-width: none; }
   .archive-intro { grid-template-columns: 1fr; row-gap: 14px; }
   .arch-year { grid-template-columns: 1fr; gap: 18px; padding: 26px 0; }
   .arch-year-label { position: static; font-size: 2.4rem; }

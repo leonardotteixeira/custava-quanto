@@ -1,0 +1,119 @@
+[
+  {
+    "titulo": "Petrobras aprova adesão a programa para conter alta do diesel",
+    "veiculo": "Agência Brasil",
+    "data": "2026-03-13",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-03/petrobras-aprova-adesao-ao-programa-do-governo-para-baratear-diesel",
+    "resumo": "Medida provisória faculta subvenção de R$ 0,32 por litro de diesel. A ofensiva dos EUA e de Israel contra o Irã completava duas semanas, com bloqueio iraniano ao Estreito de Ormuz, e o barril havia subido cerca de 40% em 15 dias.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "DIESEL",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Depois do diesel, preço da gasolina também vai subir? Entenda os possíveis impactos econômicos no Brasil da guerra no Irã",
+    "veiculo": "Correio Braziliense",
+    "data": "2026-03-13",
+    "url": "https://www.correiobraziliense.com.br/mundo/2026/03/7375289-depois-do-diesel-preco-da-gasolina-tambem-vai-subir-entenda-os-possiveis-impactos-economicos-no-brasil-da-guerra-no-ira.html",
+    "resumo": "Texto da BBC News Brasil: a Petrobras subiu o diesel em R$ 0,38 por litro depois da disparada do petróleo ligada ao conflito com o Irã e ao fechamento do Estreito de Ormuz; a gasolina não foi reajustada de imediato.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "DIESEL",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Alta do diesel: Petrobras eleva preço, mesmo após governo Lula zerar imposto com guerra no Irã",
+    "veiculo": "Correio Braziliense",
+    "data": "2026-03-14",
+    "url": "https://www.correiobraziliense.com.br/mundo/2026/03/7375721-alta-do-diesel-petrobras-eleva-preco-mesmo-apos-governo-lula-zerar-imposto-com-guerra-no-ira.html",
+    "resumo": "A Petrobras elevou o diesel em R$ 0,38 por litro nas refinarias, mesmo depois de o governo anunciar a zeragem de PIS/Cofins e subvenção ao combustível. O Brent havia chegado a US$ 120 antes de recuar para acima de US$ 100.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "DIESEL",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
+    "veiculo": "Correio Braziliense",
+    "data": "2026-04-07",
+    "url": "https://www.correiobraziliense.com.br/aqui/2026/04/07/conflito-com-ira-como-o-preco-da-gasolina-no-brasil-e-afetado/",
+    "resumo": "Explica como a guerra no Irã e o fechamento parcial do Estreito de Ormuz, por onde passa cerca de um quinto do petróleo mundial, chegam ao preço da gasolina no Brasil pelo Brent, referência da Petrobras.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
+    "veiculo": "Agência Brasil",
+    "data": "2026-07-09",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-07/com-nova-alta-mundial-do-petroleo-governo-mantem-desconto-na-gasolina",
+    "resumo": "Com EUA e Irã voltando a se atacar, o barril de petróleo subiu de novo, a cerca de US$ 80, e o governo manteve o subsídio de R$ 0,44 por litro da gasolina, em vez de anunciar o seu fim.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
+    "veiculo": "CNN Brasil",
+    "data": "2026-07-23",
+    "url": "https://www.cnnbrasil.com.br/economia/money/macroeconomia/disparada-do-petroleo-acenda-alerta-para-nova-pressao-na-inflacao/",
+    "resumo": "Petróleo perto de US$ 100 pelo quinto dia seguido, com a escalada no Oriente Médio. Economistas alertam que a alta persistente pode pressionar a inflação por combustíveis, frete e câmbio.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "DIESEL",
+      "IPCA",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
+    "veiculo": "Agência Brasil",
+    "data": "2026-09-09",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/subsidios-gasolina-e-ao-diesel-sao-ampliados-apos-alta-do-petroleo",
+    "resumo": "Gasolina terá subsídio de R$ 0,63 por litro e diesel, subvenção de R$ 1. A reportagem cita o Estreito de Ormuz, por onde passava cerca de 20% do petróleo mundial antes da escalada, como fator de preocupação.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "DIESEL",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  },
+  {
+    "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
+    "veiculo": "CNN Brasil",
+    "data": "2026-09-09",
+    "url": "https://www.cnnbrasil.com.br/economia/petroleo-volta-a-us-100-pela-1a-vez-desde-julho-com-conflito-no-oriente/",
+    "resumo": "O petróleo voltou a US$ 100 o barril, pela primeira vez desde julho, depois de ataques dos EUA a petroleiros iranianos e de ataques dos houthis à Arábia Saudita.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "DIESEL",
+      "combustiveis"
+    ],
+    "tema": "ormuz-ira"
+  }
+]

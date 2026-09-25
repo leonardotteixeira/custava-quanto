@@ -185,6 +185,9 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
         "verificacao": "automatica",
         "similaridade_titulo": round(sim, 2),
     }
+    # tema editorial opcional (ex.: "ormuz-ira"): agrupa matérias numa seção própria
+    if item.get("tema"):
+        saida["tema"] = item["tema"]
     if data_pag and item.get("data") and data_pag != item["data"]:
         log.info("  data ajustada pela página: %s -> %s", item["data"], data_pag)
     # Foto só com crédito conferido na curadoria e sem restrição: mesmo na

@@ -218,3 +218,34 @@ function renderArchive(produto) {
     </div>`;
   }).join("");
 }
+
+
+// ---------- Guerra no Irã e os combustíveis (tema editorial "ormuz-ira") ----------
+// Só para combustíveis. Lista as matérias do tema em ordem cronológica, cada
+// uma com o preço do produto no mês em que saiu (dado da própria série).
+function renderOrmuz(produto) {
+  const sec = document.getElementById("ormuz");
+  const lista = produto.tipo === "combustivel" ? noticiasDo(state.product).filter((n) => n.tema === "ormuz-ira") : [];
+  if (!lista.length) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const t = txt(state.product);
+  const nat = valorNativo(produto);
+  const veiculos = new Set(lista.map((n) => n.veiculo)).size;
+  document.getElementById("ormuz-sub").textContent =
+    `Desde março de 2026, a guerra envolvendo Estados Unidos, Israel e Irã e o bloqueio parcial do Estreito de Ormuz, por onde passava cerca de um quinto do petróleo mundial, passaram a aparecer nas notícias sobre o preço dos combustíveis no governo Lula. Aqui estão ${lista.length} matérias de ${veiculos} veículos, de ${fmtMesAno(lista[0].data)} a ${fmtMesAno(lista[lista.length - 1].data)}.`;
+  document.getElementById("ormuz-list").innerHTML = lista.map((n) => {
+    const l = linhaDoMes(produto, n.data, nat.campo);
+    const val = l
+      ? `<span class="oz-value tnum">${nat.fmt(nat.campo(l.r))}</span><span class="oz-value-cap">${esc(t.titulo)} em ${fmtMesAno(l.r.ano_mes)}</span>`
+      : "";
+    return `<li class="oz-item">
+      <time class="oz-date" datetime="${esc(n.data)}"><span class="oz-day">${parseInt(n.data.slice(8, 10), 10)}</span><span class="oz-mon">${fmtDataNoticia(n.data).split(" ").slice(1).join(" ")}</span></time>
+      <div class="oz-body">
+        <p class="oz-outlet">${esc(n.veiculo)}</p>
+        <h3 class="oz-title"><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.titulo)}</a></h3>
+        ${n.resumo ? `<p class="oz-summary">${esc(n.resumo)}</p>` : ""}
+      </div>
+      <div class="oz-num">${val}</div>
+    </li>`;
+  }).join("");
+}
