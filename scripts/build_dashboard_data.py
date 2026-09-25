@@ -681,6 +681,7 @@ def montar_pib() -> dict:
                 "ano_mes": f"{int(r['ano'])}-{(int(r['trimestre_num']) - 1) * 3 + 1:02d}-01",
                 "variacao_interanual": round(float(r["interanual"]), 2) if pd.notna(r.get("interanual")) else None,
                 "variacao_dessazonalizada": round(float(r["dessazonalizada"]), 2) if pd.notna(r.get("dessazonalizada")) else None,
+                "acumulado_4tri": round(float(r["acum_4tri"]), 2) if pd.notna(r.get("acum_4tri")) else None,
             })
             if int(r["trimestre_num"]) == 4 and pd.notna(r.get("acumulado_ano")):
                 taxa_fechada_por_ano[int(r["ano"])] = float(r["acumulado_ano"])
@@ -699,6 +700,22 @@ def montar_pib() -> dict:
             if fator_nominal is None and pd.notna(r.get("pib_nominal")):
                 logger.warning(f"PIB nominal de {r['ano']}: unidade '{r.get('unidade_pib_nominal')}' não reconhecida — pib_nominal_bilhoes fica None nesse ano, em vez de arriscar a casa decimal errada.")
 
+    # PIB nominal dos anos que a tabela anual (6784) ainda não fechou: soma dos quatro
+    # trimestres (tabela 1846), só quando os quatro existem. Nada é estimado.
+    nominal_soma = {}
+    nom_path = DATA_PROCESSED / "pib_nominal_trimestral.csv"
+    if nom_path.exists():
+        nt = pd.read_csv(nom_path, dtype={"periodo_codigo": str})
+        nt["ano"] = nt["periodo_codigo"].str[:4].astype(int)
+        for ano, g in nt.groupby("ano"):
+            if len(g) == 4:
+                nominal_soma[int(ano)] = round(float(g["pib_nominal_milhoes"].sum()) / 1000, 2)
+    for ano, v in nominal_soma.items():
+        cur = anual_por_ano.setdefault(ano, {})
+        if cur.get("pib_nominal_bilhoes") is None:
+            cur["pib_nominal_bilhoes"] = v
+            cur["pib_nominal_fonte"] = "soma dos quatro trimestres (Contas Nacionais Trimestrais)"
+
     anos = sorted(set(taxa_fechada_por_ano) | set(anual_por_ano))
     if not anos and not serie_trimestral:
         return {}
@@ -716,6 +733,7 @@ def montar_pib() -> dict:
             "pib_nominal_bilhoes": extra.get("pib_nominal_bilhoes"),
             "pib_per_capita_rs": extra.get("pib_per_capita_rs"),
             "populacao_mil": extra.get("populacao_mil"),
+            "pib_nominal_fonte": extra.get("pib_nominal_fonte"),
         })
     df_serie = pd.DataFrame(serie)
     df_serie["ano_mes"] = pd.to_datetime(df_serie["ano_mes"])
@@ -732,6 +750,7 @@ def montar_pib() -> dict:
         ult = pib_comp["serie_trimestral"][-1] if pib_comp["serie_trimestral"] else None
         if ult and ult["trimestre"] == ultimo_trim["trimestre"]:
             ultimo_trim = {**ultimo_trim, "acumulado_ano": ult["acumulado_ano"]}
+    frescor = _checar_frescor_pib(serie_trimestral, taxa_fechada_por_ano)
     status = {}
     status_path = DATA_PROCESSED / "pib_status.json"
     if status_path.exists():
@@ -762,6 +781,7 @@ def montar_pib() -> dict:
             "serie_anual": _serie_anual_taxa(df_serie),
             "resumo_periodos": resumo,
             "ultimo_trimestre": ultimo_trim,
+            "frescor": frescor,
             "componentes": componentes,
             "fonte": {
                 "nome": "IBGE — Sistema de Contas Nacionais Trimestrais",
@@ -772,6 +792,36 @@ def montar_pib() -> dict:
             },
         }
     }
+
+
+# O IBGE divulga o PIB de um trimestre cerca de dois meses depois de ele acabar; damos
+# folga de 100 dias. Se o dado guardado estiver atrás do que já deveria existir, o
+# build AVISA e grava "desatualizado" no JSON (a página mostra) — nunca publica
+# dado velho em silêncio. O esperado é derivado da data, não escrito à mão.
+FOLGA_DIVULGACAO_PIB_DIAS = 100
+
+
+def _checar_frescor_pib(serie_trimestral: list[dict], taxa_fechada_por_ano: dict) -> dict:
+    hoje = pd.Timestamp.today().normalize()
+    esperado = None
+    for ano in range(hoje.year, hoje.year - 3, -1):
+        for tri in (4, 3, 2, 1):
+            fim = pd.Timestamp(year=ano, month=tri * 3, day=1) + pd.offsets.MonthEnd(0)
+            if fim + pd.Timedelta(days=FOLGA_DIVULGACAO_PIB_DIAS) <= hoje:
+                esperado = f"{ano}-T{tri}"
+                break
+        if esperado:
+            break
+    ultimo = serie_trimestral[-1]["trimestre"] if serie_trimestral else None
+    ultimo_anual = max(taxa_fechada_por_ano) if taxa_fechada_por_ano else None
+    avisos = []
+    if esperado and (ultimo is None or ultimo < esperado):
+        avisos.append(f"último trimestre guardado ({ultimo}) está atrás do esperado ({esperado})")
+    if esperado and ultimo_anual is not None and ultimo_anual < int(esperado[:4]) - (0 if esperado.endswith("T4") else 1):
+        avisos.append(f"último ano fechado ({ultimo_anual}) está atrás do esperado")
+    for a in avisos:
+        logger.warning(f"PIB DESATUALIZADO: {a}")
+    return {"trimestre_esperado": esperado, "ultimo_trimestre": ultimo, "ultimo_ano_anual": ultimo_anual, "desatualizado": bool(avisos), "avisos": avisos}
 
 
 def _componentes_pib() -> list[dict]:

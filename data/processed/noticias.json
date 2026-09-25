@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T17:16:50+00:00",
+  "gerado_em": "2026-09-25T17:38:17+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -1382,6 +1382,21 @@
       "id": "n088"
     },
     {
+      "titulo": "PIB cresce 2,3% em 2025",
+      "veiculo": "IBGE — Agência de Notícias",
+      "data": "2026-03-03",
+      "url": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/45969-pib-cresce-2-3-em-2025",
+      "resumo": "Notícia do IBGE sobre o resultado anual de 2025: alta de 2,3% do PIB.",
+      "produtos": [
+        "PIB"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "manual",
+      "tema": "pib",
+      "id": "n089"
+    },
+    {
       "titulo": "Petrobras reajusta preço do diesel em R$ 0,38 por litro",
       "veiculo": "Agência Brasil",
       "data": "2026-03-13",
@@ -1394,7 +1409,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n089"
+      "id": "n090"
     },
     {
       "titulo": "Petrobras aprova adesão a programa para conter alta do diesel",
@@ -1411,7 +1426,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n090"
+      "id": "n091"
     },
     {
       "titulo": "Depois do diesel, preço da gasolina também vai subir? Entenda os possíveis impactos econômicos no Brasil da guerra no Irã",
@@ -1430,7 +1445,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n091"
+      "id": "n092"
     },
     {
       "titulo": "Alta do diesel: Petrobras eleva preço, mesmo após governo Lula zerar imposto com guerra no Irã",
@@ -1443,24 +1458,6 @@
         "combustiveis"
       ],
       "imagem": "https://midias.correiobraziliense.com.br/_midias/jpg/2026/03/14/249e3a90-1e5c-11f1-a1da-edae1d05dd8e-65290889.jpg?20260314133048?20260314133048",
-      "credito_imagem": "Reprodução · Correio Braziliense",
-      "verificacao": "automatica",
-      "similaridade_titulo": 1.0,
-      "tema": "ormuz-ira",
-      "imagem_sem_licenca": true,
-      "id": "n092"
-    },
-    {
-      "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
-      "veiculo": "Correio Braziliense",
-      "data": "2026-04-07",
-      "url": "https://www.correiobraziliense.com.br/aqui/2026/04/07/conflito-com-ira-como-o-preco-da-gasolina-no-brasil-e-afetado/",
-      "resumo": "Os ataques aéreos dos EUA e de Israel ao Irã em fevereiro de 2026, e a consequente resposta iraniana com",
-      "produtos": [
-        "GASOLINA",
-        "combustiveis"
-      ],
-      "imagem": "https://www.correiobraziliense.com.br/aqui/wp-content/uploads/2026/04/gasolina_1775595217731.jpg",
       "credito_imagem": "Reprodução · Correio Braziliense",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1545,6 +1542,37 @@
       "id": "n098"
     },
     {
+      "titulo": "Economia brasileira cresce 1,1% no 1º trimestre",
+      "veiculo": "Agência Brasil",
+      "data": "2026-05-29",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/economia-brasileira-cresce-11-no-1o-trimestre",
+      "resumo": "Na comparação entre trimestres imediatamente seguidos, os três setores analisados pelo IBGE apresentaram expansão: agropecuária (2%), indústria (1%) e serviços (0,5%).",
+      "produtos": [
+        "PIB"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "pib",
+      "id": "n099"
+    },
+    {
+      "titulo": "PIB cresce 1,1% no primeiro trimestre de 2026",
+      "veiculo": "IBGE — Agência de Notícias",
+      "data": "2026-05-29",
+      "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46917-pib-cresce-1-1-no-primeiro-trimestre-de-2026",
+      "resumo": "Release oficial do IBGE: PIB de R$ 3,3 trilhões no 1º trimestre de 2026, alta de 1,1% contra o trimestre anterior (agropecuária +2,0%, indústria +1,0%, serviços +0,5%) e de 1,8% contra o 1º trimestre de 2025.",
+      "produtos": [
+        "PIB"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "manual",
+      "tema": "pib",
+      "id": "n100"
+    },
+    {
       "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
       "veiculo": "Agência Brasil",
       "data": "2026-06-09",
@@ -1557,7 +1585,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n099"
+      "id": "n101"
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -1573,7 +1601,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n100"
+      "id": "n102"
     },
     {
       "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
@@ -1590,7 +1618,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n101"
+      "id": "n103"
     },
     {
       "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
@@ -1610,7 +1638,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n102"
+      "id": "n104"
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -1626,7 +1654,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n103"
+      "id": "n105"
     },
     {
       "titulo": "PIB do Brasil cresce 0,5% no segundo trimestre, mostra IBGE",
@@ -1642,7 +1670,22 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n104"
+      "id": "n106"
+    },
+    {
+      "titulo": "PIB cresce 0,5% no segundo trimestre de 2026",
+      "veiculo": "IBGE — Agência de Notícias",
+      "data": "2026-09-01",
+      "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/47902-pib-cresce-0-5-no-segundo-trimestre-de-2026",
+      "resumo": "Release oficial do IBGE: PIB de R$ 3,4 trilhões no 2º trimestre de 2026, alta de 0,5% contra o trimestre anterior (agropecuária +2,8%, serviços +0,2%, indústria +0,1%) e de 2,0% contra o 2º trimestre de 2025.",
+      "produtos": [
+        "PIB"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "manual",
+      "tema": "pib",
+      "id": "n107"
     },
     {
       "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
@@ -1660,7 +1703,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n105"
+      "id": "n108"
     },
     {
       "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
@@ -1679,7 +1722,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n106"
+      "id": "n109"
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -1694,7 +1737,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n107"
+      "id": "n110"
     }
   ]
 }

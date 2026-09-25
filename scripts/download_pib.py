@@ -83,6 +83,8 @@ VARS_TRIMESTRAL = {
     "interanual": ["trimestral"],
     "acumulado_ano": ["acumulad", "longo"],
     "dessazonalizada": ["imediatamente"],
+    # "Taxa acumulada em quatro trimestres": os quatro últimos trimestres contra os quatro anteriores
+    "acum_4tri": ["quatro"],
 }
 VARS_ANUAL = {
     # Nomes reais da tabela 6784 no SIDRA (conferidos com a API em 2026-09):
@@ -101,6 +103,7 @@ EXCLUIR = {
     "interanual": ["acumulad", "imediatamente"],
     "acumulado_ano": ["quatro", "imediatamente"],
     "dessazonalizada": ["acumulad"],
+    "acum_4tri": ["imediatamente"],
 }
 
 

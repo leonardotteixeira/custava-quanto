@@ -52,8 +52,27 @@ def _norm(s: str) -> str:
     return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
 
 
+def baixar_nominal_trimestral() -> None:
+    """PIB nominal por trimestre (tabela 1846, valores a preços correntes).
+    O IBGE divulga o PIB nominal do ano pelas Contas Trimestrais (soma dos quatro
+    trimestres) antes de fechar a tabela anual 6784; o build usa esta soma só para
+    os anos em que a tabela anual ainda não tem o valor, e diz isso na fonte."""
+    r = requests.get("https://apisidra.ibge.gov.br/values/t/1846/n1/1/v/all/p/all/c11255/90707", timeout=120)
+    r.raise_for_status()
+    df = pd.DataFrame(r.json()[1:])
+    df = df[df["D2N"].map(lambda n: "correntes" in _norm(n))]
+    out = pd.DataFrame({"periodo_codigo": df["D3C"].astype(str), "pib_nominal_milhoes": pd.to_numeric(df["V"], errors="coerce")})
+    out = out.dropna().sort_values("periodo_codigo")
+    if out.empty:
+        raise RuntimeError("tabela 1846 não trouxe PIB nominal — layout mudou")
+    caminho = DATA_PROCESSED / "pib_nominal_trimestral.csv"
+    out.to_csv(caminho, index=False)
+    logger.info("Salvo: %s (%d linhas)", caminho, len(out))
+
+
 def main() -> None:
     ensure_dirs(DATA_PROCESSED)
+    baixar_nominal_trimestral()
     resp = requests.get(URL.format(codigos=",".join(COMPONENTES)), timeout=120)
     resp.raise_for_status()
     df = pd.DataFrame(resp.json()[1:])

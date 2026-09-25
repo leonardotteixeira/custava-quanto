@@ -384,6 +384,8 @@ export function texture(el, seriesList, { cutoff, highlight, window: janela }) {
     ordered.forEach((s) => {
       // cada série usa as PRÓPRIAS observações (data real de cada uma); a
       // única operação é ignorar as que caem fora da janela visível.
+      // séries fora do fundo curado (bg === false) só aparecem quando são a série em destaque
+      if (s.bg === false && s.key !== hl) return;
       const rows = s.rows.filter((r) => { const m = monthIdx(r.iso); return m >= m0 && m <= m1; });
       const vals = rows.map((r) => r.v).filter((v) => !isNil(v));
       if (!vals.length) return;

@@ -75,12 +75,12 @@ export function renderPibIntro(prod) {
     ["Último dado disponível", ul ? triLabel(ul.trimestre) : "—", ul ? [
       `${pct(ul.variacao_dessazonalizada)} contra o trimestre anterior (dessazonalizado)`,
       `${pct(ul.variacao_interanual)} contra o mesmo trimestre do ano anterior`,
-      isNil(ul.acumulado_ano) ? "" : `${pct(ul.acumulado_ano)} acumulado no ano`,
+      isNil(ul.acumulado_4tri) ? "" : `${pct(ul.acumulado_4tri)} acumulado em quatro trimestres`,
     ].filter(Boolean).join(" · ") : ""],
     ["Periodicidade", "Trimestral", "O resultado do ano é a taxa acumulada no 4º trimestre."],
     ["Maior crescimento anual do recorte", pct(hi.taxa_aa), `em ${hi.ano} · variação real contra o ano anterior · recorte 2019 em diante`],
     ["Maior retração anual do recorte", pct(lo.taxa_aa), `em ${lo.ano} · variação real contra o ano anterior · recorte 2019 em diante`],
-    ["Último ano completo", String(ultimoAno.ano), `${pct(ultimoAno.taxa_aa)} · resultado do 4º trimestre`],
+    ["Último resultado anual", String(ultimoAno.ano), `${pct(ultimoAno.taxa_aa)} · variação real contra o ano anterior · o ano de ${ul ? ul.trimestre.slice(0, 4) : ""} ainda só tem trimestres`],
   ].map(([t, v, s]) => `<div><dt>${t}</dt><dd>${v}</dd><dd class="pg-sub">${s}</dd></div>`).join("");
   $("#pib-intro-note").innerHTML = `Os valores históricos do PIB podem ser revistos pelo IBGE. "Maior" e "menor" descrevem o recorte exibido (2019 até o último dado); não são avaliação. <a href="${esc(prod.fonte.explica_url)}" target="_blank" rel="noopener">O que é o PIB (IBGE Explica)</a>.`;
 }
@@ -115,10 +115,13 @@ export function renderPibExtra(prod, ctx) {
   renderYearCard(prod, ctx);
   renderReferencia(prod);
   renderQuarterly(prod);
+  renderQuarterNews(ctx);
   const f = prod.fonte;
   $("#pib-source").innerHTML = `<div><dt>Fonte</dt><dd>${esc(f.nome)}</dd></div>
     <div><dt>Periodicidade</dt><dd>${esc(f.periodicidade)}</dd></div>
-    <div><dt>Última atualização dos dados</dt><dd>${f.atualizado_em ? dataCurta(f.atualizado_em.slice(0, 10)) : "não registrada"}${prod.ultimo_trimestre ? ` · último trimestre: ${triLabel(prod.ultimo_trimestre.trimestre)}` : ""}</dd></div>
+    <div><dt>Última atualização dos dados</dt><dd>${f.atualizado_em ? dataCurta(f.atualizado_em.slice(0, 10)) : "não registrada"}</dd></div>
+    <div><dt>Último dado (período de referência)</dt><dd>${prod.ultimo_trimestre ? triLabel(prod.ultimo_trimestre.trimestre) : "—"}${prod.frescor?.desatualizado ? ` · <strong>atenção: dado possivelmente desatualizado</strong>` : ""}</dd></div>
+    <div><dt>Dados anuais</dt><dd>até ${anuais(prod).slice(-1)[0]?.ano ?? "—"} (o ano em curso só tem trimestres)</dd></div>
     <div><dt>Metodologia</dt><dd><a href="${esc(f.url)}" target="_blank" rel="noopener">Contas Nacionais Trimestrais (IBGE)</a> · <a href="${esc(f.explica_url)}" target="_blank" rel="noopener">IBGE Explica: PIB</a></dd></div>`;
 }
 
@@ -194,8 +197,9 @@ function renderQuarterly(prod) {
   const box = $("#pib-quarter-chart");
   const serie = prod.serie_trimestral;
   const medidas = {
-    interanual: { campo: "variacao_interanual", base: "contra o mesmo trimestre do ano anterior", nota: "Compara cada trimestre com o mesmo trimestre do ano anterior, sem ajuste sazonal." },
-    dessazonalizada: { campo: "variacao_dessazonalizada", base: "contra o trimestre imediatamente anterior, com ajuste sazonal", nota: "Compara cada trimestre com o anterior, depois de retirar o efeito sazonal (dessazonalizado)." },
+    interanual: { campo: "variacao_interanual", base: "trimestre contra o mesmo trimestre do ano anterior", nota: "variação real · trimestre contra mesmo trimestre do ano anterior. Sem ajuste sazonal." },
+    dessazonalizada: { campo: "variacao_dessazonalizada", base: "trimestre contra o trimestre anterior, com ajuste sazonal", nota: "variação real · trimestre contra trimestre anterior · com ajuste sazonal (dessazonalizado)." },
+    acumulado_4tri: { campo: "acumulado_4tri", base: "acumulado em quatro trimestres", nota: "variação real · acumulado em quatro trimestres: os quatro últimos trimestres contra os quatro anteriores." },
   };
   const m = medidas[quarterMeasure];
   const rows = serie.filter((q) => noRecorte(q.ano_mes)).map((q) => ({ iso: q.ano_mes, v: q[m.campo] })).filter((r) => !isNil(r.v));
@@ -218,6 +222,17 @@ function renderQuarterly(prod) {
   });
   box.setAttribute("aria-label", `PIB trimestral, ${m.base}. Último dado: ${ultimo ? `${triLabel(serie.find((q) => q.ano_mes === ultimo.iso).trimestre)}, ${pct(ultimo.v)}` : "indisponível"}. Use as setas para ler trimestre a trimestre.`);
   document.querySelectorAll("#pib-quarter-toggle button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.q === quarterMeasure)));
+}
+
+// Divulgações trimestrais (2020 em diante): o que o IBGE e a imprensa noticiaram a cada trimestre.
+function renderQuarterNews(ctx) {
+  const box = $("#pib-quarter-news");
+  if (!box) return;
+  const itens = ctx.NEWS.filter((n) => n.tema === "pib" && /trimestre/i.test(n.titulo) && n.data >= PIB_JANELA_INICIO)
+    .sort((a, b) => a.data.localeCompare(b.data));
+  box.innerHTML = itens.length
+    ? `<p class="yc-kicker mono">Divulgações trimestrais · o que se noticiava</p><ul class="pq-list">${itens.map((n) => `<li><time datetime="${n.data}">${dataNoticia(n.data)}</time> <span class="pq-src">${esc(n.veiculo)}</span> <a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.titulo)}</a><span class="pq-sum">${esc(n.resumo || "")}</span></li>`).join("")}</ul>`
+    : "";
 }
 
 export function bindPibControls(getProd) {
@@ -243,7 +258,7 @@ export function renderPibContext(prod) {
   const cs = GRUPOS.flatMap(([, cods]) => cods).map((c) => comp(prod, c)).filter(Boolean);
   const anos = cs.flatMap((c) => noJanela(c).map((a) => a.ano));
   const ultAno = Math.max(...anos);
-  const m0 = monthIdx(PIB_JANELA_INICIO), m1 = monthIdx(`${ultAno}-01-01`);
+  const m0 = monthIdx(PIB_JANELA_INICIO), m1 = monthIdx(`${ultAno}-12-01`);
   $("#context-deck").textContent = `Cada quadro mostra a variação real anual (resultado do 4º trimestre) de uma parte do PIB, de 2019 a ${ultAno}, na escala do próprio quadro. Frequência anual; todos usam os dados reais do IBGE, sem valores estimados, repetidos ou convertidos para mensal.`;
   $("#context-caveat").innerHTML = `Indicadores que aparecem próximos no tempo ajudam a contextualizar um período, mas a coincidência entre movimentos não prova que um indicador tenha causado o outro. O PIB reflete consumo, investimento, gasto público e comércio exterior somados; nenhum fator isolado o explica.`;
   let html = "";
