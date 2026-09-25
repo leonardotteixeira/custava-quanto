@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T13:51:50+00:00",
+  "gerado_em": "2026-09-25T14:42:19+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -1556,6 +1556,24 @@
           "ipca_indice100": 147.46
         },
         {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "preco_nominal": 6.762,
+          "preco_real": 6.7951,
+          "cambio_usd_brl": 5.0331,
+          "brent_usd_bbl": 117.29,
+          "brent_brl_bbl": 590.32,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74,
+          "salario_minimo": 1621.0,
+          "pct_salario_minimo": 0.42,
+          "unidades_por_salario_minimo": 239.72,
+          "preco_indice100": 156.57,
+          "brent_brl_indice100": 265.56,
+          "cambio_indice100": 134.51,
+          "ipca_indice100": 148.45
+        },
+        {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
           "preco_nominal": 6.6779,
@@ -1673,9 +1691,9 @@
         },
         {
           "ano": 2026,
-          "preco_nominal_medio": 6.5373,
-          "preco_real_medio": 6.5855,
-          "n_meses": 7
+          "preco_nominal_medio": 6.5654,
+          "preco_real_medio": 6.6117,
+          "n_meses": 8
         }
       ],
       "resumo_periodos": {
@@ -1770,7 +1788,7 @@
         },
         "Lula": {
           "governo_inteiro": {
-            "n_meses": 43,
+            "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
             "preco_nominal_inicio": 5.0445,
@@ -1780,9 +1798,9 @@
             "preco_real_inicio": 5.9164,
             "preco_real_fim": 6.5683,
             "variacao_real_pct": 11.02,
-            "preco_nominal_medio": 6.0043,
+            "preco_nominal_medio": 6.0215,
             "preco_nominal_min": 5.0445,
-            "preco_nominal_max": 6.6779,
+            "preco_nominal_max": 6.762,
             "pct_salario_minimo_inicio": 0.39,
             "pct_salario_minimo_fim": 0.41,
             "unidades_por_salario_minimo_inicio": 258.1,
@@ -3413,6 +3431,24 @@
           "ipca_indice100": 147.46
         },
         {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "preco_nominal": 4.8682,
+          "preco_real": 4.8921,
+          "cambio_usd_brl": 5.0331,
+          "brent_usd_bbl": 117.29,
+          "brent_brl_bbl": 590.32,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74,
+          "salario_minimo": 1621.0,
+          "pct_salario_minimo": 0.3,
+          "unidades_por_salario_minimo": 332.97,
+          "preco_indice100": 158.34,
+          "brent_brl_indice100": 265.56,
+          "cambio_indice100": 134.51,
+          "ipca_indice100": 148.45
+        },
+        {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
           "preco_nominal": 4.6129,
@@ -3530,9 +3566,9 @@
         },
         {
           "ano": 2026,
-          "preco_nominal_medio": 4.57,
-          "preco_real_medio": 4.6065,
-          "n_meses": 7
+          "preco_nominal_medio": 4.6073,
+          "preco_real_medio": 4.6422,
+          "n_meses": 8
         }
       ],
       "resumo_periodos": {
@@ -3627,7 +3663,7 @@
         },
         "Lula": {
           "governo_inteiro": {
-            "n_meses": 43,
+            "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
             "preco_nominal_inicio": 4.0713,
@@ -3637,9 +3673,9 @@
             "preco_real_inicio": 4.775,
             "preco_real_fim": 4.2462,
             "variacao_real_pct": -11.07,
-            "preco_nominal_medio": 4.2432,
+            "preco_nominal_medio": 4.2574,
             "preco_nominal_min": 3.702,
-            "preco_nominal_max": 4.8645,
+            "preco_nominal_max": 4.8682,
             "pct_salario_minimo_inicio": 0.31,
             "pct_salario_minimo_fim": 0.26,
             "unidades_por_salario_minimo_inicio": 319.8,
@@ -5270,6 +5306,24 @@
           "ipca_indice100": 147.46
         },
         {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "preco_nominal": 7.3391,
+          "preco_real": 7.375,
+          "cambio_usd_brl": 5.0331,
+          "brent_usd_bbl": 117.29,
+          "brent_brl_bbl": 590.32,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74,
+          "salario_minimo": 1621.0,
+          "pct_salario_minimo": 0.45,
+          "unidades_por_salario_minimo": 220.87,
+          "preco_indice100": 212.48,
+          "brent_brl_indice100": 265.56,
+          "cambio_indice100": 134.51,
+          "ipca_indice100": 148.45
+        },
+        {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
           "preco_nominal": 7.0388,
@@ -5387,9 +5441,9 @@
         },
         {
           "ano": 2026,
-          "preco_nominal_medio": 6.6316,
-          "preco_real_medio": 6.6788,
-          "n_meses": 7
+          "preco_nominal_medio": 6.72,
+          "preco_real_medio": 6.7658,
+          "n_meses": 8
         }
       ],
       "resumo_periodos": {
@@ -5484,7 +5538,7 @@
         },
         "Lula": {
           "governo_inteiro": {
-            "n_meses": 43,
+            "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
             "preco_nominal_inicio": 6.3402,
@@ -5494,9 +5548,9 @@
             "preco_real_inicio": 7.4359,
             "preco_real_fim": 6.5985,
             "variacao_real_pct": -11.26,
-            "preco_nominal_medio": 6.0754,
+            "preco_nominal_medio": 6.1041,
             "preco_nominal_min": 4.9841,
-            "preco_nominal_max": 7.0388,
+            "preco_nominal_max": 7.3391,
             "pct_salario_minimo_inicio": 0.49,
             "pct_salario_minimo_fim": 0.41,
             "unidades_por_salario_minimo_inicio": 205.36,
@@ -7127,6 +7181,24 @@
           "ipca_indice100": 147.46
         },
         {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "preco_nominal": 7.467,
+          "preco_real": 7.5035,
+          "cambio_usd_brl": 5.0331,
+          "brent_usd_bbl": 117.29,
+          "brent_brl_bbl": 590.32,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74,
+          "salario_minimo": 1621.0,
+          "pct_salario_minimo": 0.46,
+          "unidades_por_salario_minimo": 217.09,
+          "preco_indice100": 209.83,
+          "brent_brl_indice100": 265.56,
+          "cambio_indice100": 134.51,
+          "ipca_indice100": 148.45
+        },
+        {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
           "preco_nominal": 7.2145,
@@ -7244,9 +7316,9 @@
         },
         {
           "ano": 2026,
-          "preco_nominal_medio": 6.8103,
-          "preco_real_medio": 6.8578,
-          "n_meses": 7
+          "preco_nominal_medio": 6.8924,
+          "preco_real_medio": 6.9385,
+          "n_meses": 8
         }
       ],
       "resumo_periodos": {
@@ -7341,7 +7413,7 @@
         },
         "Lula": {
           "governo_inteiro": {
-            "n_meses": 43,
+            "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
             "preco_nominal_inicio": 6.4533,
@@ -7351,9 +7423,9 @@
             "preco_real_inicio": 7.5686,
             "preco_real_fim": 6.9417,
             "variacao_real_pct": -8.28,
-            "preco_nominal_medio": 6.1631,
+            "preco_nominal_medio": 6.1928,
             "preco_nominal_min": 5.0441,
-            "preco_nominal_max": 7.2145,
+            "preco_nominal_max": 7.467,
             "pct_salario_minimo_inicio": 0.5,
             "pct_salario_minimo_fim": 0.43,
             "unidades_por_salario_minimo_inicio": 201.76,
@@ -8984,6 +9056,24 @@
           "ipca_indice100": 147.46
         },
         {
+          "ano_mes": "2026-04-01",
+          "periodo": "Lula",
+          "preco_nominal": 114.5613,
+          "preco_real": 115.1215,
+          "cambio_usd_brl": 5.0331,
+          "brent_usd_bbl": 117.29,
+          "brent_brl_bbl": 590.32,
+          "ipca_indice": 7596.09,
+          "selic_meta_aa": 14.74,
+          "salario_minimo": 1621.0,
+          "pct_salario_minimo": 7.07,
+          "unidades_por_salario_minimo": 14.15,
+          "preco_indice100": 163.25,
+          "brent_brl_indice100": 265.56,
+          "cambio_indice100": 134.51,
+          "ipca_indice100": 148.45
+        },
+        {
           "ano_mes": "2026-05-01",
           "periodo": "Lula",
           "preco_nominal": 115.5351,
@@ -9101,9 +9191,9 @@
         },
         {
           "ano": 2026,
-          "preco_nominal_medio": 113.6463,
-          "preco_real_medio": 114.4877,
-          "n_meses": 7
+          "preco_nominal_medio": 113.7607,
+          "preco_real_medio": 114.5669,
+          "n_meses": 8
         }
       ],
       "resumo_periodos": {
@@ -9198,7 +9288,7 @@
         },
         "Lula": {
           "governo_inteiro": {
-            "n_meses": 43,
+            "n_meses": 44,
             "mes_inicio": "2023-01-01",
             "mes_fim": "2026-08-01",
             "preco_nominal_inicio": 109.1001,
@@ -9208,7 +9298,7 @@
             "preco_real_inicio": 127.9556,
             "preco_real_fim": 115.3703,
             "variacao_real_pct": -9.84,
-            "preco_nominal_medio": 107.7246,
+            "preco_nominal_medio": 107.8799,
             "preco_nominal_min": 101.9704,
             "preco_nominal_max": 115.8256,
             "pct_salario_minimo_inicio": 8.38,
@@ -20402,7 +20492,8 @@
       "dolar": 5.3995,
       "ibovespa": 94603.0,
       "selic": 2.0,
-      "ipca": 3.14
+      "ipca": 3.14,
+      "salario_minimo": 1045.0
     },
     "2020-10-01": {
       "dolar": 5.6258,
@@ -20936,7 +21027,9 @@
       "dolar": 5.0331,
       "ibovespa": 187318.0,
       "selic": 14.74,
-      "ipca": 4.39
+      "ipca": 4.39,
+      "gasolina": 6.762,
+      "salario_minimo": 1621.0
     },
     "2026-05-01": {
       "dolar": 4.9837,

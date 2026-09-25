@@ -774,7 +774,7 @@ function tmInstruments() {
   const slot = TM_FIXED.includes(S.product) ? "GLP" : S.product;
   return [...TM_FIXED.slice(0, 3), "SALARIO", ...TM_FIXED.slice(4), slot].map((c) => {
     if (c === "SALARIO") {
-      const g = P("GASOLINA");
+      const g = P("DOLAR"); // série completa: a de combustíveis tem meses sem coleta da ANP
       return { code: c, label: "Salário mínimo · R$", prod: g, get: (r) => r.salario_minimo, fmt: (v) => fmtBRL(v, 0), html: (v) => `<span class="cur">R$</span>${fmtInt(v)}` };
     }
     const prod = P(c), k = kind(prod);
@@ -801,7 +801,7 @@ function renderMachine(rebuild = false) {
     countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? "—" : it.html(x)), 420);
     const qual = it.code === "SALARIO" ? "vigente em" : it.code === "IBOVESPA" ? "fechamento de" : it.code === "IPCA" ? "12 meses até" : kind(it.prod) === "indice" ? "índice em" : "média de";
     el.querySelector(".inst-now").innerHTML = lr ? `${iso === lr.ano_mes ? "é o último mês com dado" : `${qual} ${mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
-    const extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : isNil(v) ? "sem dado neste mês" : "";
+    const extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : isNil(v) ? (it.prod.tipo === "combustivel" ? "a ANP não tem coleta neste mês" : "sem dado neste mês") : "";
     el.querySelector(".inst-extra").textContent = extra;
     el.querySelector(".inst-spark").innerHTML = spark(it.prod.serie_mensal.map((q) => ({ iso: q.ano_mes, v: it.get(q) })), {
       m0: monthIdx(MONTHS[0]), m1: monthIdx(MONTHS[MONTHS.length - 1]), cutLine: true, width: 1.5,

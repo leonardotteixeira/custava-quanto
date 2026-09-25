@@ -1,0 +1,29 @@
+[
+  {
+    "titulo": "Inflação oficial fica em 1,06% em abril, diz IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2022-05-11",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-05/inflacao-oficial-fica-em-106-em-abril-diz-ibge",
+    "resumo": "O IPCA de abril foi de 1,06%. A inflação acumulada em 12 meses chegou a 12,13%, segundo a reportagem a maior desde outubro de 2003.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "IPCA",
+      "SELIC",
+      "alimentos"
+    ]
+  },
+  {
+    "titulo": "Inflação de abril é de 1,06% no IPCA, a maior para o mês desde 1996",
+    "veiculo": "Exame",
+    "data": "2022-05-11",
+    "url": "https://exame.com/economia/inflacao-ipca-abril-2022/",
+    "resumo": "O IPCA subiu 1,06% em abril, a maior alta para o mês desde 1996; nos 12 meses até abril, a inflação foi de 12,13%.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "IPCA",
+      "alimentos"
+    ]
+  }
+]

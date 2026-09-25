@@ -534,7 +534,7 @@ def montar_fotografia_mensal(produtos: dict) -> dict:
         ("selic", "SELIC", "taxa_aa"),
         ("ipca", "IPCA", "taxa_aa"),
         ("gasolina", "GASOLINA", "preco_nominal"),
-        ("salario_minimo", "GASOLINA", "salario_minimo"),
+        ("salario_minimo", "DOLAR", "salario_minimo"),  # série completa (a de combustíveis tem meses sem coleta da ANP)
     ]
     foto: dict[str, dict] = {}
     for chave, codigo_produto, campo in campos:
