@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T13:58:35+00:00",
+  "gerado_em": "2026-09-25T14:08:09+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -11,10 +11,11 @@
       "produtos": [
         "Feijão carioca"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://classic.exame.com/wp-content/uploads/2018/10/feijc3a3o.jpeg",
+      "credito_imagem": "Reprodução · Exame",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n001"
     },
     {
@@ -132,10 +133,11 @@
       "produtos": [
         "Carne bovina (patinho)"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://classic.exame.com/wp-content/uploads/2019/12/gettyimages-546999702-e1575322917585.jpg",
+      "credito_imagem": "Reprodução · Exame",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n009"
     },
     {
@@ -177,10 +179,11 @@
       "produtos": [
         "IBOVESPA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://www.seudinheiro.com/uploads/2020/02/shutterstock_511383280-e1651006633630.jpg",
+      "credito_imagem": "Reprodução · Seu Dinheiro",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n012"
     },
     {
@@ -271,10 +274,11 @@
       "produtos": [
         "Arroz"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14118_FE388DD8AA020ABE.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n018"
     },
     {
@@ -302,10 +306,11 @@
         "Óleo de soja",
         "Arroz"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14181_436739C0DA426C58-10.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n020"
     },
     {
@@ -379,10 +384,11 @@
       "produtos": [
         "IBOVESPA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://classic.exame.com/wp-content/uploads/2021/05/DSC2685bx.jpg",
+      "credito_imagem": "Reprodução · Exame",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n025"
     },
     {
@@ -456,10 +462,11 @@
       "produtos": [
         "GLP"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/10/Gas-de-Cozinha.jpg?w=860&h=570&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n030"
     },
     {
@@ -502,10 +509,11 @@
         "GASOLINA",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/03/GettyImages-88583608.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n033"
     },
     {
@@ -518,10 +526,11 @@
         "GASOLINA",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://static.poder360.com.br/uploads/2022/03/Combustiveis-Gasolina-Postos-Fila-Abastecimento-Guerra-Petroleo-9-scaled.jpg",
+      "credito_imagem": "Reprodução · Poder360",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n034"
     },
     {
@@ -624,10 +633,11 @@
       "produtos": [
         "DIESEL S10"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/07/GettyImages-1277539916-e1752005688974.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n041"
     },
     {
@@ -656,10 +666,11 @@
         "GASOLINA",
         "ETANOL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://static.poder360.com.br/uploads/2023/02/Coletiva-Haddad-Combustiveis-scaled.jpg",
+      "credito_imagem": "Reprodução · Poder360",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n043"
     },
     {
@@ -779,10 +790,11 @@
         "Feijão carioca",
         "Arroz"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/12457_33A6EB3D322430F7.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n051"
     },
     {
@@ -795,10 +807,11 @@
         "Óleo de soja",
         "Carne bovina (patinho)"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/11/strawberry-gd825a39ef_1920.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n052"
     },
     {
@@ -810,10 +823,11 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/08/transporte_publico_brasilia_03.jpg?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n053"
     },
     {
@@ -841,10 +855,11 @@
       "produtos": [
         "Arroz"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://static.poder360.com.br/uploads/2024/05/Arroz-Supermercado-Hipermercado-Alimentos-CestaBasica-Inflacao-6-scaled.jpg",
+      "credito_imagem": "Reprodução · Poder360",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n055"
     },
     {
@@ -902,10 +917,11 @@
       "produtos": [
         "IBOVESPA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://classic.exame.com/wp-content/uploads/2021/05/DSC2685bx.jpg",
+      "credito_imagem": "Reprodução · Exame",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n059"
     },
     {
@@ -917,10 +933,11 @@
       "produtos": [
         "DOLAR"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://static.poder360.com.br/uploads/2024/11/Lula-Haddad-AgriculturaFamiliar-7-1-scaled.jpg",
+      "credito_imagem": "Reprodução · Poder360",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n060"
     },
     {
@@ -977,10 +994,11 @@
       "produtos": [
         "Café moído"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/05/2025-05-09T183433Z_1_LYNXMPEL480TJ_RTROPTP_4_GLOBAL-COFFEE.jpg?quality=70",
+      "credito_imagem": "Reprodução · InfoMoney",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n064"
     },
     {
@@ -1083,10 +1101,11 @@
       "produtos": [
         "GASOLINA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/08/2025-08-07T174123Z_1_LYNXMPEL7610R_RTROPTP_4_MACRO-IGP10-MAIO.jpg?quality=70",
+      "credito_imagem": "Reprodução · InfoMoney",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n071"
     },
     {
@@ -1098,10 +1117,11 @@
       "produtos": [
         "DOLAR"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://www.infomoney.com.br/wp-content/uploads/2025/07/2025-07-12T152558Z_1_LYNXMPEL6B06W_RTROPTP_4_BUSINESS-CURRENCY.jpg?quality=70",
+      "credito_imagem": "Reprodução · InfoMoney",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n072"
     },
     {
@@ -1114,10 +1134,11 @@
         "Arroz",
         "Feijão carioca"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://static.poder360.com.br/uploads/2024/05/Arroz-Supermercado-Hipermercado-Alimentos-CestaBasica-Inflacao-19-scaled.jpg",
+      "credito_imagem": "Reprodução · Poder360",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n073"
     },
     {
@@ -1178,11 +1199,12 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://midias.correiobraziliense.com.br/_midias/jpg/2026/03/13/8c98f260-1d7c-11f1-a17e-358a512ba0b9-65265699.jpg?20260313171104?20260313171104",
+      "credito_imagem": "Reprodução · Correio Braziliense",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
       "id": "n077"
     },
     {
@@ -1195,11 +1217,12 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://midias.correiobraziliense.com.br/_midias/jpg/2026/03/14/249e3a90-1e5c-11f1-a1da-edae1d05dd8e-65290889.jpg?20260314133048?20260314133048",
+      "credito_imagem": "Reprodução · Correio Braziliense",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
       "id": "n078"
     },
     {
@@ -1212,11 +1235,12 @@
         "GASOLINA",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://www.correiobraziliense.com.br/aqui/wp-content/uploads/2026/04/gasolina_1775595217731.jpg",
+      "credito_imagem": "Reprodução · Correio Braziliense",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
       "id": "n079"
     },
     {
@@ -1319,10 +1343,11 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/06/visao-plana-de-alimentos-saudaveis-que-aumentam-imunidade.webp?w=1200&h=630&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n086"
     },
     {
@@ -1354,11 +1379,12 @@
         "IPCA",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=800&h=533&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
       "id": "n088"
     },
     {
@@ -1370,10 +1396,11 @@
       "produtos": [
         "Feijão carioca"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/01/carioca.jpg?w=640&h=427&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
+      "imagem_sem_licenca": true,
       "id": "n089"
     },
     {
@@ -1405,11 +1432,12 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=800&h=533&crop=1",
+      "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
       "id": "n091"
     },
     {
