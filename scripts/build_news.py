@@ -52,6 +52,14 @@ DOMINIOS_IMAGEM_LIVRE = {
     "agenciabrasil.ebc.com.br": "Agência Brasil (CC BY 4.0)",
 }
 
+# Fotos de outros veículos (CNN Brasil, Poder360, InfoMoney...): usa o og:image da
+# própria matéria, com a fonte como crédito. NÃO há licença de reprodução — foi
+# uma decisão editorial assumida pelo projeto e pode ser desligada aqui: com
+# False, só a Agência Brasil (CC BY 4.0) mostra foto.
+IMAGENS_DE_OUTROS_VEICULOS = True
+# Imagens padrão do site (logo, miniatura genérica, "fallback"): não são a foto da matéria.
+IMAGEM_GENERICA = re.compile(r"fallback|placeholder|default|logo|site-thumb|thumb-de-materia|sem-imagem|no-image|avatar", re.I)
+
 CREDITO_RESTRITO = re.compile(r"reuters|afp|associated press|\bap\b|getty|proibida|direitos reservados|divulga", re.I)
 
 TAGS_VALIDAS = {
@@ -233,6 +241,28 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
             saida["credito_imagem"] = f"{credito} · CC BY 4.0"
         else:
             log.info("  sem foto: %s", motivo)
+    elif IMAGENS_DE_OUTROS_VEICULOS:
+        foto = p.meta.get("og:image") or p.meta.get("twitter:image") or ""
+        foto = unescape(foto).strip()
+        if foto.startswith("//"):
+            foto = "https:" + foto
+        if not foto.startswith("http"):
+            log.info("  sem foto: matéria sem og:image")
+        elif IMAGEM_GENERICA.search(foto):
+            log.info("  sem foto: imagem padrão do site")
+        else:
+            try:
+                ri = sessao.get(foto, headers=HEADERS, timeout=25, stream=True)
+                ok = ri.status_code == 200 and ri.headers.get("content-type", "").startswith("image")
+                ri.close()
+            except requests.RequestException:
+                ok = False
+            if ok:
+                saida["imagem"] = foto
+                saida["credito_imagem"] = f"Reprodução · {item['veiculo'].strip()}"
+                saida["imagem_sem_licenca"] = True
+            else:
+                log.info("  sem foto: imagem indisponível")
     return saida, "ok"
 
 
