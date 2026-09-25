@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T16:36:17+00:00",
+  "gerado_em": "2026-09-25T16:40:30+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -282,6 +282,22 @@
       "id": "n018"
     },
     {
+      "titulo": "Gasolina sobe 4% nas refinarias, anuncia Petrobras",
+      "veiculo": "Agência Brasil",
+      "data": "2020-09-22",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/gasolina-sobe-4-nas-refinarias-anuncia-petrobras",
+      "resumo": "Além da alta do dólar, o preço do petróleo reflete o mercado internacional do produto. Novo valor anunciado pela estatal começa a valer nesta quarta-feira.",
+      "produtos": [
+        "GASOLINA",
+        "combustiveis"
+      ],
+      "imagem": "https://imagens.ebc.com.br/6CkJ5HsJgnMPmyrJxqXuET__30Q=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_abr5101.jpg?itok=g1m7Bc2m",
+      "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "id": "n019"
+    },
+    {
       "titulo": "Alimentos puxam alta de preços em setembro, aponta o IBGE",
       "veiculo": "Agência Brasil",
       "data": "2020-10-09",
@@ -294,7 +310,7 @@
       "credito_imagem": "Antonio Cruz/ABr · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n019"
+      "id": "n020"
     },
     {
       "titulo": "Óleo de soja mais que dobra de preço e arroz sobe 76% no acumulado de 2020",
@@ -311,7 +327,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n020"
+      "id": "n021"
     },
     {
       "titulo": "Petrobras anuncia nova alta nos preços da gasolina, diesel e gás",
@@ -328,7 +344,7 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n021"
+      "id": "n022"
     },
     {
       "titulo": "Aumento da gasolina também causa impacto no preço do etanol",
@@ -343,7 +359,7 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n022"
+      "id": "n023"
     },
     {
       "titulo": "Dólar encosta em R$ 5,80 e fecha no maior valor em 10 meses",
@@ -358,7 +374,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n023"
+      "id": "n024"
     },
     {
       "titulo": "Copom eleva juros básicos da economia pela primeira vez em seis anos",
@@ -373,7 +389,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n024"
+      "id": "n025"
     },
     {
       "titulo": "Ibovespa supera 130 mil pontos pela primeira vez na história",
@@ -389,7 +405,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n025"
+      "id": "n026"
     },
     {
       "titulo": "Cesta básica tem alta em 11 capitais, diz Dieese",
@@ -404,7 +420,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n026"
+      "id": "n027"
     },
     {
       "titulo": "Inflação oficial fica em 1,16% em setembro, diz IBGE",
@@ -419,7 +435,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n027"
+      "id": "n028"
     },
     {
       "titulo": "Petrobras reajusta hoje preços do gás de cozinha e da gasolina",
@@ -435,7 +451,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n028"
+      "id": "n029"
     },
     {
       "titulo": "Petrobras reajusta preços da gasolina e diesel para as distribuidoras",
@@ -451,7 +467,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n029"
+      "id": "n030"
     },
     {
       "titulo": "Preço de gás de cozinha dispara e botijão já é vendido a R$ 160",
@@ -467,7 +483,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n030"
+      "id": "n031"
     },
     {
       "titulo": "Troca de gasolina por etanol pode não ser vantajosa para o consumidor",
@@ -482,7 +498,7 @@
       "credito_imagem": "Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n031"
+      "id": "n032"
     },
     {
       "titulo": "Preço da gasolina chega a R$ 7,27 e é o mais alto registrado pela ANP",
@@ -497,7 +513,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n032"
+      "id": "n033"
     },
     {
       "titulo": "Preço médio da gasolina chega a R$ 7,29 e bate recorde histórico, aponta ANP",
@@ -514,7 +530,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n033"
+      "id": "n034"
     },
     {
       "titulo": "Preço médio da gasolina bate recorde e litro vai a R$ 7,29",
@@ -531,7 +547,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n034"
+      "id": "n035"
     },
     {
       "titulo": "Inflação oficial fica em 1,06% em abril, diz IBGE",
@@ -548,7 +564,7 @@
       "credito_imagem": "Tânia Rêgo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n035"
+      "id": "n036"
     },
     {
       "titulo": "Inflação de abril é de 1,06% no IPCA, a maior para o mês desde 1996",
@@ -565,7 +581,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n036"
+      "id": "n037"
     },
     {
       "titulo": "Trigo, café e óleo de soja continuam subindo no Brasil com guerra, diz Abia",
@@ -581,7 +597,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n037"
+      "id": "n038"
     },
     {
       "titulo": "Preço da cesta básica paulistana aumenta 1,36%, diz Procon-SP",
@@ -596,7 +612,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n038"
+      "id": "n039"
     },
     {
       "titulo": "Preço médio da gasolina cai R$ 0,90 no país em três semanas",
@@ -611,7 +627,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n039"
+      "id": "n040"
     },
     {
       "titulo": "Copom eleva juros básicos da economia para 13,75% ao ano",
@@ -626,7 +642,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n040"
+      "id": "n041"
     },
     {
       "titulo": "IPCA: deflação foi puxada por combustíveis; preços de alimentos sobem",
@@ -641,7 +657,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n041"
+      "id": "n042"
     },
     {
       "titulo": "IPCA tem deflação de 0,68% em julho, menor taxa da série histórica",
@@ -656,7 +672,7 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n042"
+      "id": "n043"
     },
     {
       "titulo": "Preço médio diesel S10 em bombas sobe após 16 semanas de queda, diz ANP",
@@ -672,7 +688,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n043"
+      "id": "n044"
     },
     {
       "titulo": "Ibovespa fecha ano com alta de 4,69% e dólar com queda de 5,3%",
@@ -688,7 +704,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n044"
+      "id": "n045"
     },
     {
       "titulo": "Governo Lula cobrará R$ 0,47 de imposto sobre o litro da gasolina",
@@ -705,7 +721,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n045"
+      "id": "n046"
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em dez meses",
@@ -720,7 +736,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n046"
+      "id": "n047"
     },
     {
       "titulo": "Petrobras anuncia fim da paridade internacional de preços do petróleo",
@@ -737,7 +753,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n047"
+      "id": "n048"
     },
     {
       "titulo": "Pela 1ª vez em três anos, Banco Central corta taxa de juros; Selic vai a 13,25% ao ano",
@@ -752,7 +768,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n048"
+      "id": "n049"
     },
     {
       "titulo": "Dieese: preço da cesta básica cai em 14 de 17 capitais pesquisadas",
@@ -767,7 +783,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n049"
+      "id": "n050"
     },
     {
       "titulo": "Prévia da inflação oficial fica em 0,21% em outubro, informa IBGE",
@@ -782,7 +798,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n050"
+      "id": "n051"
     },
     {
       "titulo": "Entenda como os preços dos combustíveis variaram em 2023",
@@ -797,7 +813,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n051"
+      "id": "n052"
     },
     {
       "titulo": "Ibovespa fecha 2023 com valorização de mais de 20%",
@@ -812,7 +828,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n052"
+      "id": "n053"
     },
     {
       "titulo": "Após arroz subir 18%, feijão deve ficar mais caro em 2024",
@@ -829,7 +845,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n053"
+      "id": "n054"
     },
     {
       "titulo": "IPCA 2023: veja o que mais caiu e mais subiu no ano",
@@ -846,7 +862,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n054"
+      "id": "n055"
     },
     {
       "titulo": "IPCA fecha 2023 em 4,62% e fica abaixo do teto da meta pela 1ª vez desde 2020",
@@ -862,7 +878,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n055"
+      "id": "n056"
     },
     {
       "titulo": "Preço da gasolina e do diesel sobem nesta quinta com novo ICMS",
@@ -878,7 +894,7 @@
       "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n056"
+      "id": "n057"
     },
     {
       "titulo": "Governo encerra leilão e compra 263 mil toneladas de arroz",
@@ -894,7 +910,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n057"
+      "id": "n058"
     },
     {
       "titulo": "Petrobras reajusta em 7,12% preço da gasolina para distribuidoras",
@@ -910,7 +926,7 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n058"
+      "id": "n059"
     },
     {
       "titulo": "Batata-inglesa e leite longa vida puxam inflação em junho",
@@ -925,7 +941,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n059"
+      "id": "n060"
     },
     {
       "titulo": "Copom mantém juros básicos em 10,5% ao ano",
@@ -940,7 +956,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n060"
+      "id": "n061"
     },
     {
       "titulo": "Ibovespa sobe e renova recorde com Petrobras; Haddad confirma Galípolo para presidente do BC",
@@ -956,7 +972,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n061"
+      "id": "n062"
     },
     {
       "titulo": "Dólar fecha a R$ 6 pela 1ª vez e tem alta de 24% no ano",
@@ -972,7 +988,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n062"
+      "id": "n063"
     },
     {
       "titulo": "Brasil exporta 46 milhões de sacas de café, atingindo recorde em 2024",
@@ -987,7 +1003,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n063"
+      "id": "n064"
     },
     {
       "titulo": "Clima, dólar e preço da carne explicam inflação acima da meta em 2024",
@@ -1002,7 +1018,7 @@
       "credito_imagem": "Joédson Alves/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n064"
+      "id": "n065"
     },
     {
       "titulo": "Petrobras reduz preço do diesel para as distribuidoras",
@@ -1017,7 +1033,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n065"
+      "id": "n066"
     },
     {
       "titulo": "Preço do café moído sobe 80% em 12 meses e tem maior alta desde início do Plano Real",
@@ -1033,7 +1049,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n066"
+      "id": "n067"
     },
     {
       "titulo": "Dólar cai para R$ 5,60, e bolsa fecha em máxima histórica",
@@ -1049,7 +1065,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n067"
+      "id": "n068"
     },
     {
       "titulo": "Prévia da inflação oficial recua para 0,36% em maio, diz IBGE",
@@ -1064,7 +1080,7 @@
       "credito_imagem": "Fabio Rodrigues Pozzebom/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n068"
+      "id": "n069"
     },
     {
       "titulo": "BC sobe juros para 15% ao ano e sinaliza fim do ciclo de alta",
@@ -1079,7 +1095,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n069"
+      "id": "n070"
     },
     {
       "titulo": "Governo aumenta mistura do etanol na gasolina para 30%",
@@ -1094,7 +1110,7 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 0.86,
-      "id": "n070"
+      "id": "n071"
     },
     {
       "titulo": "Preço do café cai pela primeira vez depois de 18 meses, diz IBGE",
@@ -1109,7 +1125,7 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n071"
+      "id": "n072"
     },
     {
       "titulo": "Preços dos alimentos caem pelo 4º mês consecutivo, diz IBGE",
@@ -1124,7 +1140,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n072"
+      "id": "n073"
     },
     {
       "titulo": "Petrobras (PETR4) reduz em R$ 0,14, ou 4,9%, o preço da gasolina para distribuidoras",
@@ -1140,7 +1156,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n073"
+      "id": "n074"
     },
     {
       "titulo": "Dólar cai 11,17% em 2025, maior queda desde 2016, e encerra ano cotado a R$ 5,48",
@@ -1156,7 +1172,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n074"
+      "id": "n075"
     },
     {
       "titulo": "Alimentos contribuem para a inflação mais baixa em 2025, diz IBGE",
@@ -1173,7 +1189,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n075"
+      "id": "n076"
     },
     {
       "titulo": "IPCA vai a 0,33% em dezembro e fecha 2025 em 4,26%, abaixo da meta",
@@ -1188,7 +1204,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n076"
+      "id": "n077"
     },
     {
       "titulo": "Petrobras reajusta preço do diesel em R$ 0,38 por litro",
@@ -1203,7 +1219,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n077"
+      "id": "n078"
     },
     {
       "titulo": "Petrobras aprova adesão a programa para conter alta do diesel",
@@ -1220,7 +1236,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n078"
+      "id": "n079"
     },
     {
       "titulo": "Depois do diesel, preço da gasolina também vai subir? Entenda os possíveis impactos econômicos no Brasil da guerra no Irã",
@@ -1239,7 +1255,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n079"
+      "id": "n080"
     },
     {
       "titulo": "Alta do diesel: Petrobras eleva preço, mesmo após governo Lula zerar imposto com guerra no Irã",
@@ -1257,7 +1273,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n080"
+      "id": "n081"
     },
     {
       "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
@@ -1275,7 +1291,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n081"
+      "id": "n082"
     },
     {
       "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
@@ -1290,7 +1306,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n082"
+      "id": "n083"
     },
     {
       "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
@@ -1305,7 +1321,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n083"
+      "id": "n084"
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em mais de dois anos",
@@ -1321,7 +1337,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n084"
+      "id": "n085"
     },
     {
       "titulo": "Banco Central reduz juros básicos para 14,5% ao ano",
@@ -1336,7 +1352,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n085"
+      "id": "n086"
     },
     {
       "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
@@ -1351,7 +1367,7 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n086"
+      "id": "n087"
     },
     {
       "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
@@ -1366,7 +1382,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n087"
+      "id": "n088"
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -1382,7 +1398,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n088"
+      "id": "n089"
     },
     {
       "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
@@ -1399,7 +1415,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n089"
+      "id": "n090"
     },
     {
       "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
@@ -1419,7 +1435,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n090"
+      "id": "n091"
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -1435,7 +1451,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n091"
+      "id": "n092"
     },
     {
       "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
@@ -1453,7 +1469,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n092"
+      "id": "n093"
     },
     {
       "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
@@ -1472,7 +1488,7 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n093"
+      "id": "n094"
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -1487,7 +1503,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n094"
+      "id": "n095"
     }
   ]
 }

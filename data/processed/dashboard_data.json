@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T16:33:30+00:00",
+  "gerado_em": "2026-09-25T16:37:45+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -1875,7 +1875,30 @@
             "completo": true
           }
         }
-      }
+      },
+      "estimativas": [
+        {
+          "ano_mes": "2020-09-01",
+          "valor": 4.35,
+          "metodo": "ultimo_preco_anp x variacao_ipca_item",
+          "base_ano_mes": "2020-08-01",
+          "base_valor": 4.2623,
+          "ipca_item": "Gasolina",
+          "ipca_item_codigo": "7657",
+          "ipca_var_pct": 1.95,
+          "interpolacao_linear": 4.33,
+          "intervalo": [
+            4.33,
+            4.35
+          ],
+          "teste_de_volta": {
+            "ano_mes": "2020-10-01",
+            "previsto": 4.38,
+            "observado_anp": 4.39,
+            "erro_pct": -0.2
+          }
+        }
+      ]
     },
     "ETANOL": {
       "nome": "Etanol Hidratado",
@@ -3750,7 +3773,30 @@
             "completo": true
           }
         }
-      }
+      },
+      "estimativas": [
+        {
+          "ano_mes": "2020-09-01",
+          "valor": 3.11,
+          "metodo": "ultimo_preco_anp x variacao_ipca_item",
+          "base_ano_mes": "2020-08-01",
+          "base_valor": 3.0404,
+          "ipca_item": "Etanol",
+          "ipca_item_codigo": "7658",
+          "ipca_var_pct": 2.21,
+          "interpolacao_linear": 3.16,
+          "intervalo": [
+            3.11,
+            3.16
+          ],
+          "teste_de_volta": {
+            "ano_mes": "2020-10-01",
+            "previsto": 3.17,
+            "observado_anp": 3.29,
+            "erro_pct": -3.68
+          }
+        }
+      ]
     },
     "DIESEL": {
       "nome": "Diesel Comum (S500)",
@@ -5625,7 +5671,30 @@
             "completo": true
           }
         }
-      }
+      },
+      "estimativas": [
+        {
+          "ano_mes": "2020-09-01",
+          "valor": 3.45,
+          "metodo": "ultimo_preco_anp x variacao_ipca_item",
+          "base_ano_mes": "2020-08-01",
+          "base_valor": 3.3707,
+          "ipca_item": "Óleo diesel",
+          "ipca_item_codigo": "7659",
+          "ipca_var_pct": 2.47,
+          "interpolacao_linear": 3.48,
+          "intervalo": [
+            3.45,
+            3.48
+          ],
+          "teste_de_volta": {
+            "ano_mes": "2020-10-01",
+            "previsto": 3.44,
+            "observado_anp": 3.58,
+            "erro_pct": -4.01
+          }
+        }
+      ]
     },
     "DIESEL S10": {
       "nome": "Diesel S10",
@@ -7500,7 +7569,30 @@
             "completo": true
           }
         }
-      }
+      },
+      "estimativas": [
+        {
+          "ano_mes": "2020-09-01",
+          "valor": 3.53,
+          "metodo": "ultimo_preco_anp x variacao_ipca_item",
+          "base_ano_mes": "2020-08-01",
+          "base_valor": 3.4469,
+          "ipca_item": "Óleo diesel",
+          "ipca_item_codigo": "7659",
+          "ipca_var_pct": 2.47,
+          "interpolacao_linear": 3.54,
+          "intervalo": [
+            3.53,
+            3.54
+          ],
+          "teste_de_volta": {
+            "ano_mes": "2020-10-01",
+            "previsto": 3.52,
+            "observado_anp": 3.63,
+            "erro_pct": -3.0
+          }
+        }
+      ]
     },
     "GLP": {
       "nome": "GLP (botijão 13kg)",
@@ -9375,7 +9467,30 @@
             "completo": true
           }
         }
-      }
+      },
+      "estimativas": [
+        {
+          "ano_mes": "2020-09-01",
+          "valor": 72.19,
+          "metodo": "ultimo_preco_anp x variacao_ipca_item",
+          "base_ano_mes": "2020-08-01",
+          "base_valor": 71.0452,
+          "ipca_item": "Gás de botijão",
+          "ipca_item_codigo": "7482",
+          "ipca_var_pct": 1.61,
+          "interpolacao_linear": 73.01,
+          "intervalo": [
+            72.19,
+            73.01
+          ],
+          "teste_de_volta": {
+            "ano_mes": "2020-10-01",
+            "previsto": 73.11,
+            "observado_anp": 74.97,
+            "erro_pct": -2.49
+          }
+        }
+      ]
     },
     "Arroz": {
       "nome": "Arroz",

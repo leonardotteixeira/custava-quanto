@@ -779,6 +779,80 @@ def montar_fotografia_mensal(produtos: dict) -> dict:
     return foto
 
 
+# Item do IPCA (SIDRA, tabela 7060, classificação 315) que acompanha cada combustível.
+IPCA_ITEM_COMBUSTIVEL = {
+    "GASOLINA": ("7657", "Gasolina"),
+    "ETANOL": ("7658", "Etanol"),
+    "DIESEL": ("7659", "Óleo diesel"),
+    "DIESEL S10": ("7659", "Óleo diesel"),
+    "GLP": ("7482", "Gás de botijão"),
+}
+
+
+def estimar_lacunas_anp(produtos: dict) -> None:
+    """ESTIMATIVA (nunca dado oficial) para meses em que a ANP não fez pesquisa
+    de preços — hoje, set/2020 (a ANP informa que não houve pesquisa entre
+    23/08 e 17/10/2020, por troca do contrato de coleta).
+
+    Método, deliberadamente simples e conferível:
+      estimativa = último preço médio da ANP antes da lacuna
+                   × (1 + variação mensal do item no IPCA/IBGE no mês da lacuna)
+    Verificações que acompanham o número, para mostrar a incerteza:
+      - interpolação linear entre o último preço antes e o primeiro depois;
+      - "teste de volta": aplicar a variação do IPCA do mês seguinte à
+        estimativa e comparar com o preço que a ANP de fato observou depois.
+    O valor estimado NÃO entra em nenhum outro cálculo (variação, média,
+    período, comparação): só é mostrado, à parte, com aviso.
+    """
+    caminho = DATA_PROCESSED / "ibge_combustiveis_var_mensal.csv"
+    if not caminho.exists():
+        logger.warning("ibge_combustiveis_var_mensal.csv ausente: sem estimativas de lacunas da ANP")
+        return
+    ibge = pd.read_csv(caminho, parse_dates=["ano_mes"])
+    var = {(str(r.item_codigo), r.ano_mes.strftime("%Y-%m-%d")): float(r.variacao_mensal_pct) for r in ibge.itertuples()}
+    for codigo, (item_cod, item_nome) in IPCA_ITEM_COMBUSTIVEL.items():
+        prod = produtos.get(codigo)
+        if not prod:
+            continue
+        serie = {r["ano_mes"]: r["preco_nominal"] for r in prod["serie_mensal"] if r.get("preco_nominal") is not None}
+        meses = sorted(pd.date_range(min(serie), max(serie), freq="MS").strftime("%Y-%m-%d"))
+        faltam = [m for m in meses if m not in serie]
+        if not faltam:
+            continue
+        estim = []
+        i = 0
+        while i < len(faltam):
+            j = i
+            while j + 1 < len(faltam) and pd.Timestamp(faltam[j + 1]) == pd.Timestamp(faltam[j]) + pd.offsets.MonthBegin(1):
+                j += 1
+            corrida = faltam[i:j + 1]
+            i = j + 1
+            ant = max(m for m in serie if m < corrida[0])
+            dep = min(m for m in serie if m > corrida[-1])
+            if any((item_cod, m) not in var for m in corrida) or (item_cod, dep) not in var:
+                continue
+            valor = serie[ant]
+            for k, m in enumerate(corrida, start=1):
+                valor *= 1 + var[(item_cod, m)] / 100
+                interp = serie[ant] + (serie[dep] - serie[ant]) * k / (len(corrida) + 1)
+                previsto_dep = valor * (1 + var[(item_cod, dep)] / 100) if m == corrida[-1] else None
+                estim.append({
+                    "ano_mes": m,
+                    "valor": round(valor, 2),
+                    "metodo": "ultimo_preco_anp x variacao_ipca_item",
+                    "base_ano_mes": ant, "base_valor": round(serie[ant], 4),
+                    "ipca_item": item_nome, "ipca_item_codigo": item_cod, "ipca_var_pct": var[(item_cod, m)],
+                    "interpolacao_linear": round(interp, 2),
+                    "intervalo": [round(min(valor, interp), 2), round(max(valor, interp), 2)],
+                    "teste_de_volta": None if previsto_dep is None else {
+                        "ano_mes": dep, "previsto": round(previsto_dep, 2), "observado_anp": round(serie[dep], 2),
+                        "erro_pct": round((previsto_dep / serie[dep] - 1) * 100, 2),
+                    },
+                })
+        if estim:
+            prod["estimativas"] = estim
+
+
 def main() -> None:
     ensure_dirs(DATA_PROCESSED, DASHBOARD_DIR / "data")
 
@@ -792,6 +866,8 @@ def main() -> None:
         **montar_indicadores(salario, ipca, ibovespa),
         **montar_pib(),
     }
+
+    estimar_lacunas_anp(produtos)
 
     dados = {
         "gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),

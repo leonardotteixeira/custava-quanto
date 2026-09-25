@@ -61,7 +61,6 @@ export const META = {
 export function familia(prod) {
   if (prod.tipo === "combustivel") return "comb";
   if (prod.tipo === "alimento_indice") return "alim";
-  if (prod.tipo === "pib") return "econ";
   return "merc";
 }
 

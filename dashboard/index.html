@@ -396,6 +396,23 @@
           </div>
         </details>
 
+        <details class="nb" id="estimativa">
+          <summary><span class="mono">C2</span>Estimativa para meses sem pesquisa da ANP</summary>
+          <div class="nb-body">
+            <p>A ANP informa que não fez pesquisa de preços de combustíveis entre 23/08 e 17/10/2020 (troca do contrato de coleta). Não existe valor oficial de setembro/2020. Para a Máquina do tempo, e só nela, mostramos uma <strong>estimativa</strong> claramente marcada com “≈”.</p>
+            <dl class="nb-list">
+              <dt>Fórmula</dt>
+              <dd>estimativa = último preço médio da ANP antes da lacuna × (1 + variação mensal do item no IPCA do IBGE naquele mês). Itens: gasolina, etanol, óleo diesel (usado também para o diesel S10) e gás de botijão.</dd>
+              <dt>Verificações mostradas junto</dt>
+              <dd>Interpolação linear entre o último e o primeiro preço observados pela ANP, e um “teste de volta”: aplicar a variação do IPCA do mês seguinte à estimativa e comparar com o preço que a ANP de fato observou depois. Para a gasolina a diferença é de −0,2%; para etanol, diesel e gás, de 2,5% a 4%.</dd>
+              <dt>Limites</dt>
+              <dd>Agosto e outubro de 2020 têm coleta parcial na ANP, e o IPCA cobre períodos ligeiramente diferentes do mês civil. A estimativa não entra em variações, médias, períodos nem comparações; os gráficos continuam interrompidos.</dd>
+              <dt>Fontes</dt>
+              <dd><a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis" target="_blank" rel="noopener">ANP</a> (preços médios e aviso da suspensão), <a href="https://sidra.ibge.gov.br/tabela/7060" target="_blank" rel="noopener">IBGE/SIDRA, tabela 7060</a> (IPCA por item) e a reportagem da <a href="https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/gasolina-sobe-4-nas-refinarias-anuncia-petrobras" target="_blank" rel="noopener">Agência Brasil de 22/09/2020</a>, que registra o reajuste de 4% da gasolina nas refinarias e o último preço médio da ANP (R$ 4,268, semana de 16 a 22/08).</dd>
+            </dl>
+          </div>
+        </details>
+
         <details class="nb" id="limitacoes">
           <summary><span class="mono">C</span>Limitações</summary>
           <div class="nb-body">
