@@ -145,7 +145,7 @@ function renderNewsTrack() {
   box.hidden = false;
   document.getElementById("news-track-list").innerHTML = chartNews.map((n, k) => `
     <button type="button" class="nt-item" role="tab" data-news="${n.id}" aria-selected="${n.id === state.newsId}" title="${esc(n.titulo)}">
-      <span class="nt-num">${k + 1}</span><span class="nt-when">${fmtMesAno(n.data)}</span>
+      <span class="nt-num">${k + 1}</span><span class="nt-when">${fmtMesAno(n.data)}</span><span class="nt-title">${esc(n.titulo)}</span>
     </button>`).join("");
   renderNewsPanel();
 }
@@ -196,15 +196,21 @@ function renderArchive(produto) {
   const anos = [...new Set(lista.map((n) => n.data.slice(0, 4)))];
   const veiculos = new Set(lista.map((n) => n.veiculo)).size;
   document.getElementById("archive-sub").textContent =
-    `${lista.length} ${lista.length === 1 ? "matéria real" : "matérias reais"} sobre ${t.titulo} e o contexto em volta, de ${veiculos} ${veiculos === 1 ? "veículo" : "veículos"}, entre ${anos[0]} e ${anos[anos.length - 1]}. Toque no título para abrir a matéria original.`;
+    `${lista.length} ${lista.length === 1 ? "matéria real" : "matérias reais"} sobre o preço ${t.de} e o contexto em volta, de ${veiculos} ${veiculos === 1 ? "veículo" : "veículos"}, entre ${anos[0]} e ${anos[anos.length - 1]}. Toque no título para abrir a matéria original.`;
   const corteAno = parseInt(DATA.periodo_corte.slice(0, 4), 10);
   const nat = valorNativo(produto);
   document.getElementById("archive").innerHTML = anos.map((ano) => {
     const gov = parseInt(ano, 10) < corteAno ? "Bolsonaro" : "Lula";
-    const clips = lista.filter((n) => n.data.startsWith(ano)).map((n) => {
+    // Hierarquia dentro do ano: a primeira matéria com foto (ou, sem foto, a
+    // primeira específica do produto) abre o ano em destaque; as demais
+    // entram como notas menores. Nem todo evento tem o mesmo peso.
+    const doAno = lista.filter((n) => n.data.startsWith(ano));
+    const destaque = doAno.find((n) => n.imagem) || doAno.find((n) => n.especifica) || doAno[0];
+    const ordenadas = [destaque, ...doAno.filter((n) => n !== destaque)];
+    const clips = ordenadas.map((n) => {
       const l = linhaDoMes(produto, n.data, nat.campo);
       const val = l ? `<span class="clip-value">${esc(t.titulo)} em ${fmtMesAno(l.r.ano_mes)}: <b>${nat.fmt(nat.campo(l.r))}</b></span>` : "";
-      return clipHtml(n, { depois: val });
+      return clipHtml(n, { depois: val, resumo: n === destaque, classe: n === destaque ? "clip-major" : "clip-minor" });
     }).join("");
     return `<div class="arch-year">
       <div class="arch-year-label">${ano}<small><span class="dot ${gov.toLowerCase()}"></span>Governo ${gov}</small></div>
