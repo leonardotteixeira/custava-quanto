@@ -10,7 +10,7 @@ import {
   PERIODO_CORTE, PERIODOS, configurarPeriodos, getGovernmentComparison, comparisonPoints, pointLabel, PRODUCT_ORDER, META, familia, kind, nativeValue,
   isNil, fmtNum, fmtInt, fmtBRL, fmtPct, fmtPP, fmtValue, fmtValueHTML, change, fmtChange, sign,
   mesAno, mesAnoCurto, mesAnoLongo, dataCurta, dataNoticia, mesKey, monthIdx,
-  lastValid, firstValid, rowAt, baseRow, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
+  lastValid, firstValid, rowAt, baseRow, temPrecoAbsoluto, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
 
@@ -281,7 +281,32 @@ function renderStory() {
   const mA = pointLabel(pa), mB = pointLabel(pb);
   const c = change(prod, va, vb);
 
-  $("#story-kicker").innerHTML = `<b>${famTitle(prod)}</b> · ${unitLong(code)}`;
+  // Alimentos com preço CONAB (R$/kg) validado (ver preco_absoluto no JSON,
+  // gerado por scripts/download_conab.py): o preço observado vira a métrica
+  // PRINCIPAL do herói e o índice IBGE vira uma métrica SECUNDÁRIA — nunca
+  // os dois no mesmo número. Se faltar dado da CONAB num dos dois extremos
+  // (dez/2022 ou último dado), o índice continua sendo a principal e a
+  // secundária mostra "sem dado" nesse mês específico, sem trocar de mês
+  // nem de fonte para preencher a lacuna.
+  let heroVa = va, heroVb = vb, heroC = c, heroFmt = (v) => fmtValueHTML(prod, v), heroFmtPlain = (v) => fmtValue(prod, v), heroUnit = unitLong(code);
+  let secondary = null, usandoPrecoConab = false;
+  if (k === "indice" && temPrecoAbsoluto(prod) && !daily) {
+    const meta = prod.preco_absoluto;
+    const caA = a.preco_conab_brl_kg, caB = b.preco_conab_brl_kg;
+    const rotuloCalculo = meta.oficial_nacional ? "CONAB · Varejo" : `CONAB · Varejo · média calculada pelo projeto entre as UFs pesquisadas naquele mês (não é preço nacional oficial da CONAB)`;
+    if (!isNil(caA) && !isNil(caB)) {
+      usandoPrecoConab = true;
+      heroVa = caA; heroVb = caB; heroC = change(prod, caA, caB);
+      heroFmt = (v) => `<span class="cur">R$</span>${fmtNum(v, 2)}<span class="suf">/kg</span>`;
+      heroFmtPlain = (v) => `${fmtBRL(v)}/kg`;
+      heroUnit = `${meta.produto_conab} · ${rotuloCalculo}`;
+      secondary = { kicker: "Índice de preço (IBGE)", val: `${fmtNum(va, 1)} → ${fmtNum(vb, 1)}`, src: "IBGE · série encadeada, jan/2019 = 100 · não é R$" };
+    } else {
+      secondary = { kicker: `${meta.produto_conab} · ${meta.nivel_comercializacao}`, val: "Sem dado da CONAB para este mês", src: rotuloCalculo };
+    }
+  }
+
+  $("#story-kicker").innerHTML = `<b>${famTitle(prod)}</b> · ${heroUnit}`;
   $("#story-name").textContent = m.titulo;
   const i = PRODUCT_ORDER.indexOf(code), n = PRODUCT_ORDER.length;
   const prev = PRODUCT_ORDER[(i - 1 + n) % n], next = PRODUCT_ORDER[(i + 1) % n];
@@ -290,11 +315,11 @@ function renderStory() {
 
   // o número dominante: a variação
   const bigEl = $("#story-change");
-  const d = c.unit === "p.p." ? 2 : 1;
-  countTo(bigEl, c.v, (v) => `${sign(Math.round(v * 10 ** d) / 10 ** d)}${fmtNum(Math.abs(v), d)}<small>${c.unit === "p.p." ? " p.p." : "%"}</small>`);
+  const d = heroC.unit === "p.p." ? 2 : 1;
+  countTo(bigEl, heroC.v, (v) => `${sign(Math.round(v * 10 ** d) / 10 ** d)}${fmtNum(Math.abs(v), d)}<small>${heroC.unit === "p.p." ? " p.p." : "%"}</small>`);
   const what = k === "taxa" ? (code === "SELIC" ? "na taxa Selic, em pontos percentuais," : "na inflação em 12 meses, em pontos percentuais,")
     : k === "pontos" ? "no Ibovespa"
-    : k === "indice" ? `no índice de preço ${m.de}`
+    : k === "indice" ? (usandoPrecoConab ? `no preço médio ${m.de}` : `no índice de preço ${m.de}`)
     : code === "DOLAR" ? "na cotação média do dólar" : `no preço médio ${m.de}`;
   $("#story-change-cap").textContent = `${what} entre ${mA} e ${mB}.`;
 
@@ -305,24 +330,33 @@ function renderStory() {
   const tag = (row, isNow) => `${pmark(row.periodo)}${isNow ? "último dado · " : S.base === "troca" ? `último ${grain} antes da troca · ` : "início da série · "}governo ${row.periodo}`;
   $("#tn-then-tag").innerHTML = tag(a, false);
   $("#tn-now-tag").innerHTML = tag(b, true);
-  countTo($("#tn-then-val"), va, (v) => fmtValueHTML(prod, v));
-  countTo($("#tn-now-val"), vb, (v) => fmtValueHTML(prod, v));
+  countTo($("#tn-then-val"), heroVa, heroFmt);
+  countTo($("#tn-now-val"), heroVb, heroFmt);
 
   // barras proporcionais + "se tivesse acompanhado a inflação"
   const ipcaRatio = !isNil(a.ipca_indice) && !isNil(b.ipca_indice) ? b.ipca_indice / a.ipca_indice : null;
   const inflPct = ipcaRatio ? (ipcaRatio - 1) * 100 : null;
   let vRef = null;
-  if (k === "preco" && !daily) vRef = a.preco_real;
+  if (usandoPrecoConab) vRef = a.preco_conab_real_brl_kg;
+  else if (k === "preco" && !daily) vRef = a.preco_real;
   else if ((k === "preco" || k === "indice" || k === "pontos") && ipcaRatio) vRef = va * ipcaRatio;
-  const max = Math.max(va, vb, vRef ?? 0) || 1;
+  const max = Math.max(heroVa, heroVb, vRef ?? 0) || 1;
   const refPos = vRef ? (vRef / max) * 100 : null;
   const refCls = refPos > 70 ? "flip" : refPos < 18 ? "flip0" : "";
   $("#tn-bars").innerHTML = `
-    <div class="tnb"><span>${mesAnoCurto(a.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(va / max).toFixed(4)})"></div></div></div>
-    <div class="tnb tnb--now"><span>${mesAnoCurto(b.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(vb / max).toFixed(4)})"></div>
-      ${vRef ? `<i class="tnb-ref" style="left:${refPos.toFixed(2)}%"></i><span class="tnb-ref-label ${refCls}" style="left:${refPos.toFixed(2)}%"><b>${fmtValue(prod, vRef)}</b> se tivesse acompanhado a inflação</span>` : ""}
+    <div class="tnb"><span>${mesAnoCurto(a.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVa / max).toFixed(4)})"></div></div></div>
+    <div class="tnb tnb--now"><span>${mesAnoCurto(b.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVb / max).toFixed(4)})"></div>
+      ${vRef ? `<i class="tnb-ref" style="left:${refPos.toFixed(2)}%"></i><span class="tnb-ref-label ${refCls}" style="left:${refPos.toFixed(2)}%"><b>${heroFmtPlain(vRef)}</b> se tivesse acompanhado a inflação</span>` : ""}
     </div></div>`;
   $("#tn-bars").style.marginBottom = vRef ? "28px" : "";
+
+  const secEl = $("#story-secondary");
+  secEl.hidden = !secondary;
+  if (secondary) {
+    $("#ss-kicker").textContent = secondary.kicker;
+    $("#ss-val").innerHTML = secondary.val;
+    $("#ss-src").textContent = secondary.src;
+  }
 
   // frase-resumo + fatos de apoio
   const facts = [];
@@ -398,7 +432,7 @@ function renderStory() {
 function metricOptions(prod) {
   const k = kind(prod);
   if (k === "taxa" || k === "pontos") return [];
-  if (k === "indice") return ["nominal", "real"];
+  if (k === "indice") return temPrecoAbsoluto(prod) ? ["nominal", "real", "conab"] : ["nominal", "real"];
   return prod.tipo === "combustivel" ? ["nominal", "real", "pct_sm"] : ["nominal", "real"];
 }
 
@@ -416,6 +450,12 @@ function priceConfig(code) {
     get = (r) => r.pontos; yFmt = (t) => `${fmtNum(t / 1000, 0)} mil`; vFmt = (v) => `${fmtInt(v)} pts`;
     help = "Fechamento do último pregão de cada mês, em pontos. Pontos não são reais.";
     deck = "O principal índice da bolsa brasileira, fechamento de cada mês.";
+  } else if (k === "indice" && S.metric === "conab" && temPrecoAbsoluto(prod)) {
+    const meta = prod.preco_absoluto;
+    get = (r) => r.preco_conab_brl_kg; ref = (r) => r.preco_conab_real_brl_kg;
+    yFmt = (t) => `R$ ${fmtNum(t, 2)}`; vFmt = (v) => `${fmtBRL(v)}/kg`;
+    help = `Preço observado, ${meta.produto_conab}, nível ${meta.nivel_comercializacao} — ${meta.oficial_nacional ? "número nacional oficial da CONAB" : "média calculada pelo projeto entre as UFs que a CONAB pesquisou naquele mês, não um número nacional oficial"}. A linha pontilhada é o mesmo preço corrigido pela inflação (IPCA), em reais de ${mL}.${meta.definicao_compativel_indice_ibge ? "" : ` Atenção: a CONAB nomeia este produto como "${meta.produto_conab}", que pode não ser exatamente o mesmo corte/variedade do índice IBGE ao lado.`}`;
+    deck = `O preço observado ${m.de} no varejo, em R$/kg, além do índice. ${meta.cobertura}`;
   } else if (k === "indice") {
     if (S.metric === "real") { get = (r) => r.indice_relativo_real; ref = (r) => r.indice_relativo; help = `Índice em valores de ${mL}: se a linha sobe, o item ficou mais caro de verdade. A linha pontilhada é o índice como estava na época.`; }
     else { get = (r) => r.indice_relativo; help = "Índice de preço com jan/2019 = 100: 150 quer dizer 50% mais caro que no início. Não é valor em reais."; }
@@ -503,7 +543,7 @@ function renderPrice(animate = true) {
   chartEl.setAttribute("aria-label", `Gráfico: ${META[code].titulo}, ${help} De ${vFmt(get(first))} em ${mesAno(first.ano_mes)} a ${vFmt(get(last))} em ${mesAno(last.ano_mes)}; máxima de ${vFmt(get(hi))} em ${mesAno(hi.ano_mes)}. Use as setas para ler mês a mês; a tabela abaixo traz todos os valores.`);
 
   $("#chart-events").innerHTML = evs.map((e) => `<li><span class="ev-key">${e.key}</span><span><time>${mesAno(e.iso)}</time> ${e.text}</span></li>`).join("");
-  $("#chart-source").textContent = sourceFor(code);
+  $("#chart-source").textContent = S.metric === "conab" ? `Fonte: CONAB (Sistema de Informações de Mercado, Preços Agropecuários, nível Varejo). ${pc.prod.preco_absoluto.oficial_nacional ? "" : "Média entre UFs calculada pelo projeto, não um número nacional oficial da CONAB. "}IBGE (IPCA, usado para a linha corrigida pela inflação).` : sourceFor(code);
 
   // tabela equivalente (acessível e verificável)
   const cols = [["Mês", (r) => mesAno(r.ano_mes)], ["Período", (r) => r.periodo]];
@@ -892,7 +932,8 @@ function renderPeriods() {
     const main = (r) => !r ? null : r.daily ? (k === "taxa" ? r.fim.valor - r.ini.valor : (r.fim.valor / r.ini.valor - 1) * 100)
       : k === "taxa" ? r.variacao_pp : k === "pontos" ? r.variacao_pct : r.variacao_nominal_pct;
     const fmtMain = (v) => (k === "taxa" ? fmtPP(v) : fmtPct(v));
-    const sub = (r) => {
+    const conabResumo = (j) => temPrecoAbsoluto(prod) ? prod.preco_absoluto.resumo_periodos?.[j ? "Lula" : "Bolsonaro"]?.[S.cohort] : null;
+    const sub = (r, j) => {
       if (!r) return "dado não disponível";
       if (r.daily) {
         const f = (x) => (k === "taxa" ? `${fmtNum(x, 2)}%` : k === "pontos" ? `${fmtNum(x / 1000, 1)} mil pts` : fmtValue(prod, x));
@@ -902,7 +943,9 @@ function renderPeriods() {
       if (k === "pontos") return `${fmtNum(r.pontos_inicio / 1000, 1)} → ${fmtNum(r.pontos_fim / 1000, 1)} mil pts`;
       const ini = k === "preco" ? fmtValue(prod, r.preco_nominal_inicio) : fmtNum(r.indice_nominal_inicio, 1);
       const fim = k === "preco" ? fmtValue(prod, r.preco_nominal_fim) : fmtNum(r.indice_nominal_fim, 1);
-      return `${ini} → ${fim}<br>descontada a inflação: ${fmtPct(r.variacao_real_pct)}`;
+      const cr = j !== undefined ? conabResumo(j) : null;
+      const linhaConab = cr ? `<br><span class="sp-conab">${fmtBRL(cr.preco_brl_kg_inicio)}/kg → ${fmtBRL(cr.preco_brl_kg_fim)}/kg <i>CONAB</i></span>` : "";
+      return `${ini} → ${fim}<br>descontada a inflação: ${fmtPct(r.variacao_real_pct)}${linhaConab}`;
     };
     const vals = rs.map(main);
     const span = Math.max(...vals.filter((v) => !isNil(v)).map(Math.abs), 0.0001);
@@ -917,7 +960,7 @@ function renderPeriods() {
     return `<div class="sp-row${code === S.product ? " is-product" : ""}">
       <div class="sp-name">${META[code].curto}<small>${unit}</small></div>
       <div class="sp-track">${track}</div>
-      ${rs.map((r, j) => `<div class="sp-cell"><span class="sp-mobile-lab">${pmark(j ? "Lula" : "Bolsonaro")}${j ? "Lula" : "Bolsonaro"}</span><span class="sp-val">${isNil(vals[j]) ? "—" : fmtMain(vals[j])}<small>${sub(r)}</small></span>${bar(vals[j], j ? "l" : "b")}</div>`).join("")}
+      ${rs.map((r, j) => `<div class="sp-cell"><span class="sp-mobile-lab">${pmark(j ? "Lula" : "Bolsonaro")}${j ? "Lula" : "Bolsonaro"}</span><span class="sp-val">${isNil(vals[j]) ? "—" : fmtMain(vals[j])}<small>${sub(r, j)}</small></span>${bar(vals[j], j ? "l" : "b")}</div>`).join("")}
     </div>`;
   }).join("");
   $("#spread").innerHTML = head + rowsHtml;
