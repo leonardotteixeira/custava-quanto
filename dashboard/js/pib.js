@@ -187,7 +187,7 @@ function renderYearCard(prod, ctx) {
         <thead><tr><th scope="col">Componente (variação real no ano)</th><th scope="col">Série atual do IBGE</th>${eh2010 ? `<th scope="col">Release de ${PIB_2010.release.data}</th>` : ""}</tr></thead>
         <tbody>${linhas}</tbody></table>
       ${eh2010 ? `<p class="yc-rev">As duas colunas diferem porque o IBGE revisa as Contas Nacionais; o release traz o que foi divulgado na época.</p>` : ""}
-      <aside class="caveat yc-caveat"><strong>Contexto, não causa.</strong> Indicadores que aparecem próximos no tempo ajudam a contextualizar um período, mas a coincidência entre movimentos não prova que um indicador tenha causado o outro.</aside>
+      <div class="caveat yc-caveat" role="note"><strong>Contexto, não causa.</strong> Indicadores que aparecem próximos no tempo ajudam a contextualizar um período, mas a coincidência entre movimentos não prova que um indicador tenha causado o outro.</div>
     </div>
     ${noticiasHtml}`;
   $("#pib-year-hint").textContent = `Ano selecionado: ${r.ano}. Clique ou use as setas e Enter no gráfico acima para trocar.`;

@@ -185,6 +185,16 @@ def foto_capa_agencia_brasil(html: str) -> tuple[str | None, str | None, str]:
     return unescape(img.group(1)), credito, "ok"
 
 
+def melhor_url_imagem(url: str) -> str:
+    """O og:image do CNN Brasil vem com ?w=1200&h=630&crop=1: o servidor recorta a foto
+    no centro (perde a composição) e reduz. Sem h/crop e com w=1600 o mesmo servidor
+    devolve a foto INTEIRA, mais nítida (testado: 1600px, ~150-250 KB; se a original for
+    menor, ela vem no tamanho original). É a mesma imagem da matéria, só sem o recorte."""
+    if "cnnbrasil.com.br/wp-content/uploads" in url and "crop=1" in url:
+        return url.split("?")[0] + "?w=1600"
+    return url
+
+
 def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
     url = item["url"]
     try:
@@ -227,8 +237,9 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
         "similaridade_titulo": round(sim, 2),
     }
     # tema editorial opcional (ex.: "ormuz-ira"): agrupa matérias numa seção própria
-    if item.get("tema"):
-        saida["tema"] = item["tema"]
+    for campo in ("tema", "imagem_foco"):
+        if item.get(campo):
+            saida[campo] = item[campo]
     if data_pag and item.get("data") and data_pag != item["data"]:
         log.info("  data ajustada pela página: %s -> %s", item["data"], data_pag)
     # Foto de capa: lida da própria página da matéria (Agência Brasil, CC BY 4.0),
@@ -258,7 +269,7 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
             except requests.RequestException:
                 ok = False
             if ok:
-                saida["imagem"] = foto
+                saida["imagem"] = melhor_url_imagem(foto)
                 saida["credito_imagem"] = f"Reprodução · {item['veiculo'].strip()}"
                 saida["imagem_sem_licenca"] = True
             else:
