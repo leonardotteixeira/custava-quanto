@@ -131,6 +131,79 @@ cobertura temporal específica.
   consumidor compra. Fica descartado para estes quatro, sem mais
   verificação necessária.
 
+### 3b. Segunda rodada — investigação dirigida ao SIM da CONAB (arroz/feijão)
+
+O usuário relatou ter visto, em publicações oficiais da CONAB, séries
+nomeadas exatamente como **"Arroz Tipo 1 — Médias Mensais — R$/kg"** e
+**"Feijão Cores Tipo 1 — Médias Mensais — R$/kg"**. Esta seção aprofunda a
+investigação sobre o SIM especificamente para essas duas séries, tentando
+não só confirmar a existência (já feito na seção 3) mas abrir a fonte
+primária. **Mesmo resultado de acesso**: `conab.gov.br`,
+`portaldeinformacoes.conab.gov.br`, `pentahoportaldeinformacoes.conab.gov.br`
+e `www.gov.br` seguem bloqueados nesta sessão — nenhum deles pôde ser
+aberto diretamente, só indexação/resumo via busca. O que muda nesta rodada
+é ter ido atrás da arquitetura por trás do portal e de quem já tentou
+automatizá-lo, em vez de só reconfirmar que o portal existe.
+
+**Achado 1 — a plataforma por trás do portal é Pentaho (BI), não uma API
+REST.** Um link público indexado aponta para
+`pentahoportaldeinformacoes.conab.gov.br/pentaho/api/repos/:home:SIMASA2:EvolucaoEstimativas.wcdf/generatedContent`
+— um endpoint de **Pentaho CDF** (Community Dashboard Framework), o motor
+de dashboards que a CONAB usa por trás do Portal de Informações
+Agropecuárias. Isso explica por que nenhuma busca encontrou uma API
+JSON/REST documentada: o portal é feito para gerar gráficos e tabelas
+dentro de um dashboard, não para servir dado bruto por request. Na
+prática, isso empurra o caminho de automação para longe de "chamar um
+endpoint e receber JSON" e para perto de "baixar o arquivo publicado em
+`download-arquivos.html`" (que é a mesma peça já citada na seção 3) —
+**não encontrei evidência de um atalho técnico melhor que esse**.
+**[não verificado]**: não consegui abrir esse endpoint Pentaho nem a
+página de downloads para confirmar se o arquivo de preços mensais por UF
+é servido pelo mesmo mecanismo ou por um link estático separado.
+
+**Achado 2 — quem já tentou automatizar a CONAB não implementou esta
+série especificamente.** Dois pacotes de terceiros que fazem coleta
+automatizada de dados agrícolas brasileiros foram inspecionados:
+
+- `kaitodog/precos-alimentos-br` — usa a API do IBGE/SIDRA (igual a este
+  projeto) e o arquivo `ProhortDiario.txt` da CONAB/PROHORT — mas PROHORT
+  é a rede de **CEASAs (atacado de hortifrúti)**, um sistema da CONAB
+  diferente do SIM de preços agropecuários e irrelevante para arroz/feijão
+  embalado de mercado.
+- `bruno-portfolio/agrobr` — pacote mais abrangente (~40 fontes),
+  documenta funções específicas para CONAB: `safras()`, `balanco()`,
+  `serie_historica()` (produção histórica, não preço), `progresso_safra()`,
+  `custo_producao()` e `ceasa_precos()` (de novo, PROHORT/atacado). **Não
+  há, nas descrições encontradas, uma função equivalente a
+  `precos_agropecuarios()` ou `precos_varejo()`** para a série de preço ao
+  consumidor por UF. Não consegui abrir o código-fonte completo do pacote
+  (GitHub bloqueou a busca de código sem login e a API pública do GitHub
+  recusou a requisição não autenticada) para confirmar 100% a ausência,
+  mas a lista de funções documentadas — cobrindo quase tudo, menos
+  exatamente esta série — é um indício de que ela é mais difícil de
+  automatizar que as outras, não um esquecimento.
+
+**Achado 3 — nenhuma evidência de metodologia de agregação nacional
+oficial.** Buscas específicas por "preço médio nacional" + metodologia da
+CONAB (média simples vs. ponderada entre estados) não retornaram nenhuma
+nota metodológica explicando como (ou se) a CONAB consolida os preços por
+UF num único número "Brasil". Reportagens que citam "dados da CONAB" para
+manchetes nacionais ("arroz sobe X% no país") podem estar usando uma média
+própria do jornalista sobre o arquivo por UF, não uma agregação oficial da
+CONAB — não dá para saber qual, sem abrir o arquivo e ler a documentação
+que o acompanha (se houver).
+
+**Achado 4 — risco de definição de produto ainda não resolvido para o
+feijão.** "Feijão Cores" é uma categoria comercial mais ampla que
+"carioca" — inclui o carioca (a variedade dominante) mas pode misturar
+outras cores/variedades negociadas sob o mesmo tipo. O índice IBGE já
+usado neste projeto é especificamente do subitem "Feijão carioca" (código
+12222 da classificação 315). Se "Feijão Cores Tipo 1" da CONAB não for
+exatamente "carioca", colocar as duas séries lado a lado no mesmo cartão
+do produto ("Feijão carioca") seria descrever um preço que não é
+exatamente do mesmo produto — precisa ser confirmado com a documentação
+oficial do SIM (classificação de produtos), não assumido.
+
 ### 4. CEPEA/ESALQ — indicadores de boi gordo, leite, soja, café
 
 - **[verificado por busca]**: os indicadores CEPEA/ESALQ (boi gordo,
@@ -193,3 +266,76 @@ Só a partir de um ambiente com acesso direto a `conab.gov.br`:
 
 Nenhum destes quatro passos foi executado aqui — ficam descritos, não
 implementados, porque exigem um dado que esta sessão não conseguiu abrir.
+
+## Segunda rodada (2026-09-25): conclusão direta, pergunta por pergunta
+
+Investigação adicional pedida especificamente sobre o SIM da CONAB, depois
+que séries oficiais nomeadas "Arroz Tipo 1 — Médias Mensais — R$/kg" e
+"Feijão Cores Tipo 1 — Médias Mensais — R$/kg" foram identificadas fora
+desta sessão. Detalhe completo na seção 3b. **Ainda não foi possível abrir
+o portal, o Pentaho por trás dele, nem o arquivo de download diretamente**
+— o bloqueio de rede desta sessão cobre `conab.gov.br` e todos os seus
+subdomínios. As respostas abaixo são o que dá para afirmar com o que foi
+encontrado por busca, marcando claramente o que continua sem confirmação.
+
+**A. Dá para obter uma série de varejo em R$/kg para o arroz?**
+Provavelmente sim, mas não confirmado de primeira mão. A série "Arroz
+Tipo 1 — Médias Mensais — R$/kg" existe (relatada pelo usuário e
+consistente com a estrutura do SIM: produto × nível de comercialização ×
+UF × mês, encontrada em três buscas independentes). O que falta confirmar
+abrindo o arquivo: cobertura contínua 2019–2026, e se há UFs que saem ou
+entram da pesquisa nesse intervalo.
+
+**B. E para o feijão / feijão cores?**
+Mesma resposta técnica que o arroz (a série existe, mesma estrutura), mas
+com uma ressalva a mais: **"Feijão Cores" pode não ser exatamente
+"carioca"** — é uma categoria comercial que tipicamente inclui o carioca
+como variedade dominante, mas pode agregar outras cores. O índice IBGE já
+usado no projeto é especificamente "Feijão carioca". Antes de mostrar as
+duas séries juntas seria preciso confirmar, na documentação de
+classificação de produtos do SIM, se "Feijão Cores Tipo 1" é o carioca ou
+uma mistura — sem isso, juntar as duas seria uma inconsistência de
+definição de produto que o próprio usuário pediu para evitar.
+
+**C. Dá para construir uma série nacional?**
+Sem uma agregação oficial confirmada da própria CONAB (nenhuma busca
+encontrou uma nota metodológica dizendo como ela mesma calcula um
+"Brasil"), qualquer número nacional seria **uma agregação do projeto**,
+não um dado oficial — e precisaria ser rotulada exatamente assim ("média
+simples entre N estados pesquisados pela CONAB", ou o método escolhido),
+nunca apresentada como se fosse "o preço nacional da CONAB". Isso é
+possível de fazer com responsabilidade, mas só depois de decidir a fórmula
+olhando o arquivo real — não antes.
+
+**D. Qual fonte/tabela/consulta exata fornece isso?**
+O Sistema de Informações de Mercado (SIM) da CONAB, dataset "Preços
+Agropecuários", nível de comercialização "Varejo", arquivo de download
+"Preços agropecuários Mensal UF" listado em
+`portaldeinformacoes.conab.gov.br/download-arquivos.html`. A interface de
+consulta interativa roda sobre Pentaho (achado novo desta rodada, seção
+3b) — o que reforça que o arquivo de download, não uma chamada de API, é
+o caminho de automação mais realista.
+
+**E. Quais são as limitações metodológicas?**
+1. Nível de agregação é por UF, não nacional — qualquer "Brasil" é
+   construção do projeto, a declarar como tal.
+2. Sem confirmação de continuidade mensal sem buracos em 2019–2026.
+3. Sem confirmação da unidade exata além do nome da série (R$/kg é o que
+   o nome sugere, não verificado no arquivo).
+4. "Feijão Cores Tipo 1" pode não equivaler a "Feijão carioca" (achado 4
+   da seção 3b) — risco real de misturar definição de produto.
+5. Nenhuma nota de mudança de metodologia foi encontrada, mas também não
+   foi possível ler a documentação completa do SIM para descartar uma —
+   ausência de evidência não é evidência de ausência aqui.
+
+**F. Qual deve ser o próximo passo de implementação?**
+Não implementar ainda. O próximo passo é técnico e específico: alguém com
+acesso a `conab.gov.br` baixa o arquivo "Preços agropecuários Mensal UF",
+filtra Arroz Tipo 1 e Feijão Cores Tipo 1 em nível Varejo, e confirma
+manualmente: (1) cobertura mensal 2019–2026 sem buracos; (2) a unidade;
+(3) se existe uma linha/nota "Brasil" agregada oficial; (4) a definição
+exata de "Feijão Cores Tipo 1" frente a "carioca". Só com essas quatro
+respostas em mãos é possível decidir se e como escrever
+`scripts/download_conab.py` seguindo o mesmo padrão dos outros
+`download_*.py` deste projeto — e só então este documento passa a
+recomendar a implementação, não antes.
