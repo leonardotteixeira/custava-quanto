@@ -34,7 +34,8 @@ scripts/        download_*.py (coleta), build_dataset.py e
                 build_dashboard_data.py (consolidação)
 analysis/       analysis.py — gera os gráficos estáticos em /output
 output/         gráficos (.html) e RESUMO.md com as conclusões
-dashboard/      site estático interativo (HTML/CSS/JS + Plotly.js),
+dashboard/      site estático interativo (HTML/CSS + módulos JS em js/,
+                gráficos em SVG próprio, sem biblioteca de gráficos),
                 lê data/processed/dashboard_data.json — nenhum cálculo
                 econômico acontece no navegador
 ```
@@ -128,7 +129,9 @@ um sua própria leitura — não fazem sentido nas mesmas contas de "preço" ou
 
 - **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
   todas as contas em Python e grava o resultado pronto em
-  `dashboard_data.json`; `dashboard/app.js` só formata e desenha.
+  `dashboard_data.json`; `dashboard/js/` só formata e desenha (as únicas
+  contas no navegador são razões de exibição entre valores prontos:
+  variação entre dois meses, base 100 num mês escolhido, largura de barras).
 - **Cotação de hoje (Dólar/Selic)**: `scripts/download_mercados.py` baixa
   dados diários desde 2019 do Banco Central (SGS séries 1 e 432) e grava a
   última cotação disponível em `data/processed/bcb_hoje.json`. Mostrada à
@@ -160,12 +163,27 @@ um sua própria leitura — não fazem sentido nas mesmas contas de "preço" ou
 - **Escopo do MVP**: região é sempre "Brasil" (os dados têm quebra regional
   em `combustiveis_final.csv`, mas o dashboard não expõe esse filtro ainda).
 
+### Estrutura da página (v2)
+
+A página é uma publicação em capítulos, não um painel: abertura (nome, frase
+e uma textura com as 15 séries reais), **01 Índice** (sumário com a variação
+de cada série e o ponto de partida: dez/2022 ou jan/2019), a **história** do
+produto escolhido (era → agora), **02 Preço** (gráfico mensal com faixas de
+período, marcos de contexto e notícias), **03 Bolso** (poder de compra do
+salário mínimo, com um seletor de mês), **04 Contexto** (pequenos múltiplos
+na mesma escala, base 100), **05 Máquina do tempo** (o Brasil em qualquer
+mês, com o noticiário daquele mês), **06 Períodos** (mesma régua para os dois
+governos, com recortes de mesma duração), **07 Arquivo** e **08 Método**.
+A história escolhida fica na URL (`?historia=gasolina&desde=2019`), então
+qualquer leitura pode ser compartilhada. Decisões visuais em
+[DESIGN.md](DESIGN.md).
+
 ## Notícias da época
 
-O dashboard intercala os dados com **matérias jornalísticas reais**: um
-"O que estava acontecendo?" logo após a abertura (o número de um momento +
-a notícia daquele momento), marcadores numerados e clicáveis no gráfico
-mensal e a seção "O que estava sendo noticiado?", com um arquivo por ano.
+O dashboard intercala os dados com **matérias jornalísticas reais**:
+marcadores numerados e clicáveis no gráfico mensal (com a matéria aberta ao
+lado, em "O que se noticiava"), o noticiário de cada mês na Máquina do tempo
+e o Arquivo, ano a ano, com a média do produto em cada ano.
 
 - **Curadoria:** `data/news/raw_*.json` (título, veículo, data, URL, resumo e
   tags de produto de cada matéria).
@@ -217,7 +235,10 @@ mensal e a seção "O que estava sendo noticiado?", com um arquivo por ano.
    **Setembro/2020 está completamente ausente** dos dados brutos publicados
    pela ANP para todos os combustíveis (confirmado direto no arquivo fonte,
    não é bug deste projeto) — coincide com um dos picos da pandemia, mas não
-   temos confirmação da causa.
+   temos confirmação da causa. **Abril/2026 também está ausente** da série
+   processada atual (`anp_precos_mensais.csv`); a página detecta os meses
+   faltantes a partir dos próprios dados e os declara na fonte de cada
+   gráfico e em Método › Limitações.
 2. **Cesta básica não é preço em R$**: como explicado acima, os itens do
    IBGE aqui são um índice relativo, não um valor monetário. Para preço
    absoluto (ex.: "quanto custa 1kg de arroz"), a fonte de referência no
