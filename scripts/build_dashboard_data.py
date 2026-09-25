@@ -725,6 +725,17 @@ def montar_pib() -> dict:
         resumo[periodo] = _cohorts_para_periodo(df_serie[df_serie["periodo"] == periodo], _resumo_pib)
 
     ultimo_trim = serie_trimestral[-1] if serie_trimestral else None
+    componentes = _componentes_pib()
+    pib_ac = {}
+    pib_comp = next((c for c in componentes if c["codigo"] == "90707"), None)
+    if ultimo_trim and pib_comp:
+        ult = pib_comp["serie_trimestral"][-1] if pib_comp["serie_trimestral"] else None
+        if ult and ult["trimestre"] == ultimo_trim["trimestre"]:
+            ultimo_trim = {**ultimo_trim, "acumulado_ano": ult["acumulado_ano"]}
+    status = {}
+    status_path = DATA_PROCESSED / "pib_status.json"
+    if status_path.exists():
+        status = json.loads(status_path.read_text(encoding="utf-8"))
     return {
         "PIB": {
             "nome": "PIB",
@@ -751,8 +762,47 @@ def montar_pib() -> dict:
             "serie_anual": _serie_anual_taxa(df_serie),
             "resumo_periodos": resumo,
             "ultimo_trimestre": ultimo_trim,
+            "componentes": componentes,
+            "fonte": {
+                "nome": "IBGE — Sistema de Contas Nacionais Trimestrais",
+                "url": "https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/2087-np-contas-nacionais-trimestrais/9300-contas-nacionais-trimestrais.html",
+                "explica_url": "https://www.ibge.gov.br/explica/pib.php",
+                "periodicidade": "trimestral (resultado do ano = acumulado no 4º trimestre)",
+                "atualizado_em": ((status.get("trimestral") or {}).get("ultimo_sucesso_em")),
+            },
         }
     }
+
+
+def _componentes_pib() -> list[dict]:
+    """Componentes do PIB (oferta e demanda), do IBGE — ver
+    scripts/download_pib_componentes.py. Cada um é uma série TRIMESTRAL e, dela,
+    o resultado ANUAL (acumulado no ano lido no 4º trimestre). Nenhum valor é
+    interpolado, repetido ou convertido para mensal; ano sem 4º trimestre
+    publicado não tem resultado anual."""
+    caminho = DATA_PROCESSED / "pib_componentes_trimestral.csv"
+    if not caminho.exists():
+        return []
+    df = pd.read_csv(caminho)
+    df["periodo_codigo"] = df["periodo_codigo"].astype(str)
+    df["ano"] = df["periodo_codigo"].str[:4].astype(int)
+    df["tri"] = df["periodo_codigo"].str[4:6].astype(int)
+    saida = []
+    for codigo, g in df.groupby("codigo", sort=False):
+        g = g.sort_values(["ano", "tri"])
+        anual = []
+        for _, r in g[g["tri"] == 4].iterrows():
+            if pd.notna(r["acumulado_ano"]):
+                anual.append({"ano": int(r["ano"]), "taxa": round(float(r["acumulado_ano"]), 2)})
+        trimestral = [{
+            "trimestre": f"{int(r['ano'])}-T{int(r['tri'])}",
+            "ano_mes": f"{int(r['ano'])}-{(int(r['tri']) - 1) * 3 + 1:02d}-01",
+            "interanual": round(float(r["interanual"]), 2) if pd.notna(r["interanual"]) else None,
+            "acumulado_ano": round(float(r["acumulado_ano"]), 2) if pd.notna(r["acumulado_ano"]) else None,
+        } for _, r in g.iterrows() if pd.notna(r["interanual"]) or pd.notna(r["acumulado_ano"])]
+        saida.append({"codigo": str(codigo), "nome": str(g["nome"].iloc[0]), "serie_anual": anual, "serie_trimestral": trimestral})
+    ordem = ["90707", "93404", "93405", "93406", "93407", "93408", "90687", "90691", "90696"]
+    return sorted(saida, key=lambda c: ordem.index(c["codigo"]) if c["codigo"] in ordem else 99)
 
 
 def montar_fotografia_mensal(produtos: dict) -> dict:

@@ -1,0 +1,120 @@
+[
+  {
+    "titulo": "IBGE: PIB fecha 2015 com queda de 3,8%",
+    "veiculo": "Agência Brasil",
+    "data": "2016-03-03",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2016-03/ibge-pib-fecha-2015-com-queda-de-38",
+    "resumo": "O PIB recuou 3,8% em 2015, a maior queda da série iniciada em 1996, segundo o IBGE; a reportagem cita queda de quase todos os setores e da formação bruta de capital fixo.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB de 2020 fecha com queda de 4,1%, revela pesquisa do IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2021-03-03",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/pib-de-2020-fecha-com-queda-de-41-revela-pesquisa-do-ibge",
+    "resumo": "O IBGE divulgou queda de 4,1% do PIB em 2020, primeiro ano da pandemia; a reportagem informa recuos em serviços e indústria.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB cresce 4,6% em 2021 e supera perdas da pandemia",
+    "veiculo": "Agência Brasil",
+    "data": "2022-03-02",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-03/pib-cresce-46-em-2021-e-supera-perdas-da-pandemia",
+    "resumo": "O PIB cresceu 4,6% em 2021 e ficou acima do nível do fim de 2019, segundo o IBGE; a reportagem cita serviços, indústria e investimentos.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB cresce 2,9% em 2022 e fecha o ano em R$ 9,9 trilhões",
+    "veiculo": "Agência Brasil",
+    "data": "2023-03-02",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-03/pib-cresce-29-em-2022-e-fecha-o-ano-em-r-99-trilhoes",
+    "resumo": "O IBGE informou crescimento de 2,9% do PIB em 2022, com alta de serviços e da indústria e queda da agropecuária.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "Economia brasileira cresce 2,9% em 2023",
+    "veiculo": "Agência Brasil",
+    "data": "2024-03-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-03/economia-brasileira-cresce-29-em-2023",
+    "resumo": "O IBGE divulgou alta de 2,9% do PIB em 2023, com destaque para o avanço recorde da agropecuária; o número foi revisado depois.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "Economia brasileira cresce 3,4% em 2024, maior alta desde 2021",
+    "veiculo": "Agência Brasil",
+    "data": "2025-03-04",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-03/economia-brasileira-cresce-34-em-2024-maior-alta-desde-2021",
+    "resumo": "O IBGE divulgou crescimento de 3,4% do PIB em 2024, o maior desde 2021.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "Economia brasileira cresce 2,3% em 2025, revela IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2026-03-03",
+    "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-03/economia-brasileira-cresce-23-em-2025-revela-ibge",
+    "resumo": "O IBGE divulgou crescimento de 2,3% do PIB em 2025, puxado pela agropecuária.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB do Brasil cresce 0,5% no segundo trimestre, mostra IBGE",
+    "veiculo": "Agência Brasil",
+    "data": "2026-09-01",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/pib-do-brasil-cresce-05-no-segundo-trimestre-mostra-ibge",
+    "resumo": "O PIB cresceu 0,5% no segundo trimestre de 2026 sobre o primeiro, e 2,0% sobre o segundo trimestre de 2025, segundo o IBGE.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "Em 2010, PIB varia 7,5% e fica em R$ 3,675 trilhões",
+    "veiculo": "IBGE — Agência de Notícias",
+    "data": "2011-03-03",
+    "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/13983-asi-em-2010-pib-varia-75-e-fica-em-r-3675-trilhoes",
+    "resumo": "Release oficial do IBGE sobre as Contas Nacionais de 2010: PIB +7,5%, valor adicionado +6,7%, agropecuária +6,5%, indústria +10,1% e serviços +5,4%; consumo das famílias +7,0% e formação bruta de capital fixo +21,8%.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib",
+    "confirmado": true
+  }
+]

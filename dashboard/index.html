@@ -118,6 +118,14 @@
       </div>
       <h2 class="story-name" id="story-name">—</h2>
 
+      <!-- Só na história do PIB: o que é, e "em uma olhada" -->
+      <div class="pib-intro" id="pib-intro" hidden>
+        <p class="pib-sub"><span class="mono">Indicador macroeconômico</span> · Produto Interno Bruto</p>
+        <p class="pib-text" id="pib-intro-text"></p>
+        <dl class="pib-glance" id="pib-glance" aria-label="Em uma olhada"></dl>
+        <p class="pib-note" id="pib-intro-note"></p>
+      </div>
+
       <div class="story-grid">
         <div class="story-main">
           <p class="story-big" id="story-big"><span class="sb-num" id="story-change">—</span></p>
@@ -196,6 +204,28 @@
           <p class="nr-disclaimer"><strong>Contexto, não causa.</strong> Matérias reais, com link para a publicação original. Mostram o que se noticiava naquele momento; estar perto de um ponto do gráfico não explica o número.</p>
         </aside>
       </div>
+    </div>
+  </section>
+
+  <!-- PIB: cartão do ano selecionado, visão trimestral e painel da fonte -->
+  <section class="pib-extra" id="pib-extra" aria-label="PIB: ano selecionado e visão trimestral" hidden>
+    <div class="shell">
+      <div class="pib-year">
+        <h3 class="pib-h">Um ano em detalhe</h3>
+        <p class="pib-hint mono" id="pib-year-hint"></p>
+        <article class="year-card" id="pib-year-card" aria-live="polite"></article>
+      </div>
+      <div class="pib-quarter">
+        <h3 class="pib-h">Movimento trimestre a trimestre</h3>
+        <div class="seg seg--compact" id="pib-quarter-toggle" role="group" aria-label="Medida trimestral">
+          <button type="button" data-q="interanual" aria-pressed="true">Contra o mesmo trimestre do ano anterior</button>
+          <button type="button" data-q="dessazonalizada" aria-pressed="false">Contra o trimestre anterior (dessazonalizado)</button>
+        </div>
+        <p class="pib-basis" id="pib-quarter-basis"></p>
+        <div class="chart" id="pib-quarter-chart" tabindex="0" role="img" aria-label="PIB trimestral"></div>
+        <p class="source mono">Fonte: IBGE, Contas Nacionais Trimestrais. Os dados históricos podem sofrer revisões pelo IBGE.</p>
+      </div>
+      <dl class="pib-source" id="pib-source" aria-label="Fonte dos dados do PIB"></dl>
     </div>
   </section>
 
@@ -392,6 +422,28 @@
               <dd>Bolsonaro: jan/2019 a dez/2022. Lula: jan/2023 ao último dado disponível (em curso, sem "último dia" ainda). Os recortes de 1, 2 e 3 anos comparam janelas da mesma duração.</dd>
               <dt>PIB real × PIB nominal × PIB per capita</dt>
               <dd>Três contas diferentes, nunca misturadas num só número. O <strong>PIB real</strong> (a variação em % mostrada no gráfico principal) mede crescimento, descontada a inflação. O <strong>PIB nominal</strong> (em R$) e o <strong>PIB per capita</strong> (em R$) são valores correntes, sem esse desconto — aparecem como fatos à parte, nunca somados ou comparados diretamente com a variação real. O PIB é uma série <strong>anual</strong>, não mensal: um ano só ganha uma variação real quando o IBGE fecha o resultado do 4º trimestre; até lá, aparecem os trimestres já publicados, nunca uma estimativa do ano inteiro.</dd>
+            </dl>
+          </div>
+        </details>
+
+        <details class="nb" id="pib-metodo" hidden>
+          <summary><span class="mono">P</span>PIB: o que é, como é medido e o que ele não mede</summary>
+          <div class="nb-body">
+            <dl class="nb-list">
+              <dt>O que é o PIB</dt>
+              <dd>O valor dos bens e serviços finais produzidos pela economia num período. Fonte: <a href="https://www.ibge.gov.br/explica/pib.php" target="_blank" rel="noopener">IBGE Explica: PIB</a>.</dd>
+              <dt>Como o IBGE calcula</dt>
+              <dd>O IBGE reúne dados de produção, de gastos e de renda das Contas Nacionais. Cada trimestre traz uma primeira estimativa que é revista quando chegam dados mais completos.</dd>
+              <dt>O que é “crescimento”</dt>
+              <dd>Usamos a variação real (em volume, já sem o efeito dos preços) do PIB. “Crescimento de 2,3% em 2025” é o resultado do ano contra 2024.</dd>
+              <dt>Anual × trimestral</dt>
+              <dd>A variação do ano é a taxa acumulada no 4º trimestre. Já a variação trimestral pode ser contra o mesmo trimestre do ano anterior ou contra o trimestre imediatamente anterior; nunca somamos nem misturamos as duas.</dd>
+              <dt>O que é dessazonalizado</dt>
+              <dd>Uma série da qual se retira o padrão que se repete todo ano (por exemplo, o efeito de safras e do fim de ano), para comparar um trimestre com o seguinte.</dd>
+              <dt>Por que valores passados mudam</dt>
+              <dd>O IBGE revisa as Contas Nacionais. Por isso um resultado divulgado na época (por exemplo, −4,1% para 2020) pode ser diferente na série atual (−3,3%). A página mostra a série atual e cita o que foi divulgado.</dd>
+              <dt>O que o PIB não mede</dt>
+              <dd>O PIB não é renda das famílias, distribuição de riqueza, custo de vida, qualidade de vida nem poder de compra individual. O PIB per capita é o PIB dividido pela população, não a renda recebida por cada pessoa.</dd>
             </dl>
           </div>
         </details>
