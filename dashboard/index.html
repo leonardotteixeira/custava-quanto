@@ -36,6 +36,7 @@
         <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos</a></li>
         <li><a href="#arquivo" data-ch="arquivo"><i>07</i>Arquivo</a></li>
         <li><a href="#metodo" data-ch="metodo"><i>08</i>Método</a></li>
+        <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>09</i>Apoie</a></li>
       </ol>
     </nav>
     <a class="mast-product" id="mast-product" href="#indice" aria-label="História atual. Trocar de história">
@@ -523,6 +524,68 @@
     </div>
   </section>
 
+  <!-- =====================================================================
+       09 · APOIE — página de apoio (PIX). Configuração em js/apoie.js (SUPPORT_CONFIG).
+       ===================================================================== -->
+  <section class="chapter apoie-sec" id="apoie" aria-labelledby="apoie-title" data-chapter="apoie">
+    <svg class="apoie-line" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0,150 C90,140 140,90 230,105 S380,170 470,120 S620,40 720,80 S880,150 960,110 S1120,60 1200,84" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+    <div class="shell">
+      <header class="ch-head ch-head--quiet">
+        <p class="ch-kicker mono"><span>09</span>Apoie</p>
+        <h2 class="ch-title" id="apoie-title">Se você acha que este projeto vale a pena, ajude a mantê-lo.</h2>
+        <div class="ch-aside">
+          <p class="ch-deck">O CUSTAVA QUANTO? é um projeto independente feito para transformar dados econômicos em histórias que qualquer pessoa consegue explorar.</p>
+          <p class="ap-free">Ele é gratuito. Se você quiser contribuir para os custos de pesquisa, dados, infraestrutura e desenvolvimento, qualquer valor ajuda.</p>
+        </div>
+      </header>
+
+      <div class="ap-grid">
+        <div class="ap-card" id="ap-card">
+          <h3 class="ap-h">Apoie o projeto</h3>
+          <p class="ap-sub">Escolha quanto você quer contribuir.</p>
+          <div class="ap-amounts" id="ap-amounts" role="group" aria-label="Valor da contribuição (sugestões)"></div>
+          <div class="ap-custom" id="ap-custom" hidden>
+            <label for="ap-custom-input">Outro valor (em reais)</label>
+            <div class="ap-input"><span aria-hidden="true">R$</span><input id="ap-custom-input" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-describedby="ap-custom-msg"></div>
+            <p class="ap-msg" id="ap-custom-msg" role="status"></p>
+          </div>
+          <p class="ap-note">Os valores são só sugestões: nenhum é melhor que outro. Não existe valor pequeno demais para ajudar.</p>
+
+          <div class="ap-methods" id="ap-methods">
+            <section class="ap-pix" id="ap-pix" aria-labelledby="ap-pix-title">
+              <h4 id="ap-pix-title" class="ap-mh mono">Apoie via PIX</h4>
+              <p class="ap-pix-amount" id="ap-pix-amount"></p>
+              <div class="ap-pix-body" id="ap-pix-body"></div>
+              <p class="ap-copied" id="ap-copied" role="status" aria-live="polite"></p>
+            </section>
+            <div class="ap-qr" id="ap-qr">
+              <p class="ap-mh mono">QR Code PIX</p>
+              <p class="ap-qr-txt">Será disponibilizado quando a chave PIX for configurada.</p>
+            </div>
+          </div>
+          <p class="ap-fine">Este site não processa pagamentos nem recebe confirmação deles: a transferência acontece no aplicativo do seu banco.</p>
+        </div>
+
+        <aside class="ap-side" aria-label="Sobre o apoio">
+          <p class="ap-quote">Se você prefere não contribuir, tudo bem. Continue usando, compartilhando e auditando o projeto.</p>
+          <h3 class="ap-h2">Um projeto independente</h3>
+          <p>O CUSTAVA QUANTO? não representa partido, governo, empresa ou campanha. O objetivo é organizar dados públicos e tornar suas mudanças ao longo do tempo mais fáceis de explorar.</p>
+          <p>Os dados, fontes e metodologia continuam disponíveis para consulta: <a href="#metodo">08 Método</a> · <a href="#fontes" data-open="fontes">fontes dos dados</a>.</p>
+        </aside>
+      </div>
+
+      <div class="ap-where">
+        <h3 class="ap-h2">Para onde vai o apoio?</h3>
+        <ul class="ap-where-list">
+          <li><b class="mono">Dados</b>Coleta, tratamento e atualização de bases públicas.</li>
+          <li><b class="mono">Infraestrutura</b>Servidor, domínio, armazenamento e ferramentas necessárias para manter o projeto funcionando.</li>
+          <li><b class="mono">Pesquisa</b>Tempo dedicado a encontrar fontes, verificar números e documentar metodologias.</li>
+          <li><b class="mono">Desenvolvimento</b>Novas visualizações, séries históricas, ferramentas e melhorias de acessibilidade.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="foot night">
@@ -530,6 +593,7 @@
     <p class="foot-mark">Custava quanto<b>?</b></p>
     <p class="foot-text">Projeto independente de jornalismo de dados. Não representa posição de partido ou governo. Os dados, o código e a metodologia estão abertos para qualquer pessoa conferir.</p>
     <p class="foot-meta mono" id="foot-meta"></p>
+    <p class="foot-apoie"><a href="#apoie">Quer apoiar o projeto? → Apoie</a></p>
   </div>
 </footer>
 
