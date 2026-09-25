@@ -187,7 +187,7 @@
           <p class="nr-kicker mono" id="newsrail-title">O que se noticiava</p>
           <div class="nr-feature" id="nr-feature" aria-live="polite"></div>
           <ol class="nr-list" id="nr-list" aria-label="Notícias marcadas no gráfico"></ol>
-          <p class="nr-disclaimer">Matérias reais, com link para a publicação original. Mostram o que se noticiava naquele momento — não são prova de causa.</p>
+          <p class="nr-disclaimer"><strong>Contexto, não causa.</strong> Matérias reais, com link para a publicação original. Mostram o que se noticiava naquele momento; estar perto de um ponto do gráfico não explica o número.</p>
         </aside>
       </div>
     </div>
@@ -208,6 +208,8 @@
         <div class="pp-col" id="pp-a"></div>
         <div class="pp-col pp-col--now" id="pp-b"></div>
       </div>
+
+      <p class="pp-caveat" id="pp-caveat" hidden></p>
 
       <div class="pp-scrub" id="pp-scrub">
         <label class="pp-scrub-label mono" for="pp-range">Arraste para escolher o mês comparado</label>
@@ -266,6 +268,7 @@
         <div class="tm-instruments" id="tm-instruments" aria-live="polite"></div>
         <aside class="tm-news" aria-labelledby="tm-news-title">
           <p class="tm-news-kicker mono" id="tm-news-title">Naquele momento, no noticiário</p>
+          <p class="tm-caveat"><strong>Contexto, não causa.</strong> Matérias publicadas perto do mês escolhido. Mostram o que se noticiava, não explicam os números ao lado.</p>
           <div id="tm-news"></div>
         </aside>
       </div>
@@ -282,7 +285,7 @@
         <p class="ch-kicker mono"><span>06</span>Períodos</p>
         <h2 class="ch-title" id="periodos-title">Mesma régua, dois períodos.</h2>
         <div class="ch-aside">
-          <p class="ch-deck">O que aconteceu com cada indicador durante cada governo, medido do mesmo jeito: do primeiro ao último mês do recorte. Sem nota e sem placar. As cores só identificam o período.</p>
+          <p class="ch-deck">O que aconteceu com cada indicador durante cada governo, medido do mesmo jeito: do primeiro ao último dado de cada recorte. Sem nota e sem placar. As cores só identificam o período.</p>
           <div class="cohort" role="group" aria-labelledby="cohort-label">
             <span class="baseline-label mono" id="cohort-label">Recorte</span>
             <div class="seg seg--compact" id="cohort-toggle">
@@ -315,10 +318,10 @@
             <button type="button" data-filter="produto" aria-pressed="true" id="archive-filter-produto">Sobre esta história</button>
             <button type="button" data-filter="todas" aria-pressed="false" id="archive-filter-todas">Todas</button>
           </div>
+          <p class="caveat archive-caveat"><strong>Contexto, não causa.</strong> Matérias reais, conferidas na página original (título, veículo e data). Contam o que se noticiava em cada momento; a medida do que aconteceu com o preço continua sendo o número.</p>
         </div>
       </header>
       <div class="archive" id="archive"></div>
-      <p class="nr-disclaimer">Seleção de matérias reais, conferidas automaticamente na página original (título, veículo e data). Contam o que se noticiava em cada momento; os números continuam sendo a medida do que aconteceu com o preço.</p>
     </div>
   </section>
 
@@ -331,7 +334,7 @@
         <p class="ch-kicker mono"><span>08</span>Método</p>
         <h2 class="ch-title" id="metodo-title">Como chegamos a estes números.</h2>
         <div class="ch-aside">
-          <p class="ch-deck">Todo número desta página foi calculado antes, em Python, a partir de fontes públicas, e gravado num arquivo que qualquer pessoa pode conferir. O navegador só formata e desenha.</p>
+          <p class="ch-deck">As séries foram calculadas antes, em Python, a partir de fontes públicas, e gravadas num arquivo que qualquer pessoa pode conferir. O navegador só escolhe dois pontos já prontos, compara e desenha.</p>
           <p class="updated mono" id="updated"></p>
         </div>
       </header>
@@ -346,16 +349,16 @@
               <dt>Alimentos e inflação — IBGE/SIDRA</dt>
               <dd><a href="https://sidra.ibge.gov.br" target="_blank" rel="noopener">IPCA</a> geral (usado para corrigir preços) e variação mensal oficial de cada item da cesta.</dd>
               <dt>Dólar, Selic e salário mínimo — Banco Central (SGS)</dt>
-              <dd><a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">Dólar PTAX venda (série 1), Meta Selic (série 432), salário mínimo (série 1619)</a>. Dólar e Selic também têm o último valor diário, mostrado à parte.</dd>
+              <dd><a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">Dólar PTAX venda (série 1), Meta Selic (série 432), salário mínimo (série 1619)</a>. Dólar e Selic também têm a série diária, usada para comparar o último dado de dez/2022 com o último dado disponível.</dd>
               <dt>Ibovespa — B3</dt>
-              <dd><a href="https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-estatisticas-historicas.htm" target="_blank" rel="noopener">Estatísticas históricas públicas do índice</a>. Fechamento do último pregão de cada mês. Não é tempo real garantido.</dd>
+              <dd><a href="https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-estatisticas-historicas.htm" target="_blank" rel="noopener">Estatísticas históricas públicas do índice</a>. Fechamento do último pregão de cada mês nos gráficos; nas comparações, o último pregão de dez/2022 e o último pregão disponível. Não é tempo real garantido.</dd>
               <dt>Petróleo — FRED (St. Louis Fed)</dt>
               <dd><a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">Brent</a>, dólares por barril, convertido para reais pelo câmbio médio do mês.</dd>
             </dl>
           </div>
         </details>
 
-        <details class="nb" id="como-calculamos">
+        <details class="nb" id="como-calculamos" open>
           <summary><span class="mono">B</span>Como calculamos</summary>
           <div class="nb-body">
             <dl class="nb-list">
@@ -399,7 +402,7 @@
             <dl class="nb-list">
               <dt>IPCA</dt><dd>Índice oficial de inflação do Brasil (IBGE). Na história "Inflação", mostramos o IPCA acumulado em 12 meses.</dd>
               <dt>Selic-meta</dt><dd>A taxa básica de juros definida pelo Copom. Não é a Selic efetiva diária, que fica muito perto dela mas é outra série.</dd>
-              <dt>Dólar PTAX</dt><dd>Cotação oficial calculada pelo Banco Central; usamos a de venda, em média mensal.</dd>
+              <dt>Dólar PTAX</dt><dd>Cotação oficial calculada pelo Banco Central; usamos a de venda. Gráficos e Contexto usam a média do mês; as comparações entre dois pontos usam a cotação diária.</dd>
               <dt>Ibovespa</dt><dd>Principal índice da bolsa brasileira. É medido em pontos, não em reais.</dd>
               <dt>Brent</dt><dd>Referência internacional do preço do barril de petróleo.</dd>
               <dt>Índice (base 100)</dt><dd>Mostra variação, não preço. 150 quer dizer 50% acima do ponto de referência.</dd>
