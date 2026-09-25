@@ -158,9 +158,17 @@ def _discover_dsan_links(ano: int, categoria: str) -> list[str]:
         return []
     if resp.status_code != 200:
         return []
-    hrefs = re.findall(r'href="([^"]+\.csv)(?:/view)?"', resp.text)
-    hrefs = sorted(set(h.replace("/view", "") for h in hrefs if categoria in h))
-    return hrefs
+    # A ANP às vezes publica o link SEM a extensão ".csv" (ex.: abril/2026:
+    # ".../2026/04-dados-abertos-precos-glp"); o arquivo é o mesmo CSV. Aceita as
+    # duas formas, só dentro da pasta do ano, e devolve sempre com ".csv".
+    hrefs = re.findall(r'href="([^"]+)"', resp.text)
+    achados = set()
+    for h in hrefs:
+        h = h.replace("/view", "").split("?")[0]
+        ultimo = h.rsplit("/", 1)[-1]
+        if f"/dsan/{ano}/" in h and categoria in h and (ultimo.endswith(".csv") or "." not in ultimo):
+            achados.add(h)
+    return sorted(achados)
 
 
 # A ANP só publica o índice mensal (dsan/{ano}/) a partir de 2021; antes disso
@@ -205,7 +213,10 @@ def baixar_periodo(ano_inicio: int, ano_fim: int) -> pd.DataFrame:
             for categoria in ("gasolina-etanol", "diesel-gnv", "glp"):
                 links = _discover_dsan_links(ano, categoria)
                 for href in links:
-                    dest = RAW_DIR / "dsan" / f"{ano}-{href.rsplit('/', 1)[-1]}"
+                    nome = href.rsplit("/", 1)[-1]
+                    if not nome.endswith(".csv"):
+                        nome += ".csv"
+                    dest = RAW_DIR / "dsan" / f"{ano}-{nome}"
                     agg = _baixar_e_agregar(href, dest)
                     if agg is not None:
                         agregados.append(agg)
