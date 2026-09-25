@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T02:38:59+00:00",
+  "gerado_em": "2026-09-25T12:20:51+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -1119,6 +1119,75 @@
       "id": "n073"
     },
     {
+      "titulo": "Petrobras aprova adesão a programa para conter alta do diesel",
+      "veiculo": "Agência Brasil",
+      "data": "2026-03-13",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-03/petrobras-aprova-adesao-ao-programa-do-governo-para-baratear-diesel",
+      "resumo": "Iniciativa permite que governo conceda ajuda de R$ 0,32 por litro a produtores e importadores de óleo diesel.",
+      "produtos": [
+        "DIESEL",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n074"
+    },
+    {
+      "titulo": "Depois do diesel, preço da gasolina também vai subir? Entenda os possíveis impactos econômicos no Brasil da guerra no Irã",
+      "veiculo": "Correio Braziliense",
+      "data": "2026-03-13",
+      "url": "https://www.correiobraziliense.com.br/mundo/2026/03/7375289-depois-do-diesel-preco-da-gasolina-tambem-vai-subir-entenda-os-possiveis-impactos-economicos-no-brasil-da-guerra-no-ira.html",
+      "resumo": "Reflexos da guerra na inflação, juros e contas públicas no Brasil dependem de quanto tempo o conflito se prolongará e se mudanças nos preços do petróleo serão permanentes.",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n075"
+    },
+    {
+      "titulo": "Alta do diesel: Petrobras eleva preço, mesmo após governo Lula zerar imposto com guerra no Irã",
+      "veiculo": "Correio Braziliense",
+      "data": "2026-03-14",
+      "url": "https://www.correiobraziliense.com.br/mundo/2026/03/7375721-alta-do-diesel-petrobras-eleva-preco-mesmo-apos-governo-lula-zerar-imposto-com-guerra-no-ira.html",
+      "resumo": "Petrobras elevará o preço do diesel nas refinarias em R$0,38 por litro a partir de sábado, após governo lançar programa de subvenção do combustível, devido à disparada das cotações internacionais em meio ao conflito no Oriente Médio.",
+      "produtos": [
+        "DIESEL",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n076"
+    },
+    {
+      "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
+      "veiculo": "Correio Braziliense",
+      "data": "2026-04-07",
+      "url": "https://www.correiobraziliense.com.br/aqui/2026/04/07/conflito-com-ira-como-o-preco-da-gasolina-no-brasil-e-afetado/",
+      "resumo": "Os ataques aéreos dos EUA e de Israel ao Irã em fevereiro de 2026, e a consequente resposta iraniana com",
+      "produtos": [
+        "GASOLINA",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n077"
+    },
+    {
       "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
       "veiculo": "Agência Brasil",
       "data": "2026-04-08",
@@ -1131,7 +1200,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n074"
+      "id": "n078"
     },
     {
       "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
@@ -1146,7 +1215,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n075"
+      "id": "n079"
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em mais de dois anos",
@@ -1162,7 +1231,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n076"
+      "id": "n080"
     },
     {
       "titulo": "Banco Central reduz juros básicos para 14,5% ao ano",
@@ -1177,7 +1246,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n077"
+      "id": "n081"
     },
     {
       "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
@@ -1192,7 +1261,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n078"
+      "id": "n082"
     },
     {
       "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
@@ -1207,7 +1276,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n079"
+      "id": "n083"
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -1222,7 +1291,43 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n080"
+      "id": "n084"
+    },
+    {
+      "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
+      "veiculo": "Agência Brasil",
+      "data": "2026-07-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-07/com-nova-alta-mundial-do-petroleo-governo-mantem-desconto-na-gasolina",
+      "resumo": "\"Temos que ter cautela para retirar o subsídio\", diz ministro, após ataques militares entre EUA e Irã.",
+      "produtos": [
+        "GASOLINA",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n085"
+    },
+    {
+      "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
+      "veiculo": "CNN Brasil",
+      "data": "2026-07-23",
+      "url": "https://www.cnnbrasil.com.br/economia/money/macroeconomia/disparada-do-petroleo-acenda-alerta-para-nova-pressao-na-inflacao/",
+      "resumo": "Temor por quebra nas cadeias globais de abastecimento se intensificam com escalada dos conflitos no Oriente Médio",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL",
+        "IPCA",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n086"
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -1237,7 +1342,43 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n081"
+      "id": "n087"
+    },
+    {
+      "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
+      "veiculo": "Agência Brasil",
+      "data": "2026-09-09",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/subsidios-gasolina-e-ao-diesel-sao-ampliados-apos-alta-do-petroleo",
+      "resumo": "Gasolina terá subsídio de R$ 0,63; diesel terá subvenção inicial de R$ 1.",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n088"
+    },
+    {
+      "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
+      "veiculo": "CNN Brasil",
+      "data": "2026-09-09",
+      "url": "https://www.cnnbrasil.com.br/economia/petroleo-volta-a-us-100-pela-1a-vez-desde-julho-com-conflito-no-oriente/",
+      "resumo": "Brent sobe com ataques dos EUA e dos houthis e amplia temores sobre interrupções no fornecimento global de energia",
+      "produtos": [
+        "GASOLINA",
+        "DIESEL",
+        "combustiveis"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "id": "n089"
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -1252,7 +1393,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n082"
+      "id": "n090"
     }
   ]
 }

@@ -410,6 +410,7 @@ function selectProduct(codigo) {
   renderContext(produto);
   renderSnapshot(produto);
   renderGovernos(produto);
+  renderOrmuz(produto);
   renderArchive(produto);
   renderStepNumbers();
   renderStickyBar(produto);

@@ -265,6 +265,9 @@ Quase tudo é reto: filetes, colunas, tabelas, barras da régua. Raio só onde o
 - **Nota menor:** filete de 1px, manchete em Fraunces 1.04rem.
 - Metadados em caixa-alta espaçada, veículo em negrito. Foto só com licença (Agência Brasil CC BY 4.0) e crédito.
 
+### Cronologia temática (guerra no Irã e combustíveis)
+- Seção só para combustíveis, alimentada pelo campo `tema` das matérias verificadas. Coluna 4/12 fixa com a pergunta e o resumo; coluna 8/12 com lista ordenada: dia em Fraunces grande, veículo, manchete-link, resumo e, à direita, o preço do produto no mês da matéria (dado da série). Filete de 3px no topo da lista. Sempre com aviso de que é contexto, não causa.
+
 ### Tabela de números (Governos)
 - Tabela de jornal: cabeçalho em caixa-alta com filete de 2px, linhas com filete suave, números tabulares à direita, `th scope` em linha e coluna.
 
