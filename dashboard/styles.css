@@ -831,3 +831,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .tn-arrow { display: none; }
   .tn-val { font-size: 2.2rem; }
 }
+
+/* mês sem coleta: texto explícito no lugar do traço, e aviso acima dos quadros */
+.inst-val .nodata { font-family: var(--sans); font-weight: 500; font-variation-settings: "wdth" 100; font-size: 1.05rem; letter-spacing: 0; color: var(--fg-3); }
+.tm-gap { margin-top: clamp(24px, 3vw, 40px); max-width: 78ch; }

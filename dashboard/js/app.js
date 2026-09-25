@@ -801,7 +801,7 @@ function renderMachine(rebuild = false) {
     const r = rowAt(it.prod.serie_mensal, iso);
     const v = r ? it.get(r) : null;
     const lr = lastValid(it.prod.serie_mensal, it.get);
-    countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? "—" : it.html(x)), 420);
+    countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? `<span class="nodata">sem dado</span>` : it.html(x)), 420);
     const qual = it.code === "SALARIO" ? "vigente em" : it.code === "IBOVESPA" ? "fechamento de" : it.code === "IPCA" ? "12 meses até" : kind(it.prod) === "indice" ? "índice em" : "média de";
     el.querySelector(".inst-now").innerHTML = lr ? `${iso === lr.ano_mes ? "é o último mês com dado" : `${qual} ${mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
     let extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : "";
@@ -819,6 +819,16 @@ function renderMachine(rebuild = false) {
       dots: r && !isNil(v) ? [{ iso, size: 9, color: "var(--signal)" }] : [],
     });
   });
+
+  // Mês escolhido ≠ dado disponível: se algum combustível não tem coleta no mês,
+  // o painel diz isso de forma explícita, com o motivo e o que continua valendo.
+  const semDado = insts.filter((it) => kind(it.prod) === "preco" && it.prod.tipo === "combustivel" && isNil(it.get(rowAt(it.prod.serie_mensal, iso) || {})));
+  const gap = $("#tm-gap");
+  gap.hidden = !semDado.length;
+  if (semDado.length) {
+    const motivo = mesKey(iso) === ANP_SEM_PESQUISA.mes ? ANP_SEM_PESQUISA.texto : "A ANP não tem coleta de preços neste mês.";
+    gap.innerHTML = `<strong>${mesAnoLongo(iso)}: combustíveis sem dado.</strong> ${motivo} Os demais indicadores (dólar, salário mínimo, Selic, inflação e Ibovespa) têm dado normal neste mês.`;
+  }
 
   // cabeçalho: mês + período
   const mt = $("#tm-month");
