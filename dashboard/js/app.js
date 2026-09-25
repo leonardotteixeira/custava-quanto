@@ -33,6 +33,7 @@ const EVENTS = [
   { iso: "2022-02-01", text: "Rússia invade a Ucrânia", fam: null },
   { iso: "2022-06-01", text: "Lei Complementar 194 limita o ICMS sobre combustíveis", fam: "comb" },
   { iso: "2023-03-01", text: "Volta parcial da cobrança de PIS/Cofins sobre a gasolina", fam: "comb" },
+  { iso: "2026-02-01", text: "EUA e Israel iniciam a ofensiva contra o Irã (28/fev)", fam: "comb" },
 ];
 const eventsFor = (prod) => EVENTS.filter((e) => !e.fam || e.fam === familia(prod)).map((e, i) => ({ ...e, key: "ABCDEFG"[i] }));
 
@@ -82,7 +83,12 @@ function noticiasDo(code) {
 function noticiasParaGrafico(code, max = 8) {
   const todas = noticiasDo(code);
   if (todas.length <= max) return todas;
-  const prio = [...todas].sort((a, b) => Number(b.especifica) - Number(a.especifica));
+  // Entre as matérias do mesmo ano, a mais próxima do pico da série vem primeiro:
+  // assim o marcador do ano do pico aponta para a notícia daquele mês.
+  const prod = P(code), get = nativeValue(prod);
+  const pico = prod.serie_mensal.filter((r) => !isNil(get(r))).reduce((x, r) => (get(r) > get(x) ? r : x));
+  const dPico = (n) => Math.abs(monthIdx(n.data) - monthIdx(pico.ano_mes));
+  const prio = [...todas].sort((a, b) => Number(b.especifica) - Number(a.especifica) || dPico(a) - dPico(b));
   const escolhidas = new Set(), anos = new Set();
   prio.forEach((n) => { const a = n.data.slice(0, 4); if (escolhidas.size < max && !anos.has(a)) { escolhidas.add(n); anos.add(a); } });
   prio.forEach((n) => { if (escolhidas.size < max) escolhidas.add(n); });
