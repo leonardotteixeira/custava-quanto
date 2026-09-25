@@ -72,10 +72,10 @@
 
     <div class="shell">
       <div class="ribbon-head">
-        <h2 class="ribbon-title">De <span id="ribbon-from">jan/2019</span> ao último dado</h2>
-        <p class="ribbon-note mono">Médias mensais · fontes: ANP, Banco Central, IBGE, B3</p>
+        <h2 class="ribbon-title">De <span id="ribbon-from">dez/2022</span>, na troca de governo, ao último dado</h2>
+        <p class="ribbon-note mono">Dólar, Selic e Ibovespa: dado diário · demais: mês · fontes: ANP, Banco Central, IBGE, B3</p>
       </div>
-      <ol class="ribbon" id="hero-ribbon" aria-label="Seis indicadores no início da série e no último mês disponível"></ol>
+      <ol class="ribbon" id="hero-ribbon" aria-label="Seis indicadores no último dado antes da troca de governo e no último dado disponível"></ol>
       <a class="scroll-cue" href="#indice"><span>Escolha uma história</span><span aria-hidden="true">↓</span></a>
     </div>
   </section>
@@ -365,12 +365,14 @@
               <dd>O preço de cada mês convertido para reais do mês mais recente, usando o IPCA geral. Responde: quanto isso custaria em dinheiro de hoje?</dd>
               <dt>% do salário mínimo</dt>
               <dd>Preço dividido pelo salário mínimo vigente naquele mês — não por um valor fixo atual.</dd>
+              <dt>Três pontos de referência</dt>
+              <dd><strong>Início da série</strong> (jan/2019): primeiro dado histórico; é também a base dos índices de alimentos (jan/2019 = 100). <strong>Troca de governo</strong> (dez/2022): último dado do governo Bolsonaro, ponto de partida padrão de toda comparação entre os dois períodos. <strong>Último dado disponível</strong>: descoberto automaticamente nos dados, sem data escrita no código. Trocar o ponto de partida no Índice para jan/2019 mostra a série completa, mas isso não é uma comparação entre governos.</dd>
               <dt>Variação</dt>
-              <dd>Comparação entre dois meses: o ponto de partida escolhido e o último mês com dado. Para taxas (Selic, IPCA), a diferença é em pontos percentuais (p.p.), não em %.</dd>
+              <dd>Comparação entre dois pontos: o ponto de partida escolhido e o último dado disponível. Dólar, Selic e Ibovespa usam o dado diário (com a data real de cada ponto); os demais, o mês. Para taxas (Selic, IPCA), a diferença é em pontos percentuais (p.p.), não em %.</dd>
               <dt>Base 100 (Contexto)</dt>
               <dd>Cada série é dividida pelo próprio valor no ponto de partida e multiplicada por 100. Assim coisas de unidades diferentes cabem na mesma régua: 130 quer dizer 30% acima do ponto de partida.</dd>
               <dt>Períodos</dt>
-              <dd>Bolsonaro: jan/2019 a dez/2022. Lula: jan/2023 ao mês mais recente (em curso). Os recortes de 1, 2 e 3 anos comparam janelas da mesma duração.</dd>
+              <dd>Bolsonaro: jan/2019 a dez/2022. Lula: jan/2023 ao último dado disponível (em curso, sem "último dia" ainda). Os recortes de 1, 2 e 3 anos comparam janelas da mesma duração.</dd>
             </dl>
           </div>
         </details>

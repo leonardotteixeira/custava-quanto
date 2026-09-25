@@ -6,7 +6,30 @@
 // exibição entre valores já prontos (variação entre dois meses, rebase para
 // 100 num mês escolhido, largura de barras).
 
-export const PERIODO_CORTE = "2023-01-01";
+// Marcos do tempo, centralizados. NENHUMA data de "hoje" fica escrita aqui:
+// o corte de governo vem de dashboard_data.json (periodo_corte) e o último
+// dado é descoberto nos próprios dados (ver configurarPeriodos).
+//   serieInicio         : primeiro mês da série histórica (jan/2019)
+//   trocaGoverno        : último mês do governo Bolsonaro (dez/2022)
+//   periodoAtualInicio  : primeiro mês do governo Lula (jan/2023)
+//   ultimoDisponivel    : último mês com dado, descoberto dinamicamente
+export let PERIODO_CORTE = "2023-01-01";
+export const PERIODOS = { serieInicio: null, trocaGoverno: null, periodoAtualInicio: null, ultimoDisponivel: null };
+export function configurarPeriodos(corte, months) {
+  PERIODO_CORTE = corte;
+  PERIODOS.serieInicio = months[0];
+  PERIODOS.periodoAtualInicio = corte;
+  PERIODOS.trocaGoverno = [...months].filter((m) => m < corte).pop() || months[0];
+  PERIODOS.ultimoDisponivel = months[months.length - 1];
+}
+export const getGovernmentComparisonStart = () => PERIODOS.trocaGoverno;
+export const getGovernmentComparisonEnd = () => PERIODOS.ultimoDisponivel;
+// Governo Bolsonaro: primeiro → último mês; Lula: primeiro mês → último dado.
+export const getGovernmentComparison = (periodo) => (periodo === "Bolsonaro"
+  ? { inicio: PERIODOS.serieInicio, fim: PERIODOS.trocaGoverno }
+  : { inicio: PERIODOS.periodoAtualInicio, fim: PERIODOS.ultimoDisponivel });
+// Último mês com dado de uma série (a mais recente que existir nos dados).
+export const getLatestAvailableDate = (rows, get) => { for (let i = rows.length - 1; i >= 0; i--) if (!isNil(get(rows[i]))) return rows[i].ano_mes; return null; };
 
 // Ordem editorial e textos de cada história. `slug` vira ?historia= na URL.
 export const PRODUCT_ORDER = [
@@ -118,14 +141,29 @@ export const firstValid = (rows, get) => rows.find((r) => !isNil(get(r))) || nul
 export const rowAt = (rows, iso) => rows.find((r) => mesKey(r.ano_mes) === mesKey(iso)) || null;
 
 // Ponto de partida das comparações: "troca" = último mês do governo
-// Bolsonaro com dado (dez/2022); "inicio" = primeiro mês da série.
+// Bolsonaro com dado (dez/2022); "inicio" = primeiro mês da série. O mês da
+// troca vem de PERIODO_CORTE, nunca de uma data escrita à mão.
 export function baseRow(prod, base) {
   const get = nativeValue(prod);
   const rows = prod.serie_mensal;
   if (base === "inicio") return firstValid(rows, get);
-  const antes = rows.filter((r) => r.periodo === "Bolsonaro" && !isNil(get(r)));
+  const antes = rows.filter((r) => r.ano_mes < PERIODO_CORTE && !isNil(get(r)));
   return antes.length ? antes[antes.length - 1] : firstValid(rows, get);
 }
+
+// Os dois pontos de uma comparação. Séries mensais: mês da troca (ou do
+// início) contra o último mês com dado. Dólar, Selic e Ibovespa têm dado
+// diário: o último dado de dez/2022 contra o último dado disponível, cada um
+// com a data real do registro (`daily: true`).
+export function comparisonPoints(prod, base) {
+  const get = nativeValue(prod);
+  const ra = baseRow(prod, base), rb = lastValid(prod.serie_mensal, get);
+  const d = prod.diario;
+  const pa = d && (base === "inicio" ? d.inicio : d.troca), pb = d && d.ultimo;
+  if (pa && pb) return { a: { row: ra, iso: pa.data, v: pa.valor, daily: true }, b: { row: rb, iso: pb.data, v: pb.valor, daily: true } };
+  return { a: { row: ra, iso: ra.ano_mes, v: get(ra), daily: false }, b: { row: rb, iso: rb.ano_mes, v: get(rb), daily: false } };
+}
+export const pointLabel = (pt) => (pt.daily ? dataCurta(pt.iso) : mesAno(pt.iso));
 
 // ------------------------------------------------------------ DOM
 export const $ = (sel, root = document) => root.querySelector(sel);
