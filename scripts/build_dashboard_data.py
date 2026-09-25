@@ -33,12 +33,36 @@ NOMES_COMBUSTIVEL = {
     "GLP": ("GLP (botijão 13kg)", "R$/13kg"),
 }
 
-NOTA_ALIMENTO = (
-    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao "
-    "longo de todo o período — só a variação mensal oficial do IPCA por "
-    "subitem. Este número é um índice relativo (base 100 = jan/2019), "
-    "encadeado a partir dessa variação. Não é um preço em reais."
+# Duas variantes, escolhidas por item (ver ITENS_SEM_FONTE_PROXIMA abaixo).
+# Nenhuma delas afirma que um preço em R$ virá "em breve" — cada uma explica,
+# com a fonte concreta que foi avaliada e descartada ou deixada em aberto,
+# por que este item continua sendo só índice. Auditoria completa das fontes
+# avaliadas (IBGE, DIEESE, CONAB, CEPEA/ESALQ, Procon, POF) em
+# docs/AUDITORIA_PRECOS_ALIMENTOS.md — nenhum preço foi estimado ou
+# inventado para preencher a lacuna.
+NOTA_ALIMENTO_GRAO = (
+    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só "
+    "a variação mensal oficial do IPCA por subitem. Por isso este número é um "
+    "índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB "
+    "tem uma série de preço de varejo por estado que poderia, em tese, dar um "
+    "preço nacional em R$/kg — o projeto ainda não verificou essa fonte o "
+    "bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md)."
 )
+NOTA_ALIMENTO_PROCESSADO = (
+    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só "
+    "a variação mensal oficial do IPCA por subitem. Por isso este número é um "
+    "índice relativo (base 100 = jan/2019), não um preço em reais. As únicas "
+    "séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao "
+    "produtor, não o preço na prateleira — por isso não foram usadas (ver "
+    "docs/AUDITORIA_PRECOS_ALIMENTOS.md)."
+)
+# Arroz e feijão: CONAB acompanha varejo desses grãos há décadas — candidato
+# mais forte, pendente de verificação direta do arquivo (ver auditoria).
+# Os demais são produtos processados; a fonte mais próxima encontrada mede
+# a commodity crua/ao produtor, um elo antes do que o consumidor compra.
+ITENS_GRAO = {"Arroz", "Feijão carioca"}
+def _nota_alimento(item: str) -> str:
+    return NOTA_ALIMENTO_GRAO if item in ITENS_GRAO else NOTA_ALIMENTO_PROCESSADO
 
 COHORTS = {"primeiros_12m": 12, "primeiros_24m": 24, "primeiros_36m": 36}
 
@@ -515,7 +539,7 @@ def montar_alimentos(salario: pd.DataFrame) -> dict:
             "nome": item,
             "tipo": "alimento_indice",
             "unidade": "índice (base 100 = jan/2019)",
-            "nota": NOTA_ALIMENTO,
+            "nota": _nota_alimento(item),
             "serie_mensal": serie,
             "serie_anual": _serie_anual_alimento(g),
             "resumo_periodos": resumo,
