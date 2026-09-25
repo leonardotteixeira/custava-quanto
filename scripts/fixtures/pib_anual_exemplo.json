@@ -1,0 +1,10 @@
+[
+  {"D2C": "6588", "D2N": "Produto Interno Bruto, a preços correntes", "D3C": "2022", "D3N": "2022", "V": "9914625", "MN": "Milhões de Reais"},
+  {"D2C": "6588", "D2N": "Produto Interno Bruto, a preços correntes", "D3C": "2024", "D3N": "2024", "V": "11750521", "MN": "Milhões de Reais"},
+  {"D2C": "6590", "D2N": "Produto Interno Bruto per capita, a preços correntes", "D3C": "2022", "D3N": "2022", "V": "46125.32", "MN": "Reais"},
+  {"D2C": "6590", "D2N": "Produto Interno Bruto per capita, a preços correntes", "D3C": "2024", "D3N": "2024", "V": "54488.10", "MN": "Reais"},
+  {"D2C": "6591", "D2N": "Produto Interno Bruto a preços do ano anterior", "D3C": "2022", "D3N": "2022", "V": "9500000", "MN": "Milhões de Reais"},
+  {"D2C": "6591", "D2N": "Produto Interno Bruto a preços do ano anterior", "D3C": "2024", "D3N": "2024", "V": "11200000", "MN": "Milhões de Reais"},
+  {"D2C": "6593", "D2N": "População residente", "D3C": "2022", "D3N": "2022", "V": "214948", "MN": "Mil Pessoas"},
+  {"D2C": "6593", "D2N": "População residente", "D3C": "2024", "D3N": "2024", "V": "215628", "MN": "Mil Pessoas"}
+]

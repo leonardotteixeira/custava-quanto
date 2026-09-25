@@ -32,13 +32,19 @@ export function niceTicks(min, max, count = 5) {
   return { ticks, lo, hi, step };
 }
 
-// Quebra a linha onde falta mês (ex.: set/2020 ausente na ANP) ou valor.
-function segments(points) {
+// Quebra a linha onde falta um ponto esperado (ex.: set/2020 ausente na
+// ANP) ou valor nulo. `maxGap` é o maior intervalo, em meses, que ainda
+// conta como "sem buraco" — 1 para séries mensais (o padrão: qualquer mês
+// pulado é um buraco real). Séries anuais/trimestrais (PIB) não têm ponto
+// todo mês por natureza, então passam maxGap=12/3: só quebra se um ano ou
+// trimestre INTEIRO ficar sem dado, nunca pela distância normal entre dois
+// pontos consecutivos da própria frequência.
+function segments(points, maxGap = 1) {
   const segs = [];
   let cur = [];
   points.forEach((p, i) => {
     const prev = points[i - 1];
-    if (isNil(p.v) || (prev && p.m - prev.m > 1)) { if (cur.length) segs.push(cur); cur = []; }
+    if (isNil(p.v) || (prev && p.m - prev.m > maxGap)) { if (cur.length) segs.push(cur); cur = []; }
     if (!isNil(p.v)) cur.push(p);
   });
   if (cur.length) segs.push(cur);
@@ -134,7 +140,7 @@ export function lineChart(el, cfg) {
     });
     // séries
     series.forEach((s, si) => {
-      const segs = segments(s.pts);
+      const segs = segments(s.pts, s.maxGap ?? cfg.maxGap ?? 1);
       if (s.area) {
         const base = Y(Math.max(yLo, cfg.areaBase ?? yLo));
         segs.forEach((seg) => {
@@ -315,7 +321,8 @@ export function spark(rows, o = {}) {
   const Y = (v) => H - pad - ((v - lo) / (hi - lo || 1)) * (H - 2 * pad);
   const cut = monthIdx(o.cutoff || "2023-01-01");
   const allPts = rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
-  const segs = segments(allPts);
+  const gap = o.maxGap ?? 1;
+  const segs = segments(allPts, gap);
   const out = [];
   const sw = o.width ?? 1.75;
   const line = (seg, color, extra = "") => `<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"${extra}/>`;
@@ -331,8 +338,8 @@ export function spark(rows, o = {}) {
       const inW = (p) => o.windows.some(([w0, w1]) => p.m >= w0 && p.m <= w1);
       if (a.length > 1) out.push(line(a, "var(--pb)", ' opacity="0.22"'));
       if (b.length > 1) out.push(line(b, "var(--pl)", ' opacity="0.22"'));
-      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m < cut ? p.v : null }))).forEach((s) => s.length > 1 && out.push(line(s, "var(--pb)")));
-      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m >= cut ? p.v : null }))).forEach((s) => s.length > 1 && out.push(line(s, "var(--pl)")));
+      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m < cut ? p.v : null })), gap).forEach((s) => s.length > 1 && out.push(line(s, "var(--pb)")));
+      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m >= cut ? p.v : null })), gap).forEach((s) => s.length > 1 && out.push(line(s, "var(--pl)")));
       return;
     }
     if (a.length > 1) out.push(line(a, o.colorB || "var(--pb)"));
@@ -348,6 +355,10 @@ export function spark(rows, o = {}) {
 
 // ------------------------------------------------------------ textura da abertura (todas as séries, só o formato)
 export function texture(el, seriesList, { cutoff, highlight }) {
+  // `hl` é mutável (ver setHighlight): a série em destaque é um estado da
+  // instância do gráfico, não algo fixo escolhido na criação — qualquer uma
+  // das séries de seriesList pode assumir o destaque, a qualquer momento.
+  let hl = highlight;
   const render = () => {
     const W = el.clientWidth, H = el.clientHeight;
     if (!W || !H) return;
@@ -359,15 +370,16 @@ export function texture(el, seriesList, { cutoff, highlight }) {
     out.push(`<line x1="${cutX}" x2="${cutX}" y1="0" y2="${H}" stroke="rgba(238,232,220,.35)" stroke-width="1"/>`);
     out.push(`<text x="${cutX - 8}" y="14" text-anchor="end" class="s-year" fill="var(--on-night-3)">2019–2022</text>`);
     out.push(`<text x="${cutX + 8}" y="14" class="s-year" fill="var(--on-night-3)">2023–</text>`);
-    const ordered = [...seriesList].sort((a, b) => (a.key === highlight) - (b.key === highlight));
+    // a série em destaque é desenhada por último (fica por cima das outras)
+    const ordered = [...seriesList].sort((a, b) => (a.key === hl) - (b.key === hl));
     ordered.forEach((s) => {
       const vals = s.rows.map((r) => r.v).filter((v) => !isNil(v));
       const lo = Math.min(...vals), hi = Math.max(...vals);
       const Y = (v) => H - 8 - ((v - lo) / (hi - lo || 1)) * (H - 30);
       const pts = s.rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
-      const hl = s.key === highlight;
-      segments(pts).forEach((seg) => {
-        out.push(`<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${hl ? "var(--signal)" : "var(--on-night-2)"}" stroke-width="${hl ? 2.25 : 1}" stroke-opacity="${hl ? 1 : 0.26}" stroke-linejoin="round" class="js-draw" pathLength="1"/>`);
+      const isHl = s.key === hl;
+      segments(pts, s.maxGap ?? 1).forEach((seg) => {
+        out.push(`<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${isHl ? "var(--signal)" : "var(--on-night-2)"}" stroke-width="${isHl ? 2.25 : 1}" stroke-opacity="${isHl ? 1 : 0.26}" stroke-linejoin="round" class="js-draw" pathLength="1"/>`);
       });
     });
     [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026].forEach((y) => {
@@ -377,6 +389,9 @@ export function texture(el, seriesList, { cutoff, highlight }) {
     });
     const first = !el.dataset.drawn;
     el.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">${out.join("")}</svg>`;
+    // a animação de "desenhar a linha" é só da primeira carga — trocar o
+    // destaque depois disso deve ser instantâneo, não redesenhar tudo nos
+    // ~2s da entrada.
     if (first && !reduceMotion()) {
       el.dataset.drawn = "1";
       el.querySelectorAll(".js-draw").forEach((p, i) => {
@@ -386,9 +401,22 @@ export function texture(el, seriesList, { cutoff, highlight }) {
       });
     }
   };
-  el._chart = { render };
+  const api = {
+    render,
+    // Troca a série em destaque (chamada pela seção "História" ao mudar de
+    // produto — ver updateHeroHighlight em app.js). `key` é o mesmo código
+    // usado em seriesList (ex.: "GASOLINA", "Arroz", "DOLAR"); qualquer
+    // série da lista serve, nada aqui é específico de um produto.
+    setHighlight(key) {
+      if (key === hl) return;
+      hl = key;
+      render();
+    },
+  };
+  el._chart = api;
   ro?.observe(el);
   render();
+  return api;
 }
 
 // ------------------------------------------------------------ trilho do scrubber (alinhado ao polegar do <input type=range>)

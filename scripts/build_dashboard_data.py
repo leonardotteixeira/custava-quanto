@@ -33,12 +33,36 @@ NOMES_COMBUSTIVEL = {
     "GLP": ("GLP (botijão 13kg)", "R$/13kg"),
 }
 
-NOTA_ALIMENTO = (
-    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao "
-    "longo de todo o período — só a variação mensal oficial do IPCA por "
-    "subitem. Este número é um índice relativo (base 100 = jan/2019), "
-    "encadeado a partir dessa variação. Não é um preço em reais."
+# Duas variantes, escolhidas por item (ver ITENS_SEM_FONTE_PROXIMA abaixo).
+# Nenhuma delas afirma que um preço em R$ virá "em breve" — cada uma explica,
+# com a fonte concreta que foi avaliada e descartada ou deixada em aberto,
+# por que este item continua sendo só índice. Auditoria completa das fontes
+# avaliadas (IBGE, DIEESE, CONAB, CEPEA/ESALQ, Procon, POF) em
+# docs/AUDITORIA_PRECOS_ALIMENTOS.md — nenhum preço foi estimado ou
+# inventado para preencher a lacuna.
+NOTA_ALIMENTO_GRAO = (
+    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só "
+    "a variação mensal oficial do IPCA por subitem. Por isso este número é um "
+    "índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB "
+    "tem uma série de preço de varejo por estado que poderia, em tese, dar um "
+    "preço nacional em R$/kg — o projeto ainda não verificou essa fonte o "
+    "bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md)."
 )
+NOTA_ALIMENTO_PROCESSADO = (
+    "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só "
+    "a variação mensal oficial do IPCA por subitem. Por isso este número é um "
+    "índice relativo (base 100 = jan/2019), não um preço em reais. As únicas "
+    "séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao "
+    "produtor, não o preço na prateleira — por isso não foram usadas (ver "
+    "docs/AUDITORIA_PRECOS_ALIMENTOS.md)."
+)
+# Arroz e feijão: CONAB acompanha varejo desses grãos há décadas — candidato
+# mais forte, pendente de verificação direta do arquivo (ver auditoria).
+# Os demais são produtos processados; a fonte mais próxima encontrada mede
+# a commodity crua/ao produtor, um elo antes do que o consumidor compra.
+ITENS_GRAO = {"Arroz", "Feijão carioca"}
+def _nota_alimento(item: str) -> str:
+    return NOTA_ALIMENTO_GRAO if item in ITENS_GRAO else NOTA_ALIMENTO_PROCESSADO
 
 COHORTS = {"primeiros_12m": 12, "primeiros_24m": 24, "primeiros_36m": 36}
 
@@ -479,9 +503,47 @@ def _serie_anual_pontos(df: pd.DataFrame) -> list[dict]:
     return out
 
 
+def _carregar_conab_opcional() -> dict[str, pd.DataFrame]:
+    """Preço de varejo (R$/kg) da CONAB, se scripts/download_conab.py já
+    rodou com sucesso — ver docs/AUDITORIA_PRECOS_ALIMENTOS.md para a fonte
+    e scripts/download_conab.py para como o arquivo é gerado e validado.
+    Arquivo ausente (fonte bloqueada/fora do ar na última execução) não
+    quebra o build: os itens correspondentes simplesmente seguem só com o
+    índice IBGE, como sempre foi."""
+    path = DATA_PROCESSED / "conab_precos_varejo.csv"
+    if not path.exists():
+        return {}
+    conab = pd.read_csv(path, parse_dates=["ano_mes"])
+    return {item: g.sort_values("ano_mes") for item, g in conab.groupby("item_dashboard")}
+
+
+def _resumo_alimento_preco(df: pd.DataFrame) -> dict | None:
+    """Mesmo formato de resumo por período que _resumo_alimento, mas para o
+    preço absoluto (R$/kg) da CONAB em vez do índice IBGE — usado no
+    'Períodos' com a mesma máquina de cohorts (1/2/3 anos)."""
+    df = df.dropna(subset=["preco_conab_brl_kg"]).sort_values("ano_mes")
+    if df.empty:
+        return None
+    primeiro, ultimo = df.iloc[0], df.iloc[-1]
+    return {
+        "n_meses": len(df),
+        "mes_inicio": _fmt_mes(primeiro["ano_mes"]),
+        "mes_fim": _fmt_mes(ultimo["ano_mes"]),
+        "preco_brl_kg_inicio": round(float(primeiro["preco_conab_brl_kg"]), 4),
+        "preco_brl_kg_fim": round(float(ultimo["preco_conab_brl_kg"]), 4),
+        "variacao_pct_nominal": round(float((ultimo["preco_conab_brl_kg"] / primeiro["preco_conab_brl_kg"] - 1) * 100), 2),
+        "variacao_pct_real": (
+            round(float((ultimo["preco_conab_real_brl_kg"] / primeiro["preco_conab_real_brl_kg"] - 1) * 100), 2)
+            if pd.notna(primeiro.get("preco_conab_real_brl_kg")) and pd.notna(ultimo.get("preco_conab_real_brl_kg"))
+            else None
+        ),
+    }
+
+
 def montar_alimentos(salario: pd.DataFrame) -> dict:
     df = pd.read_csv(DATA_PROCESSED / "cesta_basica_final.csv", parse_dates=["ano_mes"])
     df = df.merge(salario, on="ano_mes", how="left")
+    conab_por_item = _carregar_conab_opcional()
     produtos = {}
     for item, g in df.groupby("item"):
         g = g.dropna(subset=["indice_relativo"]).sort_values("ano_mes")
@@ -496,9 +558,30 @@ def montar_alimentos(salario: pd.DataFrame) -> dict:
             ipca_indice100=_indice100(g["ipca_indice"]),
             indice_poder_compra=_indice100(g["salario_minimo"] / g["indice_relativo"]),
         )
+
+        # Preço absoluto CONAB (R$/kg), quando existe para este item — nunca
+        # substitui o índice IBGE, só soma colunas (left join: mês sem dado
+        # CONAB continua no índice, com preco_conab_brl_kg=None, nunca
+        # preenchido por interpolação ou pelo mês vizinho).
+        conab = conab_por_item.get(item)
+        tem_preco_absoluto = conab is not None and not conab.empty
+        if tem_preco_absoluto:
+            # deflaciona o preço CONAB com o MESMO ipca_indice/ipca_base já
+            # usados para o índice IBGE deste item — um único deflator, para
+            # não misturar dois critérios de "preço real" no mesmo produto.
+            ipca_por_mes = g.set_index("ano_mes")["ipca_indice"]
+            ipca_base = ipca_por_mes.dropna().iloc[-1]
+            conab = conab.merge(ipca_por_mes.rename("ipca_indice_mes").reset_index(), on="ano_mes", how="left")
+            conab["preco_conab_real_brl_kg"] = conab["preco_brl_kg"] * (ipca_base / conab["ipca_indice_mes"])
+            g = g.merge(
+                conab[["ano_mes", "preco_brl_kg", "n_ufs", "preco_conab_real_brl_kg"]].rename(columns={"preco_brl_kg": "preco_conab_brl_kg"}),
+                on="ano_mes", how="left",
+            )
+            fonte_row = conab.iloc[0]
+
         serie = []
         for _, r in g.iterrows():
-            serie.append({
+            linha = {
                 "ano_mes": _fmt_mes(r["ano_mes"]),
                 "periodo": r["periodo"],
                 "indice_relativo": round(float(r["indice_relativo"]), 2),
@@ -507,20 +590,169 @@ def montar_alimentos(salario: pd.DataFrame) -> dict:
                 "ipca_indice100": round(float(r["ipca_indice100"]), 2) if pd.notna(r["ipca_indice100"]) else None,
                 "salario_minimo": round(float(r["salario_minimo"]), 2) if pd.notna(r["salario_minimo"]) else None,
                 "indice_poder_compra": round(float(r["indice_poder_compra"]), 2) if pd.notna(r["indice_poder_compra"]) else None,
-            })
+            }
+            if tem_preco_absoluto:
+                linha["preco_conab_brl_kg"] = round(float(r["preco_conab_brl_kg"]), 4) if pd.notna(r.get("preco_conab_brl_kg")) else None
+                linha["preco_conab_real_brl_kg"] = round(float(r["preco_conab_real_brl_kg"]), 4) if pd.notna(r.get("preco_conab_real_brl_kg")) else None
+                linha["preco_conab_n_ufs"] = int(r["n_ufs"]) if pd.notna(r.get("n_ufs")) else None
+            serie.append(linha)
+
         resumo = {}
         for periodo in ("Bolsonaro", "Lula"):
             resumo[periodo] = _cohorts_para_periodo(g[g["periodo"] == periodo], _resumo_alimento)
-        produtos[item] = {
+
+        produto = {
             "nome": item,
             "tipo": "alimento_indice",
             "unidade": "índice (base 100 = jan/2019)",
-            "nota": NOTA_ALIMENTO,
+            "nota": _nota_alimento(item),
             "serie_mensal": serie,
             "serie_anual": _serie_anual_alimento(g),
             "resumo_periodos": resumo,
         }
+        if tem_preco_absoluto:
+            resumo_preco = {}
+            for periodo in ("Bolsonaro", "Lula"):
+                resumo_preco[periodo] = _cohorts_para_periodo(g[g["periodo"] == periodo], _resumo_alimento_preco)
+            produto["preco_absoluto"] = {
+                "produto_conab": str(fonte_row["produto_conab"]),
+                "nivel_comercializacao": str(fonte_row["nivel_comercializacao"]),
+                "unidade": str(fonte_row["unidade"]),
+                "fonte": str(fonte_row["fonte"]),
+                "oficial_nacional": bool(fonte_row["oficial_nacional"]),
+                "definicao_compativel_indice_ibge": bool(fonte_row["definicao_compativel_indice_ibge"]),
+                "cobertura": "Preço observado nas UFs pesquisadas pela CONAB naquele mês — não todas as 27 unidades da federação necessariamente.",
+                "resumo_periodos": resumo_preco,
+            }
+        produtos[item] = produto
     return produtos
+
+
+# Fator de conversão até bilhões de reais, lido da UNIDADE que a própria API
+# devolveu (nunca assumido) — cobre os nomes mais comuns que o IBGE usa.
+_FATOR_ATE_BILHOES = {"reais": 1e-9, "mil reais": 1e-6, "milhões de reais": 1e-3, "milhoes de reais": 1e-3, "bilhões de reais": 1, "bilhoes de reais": 1}
+
+
+def _resumo_pib(df: pd.DataFrame) -> dict | None:
+    """Mesmo formato de _resumo_taxa (início/fim/mínima/máxima do recorte),
+    mais um crescimento REAL ACUMULADO no período — o produto encadeado de
+    cada ano fechado (1 + taxa/100), não a diferença simples início-fim que
+    _resumo_taxa calcula para Selic/IPCA (que são níveis de taxa, não
+    crescimentos que se compõem ano a ano)."""
+    base = _resumo_taxa(df)
+    if base is None:
+        return None
+    fechados = df.dropna(subset=["taxa_aa"]).sort_values("ano_mes")
+    fator = 1.0
+    for v in fechados["taxa_aa"]:
+        fator *= 1 + float(v) / 100
+    base["crescimento_acumulado_pct"] = round((fator - 1) * 100, 2)
+    base["anos_com_resultado_fechado"] = int(len(fechados))
+    return base
+
+
+def montar_pib() -> dict:
+    """PIB — Sistema de Contas Nacionais (IBGE). Ver scripts/download_pib.py
+    para as duas tabelas oficiais usadas (5932 trimestral, 6784 anual) e por
+    que a variação anual usada aqui é a leitura "acumulada no ano" do 4º
+    trimestre — o mesmo número que o IBGE e a imprensa chamam de "o PIB
+    cresceu X% no ano", não uma média inventada das quatro leituras
+    trimestrais. Como os dois arquivos-fonte são opcionais (o download pode
+    falhar — ver pib_status.json), a ausência de qualquer um deles não
+    quebra o build: falta o que falta, sem preencher com nada calculado."""
+    trim_path = DATA_PROCESSED / "pib_trimestral.csv"
+    anual_path = DATA_PROCESSED / "pib_anual.csv"
+    if not trim_path.exists() and not anual_path.exists():
+        return {}
+
+    trimestral = pd.read_csv(trim_path) if trim_path.exists() else pd.DataFrame()
+    anual = pd.read_csv(anual_path) if anual_path.exists() else pd.DataFrame()
+
+    serie_trimestral = []
+    taxa_fechada_por_ano = {}
+    if not trimestral.empty:
+        trimestral = trimestral.copy()
+        trimestral["ano"] = trimestral["periodo_codigo"].astype(str).str[:4].astype(int)
+        trimestral["trimestre_num"] = trimestral["periodo_codigo"].astype(str).str[4:6].astype(int)
+        trimestral = trimestral.sort_values(["ano", "trimestre_num"])
+        for _, r in trimestral.iterrows():
+            serie_trimestral.append({
+                "trimestre": f"{int(r['ano'])}-T{int(r['trimestre_num'])}",
+                "ano_mes": f"{int(r['ano'])}-{(int(r['trimestre_num']) - 1) * 3 + 1:02d}-01",
+                "variacao_interanual": round(float(r["interanual"]), 2) if pd.notna(r.get("interanual")) else None,
+                "variacao_dessazonalizada": round(float(r["dessazonalizada"]), 2) if pd.notna(r.get("dessazonalizada")) else None,
+            })
+            if int(r["trimestre_num"]) == 4 and pd.notna(r.get("acumulado_ano")):
+                taxa_fechada_por_ano[int(r["ano"])] = float(r["acumulado_ano"])
+
+    anual_por_ano = {}
+    if not anual.empty:
+        anual = anual.copy()
+        anual["ano"] = anual["ano"].astype(int)
+        for _, r in anual.iterrows():
+            fator_nominal = _FATOR_ATE_BILHOES.get(str(r.get("unidade_pib_nominal", "")).strip().lower())
+            anual_por_ano[int(r["ano"])] = {
+                "pib_nominal_bilhoes": round(float(r["pib_nominal"]) * fator_nominal, 2) if pd.notna(r.get("pib_nominal")) and fator_nominal else None,
+                "pib_per_capita_rs": round(float(r["pib_per_capita"]), 2) if pd.notna(r.get("pib_per_capita")) else None,
+                "populacao_mil": round(float(r["populacao"]), 1) if pd.notna(r.get("populacao")) else None,
+            }
+            if fator_nominal is None and pd.notna(r.get("pib_nominal")):
+                logger.warning(f"PIB nominal de {r['ano']}: unidade '{r.get('unidade_pib_nominal')}' não reconhecida — pib_nominal_bilhoes fica None nesse ano, em vez de arriscar a casa decimal errada.")
+
+    anos = sorted(set(taxa_fechada_por_ano) | set(anual_por_ano))
+    if not anos and not serie_trimestral:
+        return {}
+
+    serie = []
+    for ano in anos:
+        iso = f"{ano}-01-01"
+        extra = anual_por_ano.get(ano, {})
+        serie.append({
+            "ano_mes": iso,
+            "ano": ano,
+            "periodo": "Bolsonaro" if pd.Timestamp(iso) < pd.Timestamp(PERIODO_CORTE) else "Lula",
+            "taxa_aa": round(taxa_fechada_por_ano[ano], 2) if ano in taxa_fechada_por_ano else None,
+            "resultado_anual": ano in taxa_fechada_por_ano,
+            "pib_nominal_bilhoes": extra.get("pib_nominal_bilhoes"),
+            "pib_per_capita_rs": extra.get("pib_per_capita_rs"),
+            "populacao_mil": extra.get("populacao_mil"),
+        })
+    df_serie = pd.DataFrame(serie)
+    df_serie["ano_mes"] = pd.to_datetime(df_serie["ano_mes"])
+
+    resumo = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo[periodo] = _cohorts_para_periodo(df_serie[df_serie["periodo"] == periodo], _resumo_pib)
+
+    ultimo_trim = serie_trimestral[-1] if serie_trimestral else None
+    return {
+        "PIB": {
+            "nome": "PIB",
+            "tipo": "pib",
+            "unidade": "% ao ano (variação real, acumulada no ano)",
+            "nota": (
+                "PIB real (crescimento) e PIB nominal/per capita (valores em R$) são "
+                "contas diferentes, nunca misturadas no mesmo número. A variação "
+                "anual mostrada aqui é a leitura \"acumulada no ano\" do 4º "
+                "trimestre — o mesmo número que o IBGE e a imprensa chamam de "
+                "\"o PIB cresceu X% no ano\". Um ano sem essa leitura ainda fechada "
+                "aparece com os trimestres disponíveis, nunca com um resultado "
+                "anual estimado. O IBGE pode revisar dados de PIB já publicados em "
+                "divulgações seguintes — este projeto reflete a última revisão "
+                "disponível no momento em que os dados foram baixados, não um "
+                "arquivo histórico congelado. Proximidade temporal entre um "
+                "evento e uma variação do PIB não demonstra causalidade."
+            ),
+            "serie_mensal": [
+                {k: (None if pd.isna(v) else v) for k, v in row.items()}
+                for row in df_serie.assign(ano_mes=df_serie["ano_mes"].dt.strftime("%Y-%m-%d")).to_dict("records")
+            ],
+            "serie_trimestral": serie_trimestral,
+            "serie_anual": _serie_anual_taxa(df_serie),
+            "resumo_periodos": resumo,
+            "ultimo_trimestre": ultimo_trim,
+        }
+    }
 
 
 def montar_fotografia_mensal(produtos: dict) -> dict:
@@ -558,6 +790,7 @@ def main() -> None:
         **montar_combustiveis(salario),
         **montar_alimentos(salario),
         **montar_indicadores(salario, ipca, ibovespa),
+        **montar_pib(),
     }
 
     dados = {
