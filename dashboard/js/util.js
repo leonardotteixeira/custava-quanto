@@ -35,7 +35,7 @@ export const getLatestAvailableDate = (rows, get) => { for (let i = rows.length 
 export const PRODUCT_ORDER = [
   "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
   "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
-  "DOLAR", "IBOVESPA", "SELIC", "IPCA",
+  "DOLAR", "IBOVESPA", "SELIC", "IPCA", "PIB",
 ];
 
 export const META = {
@@ -54,12 +54,14 @@ export const META = {
   "IBOVESPA": { slug: "ibovespa", curto: "Ibovespa", titulo: "Ibovespa", de: "do Ibovespa", sem: "do Ibovespa" },
   "SELIC": { slug: "selic", curto: "Selic", titulo: "Taxa Selic", de: "da Selic", sem: "da Selic" },
   "IPCA": { slug: "ipca", curto: "Inflação (IPCA)", titulo: "Inflação", de: "da inflação", sem: "da inflação" },
+  "PIB": { slug: "pib", curto: "PIB", titulo: "PIB", de: "do PIB", sem: "do PIB" },
 };
 
 // Família de cada história (índice e contexto).
 export function familia(prod) {
   if (prod.tipo === "combustivel") return "comb";
   if (prod.tipo === "alimento_indice") return "alim";
+  if (prod.tipo === "pib") return "econ";
   return "merc";
 }
 
@@ -67,17 +69,24 @@ export function familia(prod) {
 //   preco  : combustível e dólar (R$ de verdade)
 //   indice : alimentos (índice relativo, NÃO é R$)
 //   taxa   : Selic e IPCA 12 meses (% ao ano; variação em p.p.)
+//   pib    : PIB real — variação anual (%); mesma unidade/tratamento de
+//            "taxa" nas funções genéricas abaixo (ver isTaxaLike), mas com
+//            tipo próprio porque PIB não entra na régua Selic×IPCA do
+//            Contexto (ver renderContext) nem na família "Mercados".
 //   pontos : Ibovespa
 export function kind(prod) {
   if (prod.tipo === "combustivel" || prod.tipo === "cambio") return "preco";
   if (prod.tipo === "alimento_indice") return "indice";
-  return prod.tipo; // "taxa" | "pontos"
+  return prod.tipo; // "taxa" | "pib" | "pontos"
 }
+// "taxa" e "pib" são as duas famílias de porcentagem-ao-ano do projeto:
+// mesma formatação, mesma régua "variação em p.p." — só o texto muda.
+export const isTaxaLike = (prod) => kind(prod) === "taxa" || kind(prod) === "pib";
 export function nativeValue(prod) {
   switch (kind(prod)) {
     case "preco": return (r) => r.preco_nominal;
     case "indice": return (r) => r.indice_relativo;
-    case "taxa": return (r) => r.taxa_aa;
+    case "taxa": case "pib": return (r) => r.taxa_aa;
     default: return (r) => r.pontos;
   }
 }
@@ -99,7 +108,7 @@ export function fmtValue(prod, v, { compact = false } = {}) {
   switch (kind(prod)) {
     case "preco": return fmtBRL(v, 2);
     case "indice": return fmtNum(v, 1);
-    case "taxa": return `${fmtNum(v, 2)}%`;
+    case "taxa": case "pib": return `${fmtNum(v, kind(prod) === "pib" ? 1 : 2)}%`;
     default: return compact ? `${fmtNum(v / 1000, 1)} mil pts` : `${fmtInt(v)} pts`;
   }
 }
@@ -109,15 +118,17 @@ export function fmtValueHTML(prod, v) {
   switch (kind(prod)) {
     case "preco": return `<span class="cur">R$</span>${fmtNum(v, 2)}`;
     case "indice": return `${fmtNum(v, 1)}<span class="suf">índice</span>`;
-    case "taxa": return `${fmtNum(v, 2)}<span class="suf">%</span>`;
+    case "taxa": case "pib": return `${fmtNum(v, kind(prod) === "pib" ? 1 : 2)}<span class="suf">%</span>`;
     default: return `${fmtInt(v)}<span class="suf">pts</span>`;
   }
 }
 
-// Variação entre dois valores já prontos: taxa em p.p., o resto em %.
+// Variação entre dois valores já prontos: taxa/PIB em p.p. (diferença entre
+// duas taxas já é uma diferença, não uma "variação percentual da
+// variação"), o resto em %.
 export function change(prod, a, b) {
-  if (isNil(a) || isNil(b) || (kind(prod) !== "taxa" && a === 0)) return { v: null, unit: "%" };
-  return kind(prod) === "taxa" ? { v: b - a, unit: "p.p." } : { v: (b / a - 1) * 100, unit: "%" };
+  if (isNil(a) || isNil(b) || (!isTaxaLike(prod) && a === 0)) return { v: null, unit: "%" };
+  return isTaxaLike(prod) ? { v: b - a, unit: "p.p." } : { v: (b / a - 1) * 100, unit: "%" };
 }
 export const fmtChange = (c, d) => (c.unit === "p.p." ? fmtPP(c.v, d ?? 2) : fmtPct(c.v, d ?? 1));
 
@@ -139,6 +150,13 @@ export const periodoDe = (iso) => (iso < PERIODO_CORTE ? "Bolsonaro" : "Lula");
 export const lastValid = (rows, get) => { for (let i = rows.length - 1; i >= 0; i--) if (!isNil(get(rows[i]))) return rows[i]; return null; };
 export const firstValid = (rows, get) => rows.find((r) => !isNil(get(r))) || null;
 export const rowAt = (rows, iso) => rows.find((r) => mesKey(r.ano_mes) === mesKey(iso)) || null;
+// PIB só tem uma linha por ano (jan/ano) — achar por mês exato quase nunca
+// bate. Aqui achamos o registro do ANO do mês pedido, sem inventar um valor
+// mensal que a fonte não tem.
+export const rowAtYear = (rows, iso) => rows.find((r) => r.ano_mes.slice(0, 4) === iso.slice(0, 4)) || null;
+// Espaçamento máximo (em meses) entre dois pontos antes da linha do gráfico
+// se interromper — ver charts.js:segments(). PIB é anual (jan de cada ano).
+export const cadenceGap = (prod) => (prod.tipo === "pib" ? 12 : 1);
 
 // Item de cesta básica com preço observado (R$/kg) da CONAB somado ao índice
 // IBGE — ver scripts/download_conab.py e docs/AUDITORIA_PRECOS_ALIMENTOS.md.
