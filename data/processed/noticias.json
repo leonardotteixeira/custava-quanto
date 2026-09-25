@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T13:51:39+00:00",
+  "gerado_em": "2026-09-25T13:58:35+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -41,8 +41,8 @@
       "produtos": [
         "GLP"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/8zUyu9cK9eJgvjP3yye2j_pP24M=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/tmcj_0025.jpg?itok=wr_tcsQm",
+      "credito_imagem": "Marcello Casal/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n003"
@@ -56,8 +56,8 @@
       "produtos": [
         "alimentos"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/jSHqubpCbFo_jD8k3nKqnIv92NE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1064940-edit_04225.jpg?itok=V_yFJMWW",
+      "credito_imagem": "Tânia Rêgo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n004"
@@ -71,7 +71,7 @@
       "produtos": [
         "IBOVESPA"
       ],
-      "imagem": "https://imagens.ebc.com.br/UW9mh-59pgH2TtngTgCCuH1oojw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/ibovespa.jpg?itok=15elne7C",
+      "imagem": "https://imagens.ebc.com.br/ahpRBytZ4L02mpHq5tXyIEPOdeI=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/ibovespa.jpg?itok=GSIjrCNi",
       "credito_imagem": "Arquivo/ Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -87,7 +87,7 @@
         "GASOLINA",
         "DIESEL"
       ],
-      "imagem": "https://imagens.ebc.com.br/dfREycXmsXhxu5Ufhbn7DyNBPPk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807919.jpg?itok=c388OzRu",
+      "imagem": "https://imagens.ebc.com.br/HgQQDZbIcbZvvLQ9e_VIPUztSZk=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807919.jpg?itok=nLPbxFI3",
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -117,7 +117,7 @@
       "produtos": [
         "DOLAR"
       ],
-      "imagem": "https://imagens.ebc.com.br/qbTul4piB-wKP_JqLNKpI2216f4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_10071918650.jpg?itok=S5SikUaD",
+      "imagem": "https://imagens.ebc.com.br/fJgyXIIHMP8tLfWCvVmTsXjDmgw=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_10071918650.jpg?itok=5s1ogwq1",
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -162,8 +162,8 @@
       "produtos": [
         "ETANOL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/rFHfCAqp-2XdErBXHleQsBxF9jY=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/cana-de-acucar.jpeg?itok=1C9A0uHT",
+      "credito_imagem": "Elza Fiuza/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n011"
@@ -192,7 +192,7 @@
       "produtos": [
         "DOLAR"
       ],
-      "imagem": "https://imagens.ebc.com.br/8jzJ5UG0dPGpZwUSkJOv-s9iihg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/dolar_6.jpg?itok=fCtVah81",
+      "imagem": "https://imagens.ebc.com.br/_tLpmXJkTER4gKAwxnf-vUl84aI=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/dolar_6.jpg?itok=1Dw923hf",
       "credito_imagem": "Marcello Casal Jr./Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -226,7 +226,7 @@
       "produtos": [
         "SELIC"
       ],
-      "imagem": "https://imagens.ebc.com.br/3VXrOhYg0p-Bt2kaFhwd1s2UePI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_economia_0413202009.jpg?itok=FonBpLQc",
+      "imagem": "https://imagens.ebc.com.br/0KN7IARqDMTbD09D3d5EkSzcU48=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_economia_0413202009.jpg?itok=QdbVS1tk",
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -241,8 +241,8 @@
       "produtos": [
         "Arroz"
       ],
-      "imagem": "https://imagens.ebc.com.br/WNf2OVerTYTUVQNfiXecUl-v-TY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/arroz_1009201524.jpg?itok=qW86bIT5",
-      "credito_imagem": "Marcello Casal JrAgência Brasil · CC BY 4.0",
+      "imagem": "https://imagens.ebc.com.br/JHjbksRkx18BDC3e3lo2a5Kg39U=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/arroz_1009201524.jpg?itok=FG2yxKkp",
+      "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n016"
@@ -256,8 +256,8 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/NMcXECRiDuc6LQNnXDJFoXbPb0c=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/jfcrz_abr_30051916366df.jpg?itok=cfvzvaNS",
+      "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n017"
@@ -286,8 +286,8 @@
       "produtos": [
         "alimentos"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/lA1-rO1Kr80aYrdYMnTr7Z7dgYE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/feijao.jpg?itok=LP1dIgj9",
+      "credito_imagem": "Antonio Cruz/ABr · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n019"
@@ -319,8 +319,8 @@
         "DIESEL",
         "GLP"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/6CkJ5HsJgnMPmyrJxqXuET__30Q=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_abr5101.jpg?itok=g1m7Bc2m",
+      "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n021"
@@ -334,8 +334,8 @@
       "produtos": [
         "ETANOL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/OTdlz1eqNLBe_1QQbCB7sE96O7g=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807918.jpg?itok=_nRykD9n",
+      "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n022"
@@ -364,8 +364,8 @@
       "produtos": [
         "SELIC"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/u87T89Tlm_bnEg1JxZsPqr0d6WU=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_economia_0413202012.jpg?itok=eg1USNW2",
+      "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n024"
@@ -409,7 +409,7 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": "https://imagens.ebc.com.br/JllSqU-KiK380BD8VcCKMQ9ByaM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210416_0.jpg?itok=inPdEN_q",
+      "imagem": "https://imagens.ebc.com.br/_FJxFLi6KD6mvgOUUEgSnuYQMQM=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210416_0.jpg?itok=NJPzWyCD",
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -425,7 +425,7 @@
         "GASOLINA",
         "GLP"
       ],
-      "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
+      "imagem": "https://imagens.ebc.com.br/gTPAfCtMPm2dJ16rS2XuxBehtFo=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=0EsdfZaq",
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -441,7 +441,7 @@
         "GASOLINA",
         "DIESEL"
       ],
-      "imagem": "https://imagens.ebc.com.br/EaACJclbxJjeKSXuk2tbodc4eBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=PZ3ViLwM",
+      "imagem": "https://imagens.ebc.com.br/gTPAfCtMPm2dJ16rS2XuxBehtFo=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=0EsdfZaq",
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -471,8 +471,8 @@
       "produtos": [
         "ETANOL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/zLxNX4zU609McMCwZXF1iHJZ7Oc=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/rvrsa_1509210385.jpg?itok=nVw0WwAH",
+      "credito_imagem": "Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n031"
@@ -486,7 +486,7 @@
       "produtos": [
         "GASOLINA"
       ],
-      "imagem": "https://imagens.ebc.com.br/3cQCn6xsSSy6CLwIvD9_TYNIgxE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/aumento_gazolina_rj_0506202742.jpg?itok=S4GWGDfI",
+      "imagem": "https://imagens.ebc.com.br/Ip19am18e3DmYcxoCFzHCdUkKjw=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/aumento_gazolina_rj_0506202742.jpg?itok=LvR8yvtJ",
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -564,7 +564,7 @@
       "produtos": [
         "GASOLINA"
       ],
-      "imagem": "https://imagens.ebc.com.br/_mN1h3nkq59vMBSGlCFH3_Ljvoc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_posto_de_combustivel_mcajr_abr_1609210451.jpg?itok=U3txCMXD",
+      "imagem": "https://imagens.ebc.com.br/EakTTJrRtwr_VO4j_DBAgqNdbNE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_posto_de_combustivel_mcajr_abr_1609210451.jpg?itok=9dUN4QvW",
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -579,7 +579,7 @@
       "produtos": [
         "SELIC"
       ],
-      "imagem": "https://imagens.ebc.com.br/GTGJFRkOFeeont_HLFwXEpkx-nA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_mcajr_abr_0104222279_0.jpg?itok=4Mw2u0dl",
+      "imagem": "https://imagens.ebc.com.br/pZiOgdGuXB2OHUeJwOM1aZUZOys=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_mcajr_abr_0104222279_0.jpg?itok=Fo0G81tZ",
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -594,7 +594,7 @@
       "produtos": [
         "Leite longa vida"
       ],
-      "imagem": "https://imagens.ebc.com.br/W14p8Lo5IaK9IdWSmcONkRja0nw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/supermercado_economia_20220729_0887.jpg?itok=inNuKwP0",
+      "imagem": "https://imagens.ebc.com.br/0dMCwreNp0KUtNHPs9ELtU5njww=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/supermercado_economia_20220729_0887.jpg?itok=3hIXtsQs",
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -609,7 +609,7 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": "https://imagens.ebc.com.br/edXhlA_iXSD5sD95m2wU72O5eS8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/real_moedadinheiro_jfcrz_abr_1701220048_1.jpg?itok=H30i3fvq",
+      "imagem": "https://imagens.ebc.com.br/AChhqV_tqYhYSrsNlssVxs30_f4=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/real_moedadinheiro_jfcrz_abr_1701220048_1.jpg?itok=x0brd3gH",
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -640,8 +640,8 @@
         "DOLAR",
         "IBOVESPA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/JDvHQVEncsWFKMHWIPjEg4-zQro=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221210.jpg?itok=1FxVwgAy",
+      "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n042"
@@ -718,8 +718,8 @@
       "produtos": [
         "alimentos"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/5gy1kG0_gIFehzVqH4mMaNqUbvA=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/supermercado_economia_20220729_0888.jpg?itok=Gsb9m-Jq",
+      "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n047"
@@ -733,8 +733,8 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/GyxytXByQze3A9YkQXtDTU42qTs=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/economia_ilustracao-5.jpg?itok=ifWO4rkz",
+      "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n048"
@@ -826,8 +826,8 @@
         "GASOLINA",
         "DIESEL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/twjWuHUZHR2hBjjQU9hqEsXR2q4=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/fiscalizacao-postos-de-combustivel_mcamgo_abr_150320211818-32.jpg?itok=u5d-BKa1",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n054"
@@ -857,7 +857,7 @@
         "GASOLINA",
         "GLP"
       ],
-      "imagem": "https://imagens.ebc.com.br/MfGYzZrLJwsYXyyWSeDIe97mFTM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807918.jpg?itok=tobSJlmc",
+      "imagem": "https://imagens.ebc.com.br/OTdlz1eqNLBe_1QQbCB7sE96O7g=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tmazs_edit_24051807918.jpg?itok=_nRykD9n",
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -872,7 +872,7 @@
       "produtos": [
         "Leite longa vida"
       ],
-      "imagem": "https://imagens.ebc.com.br/yMdAWG2c_WDj5HsZgWsLU3yaSnk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_de_imagens_vac_abr_2907221191.jpg?itok=vNDxuM1Y",
+      "imagem": "https://imagens.ebc.com.br/GZXnJq1ngI0lPiCtU6gcAHcykA4=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_de_imagens_vac_abr_2907221191.jpg?itok=0HpOpRHn",
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -932,8 +932,8 @@
       "produtos": [
         "Café moído"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/oUqD3dMBrsEw9Ou4x-9nm_LxRxA=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_17061917250.jpg?itok=tMYQmiDD",
+      "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n061"
@@ -947,7 +947,7 @@
       "produtos": [
         "Carne bovina (patinho)"
       ],
-      "imagem": "https://imagens.ebc.com.br/Yg1ulJ7uKOyFFhu44X657Fdcbjk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/01/10/inlacao1.jpg?itok=NvMJZWYD",
+      "imagem": "https://imagens.ebc.com.br/VPMH-xGkqzi7q2mv5bHFo0xu8b8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/01/10/inlacao1.jpg?itok=lgJ8cw1P",
       "credito_imagem": "Joédson Alves/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1008,8 +1008,8 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/7AHx3qLwRYpJeGkiHUS2aG5h_x8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/001_agencia_brasil011211frp_6763.jpg?itok=Hmb3gk5w",
+      "credito_imagem": "Fabio Rodrigues Pozzebom/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n066"
@@ -1038,8 +1038,8 @@
       "produtos": [
         "ETANOL"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/IRu-Ysn3sD-tS1Zk_x4DlvjDpC8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/posto_de_gasolina_jfcrz_abr_0605223813.jpg?itok=7XvsyYqe",
+      "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 0.86,
       "id": "n068"
@@ -1053,7 +1053,7 @@
       "produtos": [
         "Café moído"
       ],
-      "imagem": "https://imagens.ebc.com.br/SMRK89zL4TbyDTTkOUkvrlpwmWg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_17061917250.jpg?itok=YNihncoY",
+      "imagem": "https://imagens.ebc.com.br/oUqD3dMBrsEw9Ou4x-9nm_LxRxA=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_17061917250.jpg?itok=tMYQmiDD",
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1129,7 +1129,7 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": "https://imagens.ebc.com.br/BvL6tQQdt_Ew12RtZEA43y_8L8A=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210423_0.jpg?itok=IAozND8N",
+      "imagem": "https://imagens.ebc.com.br/FmShOwBMKjM6q8A5-0RygtI6k_4=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210423_0.jpg?itok=-M8-qJCI",
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1144,7 +1144,7 @@
       "produtos": [
         "DIESEL"
       ],
-      "imagem": "https://imagens.ebc.com.br/jKlflsgIFQA9sf8IXH5NskwocVQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/11/08/dji_0374-2.jpg?itok=ISHxLKnO",
+      "imagem": "https://imagens.ebc.com.br/PI3nN0DCM9acM2SlOZi8g_l_CeA=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/11/08/dji_0374-2.jpg?itok=on_Qwosv",
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1160,8 +1160,8 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/gTPAfCtMPm2dJ16rS2XuxBehtFo=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1605.jpg?itok=0EsdfZaq",
+      "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
@@ -1243,8 +1243,8 @@
       "produtos": [
         "GLP"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/AvJAg1Nr8HVfdrgRwITW02v2lgg=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/11/08/_d6a4510-3.jpg?itok=ClHVjVKS",
+      "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n081"
@@ -1259,7 +1259,7 @@
         "DOLAR",
         "IBOVESPA"
       ],
-      "imagem": "https://imagens.ebc.com.br/mrDjTR2zqhBRdsHsB9DYyyoKlEs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221206.jpg?itok=Lfnkvs7j",
+      "imagem": "https://imagens.ebc.com.br/Thsrc1ErYS-NQJw33qt7dWKt4h0=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221206.jpg?itok=NR5wYB3s",
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1274,7 +1274,7 @@
       "produtos": [
         "SELIC"
       ],
-      "imagem": "https://imagens.ebc.com.br/BilWMySlh6B20qJXlgb3bmq70tU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_abr_30091923895.jpg?itok=36m4EcUc",
+      "imagem": "https://imagens.ebc.com.br/sZMWmzi-_wFHDDFepV8JMMQK0bI=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco_central_abr_30091923895.jpg?itok=IB8DxzcR",
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1289,8 +1289,8 @@
       "produtos": [
         "GASOLINA"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/6CkJ5HsJgnMPmyrJxqXuET__30Q=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_abr5101.jpg?itok=g1m7Bc2m",
+      "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "id": "n084"
@@ -1335,8 +1335,8 @@
         "GASOLINA",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/nxKDxXKvotlDKI6qp8wIPaCvca4=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/935804-postos_combustiveis_aumento.jpg?itok=2Wl8v99k",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
@@ -1387,8 +1387,8 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/Zlta6dvep36AN2pOh0eBhg950Ks=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/ffraz_abr2405182855_1.jpg?itok=SYn83ZFZ",
+      "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",

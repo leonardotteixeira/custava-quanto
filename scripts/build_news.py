@@ -144,6 +144,39 @@ def data_publicacao(p: MetaParser) -> str | None:
     return None
 
 
+# Foto de capa da Agência Brasil: a página traz o bloco "capa-materia" com a
+# <img data-echo=URL> e a <figcaption class="credito-foto">© Crédito</figcaption>
+# quando a matéria TEM foto própria. Sem esse bloco, o og:image é só o padrão
+# do site (logo/miniatura genérica) e não vale como imagem da matéria.
+# Só entra foto cujo crédito é da própria EBC ("…/Agência Brasil", "…/ABr"):
+# é a que está sob CC BY 4.0. Fotos de terceiros (Adobe Stock, Reuters, AFP,
+# Getty, agências parceiras) ficam de fora mesmo dentro de uma matéria da ABr.
+# (a própria página às vezes omite a barra: "Marcello Casal JrAgência Brasil")
+CREDITO_EBC = re.compile(r"(?:Ag[êe]ncia Brasil|/\s*ABr|EBC)\s*$", re.I)
+
+
+def foto_capa_agencia_brasil(html: str) -> tuple[str | None, str | None, str]:
+    """(url, crédito, motivo). motivo != 'ok' explica por que não há foto usável."""
+    i = html.find('class="capa-materia')
+    if i < 0:
+        return None, None, "sem bloco de capa"
+    bloco = html[i:i + 6000]
+    fim = bloco.find("<!-- END scald")
+    if fim > 0:
+        bloco = bloco[:fim]
+    img = re.search(r'data-echo="([^"]+)"', bloco)
+    cred = re.search(r'<figcaption[^>]*credito-foto[^>]*>(.*?)</figcaption>', bloco, re.S)
+    if not img:
+        return None, None, "matéria sem foto de capa"
+    credito = unescape(re.sub(r"<[^>]+>", "", cred.group(1))).replace("©", "").strip() if cred else ""
+    if not credito:
+        return None, None, "foto sem crédito"
+    if CREDITO_RESTRITO.search(credito) or not CREDITO_EBC.search(credito):
+        return None, None, f"crédito de terceiros ({credito})"
+    credito = re.sub(r"([A-Za-z.])(Ag[êe]ncia Brasil)$", lambda m: f"{m.group(1)}/{m.group(2)}", credito)
+    return unescape(img.group(1)), credito, "ok"
+
+
 def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
     url = item["url"]
     try:
@@ -190,13 +223,16 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
         saida["tema"] = item["tema"]
     if data_pag and item.get("data") and data_pag != item["data"]:
         log.info("  data ajustada pela página: %s -> %s", item["data"], data_pag)
-    # Foto só com crédito conferido na curadoria e sem restrição: mesmo na
-    # Agência Brasil há fotos de agências privadas ("Reuters/Proibida
-    # reprodução"), que não são CC BY.
-    credito = (item.get("credito_imagem") or "").strip()
-    if dominio in DOMINIOS_IMAGEM_LIVRE and item.get("imagem") and credito and not CREDITO_RESTRITO.search(credito):
-        saida["imagem"] = item["imagem"]
-        saida["credito_imagem"] = f"{credito} · CC BY 4.0"
+    # Foto de capa: lida da própria página da matéria (Agência Brasil, CC BY 4.0),
+    # com o crédito impresso nela. Outros veículos não licenciam a reprodução
+    # das fotos, então ficam sem imagem. Nada é gerado nem substituído.
+    if dominio in DOMINIOS_IMAGEM_LIVRE:
+        url_foto, credito, motivo = foto_capa_agencia_brasil(r.text)
+        if motivo == "ok":
+            saida["imagem"] = url_foto
+            saida["credito_imagem"] = f"{credito} · CC BY 4.0"
+        else:
+            log.info("  sem foto: %s", motivo)
     return saida, "ok"
 
 
