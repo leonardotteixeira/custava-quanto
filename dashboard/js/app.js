@@ -41,7 +41,7 @@ const eventsFor = (prod) => EVENTS.filter((e) => !e.fam || e.fam === familia(pro
 const FAMS = [
   { key: "comb", title: "Combustíveis", unit: "R$ · média nacional" },
   { key: "alim", title: "Alimentos", unit: "índice · não é R$" },
-  { key: "merc", title: "Economia e mercados", unit: "unidade de cada um" }, // inclui o PIB
+  { key: "merc", title: "Economia", unit: "unidade de cada um" }, // inclui mercados e PIB
 ];
 
 // ------------------------------------------------------------ unidades
