@@ -41,8 +41,7 @@ const eventsFor = (prod) => EVENTS.filter((e) => !e.fam || e.fam === familia(pro
 const FAMS = [
   { key: "comb", title: "Combustíveis", unit: "R$ · média nacional" },
   { key: "alim", title: "Alimentos", unit: "índice · não é R$" },
-  { key: "econ", title: "Economia", unit: "PIB · IBGE" },
-  { key: "merc", title: "Mercados", unit: "unidade de cada um" },
+  { key: "merc", title: "Economia e mercados", unit: "unidade de cada um" }, // inclui o PIB
 ];
 
 // ------------------------------------------------------------ unidades
@@ -740,7 +739,7 @@ function renderContext() {
     IBOVESPA: "O Ibovespa reflete expectativas sobre lucros, juros, câmbio e cenário internacional.",
     SELIC: "O Copom define a Selic olhando expectativas de inflação, não só a inflação passada.",
     IPCA: "A inflação reflete oferta e demanda, câmbio, safra e muitos outros fatores; a Selic é só uma peça.",
-    econ: "O PIB reflete consumo, investimento, gasto público e comércio exterior somados; nenhum fator isolado o explica.",
+    PIB: "O PIB reflete consumo, investimento, gasto público e comércio exterior somados; nenhum fator isolado o explica.",
   };
   $("#context-caveat").textContent = `Estas séries aparecem juntas porque andam no mesmo calendário. Isso não prova que uma explique a outra. ${caveats[familia(prod) === "merc" ? code : familia(prod)]}`;
 
@@ -887,7 +886,10 @@ function renderMachine(rebuild = false) {
     const r = it.rowLookup(it.prod.serie_mensal, iso);
     const v = r ? it.get(r) : null;
     const lr = lastValid(it.prod.serie_mensal, it.get);
-    countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? `<span class="nodata">sem dado</span>` : it.html(x)), 420);
+    // mês sem coleta da ANP: se o pipeline calculou uma ESTIMATIVA, ela aparece
+    // com "≈" e estilo próprio, nunca igual a um dado oficial.
+    const est = isNil(v) && !isPib ? (it.prod.estimativas || []).find((e) => mesKey(e.ano_mes) === mesKey(iso)) : null;
+    countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? (est ? `<span class="est" title="Estimativa, não é dado da ANP">≈ ${it.html(est.valor)}</span>` : `<span class="nodata">sem dado</span>`) : it.html(x)), 420);
     const qual = it.code === "SALARIO" ? "vigente em" : it.code === "IBOVESPA" ? "fechamento de" : it.code === "IPCA" ? "12 meses até" : isPib ? "resultado fechado de" : kind(it.prod) === "indice" ? "índice em" : "média de";
     el.querySelector(".inst-now").innerHTML = lr ? `${!isPib && iso === lr.ano_mes ? "é o último mês com dado" : `${qual} ${isPib ? lr.ano.toString() : mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
     let extra = isPib
@@ -899,7 +901,9 @@ function renderMachine(rebuild = false) {
       const antes = [...rows].reverse().find((q) => q.ano_mes < iso), depois = rows.find((q) => q.ano_mes > iso);
       const viz = [antes && `${mesAno(antes.ano_mes)}: ${it.fmt(it.get(antes))}`, depois && `${mesAno(depois.ano_mes)}: ${it.fmt(it.get(depois))}`].filter(Boolean).join(" · ");
       const motivo = mesKey(iso) === ANP_SEM_PESQUISA.mes && it.prod.tipo === "combustivel" ? ANP_SEM_PESQUISA.texto : "a ANP não tem coleta neste mês";
-      extra = `${motivo}${viz ? ` Antes e depois: ${viz}.` : ""}`;
+      extra = est
+        ? `Estimativa nossa, não é dado da ANP. ${motivo} Faixa provável: ${it.fmt(est.intervalo[0])} a ${it.fmt(est.intervalo[1])}.`
+        : `${motivo}${viz ? ` Antes e depois: ${viz}.` : ""}`;
     }
     el.querySelector(".inst-extra").textContent = extra;
     el.querySelector(".inst-spark").innerHTML = spark(it.prod.serie_mensal.map((q) => ({ iso: q.ano_mes, v: it.get(q) })), {
@@ -915,7 +919,8 @@ function renderMachine(rebuild = false) {
   gap.hidden = !semDado.length;
   if (semDado.length) {
     const motivo = mesKey(iso) === ANP_SEM_PESQUISA.mes ? ANP_SEM_PESQUISA.texto : "A ANP não tem coleta de preços neste mês.";
-    gap.innerHTML = `<strong>${mesAnoLongo(iso)}: combustíveis sem dado.</strong> ${motivo} Os demais indicadores (dólar, salário mínimo, Selic, inflação e Ibovespa) têm dado normal neste mês.`;
+    const ests = semDado.map((it) => ({ it, e: (it.prod.estimativas || []).find((x) => mesKey(x.ano_mes) === mesKey(iso)) })).filter((x) => x.e);
+    gap.innerHTML = `<strong>${mesAnoLongo(iso)}: combustíveis sem dado oficial.</strong> ${motivo} ${ests.length ? "Os valores com “≈” são estimativas nossas, não dados da ANP." : ""} Os demais indicadores (dólar, salário mínimo, Selic, inflação e Ibovespa) têm dado normal neste mês.${ests.length ? estimativaDetalhes(ests) : ""}`;
   }
 
   // cabeçalho: mês + período
@@ -944,7 +949,7 @@ function renderMachine(rebuild = false) {
   // noticiário do mês (±1 mês), com foto quando a licença permite
   const mi = monthIdx(iso);
   const perto = NEWS.map((n) => ({ n, d: Math.abs(monthIdx(n.data) - mi) })).filter((x) => x.d <= 1)
-    .sort((a, b) => a.d - b.d || Number(!!b.n.imagem) - Number(!!a.n.imagem)).slice(0, 3).map((x) => x.n);
+    .sort((a, b) => a.d - b.d || Number(b.n.produtos.includes(S.product)) - Number(a.n.produtos.includes(S.product)) || Number(!!b.n.imagem) - Number(!!a.n.imagem)).slice(0, 3).map((x) => x.n);
   const nb = $("#tm-news");
   if (perto.length) {
     nb.innerHTML = `<div class="fade-swap">${perto.map((n, j) => clip(n, { lead: j === 0, sum: j === 0 })).join("")}</div>`;
@@ -953,6 +958,21 @@ function renderMachine(rebuild = false) {
     nb.innerHTML = `<div class="fade-swap"><p class="tm-empty">Nenhuma matéria do arquivo entre ${mesAno(MONTHS[Math.max(0, i - 1)])} e ${mesAno(MONTHS[Math.min(MONTHS.length - 1, i + 1)])}.${near ? " A mais próxima:" : ""}</p>${near ? `<div style="margin-top:14px">${clip(near.n, { sum: false })}</div>` : ""}</div>`;
   }
   $("#tm-foot").textContent = "Médias mensais (salário mínimo: valor vigente; Ibovespa: fechamento do mês). No trilho, a linha é o preço da gasolina. Nos quadros, o ponto âmbar marca o mês escolhido e a linha vertical, a troca de governo.";
+}
+
+// Como chegamos a cada estimativa: valores de entrada, fórmula, testes e fontes.
+// Tudo vem pronto do pipeline (dashboard_data.json); aqui só se escreve.
+function estimativaDetalhes(ests) {
+  const linhas = ests.map(({ it, e }) => {
+    const t = e.teste_de_volta;
+    return `<li><b>${esc(it.label.split(" · ")[0])}: ≈ ${it.fmt(e.valor)}</b> = ${it.fmt(e.base_valor)} (média ANP, ${mesAno(e.base_ano_mes)}) × (1 + ${fmtNum(e.ipca_var_pct, 2)}%, variação do item “${esc(e.ipca_item)}” no IPCA de ${mesAno(e.ano_mes)}). Interpolação linear entre o último e o primeiro mês com dado: ${it.fmt(e.interpolacao_linear)}.${t ? ` Teste de volta: aplicando a variação do IPCA de ${mesAno(t.ano_mes)}, a estimativa prevê ${it.fmt(t.previsto)}; a ANP observou ${it.fmt(t.observado_anp)} (${fmtPct(t.erro_pct, 1)}).` : ""}</li>`;
+  }).join("");
+  return `<details class="est-how"><summary>Como chegamos a estas estimativas</summary>
+    <p>A ANP não pesquisou preços nesse período, então <strong>não existe valor oficial</strong>. Estimamos partindo do último preço médio da própria ANP e aplicando a variação oficial do IBGE para o mesmo item. A estimativa não entra em nenhuma variação, média, período ou comparação da página.</p>
+    <ul>${linhas}</ul>
+    <p>Limites: os meses vizinhos da ANP têm coleta parcial (agosto vai só até 17/08 e outubro começa em 19/10), e o IPCA mede o mês inteiro. Por isso mostramos uma faixa e o teste de volta; para etanol, diesel e gás o erro no teste é maior que o da gasolina.</p>
+    <p class="est-src">Fontes: <a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis" target="_blank" rel="noopener">ANP, informações sobre o levantamento (sem pesquisa entre 23/08 e 17/10/2020)</a> · <a href="https://sidra.ibge.gov.br/tabela/7060" target="_blank" rel="noopener">IBGE/SIDRA, IPCA, tabela 7060 (variação mensal por item)</a> · <a href="https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/gasolina-sobe-4-nas-refinarias-anuncia-petrobras" target="_blank" rel="noopener">Agência Brasil, 22/09/2020: reajuste de 4% da gasolina nas refinarias, com o último preço médio da ANP</a>.</p>
+  </details>`;
 }
 
 function setMachine(iso) {

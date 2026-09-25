@@ -1,0 +1,15 @@
+[
+  {
+    "titulo": "Gasolina sobe 4% nas refinarias, anuncia Petrobras",
+    "veiculo": "Agência Brasil",
+    "data": "2020-09-22",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-09/gasolina-sobe-4-nas-refinarias-anuncia-petrobras",
+    "resumo": "A Petrobras anunciou alta de 4% no preço da gasolina nas refinarias a partir de 23 de setembro; o diesel não teve reajuste. A reportagem cita o último preço médio da ANP, R$ 4,268 por litro (semana de 16 a 22 de agosto).",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "combustiveis"
+    ]
+  }
+]

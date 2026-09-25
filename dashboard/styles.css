@@ -845,3 +845,12 @@ code { font-family: var(--mono); font-size: 0.88em; }
 /* mês sem coleta: texto explícito no lugar do traço, e aviso acima dos quadros */
 .inst-val .nodata { font-family: var(--sans); font-weight: 500; font-variation-settings: "wdth" 100; font-size: 1.05rem; letter-spacing: 0; color: var(--fg-3); }
 .tm-gap { margin-top: clamp(24px, 3vw, 40px); max-width: 78ch; }
+
+/* estimativa: "≈", itálico e sublinhado tracejado — nunca igual a um dado oficial */
+.inst-val .est { font-style: italic; text-decoration: underline dashed var(--signal); text-decoration-thickness: 2px; text-underline-offset: 0.16em; }
+.est-how { margin-top: 12px; }
+.est-how summary { cursor: pointer; font-weight: 700; color: var(--fg); }
+.est-how p, .est-how ul { margin-top: 8px; line-height: 1.5; }
+.est-how ul { padding-left: 18px; }
+.est-how li { margin-top: 6px; }
+.est-how a { color: var(--fg); text-decoration-color: var(--signal); }
