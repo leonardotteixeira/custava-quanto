@@ -7,7 +7,7 @@
 // meses, base 100 num mês escolhido, largura de barras).
 
 import {
-  PERIODO_CORTE, PRODUCT_ORDER, META, familia, kind, nativeValue,
+  PERIODO_CORTE, PERIODOS, configurarPeriodos, getGovernmentComparison, comparisonPoints, pointLabel, PRODUCT_ORDER, META, familia, kind, nativeValue,
   isNil, fmtNum, fmtInt, fmtBRL, fmtPct, fmtPP, fmtValue, fmtValueHTML, change, fmtChange, sign,
   mesAno, mesAnoCurto, mesAnoLongo, dataCurta, dataNoticia, mesKey, monthIdx,
   lastValid, firstValid, rowAt, baseRow, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
@@ -127,6 +127,8 @@ async function init() {
   NEWS_META = nj;
   STATUS = await getJSON(STATUS_URL);
   MONTHS = Object.keys(D.fotografia_mensal).sort();
+  configurarPeriodos(D.periodo_corte, MONTHS);
+  labelBaseToggle();
 
   const q = new URLSearchParams(location.search);
   const slug = q.get("historia");
@@ -150,6 +152,13 @@ async function init() {
 // =====================================================================
 // ABERTURA
 // =====================================================================
+// Rótulos do seletor de ponto de partida, vindos dos marcos centralizados.
+function labelBaseToggle() {
+  const t = $('#baseline-toggle [data-base="troca"]'), i = $('#baseline-toggle [data-base="inicio"]');
+  t.innerHTML = `<b>${mesAno(PERIODOS.trocaGoverno)}</b><span>último dado antes da troca de governo</span>`;
+  i.innerHTML = `<b>${mesAno(PERIODOS.serieInicio)}</b><span>início da série histórica</span>`;
+}
+
 function renderHero() {
   const first = MONTHS[0], last = MONTHS[MONTHS.length - 1];
   const veiculos = new Set(NEWS.map((n) => n.veiculo)).size;
@@ -163,27 +172,34 @@ function renderHero() {
 
   texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: nativeRows(P(c)) })), { cutoff: PERIODO_CORTE, highlight: "GASOLINA" });
 
-  // Faixa "de 2019 ao último dado": seis indicadores da fotografia mensal.
+  // Faixa "da troca de governo ao último dado": seis indicadores. Dólar,
+  // Selic e Ibovespa usam o último dado DIÁRIO de dez/2022 e o último dado
+  // diário disponível; os demais, o mês da troca e o último mês com dado.
   const F = D.fotografia_mensal;
   const items = [
     { k: "gasolina", label: "Gasolina · R$/litro", fmt: (v) => fmtBRL(v), taxa: false },
-    { k: "dolar", label: "Dólar · R$", fmt: (v) => fmtBRL(v), taxa: false },
+    { k: "dolar", label: "Dólar · R$", fmt: (v) => fmtBRL(v), taxa: false, diario: "DOLAR" },
     { k: "salario_minimo", label: "Salário mínimo", fmt: (v) => fmtBRL(v, 0), taxa: false },
-    { k: "selic", label: "Selic · % ao ano", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true },
+    { k: "selic", label: "Selic · % ao ano", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true, diario: "SELIC" },
     { k: "ipca", label: "Inflação · 12 meses", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true },
-    { k: "ibovespa", label: "Ibovespa · pontos", fmt: (v) => fmtInt(v), taxa: false },
+    { k: "ibovespa", label: "Ibovespa · pontos", fmt: (v) => fmtInt(v), taxa: false, diario: "IBOVESPA" },
   ];
-  $("#ribbon-from").textContent = mesAno(first);
+  $("#ribbon-from").textContent = mesAno(PERIODOS.trocaGoverno);
   $("#hero-ribbon").innerHTML = items.map((it) => {
-    const ms = MONTHS.filter((m) => !isNil(F[m]?.[it.k]));
-    const a = ms[0], b = ms[ms.length - 1];
-    const va = F[a][it.k], vb = F[b][it.k];
-    const d = it.taxa ? fmtPP(vb - va) : fmtPct((vb / va - 1) * 100);
+    const d = it.diario && P(it.diario)?.diario;
+    let va, vb, la, lb;
+    if (d?.troca && d?.ultimo) { va = d.troca.valor; vb = d.ultimo.valor; la = dataCurta(d.troca.data); lb = dataCurta(d.ultimo.data); }
+    else {
+      const ms = MONTHS.filter((m) => !isNil(F[m]?.[it.k]));
+      const a = ms.filter((m) => m < PERIODO_CORTE).pop() || ms[0], b = ms[ms.length - 1];
+      va = F[a][it.k]; vb = F[b][it.k]; la = mesAno(a); lb = mesAno(b);
+    }
+    const dl = it.taxa ? fmtPP(vb - va) : fmtPct((vb / va - 1) * 100);
     return `<li>
       <span class="rb-label">${it.label}</span>
       <span class="rb-now">${it.fmt(vb)}</span>
-      <span class="rb-from">em ${mesAno(b)} · era <b>${it.fmt(va)}</b> em ${mesAno(a)}</span>
-      <span class="rb-delta">${d}</span>
+      <span class="rb-from">em ${lb} · era <b>${it.fmt(va)}</b> em ${la}</span>
+      <span class="rb-delta">${dl}</span>
     </li>`;
   }).join("");
 }
@@ -209,24 +225,25 @@ function renderTOC() {
     return `<div class="toc-col"><h3><span>${f.title}</span><span class="mono">${f.unit}</span></h3><ol class="toc-list">${codes.map(tocRow).join("")}</ol></div>`;
   }).join("");
   $("#toc").innerHTML = html;
-  $("#toc-note").textContent = `Variação entre o ponto de partida escolhido (${S.base === "troca" ? "dez/2022, último mês antes da troca de governo" : "o primeiro mês de cada série"}) e o último mês com dado. Taxas (Selic, inflação) variam em pontos percentuais. A série de inflação em 12 meses começa em jan/2020. Alimentos são índice de preço, não valor em reais.`;
+  $("#toc-note").textContent = `Variação entre o ponto de partida escolhido (${S.base === "troca" ? `${mesAno(PERIODOS.trocaGoverno)}, último dado antes da troca de governo` : "o primeiro dado de cada série"}) e o último dado disponível. Dólar, Selic e Ibovespa usam o dado diário (com a data real de cada ponto); os demais, o mês. Taxas (Selic, inflação) variam em pontos percentuais. A série de inflação em 12 meses começa em jan/2020. Alimentos são índice de preço, não valor em reais.`;
 }
 function tocRow(code) {
   const prod = P(code), get = nativeValue(prod), k = kind(prod);
-  const a = baseRow(prod, S.base), b = lastRow(prod);
-  const c = change(prod, get(a), get(b));
+  const { a: pa, b: pb } = comparisonPoints(prod, S.base);
+  const a = pa.row, b = pb.row, va = pa.v, vb = pb.v;
+  const c = change(prod, va, vb);
   const vals = k === "pontos"
-    ? `${fmtNum(get(a) / 1000, 1)} → ${fmtNum(get(b) / 1000, 1)} mil pts`
-    : k === "indice" ? `índice ${fmtNum(get(a), 1)} → ${fmtNum(get(b), 1)}`
-    : `${fmtValue(prod, get(a))} → ${fmtValue(prod, get(b))}`;
+    ? `${fmtNum(va / 1000, 1)} → ${fmtNum(vb / 1000, 1)} mil pts`
+    : k === "indice" ? `índice ${fmtNum(va, 1)} → ${fmtNum(vb, 1)}`
+    : `${fmtValue(prod, va)} → ${fmtValue(prod, vb)}`;
   const sp = spark(nativeRows(prod), { dots: [{ iso: a.ano_mes, size: 6, color: "var(--fg-3)" }, { iso: b.ano_mes, size: 7, color: "var(--fg)" }], width: 1.5 });
-  const label = `${META[code].titulo}: ${vals.replace("→", "em " + mesAno(a.ano_mes) + ", para")} em ${mesAno(b.ano_mes)}; variação ${fmtChange(c)}.`;
+  const label = `${META[code].titulo}: ${vals.replace("→", "em " + pointLabel(pa) + ", para")} em ${pointLabel(pb)}; variação ${fmtChange(c)}.`;
   const active = code === S.product;
   return `<li><button type="button" class="toc-row" data-code="${esc(code)}" aria-pressed="${active}" aria-label="${esc(label)}">
     <span class="toc-name">${META[code].curto}</span>
     <span class="toc-vals">${vals}</span>
     <span class="toc-spark">${sp}</span>
-    <span class="toc-change">${fmtChange(c, c.unit === "p.p." ? 1 : 1)}<small>desde ${mesAnoCurto(a.ano_mes)}</small></span>
+    <span class="toc-change">${fmtChange(c, c.unit === "p.p." ? 1 : 1)}<small>desde ${pa.daily ? dataCurta(pa.iso) : mesAnoCurto(pa.iso)}</small></span>
   </button></li>`;
 }
 
@@ -235,9 +252,12 @@ function tocRow(code) {
 // =====================================================================
 function renderStory() {
   const code = S.product, prod = P(code), m = META[code], k = kind(prod), get = nativeValue(prod);
-  const a = baseRow(prod, S.base), b = lastRow(prod);
-  const va = get(a), vb = get(b);
-  const mA = mesAno(a.ano_mes), mB = mesAno(b.ano_mes);
+  // Pontos da comparação: dez/2022 → último dado disponível. `a` e `b` são as
+  // linhas mensais (usadas só para inflação, poder de compra e período);
+  // `va`/`vb` são os valores do ponto — diários para Dólar, Selic e Ibovespa.
+  const { a: pa, b: pb } = comparisonPoints(prod, S.base);
+  const a = pa.row, b = pb.row, va = pa.v, vb = pb.v, daily = pa.daily;
+  const mA = pointLabel(pa), mB = pointLabel(pb);
   const c = change(prod, va, vb);
 
   $("#story-kicker").innerHTML = `<b>${famTitle(prod)}</b> · ${unitLong(code)}`;
@@ -258,9 +278,10 @@ function renderStory() {
   $("#story-change-cap").textContent = `${what} entre ${mA} e ${mB}.`;
 
   // era → agora
-  $("#tn-then-when").textContent = mesAnoLongo(a.ano_mes);
-  $("#tn-now-when").textContent = mesAnoLongo(b.ano_mes);
-  const tag = (row, isNow) => `${pmark(row.periodo)}${isNow ? "último dado · " : S.base === "troca" ? "último mês antes da troca · " : "início da série · "}governo ${row.periodo}`;
+  $("#tn-then-when").textContent = daily ? dataCurta(pa.iso) : mesAnoLongo(a.ano_mes);
+  $("#tn-now-when").textContent = daily ? dataCurta(pb.iso) : mesAnoLongo(b.ano_mes);
+  const grain = daily ? "dado" : "mês";
+  const tag = (row, isNow) => `${pmark(row.periodo)}${isNow ? "último dado · " : S.base === "troca" ? `último ${grain} antes da troca · ` : "início da série · "}governo ${row.periodo}`;
   $("#tn-then-tag").innerHTML = tag(a, false);
   $("#tn-now-tag").innerHTML = tag(b, true);
   countTo($("#tn-then-val"), va, (v) => fmtValueHTML(prod, v));
@@ -270,8 +291,8 @@ function renderStory() {
   const ipcaRatio = !isNil(a.ipca_indice) && !isNil(b.ipca_indice) ? b.ipca_indice / a.ipca_indice : null;
   const inflPct = ipcaRatio ? (ipcaRatio - 1) * 100 : null;
   let vRef = null;
-  if (k === "preco") vRef = a.preco_real;
-  else if ((k === "indice" || k === "pontos") && ipcaRatio) vRef = va * ipcaRatio;
+  if (k === "preco" && !daily) vRef = a.preco_real;
+  else if ((k === "preco" || k === "indice" || k === "pontos") && ipcaRatio) vRef = va * ipcaRatio;
   const max = Math.max(va, vb, vRef ?? 0) || 1;
   const refPos = vRef ? (vRef / max) * 100 : null;
   const refCls = refPos > 70 ? "flip" : refPos < 18 ? "flip0" : "";
@@ -286,7 +307,9 @@ function renderStory() {
   const facts = [];
   let lede = "";
   if (k === "preco" || k === "indice") {
-    const real = k === "preco" ? (b.preco_real / a.preco_real - 1) * 100 : (b.indice_relativo_real / a.indice_relativo_real - 1) * 100;
+    const real = k === "indice" ? (b.indice_relativo_real / a.indice_relativo_real - 1) * 100
+      : daily && ipcaRatio ? ((vb / va) / ipcaRatio - 1) * 100
+      : (b.preco_real / a.preco_real - 1) * 100;
     const subiu = c.v >= 0 ? "subiu" : "caiu";
     const sujeito = k === "indice" ? `o índice de preço ${m.de}` : code === "DOLAR" ? "a cotação do dólar" : `o preço médio ${m.de}`;
     let fr;
@@ -295,12 +318,12 @@ function renderStory() {
     else fr = `Descontada a inflação, ficou <strong>${fmtNum(Math.abs(real), 1)}% mais barato</strong>${c.v >= 0 ? ": subiu menos que os preços em geral" : ""}.`;
     lede = `Entre ${mA} e ${mB}, ${sujeito} ${subiu} <strong>${fmtNum(Math.abs(c.v), 1)}%</strong>. ${fr}`;
     if (k === "indice") lede += ` Na prática: quem gastava R$ 100 com esse item em ${mA} precisa de cerca de ${fmtBRL(100 * vb / va)} para levar a mesma quantidade em ${mB}.`;
-    facts.push(["Descontada a inflação", fmtPct(real), `variação real, em valores de ${mB}`]);
+    facts.push(["Descontada a inflação", fmtPct(real), daily ? `IPCA de ${mesAno(a.ano_mes)} a ${mesAno(b.ano_mes)}` : `variação real, em valores de ${mB}`]);
     if (k === "preco") {
       const u = unidade(code);
       facts.push(["Se tivesse acompanhado a inflação", fmtBRL(vRef), `em vez de ${fmtBRL(vb)} ${u.por}`]);
-      if (prod.tipo === "combustivel") facts.push([`Peso de ${u.um} no salário mínimo`, `${fmtNum(b.pct_salario_minimo, 2)}%`, `era ${fmtNum(a.pct_salario_minimo, 2)}% em ${mA}`]);
-      facts.push(["Um salário mínimo comprava", `${fmtInt(b.unidades_por_salario_minimo)} ${u.plural}`, `eram ${fmtInt(a.unidades_por_salario_minimo)} em ${mA}`]);
+      if (prod.tipo === "combustivel") facts.push([`Peso de ${u.um} no salário mínimo`, `${fmtNum(b.pct_salario_minimo, 2)}%`, `era ${fmtNum(a.pct_salario_minimo, 2)}% em ${mesAno(a.ano_mes)}`]);
+      facts.push(["Um salário mínimo comprava", `${fmtInt(b.unidades_por_salario_minimo)} ${u.plural}`, `eram ${fmtInt(a.unidades_por_salario_minimo)} em ${mesAno(a.ano_mes)}`]);
     } else {
       facts.push(["Inflação geral no período", fmtPct(inflPct), "IPCA acumulado, ponta a ponta"]);
       const pc = change(prod, a.indice_poder_compra, b.indice_poder_compra);
@@ -313,7 +336,7 @@ function renderStory() {
     const dir = c.v > 0 ? `${fmtNum(c.v, 2)} p.p. acima` : c.v < 0 ? `${fmtNum(-c.v, 2)} p.p. abaixo` : "no mesmo nível";
     if (code === "SELIC") {
       const ipca12 = lastValid(prod.serie_mensal, (r) => r.ipca_var_12m);
-      lede = `Em ${mB}, a Selic estava em <strong>${fmtNum(vb, 2)}% ao ano</strong>, ${dir} de ${mA} (${fmtNum(va, 2)}%). No mesmo intervalo, a inflação acumulada foi de <strong>${fmtPct(inflPct)}</strong>.`;
+      lede = `Em ${mB}, a Selic estava em <strong>${fmtNum(vb, 2)}% ao ano</strong>, ${dir} de ${mA} (${fmtNum(va, 2)}%). No mesmo intervalo (IPCA de ${mesAno(a.ano_mes)} a ${mesAno(b.ano_mes)}), a inflação acumulada foi de <strong>${fmtPct(inflPct)}</strong>.`;
       facts.push(["Inflação em 12 meses", `${fmtNum(ipca12.ipca_var_12m, 2)}%`, `IPCA em ${mesAno(ipca12.ano_mes)}`]);
       facts.push(["Selic menos inflação", fmtPP(vb - ipca12.ipca_var_12m), "aproximação simples do juro real"]);
     } else {
@@ -327,7 +350,7 @@ function renderStory() {
     const real = ipcaRatio ? ((vb / va) / ipcaRatio - 1) * 100 : null;
     const rows = prod.serie_mensal.filter((r) => r.ano_mes >= a.ano_mes && r.ano_mes <= b.ano_mes && !isNil(r.pontos));
     const hi = rows.reduce((x, r) => (r.pontos > x.pontos ? r : x), rows[0]);
-    lede = `Entre ${mA} e ${mB}, o Ibovespa ${c.v >= 0 ? "subiu" : "caiu"} <strong>${fmtNum(Math.abs(c.v), 1)}%</strong>, de ${fmtInt(va)} para ${fmtInt(vb)} pontos. A inflação do mesmo intervalo foi de ${fmtPct(inflPct)}.`;
+    lede = `Entre ${mA} e ${mB}, o Ibovespa ${c.v >= 0 ? "subiu" : "caiu"} <strong>${fmtNum(Math.abs(c.v), 1)}%</strong>, de ${fmtInt(va)} para ${fmtInt(vb)} pontos. A inflação do intervalo (IPCA de ${mesAno(a.ano_mes)} a ${mesAno(b.ano_mes)}) foi de ${fmtPct(inflPct)}.`;
     facts.push(["Descontada a inflação", fmtPct(real), "variação dos pontos acima ou abaixo do IPCA"]);
     facts.push(["Inflação no intervalo", fmtPct(inflPct), "IPCA acumulado, ponta a ponta"]);
     facts.push(["Maior fechamento mensal", `${fmtInt(hi.pontos)} pts`, mesAno(hi.ano_mes)]);
@@ -341,7 +364,7 @@ function renderStory() {
   if (cot) {
     const val = code === "IBOVESPA" ? `${fmtInt(cot.pontos)} pts` : code === "SELIC" ? `${fmtNum(cot.valor, 2)}% ao ano` : fmtBRL(cot.valor, 4);
     live.hidden = false;
-    live.innerHTML = `<span>Último dado disponível: <b>${val}</b> em ${dataCurta(cot.data)} · ${esc(cot.fonte)}. ${code === "IBOVESPA" ? "Não é tempo real garantido. " : ""}Valor diário; as comparações desta página usam o mês fechado.</span>`;
+    live.innerHTML = `<span>Último dado disponível: <b>${val}</b> em ${dataCurta(cot.data)} · ${esc(cot.fonte)}. ${code === "IBOVESPA" ? "Não é tempo real garantido. " : ""}Este é o ponto final da comparação acima; os gráficos abaixo usam médias mensais.</span>`;
   } else live.hidden = true;
 
   const note = $("#story-note");
@@ -717,13 +740,13 @@ function initMachine() {
   const selicMin = argBy("selic", (a, b) => a < b);
   const selicMax = argBy("selic", (a, b) => a > b);
   const cand = [
-    { iso: MONTHS[0], label: "Início da série" },
+    { iso: PERIODOS.serieInicio, label: "Início da série" },
     { iso: "2020-03-01", label: "Pandemia declarada" },
     { iso: selicMin, label: "Selic na mínima" },
     { iso: gasPeak, label: "Gasolina no pico" },
-    { iso: "2022-12-01", label: "Antes da troca de governo" },
+    { iso: PERIODOS.trocaGoverno, label: "Antes da troca de governo" },
     { iso: selicMax, label: "Selic na máxima" },
-    { iso: MONTHS[MONTHS.length - 1], label: "Último dado" },
+    { iso: PERIODOS.ultimoDisponivel, label: "Último dado" },
   ];
   const seen = new Set();
   TM_MOMENTS = cand.filter((c) => MONTHS.includes(c.iso) && !seen.has(c.iso) && seen.add(c.iso)).sort((a, b) => a.iso.localeCompare(b.iso));
@@ -777,8 +800,9 @@ function renderMachine(rebuild = false) {
   mt.textContent = mesAnoLongo(iso);
   mt.classList.remove("swap"); void mt.offsetWidth; mt.classList.add("swap");
   const per = iso < PERIODO_CORTE ? "Bolsonaro" : "Lula";
-  const k = monthIdx(iso) - monthIdx(per === "Bolsonaro" ? "2019-01-01" : PERIODO_CORTE) + 1;
-  const tot = per === "Bolsonaro" ? 48 : monthIdx(MONTHS[MONTHS.length - 1]) - monthIdx(PERIODO_CORTE) + 1;
+  const gp = getGovernmentComparison(per);
+  const k = monthIdx(iso) - monthIdx(gp.inicio) + 1;
+  const tot = monthIdx(gp.fim) - monthIdx(gp.inicio) + 1;
   $("#tm-period").innerHTML = `${pmark(per)}Governo ${per} · mês ${k} de ${tot}${per === "Lula" ? " (em curso)" : ""}`;
 
   // controles
@@ -821,21 +845,33 @@ const SPREAD_FIXED = ["GASOLINA", "DIESEL", "Arroz", "Café moído", "DOLAR", "S
 function renderPeriods() {
   const codes = [S.product, ...SPREAD_FIXED.filter((c) => c !== S.product && D.produtos[c])];
   const m0 = monthIdx(MONTHS[0]), m1 = monthIdx(MONTHS[MONTHS.length - 1]);
-  const lulaMeses = m1 - monthIdx(PERIODO_CORTE) + 1;
+  const gB = getGovernmentComparison("Bolsonaro"), gL = getGovernmentComparison("Lula");
+  const bolsoMeses = monthIdx(gB.fim) - monthIdx(gB.inicio) + 1;
+  const lulaMeses = monthIdx(gL.fim) - monthIdx(gL.inicio) + 1;
   const pres = D.presidentes;
-  const gov = (p, meses) => `<div class="sp-gov"><img src="${esc(pres[p].foto)}" alt="Retrato oficial de ${esc(pres[p].nome)}" width="56" height="70" loading="lazy" decoding="async"><div><span class="sp-gov-name">${pmark(p)}${p}</span><span class="sp-gov-full">${esc(pres[p].nome)}</span><span class="sp-gov-dates">${p === "Bolsonaro" ? "jan/2019 – dez/2022" : `jan/2023 – ${mesAno(MONTHS[MONTHS.length - 1])}`}<br>${meses} meses${p === "Lula" ? " · em curso" : ""}</span></div></div>`;
+  const gov = (p, meses) => `<div class="sp-gov"><img src="${esc(pres[p].foto)}" alt="Retrato oficial de ${esc(pres[p].nome)}" width="56" height="70" loading="lazy" decoding="async"><div><span class="sp-gov-name">${pmark(p)}${p}</span><span class="sp-gov-full">${esc(pres[p].nome)}</span><span class="sp-gov-dates">${p === "Bolsonaro" ? `${mesAno(gB.inicio)} – ${mesAno(gB.fim)}` : `${mesAno(gL.inicio)} – ${mesAno(gL.fim)}`}<br>${meses} meses${p === "Lula" ? " · em curso" : ""}</span></div></div>`;
   const cutX = ((monthIdx(PERIODO_CORTE) - 0.5 - m0) / (m1 - m0)) * 100;
-  const axis = `<svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="24" width="${cutX}" height="3" fill="var(--pb)"/><rect x="${cutX + 0.2}" y="24" width="${100 - cutX - 0.2}" height="3" fill="var(--pl)"/></svg><span style="position:absolute;left:0;top:4px">2019</span><span style="position:absolute;left:${cutX}%;top:4px;padding-left:6px">2023</span><span style="position:absolute;right:0;top:4px">${MONTHS[MONTHS.length - 1].slice(0, 4)}</span>`;
+  const axis = `<svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="24" width="${cutX}" height="3" fill="var(--pb)"/><rect x="${cutX + 0.2}" y="24" width="${100 - cutX - 0.2}" height="3" fill="var(--pl)"/></svg><span style="position:absolute;left:0;top:4px">${gB.inicio.slice(0, 4)}</span><span style="position:absolute;left:${cutX}%;top:4px;padding-left:6px">${gL.inicio.slice(0, 4)}</span><span style="position:absolute;right:0;top:4px">${MONTHS[MONTHS.length - 1].slice(0, 4)}</span>`;
 
-  const head = `<div class="sp-head"><span class="sp-label-col">Indicador · variação no recorte</span><div class="sp-axis">${axis}</div>${gov("Bolsonaro", 48)}${gov("Lula", lulaMeses)}</div>`;
+  const head = `<div class="sp-head"><span class="sp-label-col">Indicador · variação no recorte</span><div class="sp-axis">${axis}</div>${gov("Bolsonaro", bolsoMeses)}${gov("Lula", lulaMeses)}</div>`;
 
   const rowsHtml = codes.map((code) => {
     const prod = P(code), k = kind(prod), get = nativeValue(prod);
-    const rs = ["Bolsonaro", "Lula"].map((p) => prod.resumo_periodos?.[p]?.[S.cohort]);
-    const main = (r) => !r ? null : k === "taxa" ? r.variacao_pp : k === "pontos" ? r.variacao_pct : r.variacao_nominal_pct;
+    let rs = ["Bolsonaro", "Lula"].map((p) => prod.resumo_periodos?.[p]?.[S.cohort]);
+    // Governo inteiro em Dólar, Selic e Ibovespa: primeiro e último dado DIÁRIO
+    // de cada período (Bolsonaro: primeiro dado → último de dez/2022; Lula:
+    // primeiro dado de jan/2023 → último dado disponível).
+    const dd = S.cohort === "governo_inteiro" ? prod.diario : null;
+    if (dd) rs = [[dd.inicio, dd.troca], [dd.inicio_lula, dd.ultimo]].map(([ini, fim]) => (ini && fim ? { daily: true, ini, fim } : null));
+    const main = (r) => !r ? null : r.daily ? (k === "taxa" ? r.fim.valor - r.ini.valor : (r.fim.valor / r.ini.valor - 1) * 100)
+      : k === "taxa" ? r.variacao_pp : k === "pontos" ? r.variacao_pct : r.variacao_nominal_pct;
     const fmtMain = (v) => (k === "taxa" ? fmtPP(v) : fmtPct(v));
     const sub = (r) => {
       if (!r) return "dado não disponível";
+      if (r.daily) {
+        const f = (x) => (k === "taxa" ? `${fmtNum(x, 2)}%` : k === "pontos" ? `${fmtNum(x / 1000, 1)} mil pts` : fmtValue(prod, x));
+        return `${f(r.ini.valor)} → ${f(r.fim.valor)}<br>${dataCurta(r.ini.data)} → ${dataCurta(r.fim.data)}`;
+      }
       if (k === "taxa") return `${fmtNum(r.taxa_inicio, 2)}% → ${fmtNum(r.taxa_fim, 2)}%`;
       if (k === "pontos") return `${fmtNum(r.pontos_inicio / 1000, 1)} → ${fmtNum(r.pontos_fim / 1000, 1)} mil pts`;
       const ini = k === "preco" ? fmtValue(prod, r.preco_nominal_inicio) : fmtNum(r.indice_nominal_inicio, 1);
@@ -849,8 +885,8 @@ function renderPeriods() {
       const w = (Math.abs(v) / span) * 50;
       return `<span class="sp-bar" aria-hidden="true"><i class="${cls}" style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%"></i></span>`;
     };
-    const windows = rs.filter(Boolean).map((r) => [monthIdx(r.mes_inicio), monthIdx(r.mes_fim)]);
-    const track = spark(nativeRows(prod), { m0, m1, cutLine: true, width: code === S.product ? 2 : 1.5, windows: S.cohort === "governo_inteiro" ? null : windows, pad: 8 });
+    const windows = S.cohort === "governo_inteiro" ? null : rs.filter(Boolean).map((r) => [monthIdx(r.mes_inicio), monthIdx(r.mes_fim)]);
+    const track = spark(nativeRows(prod), { m0, m1, cutLine: true, width: code === S.product ? 2 : 1.5, windows, pad: 8 });
     const unit = k === "taxa" ? "em pontos percentuais" : k === "pontos" ? "pontos" : k === "indice" ? "índice de preço" : code === "DOLAR" ? "cotação" : "preço na época";
     return `<div class="sp-row${code === S.product ? " is-product" : ""}">
       <div class="sp-name">${META[code].curto}<small>${unit}</small></div>
@@ -863,7 +899,7 @@ function renderPeriods() {
   const rL = P("GASOLINA").resumo_periodos?.Lula?.[S.cohort];
   const n = { primeiros_12m: 12, primeiros_24m: 24, primeiros_36m: 36 }[S.cohort];
   $("#cohort-note").textContent = S.cohort === "governo_inteiro"
-    ? `Períodos de durações diferentes: 48 meses e ${lulaMeses} meses (ainda em curso). Para comparar janelas iguais, use os recortes de 1, 2 ou 3 anos. Nas linhas, o trecho azul é o primeiro período e o vermelho, o segundo.`
+    ? `Períodos de durações diferentes: ${bolsoMeses} meses e ${lulaMeses} meses (ainda em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário de cada período; os demais, o primeiro e o último mês. Para comparar janelas iguais, use os recortes de 1, 2 ou 3 anos. Nas linhas, o trecho azul é o primeiro período e o vermelho, o segundo.`
     : rL && rL.completo === false
       ? `O segundo período ainda não completou ${n} meses; o recorte usa os meses disponíveis. Nas linhas, o trecho destacado é a janela comparada.`
       : `Os primeiros ${n} meses de cada período, lado a lado. Nas linhas, o trecho destacado é a janela comparada; o resto fica apagado.`;
@@ -955,7 +991,7 @@ function setBase(base) {
 
 function updateMast() {
   const prod = P(S.product), get = nativeValue(prod);
-  const c = change(prod, get(baseRow(prod, S.base)), get(lastRow(prod)));
+  const cp = comparisonPoints(prod, S.base), c = change(prod, cp.a.v, cp.b.v);
   $("#mast-product-name").textContent = META[S.product].curto;
   $("#mast-product-delta").textContent = fmtChange(c, c.unit === "p.p." ? 1 : 1);
 }
