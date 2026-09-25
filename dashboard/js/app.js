@@ -67,6 +67,9 @@ function missingMonths(prod) {
   for (let m = Math.min(...ms); m <= Math.max(...ms); m++) if (!have.has(m)) out.push(mesAno(`${Math.floor(m / 12)}-${String((m % 12) + 1).padStart(2, "0")}-01`));
   return out;
 }
+// Fato documentado pela própria ANP (página "Informações sobre o levantamento de
+// preços de combustíveis"): a pesquisa ficou suspensa por troca de contrato.
+const ANP_SEM_PESQUISA = { mes: "2020-09", texto: "A ANP não fez pesquisa de preços entre 23/08 e 17/10/2020 (troca do contrato de coleta)." };
 const famTitle = (prod) => FAMS.find((f) => f.key === familia(prod)).title;
 const nativeRows = (prod, get = nativeValue(prod)) => prod.serie_mensal.map((r) => ({ iso: r.ano_mes, v: get(r) }));
 const lastRow = (prod) => lastValid(prod.serie_mensal, nativeValue(prod));
@@ -801,7 +804,15 @@ function renderMachine(rebuild = false) {
     countTo(el.querySelector(".inst-val"), v, (x) => (isNil(x) ? "—" : it.html(x)), 420);
     const qual = it.code === "SALARIO" ? "vigente em" : it.code === "IBOVESPA" ? "fechamento de" : it.code === "IPCA" ? "12 meses até" : kind(it.prod) === "indice" ? "índice em" : "média de";
     el.querySelector(".inst-now").innerHTML = lr ? `${iso === lr.ano_mes ? "é o último mês com dado" : `${qual} ${mesAno(lr.ano_mes)}: <b>${it.fmt(it.get(lr))}</b>`}` : "";
-    const extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : isNil(v) ? (it.prod.tipo === "combustivel" ? "a ANP não tem coleta neste mês" : "sem dado neste mês") : "";
+    let extra = r && it.code !== "SALARIO" && kind(it.prod) === "preco" && !isNil(r.preco_real) && iso !== lr?.ano_mes ? `em reais de ${mesAno(lr.ano_mes)}: ${fmtBRL(r.preco_real)}` : "";
+    if (isNil(v)) {
+      // mês sem coleta: mostra o último dado antes e o primeiro depois, sem estimar nada
+      const rows = it.prod.serie_mensal.filter((q) => !isNil(it.get(q)));
+      const antes = [...rows].reverse().find((q) => q.ano_mes < iso), depois = rows.find((q) => q.ano_mes > iso);
+      const viz = [antes && `${mesAno(antes.ano_mes)}: ${it.fmt(it.get(antes))}`, depois && `${mesAno(depois.ano_mes)}: ${it.fmt(it.get(depois))}`].filter(Boolean).join(" · ");
+      const motivo = mesKey(iso) === ANP_SEM_PESQUISA.mes && it.prod.tipo === "combustivel" ? ANP_SEM_PESQUISA.texto : "a ANP não tem coleta neste mês";
+      extra = `${motivo}${viz ? ` Antes e depois: ${viz}.` : ""}`;
+    }
     el.querySelector(".inst-extra").textContent = extra;
     el.querySelector(".inst-spark").innerHTML = spark(it.prod.serie_mensal.map((q) => ({ iso: q.ano_mes, v: it.get(q) })), {
       m0: monthIdx(MONTHS[0]), m1: monthIdx(MONTHS[MONTHS.length - 1]), cutLine: true, width: 1.5,
@@ -964,7 +975,7 @@ function renderArchive() {
 function renderMethod() {
   const last = MONTHS[MONTHS.length - 1];
   const miss = missingMonths(P("GASOLINA"));
-  if (miss.length) $("#lim-anp").textContent = `A ANP não tem dado de ${miss.join(" e ")} — por isso as linhas de combustíveis ficam interrompidas nesses meses.`;
+  if (miss.length) $("#lim-anp").textContent = `A ANP não tem dado de ${miss.join(" e ")}, por isso as linhas de combustíveis ficam interrompidas nesses meses.${miss.includes(mesAno(`${ANP_SEM_PESQUISA.mes}-01`)) ? ` ${ANP_SEM_PESQUISA.texto} Não estimamos valores para esse período; agosto e outubro de 2020 também têm coleta parcial.` : ""}`;
   $("#updated").innerHTML = `Dados consolidados em ${dataCurta(D.gerado_em.slice(0, 10))} · séries mensais até ${mesAno(last)}${NEWS_META?.gerado_em ? ` · notícias conferidas em ${dataCurta(NEWS_META.gerado_em.slice(0, 10))}` : ""}.`;
   const rows = STATUS ? Object.values(STATUS).map((s) => `<tr><td><strong>${esc(s.nome)}</strong><br>${esc(s.fonte)}</td><td>${esc(s.frequencia)}</td><td>${s.ultimo_dado ? dataCurta(s.ultimo_dado) : "—"}</td><td>${s.ok ? "ok" : "falhou — mantido o último histórico salvo"}</td></tr>`).join("") : "";
   $("#freshness").innerHTML = `<p>As séries mensais vão até ${mesAnoLongo(last)} (o IPCA fecha o mês depois dos outros indicadores). Dólar, Selic e Ibovespa também têm o último valor diário, mostrado à parte e sempre com data.</p>${rows ? `<div class="table-scroll" style="max-height:none;border:0"><table class="fresh"><thead><tr><th>Série diária</th><th>Frequência</th><th>Último dado</th><th>Situação</th></tr></thead><tbody>${rows}</tbody></table></div>` : ""}`;
