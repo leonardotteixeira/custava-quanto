@@ -293,6 +293,21 @@ específico deste projeto contra o DIEESE, consulte o site diretamente ou os
 relatórios mensais em PDF publicados em
 [dieese.org.br/analisecestabasica](https://www.dieese.org.br/analisecestabasica/analiseCestaBasicaAnteriores.html).
 
+### Preço absoluto (R$) para alimentos: por que ainda é só índice
+
+Os seis itens de alimento aparecem como índice de preço, não em R$, porque
+essa é a única coisa que o IBGE publica (ver acima). Antes de aceitar essa
+limitação como definitiva, o projeto auditou outras fontes possíveis —
+DIEESE, CONAB, CEPEA/ESALQ, Procon, IBGE/POF — avaliando cobertura
+geográfica, frequência, se o produto pesquisado é o mesmo do início ao fim
+da série e se o dado é preço absoluto de fato, não uma commodity num
+estágio diferente da cadeia (ex.: preço pago ao produtor, não ao
+consumidor). Resultado: nenhuma fonte passou em todos os critérios para
+nenhum dos seis itens hoje; arroz e feijão têm um candidato promissor
+(CONAB, preço de varejo por estado) que fica como próximo passo, pendente
+de verificar o arquivo real. Auditoria completa, fonte por fonte, em
+[docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md).
+
 ## Atualizando os dados no futuro
 
 O jeito mais simples é `.venv/Scripts/python scripts/update_data.py` (ou

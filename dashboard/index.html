@@ -67,7 +67,7 @@
 
     <figure class="hero-texture" aria-labelledby="texture-cap">
       <div class="texture-svg" id="hero-texture"></div>
-      <figcaption class="shell mono" id="texture-cap">Cada linha acima é uma das séries deste projeto, mês a mês, desenhada na própria escala — só o formato importa aqui. Em destaque, a gasolina.</figcaption>
+      <figcaption class="shell mono" id="texture-cap">Cada linha acima é uma das séries deste projeto, mês a mês, desenhada na própria escala — só o formato importa aqui. Em destaque: <strong id="texture-highlight">—</strong>.</figcaption>
     </figure>
 
     <div class="shell">
@@ -137,6 +137,11 @@
             </div>
           </div>
           <div class="tn-bars" id="tn-bars" aria-hidden="true"></div>
+          <div class="story-secondary" id="story-secondary" hidden>
+            <span class="ss-kicker mono" id="ss-kicker">—</span>
+            <span class="ss-val tnum" id="ss-val">—</span>
+            <span class="ss-src mono" id="ss-src">—</span>
+          </div>
         </div>
 
         <aside class="story-side">
@@ -165,6 +170,7 @@
           <button type="button" data-metric="nominal" aria-pressed="true">Na época</button>
           <button type="button" data-metric="real" aria-pressed="false">Corrigido pela inflação</button>
           <button type="button" data-metric="pct_sm" aria-pressed="false">% do salário mínimo</button>
+          <button type="button" data-metric="conab" aria-pressed="false">Preço observado (R$/kg)</button>
         </div>
         <p class="metric-help" id="metric-help"></p>
       </div>
@@ -356,6 +362,10 @@
               <dd><a href="https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-estatisticas-historicas.htm" target="_blank" rel="noopener">Estatísticas históricas públicas do índice</a>. Fechamento do último pregão de cada mês nos gráficos; nas comparações, o último pregão de dez/2022 e o último pregão disponível. Não é tempo real garantido.</dd>
               <dt>Petróleo — FRED (St. Louis Fed)</dt>
               <dd><a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">Brent</a>, dólares por barril, convertido para reais pelo câmbio médio do mês.</dd>
+              <dt>Preço observado de arroz e feijão — CONAB</dt>
+              <dd>Sistema de Informações de Mercado, dataset "Preços Agropecuários", nível <strong>Varejo</strong> — Arroz Tipo 1 e Feijão Cores Tipo 1, R$/kg, por UF. Somado ao índice IBGE (que continua existindo para os dois), nunca no lugar dele. Auditoria completa das fontes avaliadas para preço de alimento, incluindo por que carne, leite, óleo de soja e café continuam só com índice, em <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_PRECOS_ALIMENTOS.md" target="_blank" rel="noopener">docs/AUDITORIA_PRECOS_ALIMENTOS.md</a>.</dd>
+              <dt>PIB — IBGE, Sistema de Contas Nacionais</dt>
+              <dd><a href="https://sidra.ibge.gov.br/tabela/5932" target="_blank" rel="noopener">Tabela 5932</a> (Contas Nacionais Trimestrais: taxa de variação trimestral) e <a href="https://sidra.ibge.gov.br/tabela/6784" target="_blank" rel="noopener">Tabela 6784</a> (Contas Nacionais Anuais: PIB a preços correntes, PIB per capita, população). O crescimento real do PIB mostrado aqui é a "taxa acumulada ao longo do ano" apurada no 4º trimestre — o mesmo número que o IBGE e a imprensa chamam de "o PIB cresceu X% no ano". O IBGE pode revisar dados já publicados em divulgações seguintes; este projeto reflete a última revisão disponível no momento em que os dados foram baixados, não um arquivo histórico congelado.</dd>
             </dl>
           </div>
         </details>
@@ -370,6 +380,8 @@
               <dd>O preço de cada mês convertido para reais do mês mais recente, usando o IPCA geral. Responde: quanto isso custaria em dinheiro de hoje?</dd>
               <dt>% do salário mínimo</dt>
               <dd>Preço dividido pelo salário mínimo vigente naquele mês — não por um valor fixo atual.</dd>
+              <dt>Preço observado × índice encadeado (arroz e feijão)</dt>
+              <dd>São duas contas diferentes, nunca misturadas num só número. O <strong>preço observado</strong> (R$/kg) vem da CONAB, nível Varejo, e é a média simples entre as UFs que a CONAB pesquisou naquele mês — <strong>uma conta deste projeto</strong>, declarada como tal sempre que aparece; a CONAB não publica um preço nacional oficial para esta série. O <strong>índice de preço</strong> (jan/2019 = 100) vem do IBGE e mostra a variação oficial, não um valor em reais. As duas convivem lado a lado nas histórias de Arroz e Feijão; os outros quatro alimentos (carne, leite, óleo de soja, café) seguem só com o índice — ver Limitações.</dd>
               <dt>Três pontos de referência</dt>
               <dd><strong>Início da série</strong> (jan/2019): primeiro dado histórico; é também a base dos índices de alimentos (jan/2019 = 100). <strong>Troca de governo</strong> (dez/2022): último dado do governo Bolsonaro, ponto de partida padrão de toda comparação entre os dois períodos. <strong>Último dado disponível</strong>: descoberto automaticamente nos dados, sem data escrita no código. Trocar o ponto de partida no Índice para jan/2019 mostra a série completa, mas isso não é uma comparação entre governos.</dd>
               <dt>Variação</dt>
@@ -378,6 +390,8 @@
               <dd>Cada série é dividida pelo próprio valor no ponto de partida e multiplicada por 100. Assim coisas de unidades diferentes cabem na mesma régua: 130 quer dizer 30% acima do ponto de partida.</dd>
               <dt>Períodos</dt>
               <dd>Bolsonaro: jan/2019 a dez/2022. Lula: jan/2023 ao último dado disponível (em curso, sem "último dia" ainda). Os recortes de 1, 2 e 3 anos comparam janelas da mesma duração.</dd>
+              <dt>PIB real × PIB nominal × PIB per capita</dt>
+              <dd>Três contas diferentes, nunca misturadas num só número. O <strong>PIB real</strong> (a variação em % mostrada no gráfico principal) mede crescimento, descontada a inflação. O <strong>PIB nominal</strong> (em R$) e o <strong>PIB per capita</strong> (em R$) são valores correntes, sem esse desconto — aparecem como fatos à parte, nunca somados ou comparados diretamente com a variação real. O PIB é uma série <strong>anual</strong>, não mensal: um ano só ganha uma variação real quando o IBGE fecha o resultado do 4º trimestre; até lá, aparecem os trimestres já publicados, nunca uma estimativa do ano inteiro.</dd>
             </dl>
           </div>
         </details>
@@ -386,14 +400,18 @@
           <summary><span class="mono">C</span>Limitações</summary>
           <div class="nb-body">
             <ul class="nb-bullets">
-              <li>Nada aqui prova causa. Proximidade no tempo não é explicação.</li>
+              <li><strong>Proximidade temporal entre preço, notícia ou evento não implica relação de causa e efeito.</strong></li>
               <li>Os dois períodos têm durações diferentes: o primeiro tem 48 meses; o segundo ainda está em curso. Por isso existem os recortes de mesma duração.</li>
-              <li>Alimentos aparecem como <strong>índice</strong>, não em reais: o IBGE não publica preço médio nacional por item para todo o período.</li>
+              <li>Alimentos aparecem como <strong>índice</strong> (IBGE): o IBGE não publica preço médio nacional por item para todo o período. Arroz e feijão também têm um preço observado em R$/kg (CONAB, varejo) — uma média entre UFs calculada por este projeto, não um número nacional oficial; carne, leite, óleo de soja e café seguem só com índice, porque a fonte de preço mais próxima encontrada mede o produtor ou o atacado, não a prateleira (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).</li>
+              <li>"Feijão Cores Tipo 1" (nome da série da CONAB) pode não ser exatamente o mesmo produto que "Feijão carioca" (subitem do índice IBGE) — carioca é a variedade dominante da categoria "cores", mas a CONAB pode agregar outras cores junto. Os dois números aparecem lado a lado com o nome de cada fonte, nunca como se fossem o mesmo produto.</li>
               <li>"Carne" é o corte patinho, referência do IBGE; não é a média de todos os cortes.</li>
               <li id="lim-anp">A ANP não tem dado de alguns meses — por isso as linhas de combustíveis ficam interrompidas neles.</li>
               <li>Tudo é média nacional. Os dados de combustível têm quebra regional, que esta versão não mostra.</li>
               <li>O salário mínimo é o piso nacional; alguns estados têm pisos maiores.</li>
               <li>A variação entre dois meses depende muito dos meses escolhidos. Os gráficos mostram o caminho inteiro por isso.</li>
+              <li><strong>PIB não é atribuído a governo.</strong> Os períodos "2019–2022" e "2023–em curso" aqui são só cronologia — recortes de calendário, não uma nota de desempenho do governo em exercício. Este projeto não classifica, pontua ou elege um "melhor" ou "pior" resultado de PIB entre os dois períodos.</li>
+              <li>O PIB trimestral e o anual não são somados nem misturados numa mesma linha: a variação anual só aparece quando o 4º trimestre do ano é divulgado pelo IBGE. Eventos próximos no tempo ajudam a contextualizar a série, mas proximidade temporal não demonstra causalidade.</li>
+              <li>Dados de PIB do IBGE estão sujeitos a revisão em divulgações seguintes; os valores aqui refletem a última revisão disponível quando os dados foram baixados, não necessariamente o número mais recente publicado pelo IBGE no momento em que esta página é lida.</li>
             </ul>
           </div>
         </details>
@@ -408,6 +426,10 @@
               <dt>Ibovespa</dt><dd>Principal índice da bolsa brasileira. É medido em pontos, não em reais.</dd>
               <dt>Brent</dt><dd>Referência internacional do preço do barril de petróleo.</dd>
               <dt>Índice (base 100)</dt><dd>Mostra variação, não preço. 150 quer dizer 50% acima do ponto de referência.</dd>
+              <dt>Nível de comercialização (CONAB)</dt><dd>Em que ponto da cadeia o preço foi pesquisado: produtor, atacado ou varejo. Este projeto usa só <strong>varejo</strong> — o preço pago pelo consumidor final — porque é o único comparável com o que a pessoa paga na prateleira.</dd>
+              <dt>Preço nacional oficial × média calculada</dt><dd>A CONAB pesquisa preço por UF, não publica um número "Brasil" para esta série. Quando este projeto mostra um valor único, é a <strong>média simples entre as UFs pesquisadas naquele mês</strong> — sempre rotulada assim, nunca apresentada como um dado oficial da CONAB.</dd>
+              <dt>PIB (Produto Interno Bruto)</dt><dd>Soma de tudo o que o país produziu num período. A variação real (%) mostrada aqui desconta a inflação; é a métrica de crescimento. O PIB nominal (R$) e o PIB per capita (R$) não descontam a inflação — servem para ver o tamanho da economia em valores correntes, não para medir crescimento.</dd>
+              <dt>Taxa acumulada no ano (PIB)</dt><dd>Variação real do PIB do ano inteiro, apurada quando o IBGE divulga o resultado do 4º trimestre. Diferente da taxa trimestral isolada (que compara só um trimestre com o mesmo trimestre do ano anterior).</dd>
             </dl>
           </div>
         </details>

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T14:42:19+00:00",
+  "gerado_em": "2026-09-25T16:33:30+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -9381,7 +9381,7 @@
       "nome": "Arroz",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB tem uma série de preço de varejo por estado que poderia, em tese, dar um preço nacional em R$/kg — o projeto ainda não verificou essa fonte o bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -10467,7 +10467,7 @@
       "nome": "Café moído",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -11553,7 +11553,7 @@
       "nome": "Carne bovina (patinho)",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -12639,7 +12639,7 @@
       "nome": "Feijão carioca",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB tem uma série de preço de varejo por estado que poderia, em tese, dar um preço nacional em R$/kg — o projeto ainda não verificou essa fonte o bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -13725,7 +13725,7 @@
       "nome": "Leite longa vida",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -14811,7 +14811,7 @@
       "nome": "Óleo de soja",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -20336,6 +20336,1322 @@
           "data": "2026-09-22",
           "valor": 187422.92
         }
+      }
+    },
+    "PIB": {
+      "nome": "PIB",
+      "tipo": "pib",
+      "unidade": "% ao ano (variação real, acumulada no ano)",
+      "nota": "PIB real (crescimento) e PIB nominal/per capita (valores em R$) são contas diferentes, nunca misturadas no mesmo número. A variação anual mostrada aqui é a leitura \"acumulada no ano\" do 4º trimestre — o mesmo número que o IBGE e a imprensa chamam de \"o PIB cresceu X% no ano\". Um ano sem essa leitura ainda fechada aparece com os trimestres disponíveis, nunca com um resultado anual estimado. O IBGE pode revisar dados de PIB já publicados em divulgações seguintes — este projeto reflete a última revisão disponível no momento em que os dados foram baixados, não um arquivo histórico congelado. Proximidade temporal entre um evento e uma variação do PIB não demonstra causalidade.",
+      "serie_mensal": [
+        {
+          "ano_mes": "1996-01-01",
+          "ano": 1996,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 2.2,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 854.76,
+          "pib_per_capita_rs": 5219.36,
+          "populacao_mil": 163768.0
+        },
+        {
+          "ano_mes": "1997-01-01",
+          "ano": 1997,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.4,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 952.09,
+          "pib_per_capita_rs": 5729.02,
+          "populacao_mil": 166187.0
+        },
+        {
+          "ano_mes": "1998-01-01",
+          "ano": 1998,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 0.3,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1002.35,
+          "pib_per_capita_rs": 5944.93,
+          "populacao_mil": 168606.0
+        },
+        {
+          "ano_mes": "1999-01-01",
+          "ano": 1999,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 0.5,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1087.71,
+          "pib_per_capita_rs": 6359.8,
+          "populacao_mil": 171029.0
+        },
+        {
+          "ano_mes": "2000-01-01",
+          "ano": 2000,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.4,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1199.09,
+          "pib_per_capita_rs": 6863.88,
+          "populacao_mil": 174696.0
+        },
+        {
+          "ano_mes": "2001-01-01",
+          "ano": 2001,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.4,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1315.76,
+          "pib_per_capita_rs": 7433.48,
+          "populacao_mil": 177004.0
+        },
+        {
+          "ano_mes": "2002-01-01",
+          "ano": 2002,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.1,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1488.79,
+          "pib_per_capita_rs": 8306.67,
+          "populacao_mil": 179228.0
+        },
+        {
+          "ano_mes": "2003-01-01",
+          "ano": 2003,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.1,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1717.95,
+          "pib_per_capita_rs": 9471.66,
+          "populacao_mil": 181378.0
+        },
+        {
+          "ano_mes": "2004-01-01",
+          "ano": 2004,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 5.8,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 1957.75,
+          "pib_per_capita_rs": 10670.69,
+          "populacao_mil": 183470.0
+        },
+        {
+          "ano_mes": "2005-01-01",
+          "ano": 2005,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.2,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 2170.59,
+          "pib_per_capita_rs": 11700.13,
+          "populacao_mil": 185518.0
+        },
+        {
+          "ano_mes": "2006-01-01",
+          "ano": 2006,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.0,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 2409.45,
+          "pib_per_capita_rs": 12848.0,
+          "populacao_mil": 187535.0
+        },
+        {
+          "ano_mes": "2007-01-01",
+          "ano": 2007,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 6.1,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 2720.26,
+          "pib_per_capita_rs": 14358.06,
+          "populacao_mil": 189459.0
+        },
+        {
+          "ano_mes": "2008-01-01",
+          "ano": 2008,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 5.1,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 3109.8,
+          "pib_per_capita_rs": 16253.18,
+          "populacao_mil": 191335.0
+        },
+        {
+          "ano_mes": "2009-01-01",
+          "ano": 2009,
+          "periodo": "Bolsonaro",
+          "taxa_aa": -0.1,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 3333.04,
+          "pib_per_capita_rs": 17254.08,
+          "populacao_mil": 193174.0
+        },
+        {
+          "ano_mes": "2010-01-01",
+          "ano": 2010,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 7.5,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 3885.85,
+          "pib_per_capita_rs": 19953.1,
+          "populacao_mil": 194749.0
+        },
+        {
+          "ano_mes": "2011-01-01",
+          "ano": 2011,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.0,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 4376.38,
+          "pib_per_capita_rs": 22310.38,
+          "populacao_mil": 196159.0
+        },
+        {
+          "ano_mes": "2012-01-01",
+          "ano": 2012,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.9,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 4814.76,
+          "pib_per_capita_rs": 24357.44,
+          "populacao_mil": 197671.0
+        },
+        {
+          "ano_mes": "2013-01-01",
+          "ano": 2013,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.0,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 5331.62,
+          "pib_per_capita_rs": 26761.53,
+          "populacao_mil": 199227.0
+        },
+        {
+          "ano_mes": "2014-01-01",
+          "ano": 2014,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 0.5,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 5778.95,
+          "pib_per_capita_rs": 28778.07,
+          "populacao_mil": 200811.0
+        },
+        {
+          "ano_mes": "2015-01-01",
+          "ano": 2015,
+          "periodo": "Bolsonaro",
+          "taxa_aa": -3.5,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 5995.79,
+          "pib_per_capita_rs": 29622.87,
+          "populacao_mil": 202404.0
+        },
+        {
+          "ano_mes": "2016-01-01",
+          "ano": 2016,
+          "periodo": "Bolsonaro",
+          "taxa_aa": -3.3,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 6269.33,
+          "pib_per_capita_rs": 30751.29,
+          "populacao_mil": 203872.0
+        },
+        {
+          "ano_mes": "2017-01-01",
+          "ano": 2017,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.3,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 6592.74,
+          "pib_per_capita_rs": 32126.5,
+          "populacao_mil": 205212.0
+        },
+        {
+          "ano_mes": "2018-01-01",
+          "ano": 2018,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.8,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 6996.86,
+          "pib_per_capita_rs": 33878.35,
+          "populacao_mil": 206529.0
+        },
+        {
+          "ano_mes": "2019-01-01",
+          "ano": 2019,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 1.2,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 7394.33,
+          "pib_per_capita_rs": 35566.77,
+          "populacao_mil": 207900.0
+        },
+        {
+          "ano_mes": "2020-01-01",
+          "ano": 2020,
+          "periodo": "Bolsonaro",
+          "taxa_aa": -3.3,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 7609.6,
+          "pib_per_capita_rs": 36380.83,
+          "populacao_mil": 209165.0
+        },
+        {
+          "ano_mes": "2021-01-01",
+          "ano": 2021,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 4.8,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 9012.14,
+          "pib_per_capita_rs": 42893.72,
+          "populacao_mil": 210104.0
+        },
+        {
+          "ano_mes": "2022-01-01",
+          "ano": 2022,
+          "periodo": "Bolsonaro",
+          "taxa_aa": 3.0,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 10079.68,
+          "pib_per_capita_rs": 47802.02,
+          "populacao_mil": 210863.0
+        },
+        {
+          "ano_mes": "2023-01-01",
+          "ano": 2023,
+          "periodo": "Lula",
+          "taxa_aa": 3.2,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": 10943.34,
+          "pib_per_capita_rs": 51693.92,
+          "populacao_mil": 211695.0
+        },
+        {
+          "ano_mes": "2024-01-01",
+          "ano": 2024,
+          "periodo": "Lula",
+          "taxa_aa": 3.4,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": null,
+          "pib_per_capita_rs": null,
+          "populacao_mil": null
+        },
+        {
+          "ano_mes": "2025-01-01",
+          "ano": 2025,
+          "periodo": "Lula",
+          "taxa_aa": 2.3,
+          "resultado_anual": true,
+          "pib_nominal_bilhoes": null,
+          "pib_per_capita_rs": null,
+          "populacao_mil": null
+        }
+      ],
+      "serie_trimestral": [
+        {
+          "trimestre": "1996-T1",
+          "ano_mes": "1996-01-01",
+          "variacao_interanual": -0.6,
+          "variacao_dessazonalizada": null
+        },
+        {
+          "trimestre": "1996-T2",
+          "ano_mes": "1996-04-01",
+          "variacao_interanual": 1.3,
+          "variacao_dessazonalizada": 1.2
+        },
+        {
+          "trimestre": "1996-T3",
+          "ano_mes": "1996-07-01",
+          "variacao_interanual": 5.6,
+          "variacao_dessazonalizada": 3.7
+        },
+        {
+          "trimestre": "1996-T4",
+          "ano_mes": "1996-10-01",
+          "variacao_interanual": 2.3,
+          "variacao_dessazonalizada": -1.0
+        },
+        {
+          "trimestre": "1997-T1",
+          "ano_mes": "1997-01-01",
+          "variacao_interanual": 3.4,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "1997-T2",
+          "ano_mes": "1997-04-01",
+          "variacao_interanual": 4.8,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "1997-T3",
+          "ano_mes": "1997-07-01",
+          "variacao_interanual": 1.8,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "1997-T4",
+          "ano_mes": "1997-10-01",
+          "variacao_interanual": 3.7,
+          "variacao_dessazonalizada": 0.8
+        },
+        {
+          "trimestre": "1998-T1",
+          "ano_mes": "1998-01-01",
+          "variacao_interanual": 1.0,
+          "variacao_dessazonalizada": -2.0
+        },
+        {
+          "trimestre": "1998-T2",
+          "ano_mes": "1998-04-01",
+          "variacao_interanual": 1.5,
+          "variacao_dessazonalizada": 1.7
+        },
+        {
+          "trimestre": "1998-T3",
+          "ano_mes": "1998-07-01",
+          "variacao_interanual": 0.4,
+          "variacao_dessazonalizada": 0.0
+        },
+        {
+          "trimestre": "1998-T4",
+          "ano_mes": "1998-10-01",
+          "variacao_interanual": -1.4,
+          "variacao_dessazonalizada": -1.1
+        },
+        {
+          "trimestre": "1999-T1",
+          "ano_mes": "1999-01-01",
+          "variacao_interanual": 0.8,
+          "variacao_dessazonalizada": 0.2
+        },
+        {
+          "trimestre": "1999-T2",
+          "ano_mes": "1999-04-01",
+          "variacao_interanual": -0.4,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "1999-T3",
+          "ano_mes": "1999-07-01",
+          "variacao_interanual": -0.6,
+          "variacao_dessazonalizada": 0.0
+        },
+        {
+          "trimestre": "1999-T4",
+          "ano_mes": "1999-10-01",
+          "variacao_interanual": 2.2,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2000-T1",
+          "ano_mes": "2000-01-01",
+          "variacao_interanual": 4.4,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "2000-T2",
+          "ano_mes": "2000-04-01",
+          "variacao_interanual": 4.0,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2000-T3",
+          "ano_mes": "2000-07-01",
+          "variacao_interanual": 4.6,
+          "variacao_dessazonalizada": 1.2
+        },
+        {
+          "trimestre": "2000-T4",
+          "ano_mes": "2000-10-01",
+          "variacao_interanual": 4.6,
+          "variacao_dessazonalizada": 1.2
+        },
+        {
+          "trimestre": "2001-T1",
+          "ano_mes": "2001-01-01",
+          "variacao_interanual": 3.5,
+          "variacao_dessazonalizada": 0.3
+        },
+        {
+          "trimestre": "2001-T2",
+          "ano_mes": "2001-04-01",
+          "variacao_interanual": 2.3,
+          "variacao_dessazonalizada": -0.5
+        },
+        {
+          "trimestre": "2001-T3",
+          "ano_mes": "2001-07-01",
+          "variacao_interanual": 0.5,
+          "variacao_dessazonalizada": -0.5
+        },
+        {
+          "trimestre": "2001-T4",
+          "ano_mes": "2001-10-01",
+          "variacao_interanual": -0.5,
+          "variacao_dessazonalizada": -0.3
+        },
+        {
+          "trimestre": "2002-T1",
+          "ano_mes": "2002-01-01",
+          "variacao_interanual": 0.5,
+          "variacao_dessazonalizada": 2.5
+        },
+        {
+          "trimestre": "2002-T2",
+          "ano_mes": "2002-04-01",
+          "variacao_interanual": 2.3,
+          "variacao_dessazonalizada": 0.2
+        },
+        {
+          "trimestre": "2002-T3",
+          "ano_mes": "2002-07-01",
+          "variacao_interanual": 4.2,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2002-T4",
+          "ano_mes": "2002-10-01",
+          "variacao_interanual": 5.2,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2003-T1",
+          "ano_mes": "2003-01-01",
+          "variacao_interanual": 2.7,
+          "variacao_dessazonalizada": -0.4
+        },
+        {
+          "trimestre": "2003-T2",
+          "ano_mes": "2003-04-01",
+          "variacao_interanual": 0.8,
+          "variacao_dessazonalizada": -0.8
+        },
+        {
+          "trimestre": "2003-T3",
+          "ano_mes": "2003-07-01",
+          "variacao_interanual": 0.6,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2003-T4",
+          "ano_mes": "2003-10-01",
+          "variacao_interanual": 0.6,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2004-T1",
+          "ano_mes": "2004-01-01",
+          "variacao_interanual": 3.9,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2004-T2",
+          "ano_mes": "2004-04-01",
+          "variacao_interanual": 6.3,
+          "variacao_dessazonalizada": 2.8
+        },
+        {
+          "trimestre": "2004-T3",
+          "ano_mes": "2004-07-01",
+          "variacao_interanual": 6.6,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2004-T4",
+          "ano_mes": "2004-10-01",
+          "variacao_interanual": 6.2,
+          "variacao_dessazonalizada": 0.8
+        },
+        {
+          "trimestre": "2005-T1",
+          "ano_mes": "2005-01-01",
+          "variacao_interanual": 4.2,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2005-T2",
+          "ano_mes": "2005-04-01",
+          "variacao_interanual": 4.5,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "2005-T3",
+          "ano_mes": "2005-07-01",
+          "variacao_interanual": 2.1,
+          "variacao_dessazonalizada": -0.6
+        },
+        {
+          "trimestre": "2005-T4",
+          "ano_mes": "2005-10-01",
+          "variacao_interanual": 2.2,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2006-T1",
+          "ano_mes": "2006-01-01",
+          "variacao_interanual": 4.3,
+          "variacao_dessazonalizada": 1.6
+        },
+        {
+          "trimestre": "2006-T2",
+          "ano_mes": "2006-04-01",
+          "variacao_interanual": 2.3,
+          "variacao_dessazonalizada": 0.3
+        },
+        {
+          "trimestre": "2006-T3",
+          "ano_mes": "2006-07-01",
+          "variacao_interanual": 4.5,
+          "variacao_dessazonalizada": 1.7
+        },
+        {
+          "trimestre": "2006-T4",
+          "ano_mes": "2006-10-01",
+          "variacao_interanual": 4.8,
+          "variacao_dessazonalizada": 1.2
+        },
+        {
+          "trimestre": "2007-T1",
+          "ano_mes": "2007-01-01",
+          "variacao_interanual": 5.2,
+          "variacao_dessazonalizada": 1.9
+        },
+        {
+          "trimestre": "2007-T2",
+          "ano_mes": "2007-04-01",
+          "variacao_interanual": 6.5,
+          "variacao_dessazonalizada": 1.7
+        },
+        {
+          "trimestre": "2007-T3",
+          "ano_mes": "2007-07-01",
+          "variacao_interanual": 5.9,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2007-T4",
+          "ano_mes": "2007-10-01",
+          "variacao_interanual": 6.6,
+          "variacao_dessazonalizada": 1.5
+        },
+        {
+          "trimestre": "2008-T1",
+          "ano_mes": "2008-01-01",
+          "variacao_interanual": 6.2,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2008-T2",
+          "ano_mes": "2008-04-01",
+          "variacao_interanual": 6.3,
+          "variacao_dessazonalizada": 2.0
+        },
+        {
+          "trimestre": "2008-T3",
+          "ano_mes": "2008-07-01",
+          "variacao_interanual": 7.0,
+          "variacao_dessazonalizada": 1.6
+        },
+        {
+          "trimestre": "2008-T4",
+          "ano_mes": "2008-10-01",
+          "variacao_interanual": 1.0,
+          "variacao_dessazonalizada": -3.8
+        },
+        {
+          "trimestre": "2009-T1",
+          "ano_mes": "2009-01-01",
+          "variacao_interanual": -2.4,
+          "variacao_dessazonalizada": -1.4
+        },
+        {
+          "trimestre": "2009-T2",
+          "ano_mes": "2009-04-01",
+          "variacao_interanual": -2.2,
+          "variacao_dessazonalizada": 1.8
+        },
+        {
+          "trimestre": "2009-T3",
+          "ano_mes": "2009-07-01",
+          "variacao_interanual": -1.2,
+          "variacao_dessazonalizada": 2.3
+        },
+        {
+          "trimestre": "2009-T4",
+          "ano_mes": "2009-10-01",
+          "variacao_interanual": 5.3,
+          "variacao_dessazonalizada": 2.6
+        },
+        {
+          "trimestre": "2010-T1",
+          "ano_mes": "2010-01-01",
+          "variacao_interanual": 9.2,
+          "variacao_dessazonalizada": 2.1
+        },
+        {
+          "trimestre": "2010-T2",
+          "ano_mes": "2010-04-01",
+          "variacao_interanual": 8.5,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2010-T3",
+          "ano_mes": "2010-07-01",
+          "variacao_interanual": 6.9,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2010-T4",
+          "ano_mes": "2010-10-01",
+          "variacao_interanual": 5.7,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2011-T1",
+          "ano_mes": "2011-01-01",
+          "variacao_interanual": 5.2,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2011-T2",
+          "ano_mes": "2011-04-01",
+          "variacao_interanual": 4.7,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2011-T3",
+          "ano_mes": "2011-07-01",
+          "variacao_interanual": 3.5,
+          "variacao_dessazonalizada": -0.2
+        },
+        {
+          "trimestre": "2011-T4",
+          "ano_mes": "2011-10-01",
+          "variacao_interanual": 2.6,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2012-T1",
+          "ano_mes": "2012-01-01",
+          "variacao_interanual": 1.7,
+          "variacao_dessazonalizada": -1.4
+        },
+        {
+          "trimestre": "2012-T2",
+          "ano_mes": "2012-04-01",
+          "variacao_interanual": 1.0,
+          "variacao_dessazonalizada": 1.8
+        },
+        {
+          "trimestre": "2012-T3",
+          "ano_mes": "2012-07-01",
+          "variacao_interanual": 2.5,
+          "variacao_dessazonalizada": 1.7
+        },
+        {
+          "trimestre": "2012-T4",
+          "ano_mes": "2012-10-01",
+          "variacao_interanual": 2.5,
+          "variacao_dessazonalizada": 0.0
+        },
+        {
+          "trimestre": "2013-T1",
+          "ano_mes": "2013-01-01",
+          "variacao_interanual": 2.7,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "2013-T2",
+          "ano_mes": "2013-04-01",
+          "variacao_interanual": 4.0,
+          "variacao_dessazonalizada": 1.4
+        },
+        {
+          "trimestre": "2013-T3",
+          "ano_mes": "2013-07-01",
+          "variacao_interanual": 2.8,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "2013-T4",
+          "ano_mes": "2013-10-01",
+          "variacao_interanual": 2.5,
+          "variacao_dessazonalizada": 0.2
+        },
+        {
+          "trimestre": "2014-T1",
+          "ano_mes": "2014-01-01",
+          "variacao_interanual": 3.5,
+          "variacao_dessazonalizada": 0.8
+        },
+        {
+          "trimestre": "2014-T2",
+          "ano_mes": "2014-04-01",
+          "variacao_interanual": -0.4,
+          "variacao_dessazonalizada": -1.5
+        },
+        {
+          "trimestre": "2014-T3",
+          "ano_mes": "2014-07-01",
+          "variacao_interanual": -0.6,
+          "variacao_dessazonalizada": -0.1
+        },
+        {
+          "trimestre": "2014-T4",
+          "ano_mes": "2014-10-01",
+          "variacao_interanual": -0.2,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "2015-T1",
+          "ano_mes": "2015-01-01",
+          "variacao_interanual": -1.6,
+          "variacao_dessazonalizada": -0.8
+        },
+        {
+          "trimestre": "2015-T2",
+          "ano_mes": "2015-04-01",
+          "variacao_interanual": -2.7,
+          "variacao_dessazonalizada": -2.4
+        },
+        {
+          "trimestre": "2015-T3",
+          "ano_mes": "2015-07-01",
+          "variacao_interanual": -4.3,
+          "variacao_dessazonalizada": -1.6
+        },
+        {
+          "trimestre": "2015-T4",
+          "ano_mes": "2015-10-01",
+          "variacao_interanual": -5.5,
+          "variacao_dessazonalizada": -0.8
+        },
+        {
+          "trimestre": "2016-T1",
+          "ano_mes": "2016-01-01",
+          "variacao_interanual": -5.1,
+          "variacao_dessazonalizada": -1.4
+        },
+        {
+          "trimestre": "2016-T2",
+          "ano_mes": "2016-04-01",
+          "variacao_interanual": -3.2,
+          "variacao_dessazonalizada": 0.3
+        },
+        {
+          "trimestre": "2016-T3",
+          "ano_mes": "2016-07-01",
+          "variacao_interanual": -2.5,
+          "variacao_dessazonalizada": -0.5
+        },
+        {
+          "trimestre": "2016-T4",
+          "ano_mes": "2016-10-01",
+          "variacao_interanual": -2.3,
+          "variacao_dessazonalizada": -0.1
+        },
+        {
+          "trimestre": "2017-T1",
+          "ano_mes": "2017-01-01",
+          "variacao_interanual": 0.3,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2017-T2",
+          "ano_mes": "2017-04-01",
+          "variacao_interanual": 0.8,
+          "variacao_dessazonalizada": 0.8
+        },
+        {
+          "trimestre": "2017-T3",
+          "ano_mes": "2017-07-01",
+          "variacao_interanual": 1.6,
+          "variacao_dessazonalizada": 0.2
+        },
+        {
+          "trimestre": "2017-T4",
+          "ano_mes": "2017-10-01",
+          "variacao_interanual": 2.6,
+          "variacao_dessazonalizada": 0.5
+        },
+        {
+          "trimestre": "2018-T1",
+          "ano_mes": "2018-01-01",
+          "variacao_interanual": 1.9,
+          "variacao_dessazonalizada": 0.6
+        },
+        {
+          "trimestre": "2018-T2",
+          "ano_mes": "2018-04-01",
+          "variacao_interanual": 1.6,
+          "variacao_dessazonalizada": -0.1
+        },
+        {
+          "trimestre": "2018-T3",
+          "ano_mes": "2018-07-01",
+          "variacao_interanual": 2.1,
+          "variacao_dessazonalizada": 1.0
+        },
+        {
+          "trimestre": "2018-T4",
+          "ano_mes": "2018-10-01",
+          "variacao_interanual": 1.6,
+          "variacao_dessazonalizada": -0.3
+        },
+        {
+          "trimestre": "2019-T1",
+          "ano_mes": "2019-01-01",
+          "variacao_interanual": 0.9,
+          "variacao_dessazonalizada": 0.3
+        },
+        {
+          "trimestre": "2019-T2",
+          "ano_mes": "2019-04-01",
+          "variacao_interanual": 1.2,
+          "variacao_dessazonalizada": 0.6
+        },
+        {
+          "trimestre": "2019-T3",
+          "ano_mes": "2019-07-01",
+          "variacao_interanual": 1.1,
+          "variacao_dessazonalizada": 0.0
+        },
+        {
+          "trimestre": "2019-T4",
+          "ano_mes": "2019-10-01",
+          "variacao_interanual": 1.7,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2020-T1",
+          "ano_mes": "2020-01-01",
+          "variacao_interanual": 0.4,
+          "variacao_dessazonalizada": -2.3
+        },
+        {
+          "trimestre": "2020-T2",
+          "ano_mes": "2020-04-01",
+          "variacao_interanual": -10.1,
+          "variacao_dessazonalizada": -8.9
+        },
+        {
+          "trimestre": "2020-T3",
+          "ano_mes": "2020-07-01",
+          "variacao_interanual": -3.0,
+          "variacao_dessazonalizada": 7.9
+        },
+        {
+          "trimestre": "2020-T4",
+          "ano_mes": "2020-10-01",
+          "variacao_interanual": -0.3,
+          "variacao_dessazonalizada": 3.8
+        },
+        {
+          "trimestre": "2021-T1",
+          "ano_mes": "2021-01-01",
+          "variacao_interanual": 1.7,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2021-T2",
+          "ano_mes": "2021-04-01",
+          "variacao_interanual": 12.4,
+          "variacao_dessazonalizada": -0.7
+        },
+        {
+          "trimestre": "2021-T3",
+          "ano_mes": "2021-07-01",
+          "variacao_interanual": 4.2,
+          "variacao_dessazonalizada": 0.1
+        },
+        {
+          "trimestre": "2021-T4",
+          "ano_mes": "2021-10-01",
+          "variacao_interanual": 1.5,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2022-T1",
+          "ano_mes": "2022-01-01",
+          "variacao_interanual": 1.5,
+          "variacao_dessazonalizada": 0.7
+        },
+        {
+          "trimestre": "2022-T2",
+          "ano_mes": "2022-04-01",
+          "variacao_interanual": 3.5,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "2022-T3",
+          "ano_mes": "2022-07-01",
+          "variacao_interanual": 4.3,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "2022-T4",
+          "ano_mes": "2022-10-01",
+          "variacao_interanual": 2.7,
+          "variacao_dessazonalizada": 0.4
+        },
+        {
+          "trimestre": "2023-T1",
+          "ano_mes": "2023-01-01",
+          "variacao_interanual": 4.4,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2023-T2",
+          "ano_mes": "2023-04-01",
+          "variacao_interanual": 3.9,
+          "variacao_dessazonalizada": 0.8
+        },
+        {
+          "trimestre": "2023-T3",
+          "ano_mes": "2023-07-01",
+          "variacao_interanual": 2.4,
+          "variacao_dessazonalizada": 0.1
+        },
+        {
+          "trimestre": "2023-T4",
+          "ano_mes": "2023-10-01",
+          "variacao_interanual": 2.4,
+          "variacao_dessazonalizada": 0.4
+        },
+        {
+          "trimestre": "2024-T1",
+          "ano_mes": "2024-01-01",
+          "variacao_interanual": 2.5,
+          "variacao_dessazonalizada": 0.7
+        },
+        {
+          "trimestre": "2024-T2",
+          "ano_mes": "2024-04-01",
+          "variacao_interanual": 3.5,
+          "variacao_dessazonalizada": 1.7
+        },
+        {
+          "trimestre": "2024-T3",
+          "ano_mes": "2024-07-01",
+          "variacao_interanual": 4.1,
+          "variacao_dessazonalizada": 0.9
+        },
+        {
+          "trimestre": "2024-T4",
+          "ano_mes": "2024-10-01",
+          "variacao_interanual": 3.6,
+          "variacao_dessazonalizada": 0.1
+        },
+        {
+          "trimestre": "2025-T1",
+          "ano_mes": "2025-01-01",
+          "variacao_interanual": 3.1,
+          "variacao_dessazonalizada": 1.3
+        },
+        {
+          "trimestre": "2025-T2",
+          "ano_mes": "2025-04-01",
+          "variacao_interanual": 2.4,
+          "variacao_dessazonalizada": 0.4
+        },
+        {
+          "trimestre": "2025-T3",
+          "ano_mes": "2025-07-01",
+          "variacao_interanual": 1.8,
+          "variacao_dessazonalizada": 0.1
+        },
+        {
+          "trimestre": "2025-T4",
+          "ano_mes": "2025-10-01",
+          "variacao_interanual": 1.8,
+          "variacao_dessazonalizada": 0.2
+        },
+        {
+          "trimestre": "2026-T1",
+          "ano_mes": "2026-01-01",
+          "variacao_interanual": 1.8,
+          "variacao_dessazonalizada": 1.1
+        },
+        {
+          "trimestre": "2026-T2",
+          "ano_mes": "2026-04-01",
+          "variacao_interanual": 2.0,
+          "variacao_dessazonalizada": 0.5
+        }
+      ],
+      "serie_anual": [
+        {
+          "ano": 1996,
+          "taxa_media": 2.2,
+          "n_meses": 1
+        },
+        {
+          "ano": 1997,
+          "taxa_media": 3.4,
+          "n_meses": 1
+        },
+        {
+          "ano": 1998,
+          "taxa_media": 0.3,
+          "n_meses": 1
+        },
+        {
+          "ano": 1999,
+          "taxa_media": 0.5,
+          "n_meses": 1
+        },
+        {
+          "ano": 2000,
+          "taxa_media": 4.4,
+          "n_meses": 1
+        },
+        {
+          "ano": 2001,
+          "taxa_media": 1.4,
+          "n_meses": 1
+        },
+        {
+          "ano": 2002,
+          "taxa_media": 3.1,
+          "n_meses": 1
+        },
+        {
+          "ano": 2003,
+          "taxa_media": 1.1,
+          "n_meses": 1
+        },
+        {
+          "ano": 2004,
+          "taxa_media": 5.8,
+          "n_meses": 1
+        },
+        {
+          "ano": 2005,
+          "taxa_media": 3.2,
+          "n_meses": 1
+        },
+        {
+          "ano": 2006,
+          "taxa_media": 4.0,
+          "n_meses": 1
+        },
+        {
+          "ano": 2007,
+          "taxa_media": 6.1,
+          "n_meses": 1
+        },
+        {
+          "ano": 2008,
+          "taxa_media": 5.1,
+          "n_meses": 1
+        },
+        {
+          "ano": 2009,
+          "taxa_media": -0.1,
+          "n_meses": 1
+        },
+        {
+          "ano": 2010,
+          "taxa_media": 7.5,
+          "n_meses": 1
+        },
+        {
+          "ano": 2011,
+          "taxa_media": 4.0,
+          "n_meses": 1
+        },
+        {
+          "ano": 2012,
+          "taxa_media": 1.9,
+          "n_meses": 1
+        },
+        {
+          "ano": 2013,
+          "taxa_media": 3.0,
+          "n_meses": 1
+        },
+        {
+          "ano": 2014,
+          "taxa_media": 0.5,
+          "n_meses": 1
+        },
+        {
+          "ano": 2015,
+          "taxa_media": -3.5,
+          "n_meses": 1
+        },
+        {
+          "ano": 2016,
+          "taxa_media": -3.3,
+          "n_meses": 1
+        },
+        {
+          "ano": 2017,
+          "taxa_media": 1.3,
+          "n_meses": 1
+        },
+        {
+          "ano": 2018,
+          "taxa_media": 1.8,
+          "n_meses": 1
+        },
+        {
+          "ano": 2019,
+          "taxa_media": 1.2,
+          "n_meses": 1
+        },
+        {
+          "ano": 2020,
+          "taxa_media": -3.3,
+          "n_meses": 1
+        },
+        {
+          "ano": 2021,
+          "taxa_media": 4.8,
+          "n_meses": 1
+        },
+        {
+          "ano": 2022,
+          "taxa_media": 3.0,
+          "n_meses": 1
+        },
+        {
+          "ano": 2023,
+          "taxa_media": 3.2,
+          "n_meses": 1
+        },
+        {
+          "ano": 2024,
+          "taxa_media": 3.4,
+          "n_meses": 1
+        },
+        {
+          "ano": 2025,
+          "taxa_media": 2.3,
+          "n_meses": 1
+        }
+      ],
+      "resumo_periodos": {
+        "Bolsonaro": {
+          "governo_inteiro": {
+            "n_meses": 27,
+            "mes_inicio": "1996-01-01",
+            "mes_fim": "2022-01-01",
+            "taxa_inicio": 2.2,
+            "taxa_fim": 3.0,
+            "variacao_pp": 0.8,
+            "taxa_media": 2.2,
+            "taxa_min": -3.5,
+            "taxa_max": 7.5,
+            "crescimento_acumulado_pct": 78.24,
+            "anos_com_resultado_fechado": 27
+          },
+          "primeiros_12m": {
+            "n_meses": 12,
+            "mes_inicio": "1996-01-01",
+            "mes_fim": "2007-01-01",
+            "taxa_inicio": 2.2,
+            "taxa_fim": 6.1,
+            "variacao_pp": 3.9,
+            "taxa_media": 2.96,
+            "taxa_min": 0.3,
+            "taxa_max": 6.1,
+            "crescimento_acumulado_pct": 41.61,
+            "anos_com_resultado_fechado": 12,
+            "completo": true
+          },
+          "primeiros_24m": {
+            "n_meses": 24,
+            "mes_inicio": "1996-01-01",
+            "mes_fim": "2019-01-01",
+            "taxa_inicio": 2.2,
+            "taxa_fim": 1.2,
+            "variacao_pp": -1.0,
+            "taxa_media": 2.29,
+            "taxa_min": -3.5,
+            "taxa_max": 7.5,
+            "crescimento_acumulado_pct": 70.76,
+            "anos_com_resultado_fechado": 24,
+            "completo": true
+          },
+          "primeiros_36m": {
+            "n_meses": 27,
+            "mes_inicio": "1996-01-01",
+            "mes_fim": "2022-01-01",
+            "taxa_inicio": 2.2,
+            "taxa_fim": 3.0,
+            "variacao_pp": 0.8,
+            "taxa_media": 2.2,
+            "taxa_min": -3.5,
+            "taxa_max": 7.5,
+            "crescimento_acumulado_pct": 78.24,
+            "anos_com_resultado_fechado": 27,
+            "completo": false
+          }
+        },
+        "Lula": {
+          "governo_inteiro": {
+            "n_meses": 3,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2025-01-01",
+            "taxa_inicio": 3.2,
+            "taxa_fim": 2.3,
+            "variacao_pp": -0.9,
+            "taxa_media": 2.97,
+            "taxa_min": 2.3,
+            "taxa_max": 3.4,
+            "crescimento_acumulado_pct": 9.16,
+            "anos_com_resultado_fechado": 3
+          },
+          "primeiros_12m": {
+            "n_meses": 3,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2025-01-01",
+            "taxa_inicio": 3.2,
+            "taxa_fim": 2.3,
+            "variacao_pp": -0.9,
+            "taxa_media": 2.97,
+            "taxa_min": 2.3,
+            "taxa_max": 3.4,
+            "crescimento_acumulado_pct": 9.16,
+            "anos_com_resultado_fechado": 3,
+            "completo": false
+          },
+          "primeiros_24m": {
+            "n_meses": 3,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2025-01-01",
+            "taxa_inicio": 3.2,
+            "taxa_fim": 2.3,
+            "variacao_pp": -0.9,
+            "taxa_media": 2.97,
+            "taxa_min": 2.3,
+            "taxa_max": 3.4,
+            "crescimento_acumulado_pct": 9.16,
+            "anos_com_resultado_fechado": 3,
+            "completo": false
+          },
+          "primeiros_36m": {
+            "n_meses": 3,
+            "mes_inicio": "2023-01-01",
+            "mes_fim": "2025-01-01",
+            "taxa_inicio": 3.2,
+            "taxa_fim": 2.3,
+            "variacao_pp": -0.9,
+            "taxa_media": 2.97,
+            "taxa_min": 2.3,
+            "taxa_max": 3.4,
+            "crescimento_acumulado_pct": 9.16,
+            "anos_com_resultado_fechado": 3,
+            "completo": false
+          }
+        }
+      },
+      "ultimo_trimestre": {
+        "trimestre": "2026-T2",
+        "ano_mes": "2026-04-01",
+        "variacao_interanual": 2.0,
+        "variacao_dessazonalizada": 0.5
       }
     }
   },
