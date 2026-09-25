@@ -23,6 +23,7 @@ let NEWS = [];
 let NEWS_META = null;
 let STATUS = null;
 let MONTHS = [];
+let heroChart = null; // API do gráfico-textura da abertura (ver charts.js:texture) — sincronizado com S.product
 const S = { product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null, archive: "produto" };
 const P = (code) => D.produtos[code];
 
@@ -179,7 +180,8 @@ function renderHero() {
     `<span>ANP · IBGE · Banco Central · B3 · FRED</span>`,
   ].join("");
 
-  texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: nativeRows(P(c)) })), { cutoff: PERIODO_CORTE, highlight: "GASOLINA" });
+  heroChart = texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: nativeRows(P(c)) })), { cutoff: PERIODO_CORTE, highlight: S.product });
+  updateHeroHighlight(S.product);
 
   // Faixa "da troca de governo ao último dado": seis indicadores. Dólar,
   // Selic e Ibovespa usam o último dado DIÁRIO de dez/2022 e o último dado
@@ -211,6 +213,16 @@ function renderHero() {
       <span class="rb-delta">${dl}</span>
     </li>`;
   }).join("");
+}
+
+// Mantém a linha em destaque no gráfico-textura da abertura sincronizada com
+// a história selecionada — chamado no load inicial e sempre que S.product
+// muda (ver selectProduct). Reusa a mesma API para qualquer uma das 15
+// séries, nada específico de gasolina.
+function updateHeroHighlight(code) {
+  heroChart?.setHighlight(code);
+  const label = $("#texture-highlight");
+  if (label) label.textContent = META[code].curto;
 }
 
 // O nome ocupa a largura toda. O CSS acerta o tamanho com a fonte da casa;
@@ -994,6 +1006,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   renumber();
   renderNextLinks();
   updateMast();
+  updateHeroHighlight(code);
   if (scroll) $("#historia").scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
 }
 
