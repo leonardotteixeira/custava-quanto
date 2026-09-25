@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T13:51:50+00:00",
+  "gerado_em": "2026-09-25T15:02:44+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -9291,7 +9291,7 @@
       "nome": "Arroz",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB tem uma série de preço de varejo por estado que poderia, em tese, dar um preço nacional em R$/kg — o projeto ainda não verificou essa fonte o bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -10377,7 +10377,7 @@
       "nome": "Café moído",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -11463,7 +11463,7 @@
       "nome": "Carne bovina (patinho)",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -12549,7 +12549,7 @@
       "nome": "Feijão carioca",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. A CONAB tem uma série de preço de varejo por estado que poderia, em tese, dar um preço nacional em R$/kg — o projeto ainda não verificou essa fonte o bastante para publicá-la (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -13635,7 +13635,7 @@
       "nome": "Leite longa vida",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
@@ -14721,7 +14721,7 @@
       "nome": "Óleo de soja",
       "tipo": "alimento_indice",
       "unidade": "índice (base 100 = jan/2019)",
-      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item ao longo de todo o período — só a variação mensal oficial do IPCA por subitem. Este número é um índice relativo (base 100 = jan/2019), encadeado a partir dessa variação. Não é um preço em reais.",
+      "nota": "O IBGE/SIDRA não publica preço médio nacional em R$ para este item — só a variação mensal oficial do IPCA por subitem. Por isso este número é um índice relativo (base 100 = jan/2019), não um preço em reais. As únicas séries de preço em R$ encontradas (CEPEA/ESALQ) medem o valor pago ao produtor, não o preço na prateleira — por isso não foram usadas (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).",
       "serie_mensal": [
         {
           "ano_mes": "2019-01-01",
