@@ -13,7 +13,7 @@ import {
   lastValid, firstValid, rowAt, rowAtYear, cadenceGap, baseRow, temPrecoAbsoluto, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
-import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel } from "./pib.js";
+import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel, PIB_JANELA_INICIO } from "./pib.js";
 
 const DATA_URL = "../data/processed/dashboard_data.json";
 const NEWS_URL = "../data/processed/noticias.json";
@@ -510,7 +510,7 @@ function priceConfig(code) {
   } else if (k === "pib") {
     get = (r) => r.taxa_aa; yFmt = (t, s) => `${fmtNum(t, s < 1 ? 1 : 0)}%`; vFmt = (v) => `${fmtNum(v, 2)}%`;
     help = "Variação real do PIB acumulada no ano (resultado do 4º trimestre). Um ano sem essa linha ainda não teve o resultado fechado pelo IBGE — aparece em branco, não estimado.";
-    deck = "PIB real (crescimento), ano a ano. Não é o PIB em reais — isso aparece nos fatos ao lado.";
+    deck = "PIB real (crescimento): resultado anual, de 2019 ao último ano fechado. Frequência anual; não é o PIB em reais.";
   } else if (k === "indice" && S.metric === "conab" && temPrecoAbsoluto(prod)) {
     const meta = prod.preco_absoluto;
     get = (r) => r.preco_conab_brl_kg; ref = (r) => r.preco_conab_real_brl_kg;
@@ -540,7 +540,10 @@ function renderPrice(animate = true) {
   const code = S.product;
   const pc = priceConfig(code);
   const { prod, get, ref, yFmt, vFmt, help } = pc;
-  const rows = prod.serie_mensal;
+  // PIB: a série completa continua nos dados; a apresentação usa o recorte editorial
+  // (jan/2019 → último dado), o mesmo das outras histórias.
+  const rowsAll = prod.serie_mensal;
+  const rows = pc.k === "pib" ? rowsAll.filter((r) => r.ano_mes >= PIB_JANELA_INICIO) : rowsAll;
 
   // controle de métrica
   const opts = metricOptions(prod);
@@ -553,7 +556,7 @@ function renderPrice(animate = true) {
   $('#metric-toggle [data-metric="nominal"]').textContent = pc.k === "indice" ? "Índice" : "Na época";
   $('#metric-toggle [data-metric="real"]').textContent = pc.k === "indice" ? "Índice corrigido pela inflação" : "Corrigido pela inflação";
   $("#metric-help").innerHTML = ref ? `${help} <span class="legend" style="display:inline-flex;margin:0 0 0 8px"><span><i class="k"></i>corrigido</span><span><i class="k k--dot" style="border-color:var(--fg-3)"></i>na época</span></span>` : help;
-  $("#preco-title").textContent = pc.k === "pib" ? "Ano a ano, desde o início da série." : "Mês a mês, desde 2019.";
+  $("#preco-title").textContent = pc.k === "pib" ? "Como o PIB mudou de 2019 para cá." : "Mês a mês, desde 2019.";
   $("#preco-deck").textContent = `${pc.deck} O fundo muda de cor na troca de governo. Letras marcam datas de contexto; números marcam notícias da época.`;
 
   // anotações seletivas: início, fim, máxima e mínima (sem repetir meses próximos)
@@ -568,14 +571,16 @@ function renderPrice(animate = true) {
   ];
   const far = (r) => anns.every((a) => Math.abs(monthIdx(a.r.ano_mes) - monthIdx(r.ano_mes)) > 5);
   if (far(hi)) anns.push({ r: hi, sub: `máxima · ${pLabel(hi.ano_mes)}` });
-  if (far(lo)) anns.push({ r: lo, sub: `mínima · ${pLabel(lo.ano_mes)}`, place: "below" });
+  if (pc.k !== "pib" && far(lo)) anns.push({ r: lo, sub: `mínima · ${pLabel(lo.ano_mes)}`, place: "below" });
 
   // notícias no gráfico
-  const nl = noticiasParaGrafico(code).map((n, i) => {
+  // PIB: no gráfico anual entram só as divulgações do resultado do ano (jan-abr do ano seguinte);
+  // as trimestrais aparecem no "ano em detalhe". Numeração sequencial só das exibidas.
+  const nl = noticiasParaGrafico(code).filter((n) => pc.k !== "pib" || (+n.data.slice(5, 7) <= 4 && n.data.slice(0, 4) > "2019")).map((n, i) => {
     // PIB é anual: o release/reportagem de março de Y+1 fala do resultado de Y
     const r = pc.k === "pib" ? rows.find((q) => q.ano === anoDaNoticia(n) && !isNil(get(q))) : linhaDoMes(prod, n.data, get);
     return r ? { ...n, n: i + 1, iso: r.ano_mes, v: get(r) } : null;
-  }).filter(Boolean);
+  }).filter(Boolean).map((n, i) => ({ ...n, n: i + 1 }));
   if (!nl.some((n) => n.id === S.newsId)) S.newsId = (nl.find((n) => mesKey(n.iso) === mesKey(hi.ano_mes)) || nl[nl.length - 1])?.id ?? null;
 
   const evs = eventsFor(prod);
@@ -591,6 +596,7 @@ function renderPrice(animate = true) {
       ...(ref ? [{ rows: rows.map((r) => ({ iso: r.ano_mes, v: ref(r) })), cls: "c-line c-line--ref", maxGap: cadenceGap(prod) }] : []),
     ],
     cutoff: PERIODO_CORTE, bands: "full", includeZero: true, headroom: 0.18, yFmt, animate,
+    ...(pc.k === "pib" ? { m0: monthIdx(PIB_JANELA_INICIO), m1: monthIdx(last.ano_mes) } : {}),
     annotations: anns.map((a) => ({ iso: a.r.ano_mes, v: get(a.r), text: vFmt(get(a.r)), sub: a.sub, place: a.place, signal: a.signal })),
     events: pc.k === "pib" ? [] : evs,
     onSelect: pc.k === "pib" ? (mi) => { const r = rows.find((q) => monthIdx(q.ano_mes) === mi && !isNil(get(q))); if (r) { S.pibYear = r.ano; renderPrice(false); renderPibExtra(prod, { S, NEWS, clip }); } } : undefined,
@@ -626,7 +632,7 @@ function renderPrice(animate = true) {
   else if (pc.k === "taxa") cols.push([code === "SELIC" ? "Selic (% a.a.)" : "IPCA 12 meses (%)", (r) => fmtNum(r.taxa_aa, 2)]);
   else if (pc.k === "pib") cols.push(["PIB real, variação no ano (%)", (r) => isNil(r.taxa_aa) ? "sem resultado fechado" : fmtNum(r.taxa_aa, 2)], ["PIB nominal (R$ bi)", (r) => isNil(r.pib_nominal_bilhoes) ? "—" : fmtBRL(r.pib_nominal_bilhoes)], ["PIB per capita (R$)", (r) => isNil(r.pib_per_capita_rs) ? "—" : fmtBRL(r.pib_per_capita_rs)]);
   else cols.push(["Pontos", (r) => fmtInt(r.pontos)]);
-  $("#main-table").innerHTML = `<caption class="sr-only">${esc(META[code].titulo)}, valores mensais</caption><thead><tr>${cols.map(([h]) => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${[...rows].reverse().map((r) => `<tr>${cols.map(([, f], i) => (i ? `<td>${f(r)}</td>` : `<th scope="row">${f(r)}</th>`)).join("")}</tr>`).join("")}</tbody>`;
+  $("#main-table").innerHTML = `<caption class="sr-only">${esc(META[code].titulo)}, valores ${pc.k === "pib" ? "anuais" : "mensais"}</caption><thead><tr>${cols.map(([h]) => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${[...rowsAll].reverse().map((r) => `<tr>${cols.map(([, f], i) => (i ? `<td>${f(r)}</td>` : `<th scope="row">${f(r)}</th>`)).join("")}</tr>`).join("")}</tbody>`;
 
   renderNewsRail(nl, pc);
 }
@@ -778,7 +784,7 @@ let multCharts = [];
 function renderContext() {
   const code = S.product, prod = P(code), k = kind(prod), m = META[code];
   if (prod.tipo === "pib") { renderPibContext(prod); return; }
-  const box = $("#multiples");
+  const box = $("#multiples"); box.classList.remove("multiples--pib");
   multCharts = [];
   const caveats = {
     comb: "A política de preços da Petrobras, os impostos e a oferta e demanda internas também pesam no preço final.",
