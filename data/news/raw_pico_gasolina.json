@@ -1,0 +1,28 @@
+[
+  {
+    "titulo": "Preço médio da gasolina chega a R$ 7,29 e bate recorde histórico, aponta ANP",
+    "veiculo": "CNN Brasil",
+    "data": "2022-05-06",
+    "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/anp-valor-medio-da-gasolina-chega-a-r-73-maior-da-serie-historica/",
+    "resumo": "Segundo a ANP, o preço médio da gasolina comum chegou a R$ 7,29 por litro na semana, o maior da série do levantamento semanal, iniciado em 2004, e a quarta alta seguida.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "combustiveis"
+    ]
+  },
+  {
+    "titulo": "Preço médio da gasolina bate recorde e litro vai a R$ 7,29",
+    "veiculo": "Poder360",
+    "data": "2022-05-06",
+    "url": "https://www.poder360.com.br/economia/preco-medio-da-gasolina-bate-recorde-e-litro-vai-a-r-729/",
+    "resumo": "O preço médio da gasolina chegou a R$ 7,295 por litro na semana de 1º a 6 de maio, o mais alto da série histórica da ANP, depois de quatro semanas seguidas de alta.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "GASOLINA",
+      "combustiveis"
+    ]
+  }
+]

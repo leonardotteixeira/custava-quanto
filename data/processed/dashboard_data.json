@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-23T02:37:55+00:00",
+  "gerado_em": "2026-09-25T13:51:50+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -17333,6 +17333,24 @@
         "data_hora": "2026-09-22T23:37:50-0300",
         "fonte": "Banco Central do Brasil (SGS, série 1)",
         "nota": "Cotação de encerramento do dia útil anterior ou mais recente disponível."
+      },
+      "diario": {
+        "inicio": {
+          "data": "2019-01-02",
+          "valor": 3.8595
+        },
+        "troca": {
+          "data": "2022-12-30",
+          "valor": 5.2177
+        },
+        "inicio_lula": {
+          "data": "2023-01-02",
+          "valor": 5.3436
+        },
+        "ultimo": {
+          "data": "2026-09-22",
+          "valor": 5.1161
+        }
       }
     },
     "SELIC": {
@@ -18226,6 +18244,24 @@
         "data_hora": "2026-09-22T23:37:50-0300",
         "fonte": "Banco Central do Brasil (SGS, série 432, Meta Selic)",
         "nota": "Taxa vigente no dia (definida pelo Copom)."
+      },
+      "diario": {
+        "inicio": {
+          "data": "2019-01-01",
+          "valor": 6.5
+        },
+        "troca": {
+          "data": "2022-12-31",
+          "valor": 13.75
+        },
+        "inicio_lula": {
+          "data": "2023-01-01",
+          "valor": 13.75
+        },
+        "ultimo": {
+          "data": "2026-09-22",
+          "valor": 13.75
+        }
       }
     },
     "IPCA": {
@@ -20192,6 +20228,24 @@
         "data_hora": "2026-09-22T23:37:50-0300",
         "fonte": "B3 (fechamento de pregão)",
         "nota": "Cotação de fechamento do pregão anterior ou mais recente disponível; não é garantidamente em tempo real."
+      },
+      "diario": {
+        "inicio": {
+          "data": "2019-01-02",
+          "valor": 91012.32
+        },
+        "troca": {
+          "data": "2022-12-29",
+          "valor": 109734.6
+        },
+        "inicio_lula": {
+          "data": "2023-01-02",
+          "valor": 106376.02
+        },
+        "ultimo": {
+          "data": "2026-09-22",
+          "valor": 187422.92
+        }
       }
     }
   },
