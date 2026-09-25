@@ -58,7 +58,8 @@ poderia copiar de forma verdadeira sem o mesmo rigor:
 Pipeline Python (`scripts/download_*.py` → `build_dataset.py` →
 `build_dashboard_data.py` → `build_news.py`) roda localmente ou sob demanda,
 gera JSON estático em `data/processed/`, servido por um dashboard HTML/CSS/JS
-+ Plotly.js totalmente estático (sem backend em produção). Dados atualizáveis
++ gráficos em SVG próprio, totalmente estático (sem backend em produção e sem
+biblioteca de gráficos). Dados atualizáveis
 via `scripts/update_data.py` (completo ou `--rapido`, pulando ANP/IBGE).
 Cotações "ao vivo" (Dólar, Selic, Ibovespa) vêm do Banco Central (SGS) e
 Yahoo Finance, com atraso declarado explicitamente na UI — nunca prometem
@@ -94,13 +95,15 @@ tempo real.
 - **Voz editorial** (definida em Phase 0.3): "O Analista Neutro e Rigoroso"
   — clara, objetiva, humana, empática, rigorosamente isenta, sem
   sensacionalismo, sem adjetivos de IA.
-- **Paleta de cor fixa** (Phase 2, desde set/2026): petróleo + âmbar, do
-  Custava Quanto Brand Book (direção "Índice") — ver DESIGN.md.
+- **Paleta de cor fixa**: papel + tinta petróleo + âmbar, do Custava Quanto
+  Brand Book (direção "Índice"); a v2 acrescenta blocos escuros (petróleo
+  noturno) e revalida o par de períodos para fundo escuro — ver DESIGN.md.
 - **Símbolo fixo**: arco de 270° com tick radial, do mesmo brand book —
   usado no masthead e como favicon (`dashboard/assets/brand/`).
-- Tipografia (Fraunces/Inter) e radius pequenos (3–6px) **não** seguem o
-  brand book — decisão confirmada do produto (brand book pede Piazzolla/
-  Space Grotesk e zero-radius); ver DESIGN.md Do's and Don'ts.
+- Tipografia **não** segue o brand book (que pede Piazzolla/Space Grotesk):
+  a v2 usa Newsreader (voz), Archivo (números e interface) e IBM Plex Mono
+  (metadados). Os cantos passaram a ser retos, o que agora coincide com o
+  zero-radius do brand book. Ver DESIGN.md.
 
 ## Evidence on Hand
 
