@@ -13,6 +13,7 @@ import {
   lastValid, firstValid, rowAt, rowAtYear, cadenceGap, baseRow, temPrecoAbsoluto, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
+import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel } from "./pib.js";
 
 const DATA_URL = "../data/processed/dashboard_data.json";
 const NEWS_URL = "../data/processed/noticias.json";
@@ -24,7 +25,7 @@ let NEWS_META = null;
 let STATUS = null;
 let MONTHS = [];
 let heroChart = null; // API do gráfico-textura da abertura (ver charts.js:texture) — sincronizado com S.product
-const S = { product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null, archive: "produto" };
+const S = { pibYear: null, product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null, archive: "produto" };
 const P = (code) => D.produtos[code];
 
 // Datas públicas e amplamente documentadas, só como referência de
@@ -157,6 +158,7 @@ async function init() {
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fitNameplate, 120); });
   initMachine();
   bindControls();
+  bindPibControls(() => P("PIB"));
   selectProduct(S.product, { initial: true });
   renderMethod();
   bindScroll();
@@ -184,7 +186,14 @@ function renderHero() {
     `<span>ANP · IBGE · Banco Central · B3 · FRED</span>`,
   ].join("");
 
-  heroChart = texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: heroRows(P(c)), maxGap: cadenceGap(P(c)) })), { cutoff: PERIODO_CORTE, highlight: S.product, window: [monthIdx(MONTHS[0]), monthIdx(MONTHS[MONTHS.length - 1])] });
+  // Fundo curado: só os indicadores de referência (cada um na SUA frequência) + a história
+  // selecionada, que pode ser qualquer uma. Nada é preenchido entre observações.
+  const HERO_SET = ["GASOLINA", "ETANOL", "DOLAR", "SELIC", "IPCA", "IBOVESPA", "PIB"];
+  const heroCodes = [...new Set([...HERO_SET, S.product])].filter((c) => D.produtos[c]);
+  const heroSeries = heroCodes.map((c) => ({ key: c, rows: heroRows(P(c)), maxGap: cadenceGap(P(c)) }));
+  const Fh = D.fotografia_mensal;
+  heroSeries.push({ key: "SALARIO_MINIMO", rows: MONTHS.filter((m) => !isNil(Fh[m]?.salario_minimo)).map((m) => ({ iso: m, v: Fh[m].salario_minimo })), maxGap: 1 });
+  heroChart = texture($("#hero-texture"), heroSeries, { cutoff: PERIODO_CORTE, highlight: S.product, window: [monthIdx(MONTHS[0]), monthIdx(MONTHS[MONTHS.length - 1])] });
   updateHeroHighlight(S.product);
 
   // Faixa "da troca de governo ao último dado": seis indicadores. Dólar,
@@ -192,18 +201,30 @@ function renderHero() {
   // diário disponível; os demais, o mês da troca e o último mês com dado.
   const F = D.fotografia_mensal;
   const items = [
-    { k: "gasolina", label: "Gasolina · R$/litro", fmt: (v) => fmtBRL(v), taxa: false },
-    { k: "dolar", label: "Dólar · R$", fmt: (v) => fmtBRL(v), taxa: false, diario: "DOLAR" },
-    { k: "salario_minimo", label: "Salário mínimo", fmt: (v) => fmtBRL(v, 0), taxa: false },
-    { k: "selic", label: "Selic · % ao ano", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true, diario: "SELIC" },
-    { k: "ipca", label: "Inflação · 12 meses", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true },
-    { k: "ibovespa", label: "Ibovespa · pontos", fmt: (v) => fmtInt(v), taxa: false, diario: "IBOVESPA" },
+    { k: "gasolina", label: "Gasolina · R$/litro", freq: "preço médio · mensal", fmt: (v) => fmtBRL(v), taxa: false },
+    { k: "etanol", label: "Etanol · R$/litro", freq: "preço médio · mensal", fmt: (v) => fmtBRL(v), taxa: false, prod: "ETANOL" },
+    { k: "dolar", label: "Dólar · R$", freq: "PTAX venda · diário", fmt: (v) => fmtBRL(v), taxa: false, diario: "DOLAR" },
+    { k: "salario_minimo", label: "Salário mínimo", freq: "valor nominal · mensal", fmt: (v) => fmtBRL(v, 0), taxa: false },
+    { k: "selic", label: "Selic · % ao ano", freq: "meta · % a.a.", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true, diario: "SELIC" },
+    { k: "ipca", label: "Inflação · 12 meses", freq: "variação acumulada em 12 meses", fmt: (v) => `${fmtNum(v, 2)}%`, taxa: true },
+    { k: "ibovespa", label: "Ibovespa · pontos", freq: "fechamento · diário", fmt: (v) => fmtInt(v), taxa: false, diario: "IBOVESPA" },
+    { k: "pib", label: "PIB · variação real", freq: "variação real · anual", fmt: (v) => `${fmtNum(v, 1)}%`, taxa: true, pib: true },
   ];
   $("#ribbon-from").textContent = mesAno(PERIODOS.trocaGoverno);
   $("#hero-ribbon").innerHTML = items.map((it) => {
     const d = it.diario && P(it.diario)?.diario;
     let va, vb, la, lb;
-    if (d?.troca && d?.ultimo) { va = d.troca.valor; vb = d.ultimo.valor; la = dataCurta(d.troca.data); lb = dataCurta(d.ultimo.data); }
+    const pp = it.pib ? P("PIB") : null;
+    if (pp) {
+      // PIB é anual: compara o último ano fechado com o ano da troca de governo (2022).
+      const an = pp.serie_mensal.filter((r) => !isNil(nativeValue(pp)(r)));
+      const ra = an.filter((r) => `${r.ano}-12-01` <= PERIODO_CORTE).pop() || an[0], rb = an[an.length - 1];
+      va = nativeValue(pp)(ra); vb = nativeValue(pp)(rb); la = String(ra.ano); lb = String(rb.ano);
+    } else if (it.prod && P(it.prod)) {
+      const rs = nativeRows(P(it.prod)).filter((r) => !isNil(r.v));
+      const ra = rs.filter((r) => r.iso < PERIODO_CORTE).pop() || rs[0], rb = rs[rs.length - 1];
+      va = ra.v; vb = rb.v; la = mesAno(ra.iso); lb = mesAno(rb.iso);
+    } else if (d?.troca && d?.ultimo) { va = d.troca.valor; vb = d.ultimo.valor; la = dataCurta(d.troca.data); lb = dataCurta(d.ultimo.data); }
     else {
       const ms = MONTHS.filter((m) => !isNil(F[m]?.[it.k]));
       const a = ms.filter((m) => m < PERIODO_CORTE).pop() || ms[0], b = ms[ms.length - 1];
@@ -212,6 +233,7 @@ function renderHero() {
     const dl = it.taxa ? fmtPP(vb - va) : fmtPct((vb / va - 1) * 100);
     return `<li>
       <span class="rb-label">${it.label}</span>
+      <span class="rb-freq">${it.freq}${it.pib && P("PIB").ultimo_trimestre ? ` · último dado disponível: ${triLabel(P("PIB").ultimo_trimestre.trimestre)}` : ""}</span>
       <span class="rb-now">${it.fmt(vb)}</span>
       <span class="rb-from">em ${lb} · era <b>${it.fmt(va)}</b> em ${la}</span>
       <span class="rb-delta">${dl}</span>
@@ -332,13 +354,19 @@ function renderStory() {
   // o número dominante: a variação
   const bigEl = $("#story-change");
   const d = heroC.unit === "p.p." ? 2 : 1;
+  // PIB: o número principal é o ÚLTIMO dado oficial (trimestre), com a base
+  // de comparação escrita; a comparação entre governos (anual) vem logo abaixo.
+  const ultTri = k === "pib" ? prod.ultimo_trimestre : null;
+  if (ultTri && !isNil(ultTri.variacao_dessazonalizada)) { heroC = { v: ultTri.variacao_dessazonalizada, unit: "%" }; }
   countTo(bigEl, heroC.v, (v) => `${sign(Math.round(v * 10 ** d) / 10 ** d)}${fmtNum(Math.abs(v), d)}<small>${heroC.unit === "p.p." ? " p.p." : "%"}</small>`);
   const what = k === "taxa" ? (code === "SELIC" ? "na taxa Selic, em pontos percentuais," : "na inflação em 12 meses, em pontos percentuais,")
     : k === "pib" ? "no PIB (variação real acumulada no ano), em pontos percentuais,"
     : k === "pontos" ? "no Ibovespa"
     : k === "indice" ? (usandoPrecoConab ? `no preço médio ${m.de}` : `no índice de preço ${m.de}`)
     : code === "DOLAR" ? "na cotação média do dólar" : `no preço médio ${m.de}`;
-  $("#story-change-cap").textContent = `${what} entre ${mA} e ${mB}.`;
+  $("#story-change-cap").textContent = ultTri && !isNil(ultTri.variacao_dessazonalizada)
+    ? `última variação disponível: ${triLabel(ultTri.trimestre)}, contra o trimestre anterior (dessazonalizado). Periodicidade: trimestral.`
+    : `${what} entre ${mA} e ${mB}.`;
 
   // era → agora
   $("#tn-then-when").textContent = daily ? dataCurta(pa.iso) : mesAnoLongo(a.ano_mes);
@@ -544,13 +572,19 @@ function renderPrice(animate = true) {
 
   // notícias no gráfico
   const nl = noticiasParaGrafico(code).map((n, i) => {
-    const r = linhaDoMes(prod, n.data, get);
+    // PIB é anual: o release/reportagem de março de Y+1 fala do resultado de Y
+    const r = pc.k === "pib" ? rows.find((q) => q.ano === anoDaNoticia(n) && !isNil(get(q))) : linhaDoMes(prod, n.data, get);
     return r ? { ...n, n: i + 1, iso: r.ano_mes, v: get(r) } : null;
   }).filter(Boolean);
   if (!nl.some((n) => n.id === S.newsId)) S.newsId = (nl.find((n) => mesKey(n.iso) === mesKey(hi.ano_mes)) || nl[nl.length - 1])?.id ?? null;
 
   const evs = eventsFor(prod);
   const u = unidade(code);
+  if (pc.k === "pib") {
+    if (S.pibYear == null) S.pibYear = hi.ano;
+    const sel = valid.find((r) => r.ano === S.pibYear);
+    if (sel && !anns.some((a) => a.r === sel)) anns.push({ r: sel, sub: `selecionado · ${sel.ano}`, signal: true, place: "below" });
+  }
   lineChart($("#main-chart"), {
     series: [
       { rows: rows.map((r) => ({ iso: r.ano_mes, v: get(r) })), area: true, maxGap: cadenceGap(prod) },
@@ -558,7 +592,8 @@ function renderPrice(animate = true) {
     ],
     cutoff: PERIODO_CORTE, bands: "full", includeZero: true, headroom: 0.18, yFmt, animate,
     annotations: anns.map((a) => ({ iso: a.r.ano_mes, v: get(a.r), text: vFmt(get(a.r)), sub: a.sub, place: a.place, signal: a.signal })),
-    events: evs,
+    events: pc.k === "pib" ? [] : evs,
+    onSelect: pc.k === "pib" ? (mi) => { const r = rows.find((q) => monthIdx(q.ano_mes) === mi && !isNil(get(q))); if (r) { S.pibYear = r.ano; renderPrice(false); renderPibExtra(prod, { S, NEWS, clip }); } } : undefined,
     news: nl.map((n) => ({ id: n.id, n: n.n, iso: n.iso, v: n.v })),
     activeNews: S.newsId,
     onNews: (id) => selectNews(id, true),
@@ -742,6 +777,7 @@ function updateBolso(first = false) {
 let multCharts = [];
 function renderContext() {
   const code = S.product, prod = P(code), k = kind(prod), m = META[code];
+  if (prod.tipo === "pib") { renderPibContext(prod); return; }
   const box = $("#multiples");
   multCharts = [];
   const caveats = {
@@ -1075,7 +1111,11 @@ function renderArchive() {
   const veic = new Set(list.map((n) => n.veiculo)).size;
   const annual = new Map(prod.serie_anual.map((r) => [String(r.ano), r]));
   const anVal = (r) => (!r ? null : k === "preco" ? r.preco_nominal_medio : k === "indice" ? r.indice_nominal_medio : isTaxaLike(prod) ? r.taxa_media : r.pontos_medio);
-  const years = [...new Set([...prod.serie_anual.map((r) => String(r.ano)), ...list.map((n) => n.data.slice(0, 4))])].sort();
+  // PIB: só os anos com reportagem/release verificado (uma linha por ano vazio não ajudaria)
+  const years = prod.tipo === "pib"
+    ? [...new Set(list.map((n) => n.data.slice(0, 4)))].sort()
+    : [...new Set([...prod.serie_anual.map((r) => String(r.ano)), ...list.map((n) => n.data.slice(0, 4))])].sort();
+  $("#arquivo-title").textContent = prod.tipo === "pib" ? "O que estava acontecendo quando o PIB mudou?" : "O noticiário, ano a ano";
   $("#archive-deck").textContent = list.length
     ? `${list.length} ${list.length === 1 ? "matéria real" : "matérias reais"} de ${veic} ${veic === 1 ? "veículo" : "veículos"}${S.archive === "produto" ? `, sobre ${m.titulo.toLowerCase()} e o contexto em volta` : ""}. Ao lado de cada ano, a média ${m.de} naquele ano.`
     : "O arquivo ainda não tem matérias para esta história. Mude para “Todas”.";
@@ -1121,7 +1161,7 @@ function renderMethod() {
 function selectProduct(code, { initial = false, scroll = false } = {}) {
   const changed = code !== S.product;
   S.product = code;
-  if (changed || initial) { S.newsId = null; S.metric = "nominal"; S.ppIdx = null; }
+  if (changed || initial) { S.newsId = null; S.metric = "nominal"; S.ppIdx = null; S.pibYear = null; }
   const q = new URLSearchParams(location.search);
   q.set("historia", META[code].slug);
   if (S.base === "inicio") q.set("desde", "2019"); else q.delete("desde");
@@ -1135,6 +1175,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   renderMachine();
   renderPeriods();
   renderArchive();
+  if (P(code).tipo === "pib") { renderPibIntro(P(code)); renderPibExtra(P(code), { S, NEWS, clip }); } else hidePibBlocks();
   renumber();
   renderNextLinks();
   updateMast();

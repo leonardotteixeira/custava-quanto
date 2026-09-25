@@ -266,7 +266,7 @@ export function lineChart(el, cfg) {
       cfg.onHover?.(m);
     };
     hit.addEventListener("pointermove", move);
-    hit.addEventListener("pointerdown", move);
+    hit.addEventListener("pointerdown", (evt) => { move(evt); if (cfg.onSelect && api.hover != null) cfg.onSelect(api.hover); });
     hit.addEventListener("pointerleave", () => { api.setHover(null); cfg.onHover?.(null); });
     el.querySelectorAll(".c-news").forEach((g) => {
       g.addEventListener("click", () => cfg.onNews?.(g.dataset.id));
@@ -292,6 +292,7 @@ export function lineChart(el, cfg) {
       else if (e.key === "Home") i = 0;
       else if (e.key === "End") i = ms.length - 1;
       else if (e.key === "Escape") { c.setHover(null); return; }
+      else if ((e.key === "Enter" || e.key === " ") && c.cfg.onSelect && c.hover != null) { e.preventDefault(); c.cfg.onSelect(c.hover); return; }
       else return;
       e.preventDefault();
       c.setHover(ms[i], true);
@@ -312,7 +313,11 @@ export function lineChart(el, cfg) {
 // ------------------------------------------------------------ sparkline (string SVG, estica com o contêiner)
 // rows: [{iso, v}]. Divide a linha na troca de governo (cor = período).
 export function spark(rows, o = {}) {
-  const pts = rows.map((r) => ({ m: monthIdx(r.iso), v: r.v, iso: r.iso })).filter((p) => !isNil(p.v));
+  // Janela explícita: pontos fora dela (ex.: PIB anual desde 1996) são cortados
+  // ANTES de calcular escala e traço, senão a linha sai do quadro e distorce o eixo Y.
+  const inWin = (m) => (o.m0 == null || m >= o.m0) && (o.m1 == null || m <= o.m1);
+  rows = rows.filter((r) => inWin(monthIdx(r.iso)));
+  const pts = rows.map((r) => ({ m: monthIdx(r.iso), v: r.v, iso: r.iso })).filter((p) => !isNil(p.v) && Number.isFinite(p.v) && Number.isFinite(p.m));
   if (!pts.length) return "";
   const W = 1000, H = 100, pad = o.pad ?? 10;
   const m0 = o.m0 ?? pts[0].m, m1 = o.m1 ?? pts[pts.length - 1].m;

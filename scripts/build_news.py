@@ -65,7 +65,7 @@ CREDITO_RESTRITO = re.compile(r"reuters|afp|associated press|\bap\b|getty|proibi
 TAGS_VALIDAS = {
     "combustiveis", "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
     "alimentos", "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
-    "DOLAR", "SELIC", "IBOVESPA", "IPCA",
+    "DOLAR", "SELIC", "IBOVESPA", "IPCA", "PIB",
 }
 
 HEADERS = {
@@ -301,7 +301,8 @@ def main() -> None:
             aprovados.append(ok)
         elif args.manter_bloqueados and motivo in ("HTTP 401", "HTTP 403", "HTTP 429") and item.get("confirmado"):
             aprovados.append({**{k: item.get(k) for k in ("titulo", "veiculo", "data", "url", "resumo", "produtos")},
-                              "imagem": None, "credito_imagem": None, "verificacao": "manual"})
+                              "imagem": None, "credito_imagem": None, "verificacao": "manual",
+                              **({"tema": item["tema"]} if item.get("tema") else {})})
             log.info("  bloqueado (%s) — mantido como verificação manual", motivo)
         else:
             reprovados.append((item["titulo"], motivo))
