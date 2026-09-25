@@ -1,0 +1,10 @@
+[
+  {"D2C": "63", "D2N": "Taxa trimestral (em relação ao mesmo período do ano anterior)", "D3C": "202204", "D3N": "4º trimestre 2022", "V": "1.9", "MN": "%"},
+  {"D2C": "63", "D2N": "Taxa trimestral (em relação ao mesmo período do ano anterior)", "D3C": "202604", "D3N": "4º trimestre 2026", "V": "2.4", "MN": "%"},
+  {"D2C": "66", "D2N": "Taxa acumulada em quatro trimestres (em relação ao mesmo período do ano anterior)", "D3C": "202204", "D3N": "4º trimestre 2022", "V": "3.0", "MN": "%"},
+  {"D2C": "66", "D2N": "Taxa acumulada em quatro trimestres (em relação ao mesmo período do ano anterior)", "D3C": "202604", "D3N": "4º trimestre 2026", "V": "2.7", "MN": "%"},
+  {"D2C": "69", "D2N": "Taxa acumulada ao longo do ano (em relação ao mesmo período do ano anterior)", "D3C": "202204", "D3N": "4º trimestre 2022", "V": "3.0", "MN": "%"},
+  {"D2C": "69", "D2N": "Taxa acumulada ao longo do ano (em relação ao mesmo período do ano anterior)", "D3C": "202604", "D3N": "4º trimestre 2026", "V": "2.7", "MN": "%"},
+  {"D2C": "72", "D2N": "Taxa trimestre contra trimestre imediatamente anterior", "D3C": "202204", "D3N": "4º trimestre 2022", "V": "0.5", "MN": "%"},
+  {"D2C": "72", "D2N": "Taxa trimestre contra trimestre imediatamente anterior", "D3C": "202604", "D3N": "4º trimestre 2026", "V": "0.8", "MN": "%"}
+]

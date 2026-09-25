@@ -32,13 +32,19 @@ export function niceTicks(min, max, count = 5) {
   return { ticks, lo, hi, step };
 }
 
-// Quebra a linha onde falta mês (ex.: set/2020 ausente na ANP) ou valor.
-function segments(points) {
+// Quebra a linha onde falta um ponto esperado (ex.: set/2020 ausente na
+// ANP) ou valor nulo. `maxGap` é o maior intervalo, em meses, que ainda
+// conta como "sem buraco" — 1 para séries mensais (o padrão: qualquer mês
+// pulado é um buraco real). Séries anuais/trimestrais (PIB) não têm ponto
+// todo mês por natureza, então passam maxGap=12/3: só quebra se um ano ou
+// trimestre INTEIRO ficar sem dado, nunca pela distância normal entre dois
+// pontos consecutivos da própria frequência.
+function segments(points, maxGap = 1) {
   const segs = [];
   let cur = [];
   points.forEach((p, i) => {
     const prev = points[i - 1];
-    if (isNil(p.v) || (prev && p.m - prev.m > 1)) { if (cur.length) segs.push(cur); cur = []; }
+    if (isNil(p.v) || (prev && p.m - prev.m > maxGap)) { if (cur.length) segs.push(cur); cur = []; }
     if (!isNil(p.v)) cur.push(p);
   });
   if (cur.length) segs.push(cur);
@@ -134,7 +140,7 @@ export function lineChart(el, cfg) {
     });
     // séries
     series.forEach((s, si) => {
-      const segs = segments(s.pts);
+      const segs = segments(s.pts, s.maxGap ?? cfg.maxGap ?? 1);
       if (s.area) {
         const base = Y(Math.max(yLo, cfg.areaBase ?? yLo));
         segs.forEach((seg) => {
@@ -315,7 +321,8 @@ export function spark(rows, o = {}) {
   const Y = (v) => H - pad - ((v - lo) / (hi - lo || 1)) * (H - 2 * pad);
   const cut = monthIdx(o.cutoff || "2023-01-01");
   const allPts = rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
-  const segs = segments(allPts);
+  const gap = o.maxGap ?? 1;
+  const segs = segments(allPts, gap);
   const out = [];
   const sw = o.width ?? 1.75;
   const line = (seg, color, extra = "") => `<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"${extra}/>`;
@@ -331,8 +338,8 @@ export function spark(rows, o = {}) {
       const inW = (p) => o.windows.some(([w0, w1]) => p.m >= w0 && p.m <= w1);
       if (a.length > 1) out.push(line(a, "var(--pb)", ' opacity="0.22"'));
       if (b.length > 1) out.push(line(b, "var(--pl)", ' opacity="0.22"'));
-      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m < cut ? p.v : null }))).forEach((s) => s.length > 1 && out.push(line(s, "var(--pb)")));
-      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m >= cut ? p.v : null }))).forEach((s) => s.length > 1 && out.push(line(s, "var(--pl)")));
+      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m < cut ? p.v : null })), gap).forEach((s) => s.length > 1 && out.push(line(s, "var(--pb)")));
+      segments(allPts.map((p) => ({ ...p, v: inW(p) && p.m >= cut ? p.v : null })), gap).forEach((s) => s.length > 1 && out.push(line(s, "var(--pl)")));
       return;
     }
     if (a.length > 1) out.push(line(a, o.colorB || "var(--pb)"));
@@ -371,7 +378,7 @@ export function texture(el, seriesList, { cutoff, highlight }) {
       const Y = (v) => H - 8 - ((v - lo) / (hi - lo || 1)) * (H - 30);
       const pts = s.rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
       const isHl = s.key === hl;
-      segments(pts).forEach((seg) => {
+      segments(pts, s.maxGap ?? 1).forEach((seg) => {
         out.push(`<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${isHl ? "var(--signal)" : "var(--on-night-2)"}" stroke-width="${isHl ? 2.25 : 1}" stroke-opacity="${isHl ? 1 : 0.26}" stroke-linejoin="round" class="js-draw" pathLength="1"/>`);
       });
     });

@@ -1,0 +1,20 @@
+{
+  "fonte": "IBGE — Sistema de Contas Nacionais (Trimestrais e Anuais)",
+  "fonte_url": "https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html",
+  "trimestral": {
+    "tentativa_em": "2026-09-25T16:02+00:00",
+    "ok": false,
+    "mensagem": "ProxyError: HTTPSConnectionPool(host='apisidra.ibge.gov.br', port=443): Max retries exceeded with url: /values/t/5932/n1/1/v/all/p/all (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))",
+    "url": "https://apisidra.ibge.gov.br/values/t/5932/n1/1/v/all/p/all",
+    "tabela": "5932",
+    "ultimo_sucesso_em": null
+  },
+  "anual": {
+    "tentativa_em": "2026-09-25T16:02+00:00",
+    "ok": false,
+    "mensagem": "ProxyError: HTTPSConnectionPool(host='apisidra.ibge.gov.br', port=443): Max retries exceeded with url: /values/t/6784/n1/1/v/all/p/all (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))",
+    "url": "https://apisidra.ibge.gov.br/values/t/6784/n1/1/v/all/p/all",
+    "tabela": "6784",
+    "ultimo_sucesso_em": null
+  }
+}

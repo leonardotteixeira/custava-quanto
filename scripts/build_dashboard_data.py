@@ -628,6 +628,133 @@ def montar_alimentos(salario: pd.DataFrame) -> dict:
     return produtos
 
 
+# Fator de conversão até bilhões de reais, lido da UNIDADE que a própria API
+# devolveu (nunca assumido) — cobre os nomes mais comuns que o IBGE usa.
+_FATOR_ATE_BILHOES = {"reais": 1e-9, "mil reais": 1e-6, "milhões de reais": 1e-3, "milhoes de reais": 1e-3, "bilhões de reais": 1, "bilhoes de reais": 1}
+
+
+def _resumo_pib(df: pd.DataFrame) -> dict | None:
+    """Mesmo formato de _resumo_taxa (início/fim/mínima/máxima do recorte),
+    mais um crescimento REAL ACUMULADO no período — o produto encadeado de
+    cada ano fechado (1 + taxa/100), não a diferença simples início-fim que
+    _resumo_taxa calcula para Selic/IPCA (que são níveis de taxa, não
+    crescimentos que se compõem ano a ano)."""
+    base = _resumo_taxa(df)
+    if base is None:
+        return None
+    fechados = df.dropna(subset=["taxa_aa"]).sort_values("ano_mes")
+    fator = 1.0
+    for v in fechados["taxa_aa"]:
+        fator *= 1 + float(v) / 100
+    base["crescimento_acumulado_pct"] = round((fator - 1) * 100, 2)
+    base["anos_com_resultado_fechado"] = int(len(fechados))
+    return base
+
+
+def montar_pib() -> dict:
+    """PIB — Sistema de Contas Nacionais (IBGE). Ver scripts/download_pib.py
+    para as duas tabelas oficiais usadas (5932 trimestral, 6784 anual) e por
+    que a variação anual usada aqui é a leitura "acumulada no ano" do 4º
+    trimestre — o mesmo número que o IBGE e a imprensa chamam de "o PIB
+    cresceu X% no ano", não uma média inventada das quatro leituras
+    trimestrais. Como os dois arquivos-fonte são opcionais (o download pode
+    falhar — ver pib_status.json), a ausência de qualquer um deles não
+    quebra o build: falta o que falta, sem preencher com nada calculado."""
+    trim_path = DATA_PROCESSED / "pib_trimestral.csv"
+    anual_path = DATA_PROCESSED / "pib_anual.csv"
+    if not trim_path.exists() and not anual_path.exists():
+        return {}
+
+    trimestral = pd.read_csv(trim_path) if trim_path.exists() else pd.DataFrame()
+    anual = pd.read_csv(anual_path) if anual_path.exists() else pd.DataFrame()
+
+    serie_trimestral = []
+    taxa_fechada_por_ano = {}
+    if not trimestral.empty:
+        trimestral = trimestral.copy()
+        trimestral["ano"] = trimestral["periodo_codigo"].astype(str).str[:4].astype(int)
+        trimestral["trimestre_num"] = trimestral["periodo_codigo"].astype(str).str[4:6].astype(int)
+        trimestral = trimestral.sort_values(["ano", "trimestre_num"])
+        for _, r in trimestral.iterrows():
+            serie_trimestral.append({
+                "trimestre": f"{int(r['ano'])}-T{int(r['trimestre_num'])}",
+                "ano_mes": f"{int(r['ano'])}-{(int(r['trimestre_num']) - 1) * 3 + 1:02d}-01",
+                "variacao_interanual": round(float(r["interanual"]), 2) if pd.notna(r.get("interanual")) else None,
+                "variacao_dessazonalizada": round(float(r["dessazonalizada"]), 2) if pd.notna(r.get("dessazonalizada")) else None,
+            })
+            if int(r["trimestre_num"]) == 4 and pd.notna(r.get("acumulado_ano")):
+                taxa_fechada_por_ano[int(r["ano"])] = float(r["acumulado_ano"])
+
+    anual_por_ano = {}
+    if not anual.empty:
+        anual = anual.copy()
+        anual["ano"] = anual["ano"].astype(int)
+        for _, r in anual.iterrows():
+            fator_nominal = _FATOR_ATE_BILHOES.get(str(r.get("unidade_pib_nominal", "")).strip().lower())
+            anual_por_ano[int(r["ano"])] = {
+                "pib_nominal_bilhoes": round(float(r["pib_nominal"]) * fator_nominal, 2) if pd.notna(r.get("pib_nominal")) and fator_nominal else None,
+                "pib_per_capita_rs": round(float(r["pib_per_capita"]), 2) if pd.notna(r.get("pib_per_capita")) else None,
+                "populacao_mil": round(float(r["populacao"]), 1) if pd.notna(r.get("populacao")) else None,
+            }
+            if fator_nominal is None and pd.notna(r.get("pib_nominal")):
+                logger.warning(f"PIB nominal de {r['ano']}: unidade '{r.get('unidade_pib_nominal')}' não reconhecida — pib_nominal_bilhoes fica None nesse ano, em vez de arriscar a casa decimal errada.")
+
+    anos = sorted(set(taxa_fechada_por_ano) | set(anual_por_ano))
+    if not anos and not serie_trimestral:
+        return {}
+
+    serie = []
+    for ano in anos:
+        iso = f"{ano}-01-01"
+        extra = anual_por_ano.get(ano, {})
+        serie.append({
+            "ano_mes": iso,
+            "ano": ano,
+            "periodo": "Bolsonaro" if pd.Timestamp(iso) < pd.Timestamp(PERIODO_CORTE) else "Lula",
+            "taxa_aa": round(taxa_fechada_por_ano[ano], 2) if ano in taxa_fechada_por_ano else None,
+            "resultado_anual": ano in taxa_fechada_por_ano,
+            "pib_nominal_bilhoes": extra.get("pib_nominal_bilhoes"),
+            "pib_per_capita_rs": extra.get("pib_per_capita_rs"),
+            "populacao_mil": extra.get("populacao_mil"),
+        })
+    df_serie = pd.DataFrame(serie)
+    df_serie["ano_mes"] = pd.to_datetime(df_serie["ano_mes"])
+
+    resumo = {}
+    for periodo in ("Bolsonaro", "Lula"):
+        resumo[periodo] = _cohorts_para_periodo(df_serie[df_serie["periodo"] == periodo], _resumo_pib)
+
+    ultimo_trim = serie_trimestral[-1] if serie_trimestral else None
+    return {
+        "PIB": {
+            "nome": "PIB",
+            "tipo": "pib",
+            "unidade": "% ao ano (variação real, acumulada no ano)",
+            "nota": (
+                "PIB real (crescimento) e PIB nominal/per capita (valores em R$) são "
+                "contas diferentes, nunca misturadas no mesmo número. A variação "
+                "anual mostrada aqui é a leitura \"acumulada no ano\" do 4º "
+                "trimestre — o mesmo número que o IBGE e a imprensa chamam de "
+                "\"o PIB cresceu X% no ano\". Um ano sem essa leitura ainda fechada "
+                "aparece com os trimestres disponíveis, nunca com um resultado "
+                "anual estimado. O IBGE pode revisar dados de PIB já publicados em "
+                "divulgações seguintes — este projeto reflete a última revisão "
+                "disponível no momento em que os dados foram baixados, não um "
+                "arquivo histórico congelado. Proximidade temporal entre um "
+                "evento e uma variação do PIB não demonstra causalidade."
+            ),
+            "serie_mensal": [
+                {k: (None if pd.isna(v) else v) for k, v in row.items()}
+                for row in df_serie.assign(ano_mes=df_serie["ano_mes"].dt.strftime("%Y-%m-%d")).to_dict("records")
+            ],
+            "serie_trimestral": serie_trimestral,
+            "serie_anual": _serie_anual_taxa(df_serie),
+            "resumo_periodos": resumo,
+            "ultimo_trimestre": ultimo_trim,
+        }
+    }
+
+
 def montar_fotografia_mensal(produtos: dict) -> dict:
     """"Como estava o Brasil?" — fotografia cross-indicador por mês, montada
     só a partir de campos que os produtos já calcularam (nenhuma conta
@@ -663,6 +790,7 @@ def main() -> None:
         **montar_combustiveis(salario),
         **montar_alimentos(salario),
         **montar_indicadores(salario, ipca, ibovespa),
+        **montar_pib(),
     }
 
     dados = {
