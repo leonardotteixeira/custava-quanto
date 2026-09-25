@@ -1,43 +1,329 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-23T15:00:00Z",
+  "generatedAt": "2026-09-25T12:00:00Z",
   "title": "Design System: CUSTAVA QUANTO?",
   "extensions": {
     "colorMeta": {
-      "paper": { "role": "neutral", "displayName": "Papel", "canonical": "#F6F3EC", "tonalRamp": ["#12313A", "#2b4750", "#455e67", "#5f757d", "#798c93", "#a3aeab", "#cdd0c8", "#F6F3EC"] },
-      "surface": { "role": "neutral", "displayName": "Superfície", "canonical": "#ffffff", "tonalRamp": ["#12313A", "#334c53", "#59696f", "#80868b", "#a8a8a3", "#d0cebb", "#ebe9d2", "#ffffff"] },
-      "ink": { "role": "neutral", "displayName": "Tinta Petróleo", "canonical": "#12313A", "tonalRamp": ["#050f12", "#12313A", "#1d454f", "#2e5b66", "#45747f", "#6c9198", "#a3bdc0", "#d6e2e2"] },
-      "ink-soft": { "role": "neutral", "displayName": "Texto Secundário", "canonical": "#55636A", "tonalRamp": ["#12313A", "#294048", "#3e545c", "#55636A", "#75818a", "#9aa4aa", "#c2c8cb", "#e5e5df"] },
-      "ink-faint": { "role": "neutral", "displayName": "Texto Terciário", "canonical": "#5e6b71", "tonalRamp": ["#12313A", "#2c454c", "#455962", "#5e6b71", "#7e888d", "#a1a8ac", "#c6cbcd", "#e5e5df"] },
-      "line": { "role": "neutral", "displayName": "Linha", "canonical": "#d6d8d3", "tonalRamp": ["#55636A", "#707e83", "#8c979b", "#a8b0b2", "#bfc5c1", "#d6d8d3", "#e5e5df", "#F6F3EC"] },
-      "accent-ochre": { "role": "primary", "displayName": "Âmbar Editorial", "canonical": "#E2A33D", "tonalRamp": ["#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c", "#f4e9d6"] },
-      "accent-ochre-deep": { "role": "primary", "displayName": "Âmbar Profundo", "canonical": "#8c5c14", "tonalRamp": ["#331f04", "#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c"] },
-      "period-bolsonaro": { "role": "secondary", "displayName": "Azul Institucional", "canonical": "#2b5c92", "tonalRamp": ["#0f2438", "#173858", "#1f4a76", "#2b5c92", "#4778ae", "#7099c4", "#a3bfdb", "#d3e1ee"] },
-      "period-lula": { "role": "secondary", "displayName": "Vermelho Institucional", "canonical": "#b33a3a", "tonalRamp": ["#3d1414", "#5c1f1f", "#872b2b", "#b33a3a", "#c65f5f", "#d78a8a", "#e6b4b4", "#f3dbdb"] },
-      "chart-brent": { "role": "tertiary", "displayName": "Verde Brent", "canonical": "#16876a", "tonalRamp": ["#052e24", "#0a4a3a", "#0f6650", "#16876a", "#2ba888", "#63c4ab", "#a3ddca", "#d9f2e9"] },
-      "chart-cambio": { "role": "tertiary", "displayName": "Roxo Câmbio", "canonical": "#7a4fb0", "tonalRamp": ["#2a1a3c", "#412a5c", "#5a3980", "#7a4fb0", "#9670c4", "#b596d6", "#d4c0e8", "#ecdff6"] },
-      "chart-ipca": { "role": "tertiary", "displayName": "Cinza Inflação", "canonical": "#8a8883", "tonalRamp": ["#12313A", "#2c2b28", "#4a4844", "#65635e", "#8a8883", "#a6a297", "#cac6ba", "#e9e7e1"] },
-      "status-up": { "role": "status", "displayName": "Âmbar (alta)", "canonical": "#8c5c14", "tonalRamp": ["#331f04", "#4d3406", "#6f4b0a", "#8c5c14", "#ac7420", "#c88f30", "#E2A33D", "#edc07c"] },
-      "status-down": { "role": "status", "displayName": "Azul-Petróleo (baixa)", "canonical": "#0a5f8a", "tonalRamp": ["#031e2c", "#063349", "#08496a", "#0a5f8a", "#2a7ea8", "#5ba0c4", "#96c4dc", "#d0e6f0"] },
-      "status-flat": { "role": "status", "displayName": "Cinza (estável)", "canonical": "#55636A", "tonalRamp": ["#12313A", "#294048", "#3e545c", "#55636A", "#75818a", "#9aa4aa", "#c2c8cb", "#e5e5df"] }
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "#F6F3EC",
+        "tonalRamp": [
+          "#12313A",
+          "#2b4750",
+          "#455e67",
+          "#5f757d",
+          "#798c93",
+          "#a3aeab",
+          "#cdd0c8",
+          "#F6F3EC"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Superfície",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#12313A",
+          "#334c53",
+          "#59696f",
+          "#80868b",
+          "#a8a8a3",
+          "#d0cebb",
+          "#ebe9d2",
+          "#ffffff"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta Petróleo",
+        "canonical": "#12313A",
+        "tonalRamp": [
+          "#050f12",
+          "#12313A",
+          "#1d454f",
+          "#2e5b66",
+          "#45747f",
+          "#6c9198",
+          "#a3bdc0",
+          "#d6e2e2"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Texto Secundário",
+        "canonical": "#55636A",
+        "tonalRamp": [
+          "#12313A",
+          "#294048",
+          "#3e545c",
+          "#55636A",
+          "#75818a",
+          "#9aa4aa",
+          "#c2c8cb",
+          "#e5e5df"
+        ]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Texto Terciário",
+        "canonical": "#5e6b71",
+        "tonalRamp": [
+          "#12313A",
+          "#2c454c",
+          "#455962",
+          "#5e6b71",
+          "#7e888d",
+          "#a1a8ac",
+          "#c6cbcd",
+          "#e5e5df"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Linha",
+        "canonical": "#d6d8d3",
+        "tonalRamp": [
+          "#55636A",
+          "#707e83",
+          "#8c979b",
+          "#a8b0b2",
+          "#bfc5c1",
+          "#d6d8d3",
+          "#e5e5df",
+          "#F6F3EC"
+        ]
+      },
+      "accent-ochre": {
+        "role": "primary",
+        "displayName": "Âmbar Editorial",
+        "canonical": "#E2A33D",
+        "tonalRamp": [
+          "#4d3406",
+          "#6f4b0a",
+          "#8c5c14",
+          "#ac7420",
+          "#c88f30",
+          "#E2A33D",
+          "#edc07c",
+          "#f4e9d6"
+        ]
+      },
+      "accent-ochre-deep": {
+        "role": "primary",
+        "displayName": "Âmbar Profundo",
+        "canonical": "#8c5c14",
+        "tonalRamp": [
+          "#331f04",
+          "#4d3406",
+          "#6f4b0a",
+          "#8c5c14",
+          "#ac7420",
+          "#c88f30",
+          "#E2A33D",
+          "#edc07c"
+        ]
+      },
+      "period-bolsonaro": {
+        "role": "secondary",
+        "displayName": "Azul Institucional",
+        "canonical": "#2b5c92",
+        "tonalRamp": [
+          "#0f2438",
+          "#173858",
+          "#1f4a76",
+          "#2b5c92",
+          "#4778ae",
+          "#7099c4",
+          "#a3bfdb",
+          "#d3e1ee"
+        ]
+      },
+      "period-lula": {
+        "role": "secondary",
+        "displayName": "Vermelho Institucional",
+        "canonical": "#b33a3a",
+        "tonalRamp": [
+          "#3d1414",
+          "#5c1f1f",
+          "#872b2b",
+          "#b33a3a",
+          "#c65f5f",
+          "#d78a8a",
+          "#e6b4b4",
+          "#f3dbdb"
+        ]
+      },
+      "chart-brent": {
+        "role": "tertiary",
+        "displayName": "Verde Brent",
+        "canonical": "#16876a",
+        "tonalRamp": [
+          "#052e24",
+          "#0a4a3a",
+          "#0f6650",
+          "#16876a",
+          "#2ba888",
+          "#63c4ab",
+          "#a3ddca",
+          "#d9f2e9"
+        ]
+      },
+      "chart-cambio": {
+        "role": "tertiary",
+        "displayName": "Roxo Câmbio",
+        "canonical": "#7a4fb0",
+        "tonalRamp": [
+          "#2a1a3c",
+          "#412a5c",
+          "#5a3980",
+          "#7a4fb0",
+          "#9670c4",
+          "#b596d6",
+          "#d4c0e8",
+          "#ecdff6"
+        ]
+      },
+      "chart-ipca": {
+        "role": "tertiary",
+        "displayName": "Cinza Inflação",
+        "canonical": "#8a8883",
+        "tonalRamp": [
+          "#12313A",
+          "#2c2b28",
+          "#4a4844",
+          "#65635e",
+          "#8a8883",
+          "#a6a297",
+          "#cac6ba",
+          "#e9e7e1"
+        ]
+      },
+      "status-up": {
+        "role": "status",
+        "displayName": "Âmbar (alta)",
+        "canonical": "#8c5c14",
+        "tonalRamp": [
+          "#331f04",
+          "#4d3406",
+          "#6f4b0a",
+          "#8c5c14",
+          "#ac7420",
+          "#c88f30",
+          "#E2A33D",
+          "#edc07c"
+        ]
+      },
+      "status-down": {
+        "role": "status",
+        "displayName": "Azul-Petróleo (baixa)",
+        "canonical": "#0a5f8a",
+        "tonalRamp": [
+          "#031e2c",
+          "#063349",
+          "#08496a",
+          "#0a5f8a",
+          "#2a7ea8",
+          "#5ba0c4",
+          "#96c4dc",
+          "#d0e6f0"
+        ]
+      },
+      "status-flat": {
+        "role": "status",
+        "displayName": "Cinza (estável)",
+        "canonical": "#55636A",
+        "tonalRamp": [
+          "#12313A",
+          "#294048",
+          "#3e545c",
+          "#55636A",
+          "#75818a",
+          "#9aa4aa",
+          "#c2c8cb",
+          "#e5e5df"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Frase de abertura do hero — voz editorial máxima." },
-      "headline": { "displayName": "Headline", "purpose": "Título de cada capítulo numerado (h2)." },
-      "numeric-display": { "displayName": "Numeric Display", "purpose": "Número-protagonista (preço Era/Agora, interlúdio) — sempre Inter, nunca Fraunces." },
-      "body": { "displayName": "Body", "purpose": "Texto corrido, parágrafos, UI geral." },
-      "label": { "displayName": "Label", "purpose": "Kickers de seção, rótulos de categoria, uppercase." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Manchete da capa, uma frase por linha."
+      },
+      "nameplate": {
+        "displayName": "Nameplate",
+        "purpose": "Nome da publicação no cabeçalho."
+      },
+      "story-headline": {
+        "displayName": "Story headline",
+        "purpose": "Nome do produto na matéria principal."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Pergunta de cada capítulo, sem numeração e sem rótulo acima."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Primeiro parágrafo e frases de leitura, com capitular na matéria."
+      },
+      "clip-headline": {
+        "displayName": "Clip headline",
+        "purpose": "Manchete de recorte de notícia."
+      },
+      "numeric-display": {
+        "displayName": "Numeric display",
+        "purpose": "Agora e variação principal; sempre Inter."
+      },
+      "numeric": {
+        "displayName": "Numeric",
+        "purpose": "Era, variação secundária, Cápsula, governos."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido e interface."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Datas, fontes, créditos."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Cabeçalho de coluna do índice, metadados de recorte, legendas; nunca acima de título."
+      }
     },
     "shadows": [
-      { "name": "floating-popover", "value": "0 10px 32px -10px rgba(20, 16, 8, 0.32)", "purpose": "Único uso de sombra do sistema: popover de termo técnico flutuando sobre o conteúdo." }
+      {
+        "name": "floating-popover",
+        "value": "0 10px 32px -10px rgba(20, 16, 8, 0.32)",
+        "purpose": "Único uso de sombra do sistema: popover de termo técnico flutuando sobre o conteúdo."
+      }
     ],
     "motion": [
-      { "name": "ease-fill", "value": "cubic-bezier(0.2, 0.7, 0.2, 1)", "purpose": "Preenchimento de barras (vr-fill, pp-index-fill, yr-fill) e marcadores." },
-      { "name": "duration-fill", "value": "0.5s–0.6s", "purpose": "Duração padrão de transições de largura/altura em barras de dado." }
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Régua Era×Agora (transform), cabeço corrido, entrada da Cápsula."
+      },
+      {
+        "name": "duration-ruler",
+        "value": "0.7s",
+        "purpose": "Base e trecho da régua (scaleX/translateX)."
+      },
+      {
+        "name": "duration-ui",
+        "value": "0.18s",
+        "purpose": "Hover de índice, abas, links."
+      }
     ],
     "breakpoints": [
-      { "name": "tablet", "value": "1100px" },
-      { "name": "mobile", "value": "760px" }
+      {
+        "name": "tablet",
+        "value": "1100px"
+      },
+      {
+        "name": "mobile",
+        "value": "760px"
+      }
     ]
   },
   "components": [
@@ -109,13 +395,41 @@
       "Ritmo de capítulo generoso (128px entre seções) — long-form, não dashboard denso"
     ],
     "rules": [
-      { "name": "The Neutral Identifier Rule", "body": "Azul (Bolsonaro) e vermelho (Lula) identificam qual período um dado pertence e nada mais. Nunca usar essas duas cores para indicar positivo/negativo, certo/errado, ou qualquer julgamento de valor.", "section": "colors" },
-      { "name": "The Rare Ochre Rule", "body": "O acento âmbar aparece em no máximo ~10% de qualquer tela. Sua raridade é o que faz \"Agora\" e os valores-chave saltarem aos olhos sem competir com dado nenhum.", "section": "colors" },
-      { "name": "The Fixed-Role Rule", "body": "Fraunces é voz editorial (perguntas, títulos, frases de resumo); Inter é todo número e toda interface, sem exceção.", "section": "typography" },
-      { "name": "The Flat-by-Default Rule", "body": "Nenhum card, chip ou botão recebe sombra em repouso. Sombra só aparece em elementos que fisicamente flutuam sobre o conteúdo (popovers).", "section": "elevation" },
-      { "name": "The Status Pair Rule", "body": "chip-delta usa âmbar (#8c5c14, alta) e azul-petróleo (#0a5f8a, baixa), não verde — o par âmbar/verde-escuro falha separação de daltonismo (validado com dataviz skill: ΔE 3.9-5.5, abaixo do piso 6.0). Estável usa cinza neutro deliberadamente.", "section": "colors" },
-      { "name": "The Dash-Pattern Backup Rule", "body": "IPCA no gráfico de contexto é deliberadamente dessaturado (falha o piso de chroma isolado) mas nunca depende só da cor: usa dash:\"dot\" contra produto sólido, Brent tracejado, Câmbio traço-ponto, sempre com legenda visível. Nova série do gráfico precisa de padrão de traço próprio.", "section": "colors" },
-      { "name": "The Symbol Integrity Rule", "body": "O arco de 270° do símbolo nunca gira, espelha ou fecha em círculo completo — herdado do Custavo Quanto Brand Book.", "section": "components" }
+      {
+        "name": "The Neutral Identifier Rule",
+        "body": "Azul (Bolsonaro) e vermelho (Lula) identificam qual período um dado pertence e nada mais. Nunca usar essas duas cores para indicar positivo/negativo, certo/errado, ou qualquer julgamento de valor.",
+        "section": "colors"
+      },
+      {
+        "name": "The Rare Ochre Rule",
+        "body": "O acento âmbar aparece em no máximo ~10% de qualquer tela. Sua raridade é o que faz \"Agora\" e os valores-chave saltarem aos olhos sem competir com dado nenhum.",
+        "section": "colors"
+      },
+      {
+        "name": "The Fixed-Role Rule",
+        "body": "Fraunces é voz editorial (perguntas, títulos, frases de resumo); Inter é todo número e toda interface, sem exceção.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-by-Default Rule",
+        "body": "Nenhum card, chip ou botão recebe sombra em repouso. Sombra só aparece em elementos que fisicamente flutuam sobre o conteúdo (popovers).",
+        "section": "elevation"
+      },
+      {
+        "name": "The Status Pair Rule",
+        "body": "chip-delta usa âmbar (#8c5c14, alta) e azul-petróleo (#0a5f8a, baixa), não verde — o par âmbar/verde-escuro falha separação de daltonismo (validado com dataviz skill: ΔE 3.9-5.5, abaixo do piso 6.0). Estável usa cinza neutro deliberadamente.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dash-Pattern Backup Rule",
+        "body": "IPCA no gráfico de contexto é deliberadamente dessaturado (falha o piso de chroma isolado) mas nunca depende só da cor: usa dash:\"dot\" contra produto sólido, Brent tracejado, Câmbio traço-ponto, sempre com legenda visível. Nova série do gráfico precisa de padrão de traço próprio.",
+        "section": "colors"
+      },
+      {
+        "name": "The Symbol Integrity Rule",
+        "body": "O arco de 270° do símbolo nunca gira, espelha ou fecha em círculo completo — herdado do Custavo Quanto Brand Book.",
+        "section": "components"
+      }
     ],
     "dos": [
       "Do reservar o acento âmbar para o valor \"Agora\" e números-chave — raridade é o que dá força",

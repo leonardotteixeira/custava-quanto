@@ -1,6 +1,6 @@
 ---
 name: CUSTAVA QUANTO?
-description: Jornalismo de dados sobre preços e indicadores econômicos no Brasil, 2019–hoje
+description: Publicação de dados sobre preços, economia e poder de compra no Brasil, 2019–hoje
 colors:
   paper: "#F6F3EC"
   surface: "#ffffff"
@@ -14,6 +14,7 @@ colors:
   accent-ochre-wash: "#f4e9d6"
   period-bolsonaro: "#2b5c92"
   period-lula: "#b33a3a"
+  chart-product: "#b7791f"
   chart-brent: "#16876a"
   chart-cambio: "#7a4fb0"
   chart-ipca: "#8a8883"
@@ -24,71 +25,96 @@ colors:
 typography:
   display:
     fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
-    fontSize: "clamp(2rem, 1.1rem + 2.6vw, 3.3rem)"
+    fontSize: "clamp(3rem, 0.9rem + 6.4vw, 6rem)"
     fontWeight: 600
-    lineHeight: 1.05
-    letterSpacing: "-0.02em"
+    lineHeight: 0.97
+    letterSpacing: "-0.03em"
+  nameplate:
+    fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
+    fontSize: "clamp(2rem, 1rem + 3.6vw, 3.9rem)"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0.005em"
+  story-headline:
+    fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
+    fontSize: "clamp(2.7rem, 1.1rem + 4.8vw, 5.6rem)"
+    fontWeight: 700
+    lineHeight: 0.98
+    letterSpacing: "-0.03em"
   headline:
     fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
-    fontSize: "clamp(1.9rem, 1.2rem + 2.2vw, 3.1rem)"
+    fontSize: "clamp(2.1rem, 1.2rem + 2.8vw, 3.7rem)"
+    fontWeight: 700
+    lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  lede:
+    fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
+    fontSize: "clamp(1.22rem, 1rem + 0.7vw, 1.55rem)"
+    fontWeight: 500
+    lineHeight: 1.5
+  clip-headline:
+    fontFamily: "Fraunces, 'Iowan Old Style', Georgia, serif"
+    fontSize: "1.2rem"
     fontWeight: 600
-    lineHeight: 1.08
-    letterSpacing: "-0.02em"
+    lineHeight: 1.32
   numeric-display:
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "clamp(3rem, 1.3rem + 4.6vw, 6.2rem)"
+    fontSize: "clamp(3.4rem, 1.2rem + 6.4vw, 6rem)"
     fontWeight: 700
     lineHeight: 0.95
-    letterSpacing: "-0.045em"
+    letterSpacing: "-0.04em"
+  numeric:
+    fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontSize: "1.8rem"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "-0.03em"
   body:
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.55
+  meta:
+    fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontSize: "0.8rem"
+    fontWeight: 600
+    lineHeight: 1.4
   label:
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "0.74rem"
     fontWeight: 700
     letterSpacing: "0.1em"
 rounded:
+  hairline: "2px"
   sm: "3px"
   md: "4px"
-  lg: "6px"
-  pill: "999px"
   circle: "50%"
 spacing:
   gutter: "48px"
-  chapter-gap: "128px"
+  column-gap: "32px"
+  chapter-gap: "152px"
   xs: "8px"
   sm: "16px"
   md: "24px"
-  lg: "36px"
-  xl: "48px"
+  lg: "40px"
+  xl: "56px"
 components:
-  product-chip:
+  index-row:
+    textColor: "{colors.ink}"
+    padding: "10px 0"
+  index-row-active:
+    textColor: "{colors.ink}"
+    backgroundColor: "{colors.accent-ochre-wash}"
+  tab-active:
+    textColor: "{colors.ink}"
+    padding: "8px 0 9px"
+  month-thumb:
+    backgroundColor: "{colors.accent-ochre}"
+    rounded: "{rounded.hairline}"
+  footnote-number:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sm}"
-    padding: "7px 13px"
-  product-chip-active:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.sm}"
-    padding: "7px 13px"
-  segmented-btn-active:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "3px"
-    padding: "8px 14px"
-  snap-card:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.lg}"
-    padding: "18px 22px"
-  month-pill-active:
-    backgroundColor: "{colors.accent-ochre-wash}"
-    textColor: "{colors.accent-ochre-deep}"
-    rounded: "{rounded.pill}"
-    padding: "5px 10px"
+    rounded: "{rounded.circle}"
 ---
 
 # Design System: CUSTAVA QUANTO?
@@ -119,7 +145,8 @@ partido, ícones de bandeira, linguagem de campanha).
 - Serifa = voz editorial; sem-serifa tabular = todo número e toda interface
 - Quase flat: bordas finas separam, sombra é exceção pontual (tooltip)
 - Azul/vermelho identificam período de governo, nunca julgamento
-- Ritmo de capítulo generoso (128px entre seções) — long-form, não dashboard denso
+- Ritmo de capítulo generoso (152px entre seções) — long-form, não dashboard denso
+- Composição de publicação: nome com filete duplo, capa, índice tipográfico, matéria principal, página dupla do gráfico, arquivo. Sem cartões, sem pílulas
 
 ## Colors
 
@@ -166,22 +193,25 @@ Paleta de jornal: papel off-white e tinta petróleo dominam quase toda a tela; c
 **Character:** Fraunces é a voz do "Analista Neutro e Rigoroso" — uma serifa contemporânea com personalidade, usada só onde o produto está "falando" (perguntas de capítulo, frases-resumo, manchetes de notícia). Inter é o instrumento neutro que mostra o dado em si: nunca decorativo, sempre legível em qualquer tamanho, dos R$ 6,57 gigantes do hero às legendas de gráfico.
 
 ### Hierarquia
-- **Display** (Fraunces, 600, `clamp(2rem, 1.1rem + 2.6vw, 3.3rem)`, lh 1.05): a frase de abertura "Quanto custava. Quanto custa. O que mudou."
-- **Headline** (Fraunces, 600, `clamp(1.9rem, 1.2rem + 2.2vw, 3.1rem)`, lh 1.08): título de cada capítulo numerado (ex. "Como o preço chegou até aqui?").
-- **Numeric Display** (Inter, 700, `clamp(3rem, 1.3rem + 4.6vw, 6.2rem)`, lh 0.95, tabular): os números-protagonista — preço Era/Agora, valor do interlúdio. Maior elemento tipográfico da página, sempre em Inter, nunca em Fraunces.
-- **Body** (Inter, 400, 16px, lh 1.5): parágrafos, texto de interface. Medida de leitura máxima ~62ch (`--measure`).
-- **Label** (Inter, 700, 0.74rem, letter-spacing 0.1–0.12em, uppercase): kickers de seção, rótulos de categoria ("ERA", "AGORA", "COMBUSTÍVEIS").
+- **Display** (Fraunces 600, até 6rem, lh 0.97): manchete da capa, uma frase por linha, "O que mudou." em itálico âmbar.
+- **Nameplate** (Fraunces 700, caixa-alta, até 3.9rem): o nome da publicação.
+- **Story headline** (Fraunces 700, até 5.6rem): o nome do produto na matéria principal.
+- **Headline** (Fraunces 700, até 3.7rem, máx. 18ch): a pergunta de cada capítulo, sem numeração e sem rótulo acima.
+- **Lede** (Fraunces 500, até 1.55rem, lh 1.5): primeiro parágrafo e frases de leitura; capitular na matéria.
+- **Numeric display** (Inter 700, até 6rem, -0.04em): Agora e variação principal.
+- **Numeric** (Inter 700, ~1.8rem): Era, variação secundária, valores da Cápsula e dos governos.
+- **Body** (Inter 400, 16px, lh 1.55), **Meta** (Inter 600, 0.8rem), **Label** (Inter 700, 0.74rem, caixa-alta, 0.1em): rótulo só para cabeçalho de coluna do índice, metadados de recorte e legendas, nunca acima de um título.
 
 ### Named Rules
 **The Fixed-Role Rule.** Fraunces é voz editorial (perguntas, títulos, frases de resumo); Inter é todo número e toda interface, sem exceção. Um preço nunca aparece em Fraunces; um título de capítulo nunca aparece em Inter. Trocar os papéis quebra a distinção "isto é o analista falando" vs. "isto é o dado".
 
 ## Layout
 
-Container principal com `max-width: 1240px` (`.wrap.narrow` reduz para 920px em blocos de leitura). Gutter lateral de 48px no desktop, reduzindo para 32px (≤1100px) e 20px (≤760px) — sincronizado com o breakpoint de JS `estreito()` corrigido em Phase 1.
+Grade editorial de 12 colunas (`--col-gap: 32px`) dentro de `max-width: 1240px`; o gráfico principal sai para `1440px` (`.wrap.wide`) como página dupla. Gutter de 48px (desktop), 32px (≤1100px) e 20px (≤760px), sincronizado com `estreito()` no JS.
 
-Ritmo vertical generoso entre capítulos (`--chapter-gap: 128px`, caindo para 104px/80px nos breakpoints menores) — o produto se comporta como uma matéria longa de jornal, não como um dashboard denso de widgets lado a lado. Dentro de um capítulo, grids específicos (ex. `.answer-grid` 2 colunas, `.snapshot-grid` 2×N, `.gov-cols` 2 colunas) colapsam para coluna única em mobile.
+Cada seção escolhe sua proporção, nunca 50/50 por padrão: capa 8/4 (manchete / linha fina), matéria 7/5 (números / variação), "no bolso" 5/7, gráfico em largura total, notas do arquivo 4/8, contexto 8/4 (gráfico / legenda-tabela), Cápsula 8/4 (números / notícias da época), arquivo 200px + resto, notas 4/8.
 
-Texto de prosa é limitado a ~60–72ch (`--measure: 62ch`) para manter legibilidade de artigo; números-protagonista e barras não têm limite de medida, pois são visuais, não texto corrido.
+Ritmo vertical: `--chapter-gap: 152px` (120px ≤1100px, 88px ≤760px). Cada capítulo abre com um filete de 1px na largura do texto; a matéria principal e o índice abrem com filete de 3px. Prosa limitada a ~60–64ch (`--measure: 64ch`).
 
 ## Elevation & Depth
 
@@ -195,44 +225,51 @@ Sistema quase inteiramente flat: separação entre blocos vem de bordas finas de
 
 ## Shapes
 
-Raios pequenos e consistentes em controles interativos: 3px (chips, segmented control), 4px (inputs, popover), 6px (cards, month-selector). Nenhum raio grande tipo "card de app" (12px+) — o objetivo é parecer recorte impresso, não componente de mobile app.
-
-Círculo completo (`50%`) reservado para elementos redondos por natureza: retratos de presidentes, dots de identificação de período, números de marcador de notícia no gráfico. Pill (`999px`) só para controles de filtro/atalho horizontal (month-pill, news-track item).
-
-Elementos estruturais (stat-strip, barras de comparação, filetes de capítulo) são retos, sem raio — reforçam a régua/tabela de jornal em vez do cartão de app.
+Quase tudo é reto: filetes, colunas, tabelas, barras da régua. Raio só onde o elemento é um controle pequeno ou um dado físico: 2px (quadradinhos do pictograma, cursor da régua de meses, tampas das colunas anuais), 3px (botões de mês, select, link de pular), 4px (popover de termo). Círculo (`50%`) para o que é redondo por natureza: retratos, pontos de período, números de nota que espelham os marcadores do gráfico. Nenhuma pílula (999px) e nenhum raio de "card de app".
 
 ## Components
 
-### Wordmark / Símbolo
-- **Símbolo:** arco de 270° com tick radial na abertura (lê-se como mostrador/lupa/fração de %, sem ser nenhum literalmente) — do Custava Quanto Brand Book, direção "Índice". `stroke: currentColor`, `stroke-width: 5.5` num viewBox de 64×64, herda `--ink` no masthead.
-- **Regra de construção:** nunca girar, espelhar ou fechar o arco em círculo completo — a mesma restrição do brand book se aplica aqui.
-- **Uso atual:** símbolo inline no `.wordmark` do masthead (18×18px, ao lado do texto "Custava quanto?"); `favicon.svg` na aba do navegador. Assets em `dashboard/assets/brand/`.
-- **Nome do produto:** o dashboard mantém "CUSTAVA QUANTO?" como nome confirmado (ver PRODUCT.md) — só a paleta e o símbolo foram adotados do Brand Book, não a tipografia (Piazzolla/Space Grotesk), que fica fora de escopo por decisão do produto.
+### Cabeçalho da publicação
+- **Faixa de edição:** "Dados até {último mês}" (lido dos dados), linha fina em Fraunces itálico no centro, links Fontes/Metodologia à direita.
+- **Nome:** "CUSTAVA QUANTO?" em Fraunces 700 caixa-alta com o símbolo (arco de 270° com tick, do Brand Book, em `--accent-ink`), fechado por filete de 3px; logo abaixo, a linha de seções (âncoras) fechada por filete de 1px. Nunca girar, espelhar ou fechar o arco.
+- **Cabeço corrido:** depois do índice, uma faixa fixa repete o nome, o produto lido e "Índice ↑".
 
-### Chips (seletor de produto)
-- **Estilo:** borda 1px `--line`, fundo `--surface`, radius 3px, padding `7px 13px`.
-- **Estado ativo:** fundo `--ink`, texto `--paper` — inversão total, não apenas troca de borda.
-- **Badge de variação** (`.chip-delta`): pill pequeno dentro do chip, cor por direção (alta = âmbar `#8c5c14` sobre wash âmbar, baixa = azul-petróleo `#0a5f8a` sobre wash azul, estável = cinza `#55636A`) — paleta própria (The Status Pair Rule), deliberadamente distinta de azul/vermelho de governo para não confundir "subiu/desceu" com "período". O sinal `+`/`−` no próprio texto do badge é reforço textual sempre presente, não decorativo.
+### Índice ("Neste número") — seleção do produto
+- Sumário tipográfico em três colunas (Combustíveis, Alimentos, Mercados) separadas por filete vertical de 1px. Cada linha: nome em Fraunces, pontos guia, variação em Inter 700.
+- **Ativo:** nome em negrito com grifo `--accent-wash` na metade de baixo e guia sólida. Nunca preenchimento de botão.
+- **Variação:** só cor de texto (The Status Pair Rule), sem fundo.
+- No celular, cada categoria vira uma grade de duas colunas, alvo mínimo de 44px.
 
-### Segmented Control (alternador de métrica: nominal/real/% salário)
-- **Estilo:** trilho com borda 1px, padding 3px, fundo `--surface`.
-- **Ativo:** fundo `--ink`, texto `--paper`, peso 600 — mesmo padrão de inversão dos chips, para consistência de "isto está selecionado" em todo o produto.
+### Matéria principal (Era × Agora)
+- Nome do produto como manchete, unidade como etiqueta sublinhada.
+- Coluna 7/12: Era (número menor, `--ink-soft`), régua única (base neutra, trecho âmbar da diferença, chave e marcador tracejado da inflação) e Agora (numeric-display).
+- Coluna 5/12, depois de um filete vertical: a variação principal em numeric-display `--accent-ink`, a secundária menor. Preço em R$: a % é a principal; alimento, taxa e pontos: a primeira medida.
+- Lide em Fraunces com capitular âmbar; nota metodológica como coluna lateral.
 
-### Cards / Snapshot (Cápsula do Tempo)
-- **Estilo:** borda 1px `--line`, radius 6px, fundo `--surface`, padding `18px 22px`.
-- **Cabeçalho interno:** separado por `--line-soft` (mais discreto que a borda externa do card).
+### Abas tipográficas (métrica, recorte de governo)
+- Texto sublinhado: ativo com traço inferior de 3px `--accent`, hover com traço `--line`. Sem trilho, sem fundo.
 
-### Month Selector / Pills (Cápsula do Tempo)
-- **Trilho de controles:** fundo `--surface`, borda 1px, radius 6px.
-- **Pill de atalho:** radius total (999px), inativo em `--paper`/borda `--line`; ativo em `--accent-wash`/texto `--accent-ink` — único lugar onde o wash âmbar aparece em fundo de botão, reforçando "isto é um atalho especial", não um filtro comum.
+### Notas do arquivo (sob o gráfico)
+- Lista numerada como nota de rodapé: círculo com o número (espelha o marcador do gráfico), mês como rótulo, manchete em Fraunces (duas linhas). Selecionada: círculo em `--accent`. O painel abaixo abre a matéria com o valor daquele mês.
 
-### News Clips (recortes de notícia)
-- **Filete superior:** 3px sólido `--ink` — a assinatura visual de "isto é uma matéria real", reaproveitada em `.clip` e no cabeçalho de cada card de governo.
-- **Metadados:** uppercase, letter-spacing largo, `--ink-soft` — veículo em negrito `--ink`.
-- **Título:** sempre Fraunces, nunca Inter (é "fala" editorial, mesmo sendo um link).
+### Legenda-tabela (Contexto)
+- A coluna ao lado do gráfico é a legenda: traço da série (mesmo padrão da linha), nome, variação desde a Era, descrição.
 
-### Accordion (Metodologia)
-- **Summary:** uppercase, letter-spacing 0.12em, `--ink-soft`, com `+`/`–` como indicador (nunca chevron/seta) — reforça o vocabulário tipográfico em vez de ícone.
+### Cápsula do Tempo
+- **Régua de meses:** `input type="range"` nativo (teclado e leitor de tela, `aria-valuetext` com o mês), trilho de 3px preenchido em tinta até o mês, cursor âmbar de 8×26px, anos marcados embaixo, atalhos editoriais como bandeirinhas presas à régua em três alturas. No celular os atalhos viram uma linha de botões sublinhados. Select e anterior/próximo continuam.
+- **Página:** mês e ano como manchete gigante (ano em itálico âmbar), período e mês de comparação ao lado, filete de 3px. Gasolina e Dólar em destaque; salário mínimo, Selic, inflação e Ibovespa menores. Cada valor traz o do mês mais recente logo abaixo.
+- **"Na mesma época":** até três matérias do arquivo publicadas a até 2 meses do mês escolhido, cada uma com a data visível, e aviso de que é contexto. Sem matéria perto, uma frase dizendo isso.
+
+### Recortes de notícia
+- **Destaque** (primeira do ano com foto, ou a primeira específica do produto): foto grande (7/12), manchete grande e resumo ao lado.
+- **Nota menor:** filete de 1px, manchete em Fraunces 1.04rem.
+- Metadados em caixa-alta espaçada, veículo em negrito. Foto só com licença (Agência Brasil CC BY 4.0) e crédito.
+
+### Tabela de números (Governos)
+- Tabela de jornal: cabeçalho em caixa-alta com filete de 2px, linhas com filete suave, números tabulares à direita, `th scope` em linha e coluna.
+
+### Notas (metodologia)
+- Coluna 4/12 com uma frase sobre a origem dos números; coluna 8/12 com `<details>` nativos (Definições, Fontes, Limitações), título em Fraunces e `+`/`–` como indicador.
 
 ## Do's and Don'ts
 
@@ -241,7 +278,8 @@ Elementos estruturais (stat-strip, barras de comparação, filetes de capítulo)
 - **Do** manter Fraunces só em títulos/perguntas/frases-resumo e Inter em todo número/interface (The Fixed-Role Rule).
 - **Do** separar blocos com borda fina de 1px em vez de sombra (The Flat-by-Default Rule).
 - **Do** usar azul/vermelho de governo só como identificador de período, com peso visual idêntico para os dois.
-- **Do** declarar fonte e frequência de cada dado no mesmo tom visual do resto da interface (label uppercase, `--ink-faint`), nunca escondido em tooltip.
+- **Do** declarar fonte e frequência de cada dado no mesmo tom visual do resto da interface (`--ink-faint`), nunca escondido em tooltip.
+- **Do** deixar cada seção escolher sua proporção de grade; número como tipografia, sem caixa em volta.
 
 ### Don't:
 - **Don't** usar azul ou vermelho institucional para indicar positivo/negativo, certo/errado — isso é o que a paleta de chip-delta (âmbar/azul-petróleo/cinza) existe para fazer, separadamente.
@@ -249,3 +287,6 @@ Elementos estruturais (stat-strip, barras de comparação, filetes de capítulo)
 - **Don't** usar Fraunces para exibir um número, nem Inter para uma manchete ou pergunta de capítulo.
 - **Don't** introduzir radius grande (12px+) tipo "app card" — quebra a referência de recorte de jornal.
 - **Don't** deixar o acento âmbar dominar mais de ~10% de uma tela — se parecer necessário, o problema é hierarquia/composição, não falta de cor.
+- **Don't** voltar a cartões, pílulas, trilhos de chips, rótulo acima de título ou numeração de capítulo: são o vocabulário de painel que esta publicação substituiu.
+- **Don't** tingir o fundo do gráfico por período: o período fica na faixa fina do topo e no corte.
+

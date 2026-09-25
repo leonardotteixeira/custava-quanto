@@ -149,6 +149,22 @@ function animateNumber(el, to, render) {
   requestAnimationFrame(step);
 }
 
+// Régua única do Hero: base neutra até o menor valor, trecho âmbar na
+// diferença. Só posiciona/escala — nenhum número econômico é calculado aqui.
+function setRuler(vIni, vFim, max) {
+  const lo = Math.min(vIni, vFim) / max, hi = Math.max(vIni, vFim) / max;
+  document.getElementById("ruler-base").style.transform = `scaleX(${lo.toFixed(3)})`;
+  document.getElementById("ruler-delta").style.transform = `translateX(${(lo * 100).toFixed(2)}%) scaleX(${(hi - lo).toFixed(3)})`;
+  const brace = document.getElementById("ruler-brace");
+  brace.style.left = `${(lo * 100).toFixed(2)}%`;
+  brace.style.width = `${((hi - lo) * 100).toFixed(2)}%`;
+  // rótulo do trecho alinhado à borda mais próxima do centro, pra não estourar
+  const label = document.getElementById("ruler-brace-label");
+  if (!label) return;
+  if (lo < 0.55) { label.style.left = `${(lo * 100).toFixed(2)}%`; label.style.right = "auto"; }
+  else { label.style.right = `${((1 - hi) * 100).toFixed(2)}%`; label.style.left = "auto"; }
+}
+
 // Classificação em linguagem simples da variação real (descontada a inflação).
 function leituraReal(realPct) {
   if (Math.abs(realPct) < 3) return "igual";
@@ -159,6 +175,7 @@ async function init() {
   const resp = await fetch(DATA_URL, { cache: "no-cache" });
   DATA = await resp.json();
   NEWS = await carregarNoticias();
+  renderCoverMeta();
   renderSelector();
   bindNewsInteractions();
   bindToggles();
@@ -175,6 +192,23 @@ async function init() {
     renderChart();
     renderContext(DATA.produtos[state.product]);
   });
+}
+
+// Faixa de edição, linha de créditos da capa e texto do índice: tudo lido
+// dos próprios dados (contagens e datas), nada escrito à mão.
+function renderCoverMeta() {
+  const ref = DATA.produtos.GASOLINA || DATA.produtos[PRODUCT_ORDER.find((p) => DATA.produtos[p])];
+  const ultimoMes = ref.serie_mensal[ref.serie_mensal.length - 1].ano_mes;
+  const eraMes = eraReferencia(ref.serie_mensal).ano_mes;
+  const nProdutos = PRODUCT_ORDER.filter((p) => DATA.produtos[p]).length;
+  const nVeiculos = new Set(NEWS.map((n) => n.veiculo)).size;
+  document.getElementById("edition-line").textContent = `Dados até ${fmtMesAno(ultimoMes)}`;
+  document.getElementById("cover-meta").innerHTML =
+    `<span>${nProdutos} séries de preço, de ${fmtMesAno(ref.serie_mensal[0].ano_mes)} a ${fmtMesAno(ultimoMes)}</span>` +
+    (NEWS.length ? `<span>${NEWS.length} matérias de ${nVeiculos} veículos, conferidas na fonte</span>` : "") +
+    `<span>Dados: ANP, IBGE, Banco Central, FRED, Yahoo Finance</span>`;
+  document.getElementById("index-dek").textContent =
+    `${nProdutos} histórias de preço. Ao lado de cada uma, quanto mudou de ${fmtMesAno(eraMes)} (fim do governo Bolsonaro) ao dado mais recente. Escolha uma para ler.`;
 }
 
 function renderSelector() {
@@ -223,8 +257,12 @@ function renderSelector() {
           }
         }
 
-        btn.innerHTML = `${PRODUCT_CHIP_LABEL[codigo] || codigo} ${deltaHtml}`;
-        btn.addEventListener("click", () => selectProduct(codigo));
+        btn.innerHTML = `<span class="ix-name">${PRODUCT_CHIP_LABEL[codigo] || codigo}</span><span class="ix-lead" aria-hidden="true"></span>${deltaHtml}`;
+        btn.addEventListener("click", () => {
+          selectProduct(codigo);
+          const alvo = document.getElementById("historia");
+          if (alvo.getBoundingClientRect().top > window.innerHeight * 0.6) alvo.scrollIntoView({ behavior: reduzMovimento() ? "auto" : "smooth" });
+        });
         el.appendChild(btn);
       });
   });
@@ -410,6 +448,7 @@ function renderLiveQuote(produto) {
 }
 
 function renderStepNumbers() {
+  if (!document.getElementById("step-context")) return; // numeração de capítulos saiu do layout editorial
   const produto = DATA.produtos[state.product];
   const semPoderCompra = produto && (produto.tipo === "taxa" || produto.tipo === "pontos");
   const base = semPoderCompra ? 2 : 3;
@@ -493,6 +532,7 @@ function renderAnswer(produto) {
   // Selic e IPCA (taxa) não são preço: nada de R$, índice ou "poder de
   // compra" — manchete própria, bem mais simples. Generalizada por
   // TAXA_INFO para não hardcodar "Selic" quando o produto é o IPCA.
+  document.getElementById("story-delta").dataset.lead = produto.tipo === "combustivel" || produto.tipo === "cambio" ? "b" : "a";
   if (produto.tipo === "taxa") {
     const info = TAXA_INFO[state.product];
     let ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
@@ -517,8 +557,7 @@ function renderAnswer(produto) {
     animateNumber(document.getElementById("agora-value"), vFim, render);
 
     const max = Math.max(vIni, vFim, 1);
-    document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
-    document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
+    setRuler(vIni, vFim, max);
     document.getElementById("infl-marker").hidden = true;
 
     // "Inflação acumulada desde a Era" (ponta a ponta) é uma leitura
@@ -527,7 +566,7 @@ function renderAnswer(produto) {
     // sobre serem medidas diferentes da mesma série de preços.
     const diffPP = vFim - vIni;
     const inflacaoPeriodo = (ultimo.ipca_indice / eraRef.ipca_indice - 1) * 100;
-    document.getElementById("diff-a").textContent = `${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)} p.p.`;
+    document.getElementById("diff-a").innerHTML = `${diffPP >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPP), 2)}<span class="unit-suffix">p.p.</span>`;
     document.getElementById("diff-a-cap").textContent = `desde ${mEra}`;
     document.getElementById("diff-b").textContent = fmtPct(inflacaoPeriodo);
     document.getElementById("diff-b-cap").textContent = state.product === "IPCA"
@@ -574,8 +613,7 @@ function renderAnswer(produto) {
     animateNumber(document.getElementById("agora-value"), vFim, render);
 
     const max = Math.max(vIni, vFim, vRef);
-    document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
-    document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
+    setRuler(vIni, vFim, max);
     const marker = document.getElementById("infl-marker");
     const posRef = vRef / max * 100;
     marker.style.left = `${posRef.toFixed(1)}%`;
@@ -586,7 +624,7 @@ function renderAnswer(produto) {
     const pct = (vFim / vIni - 1) * 100;
     const inflacaoPeriodo = (ultimo.ipca_indice / eraRef.ipca_indice - 1) * 100;
     const diffPts = vFim - vIni;
-    document.getElementById("diff-a").textContent = `${diffPts >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPts), 0)} pts`;
+    document.getElementById("diff-a").innerHTML = `${diffPts >= 0 ? "+" : "−"}${fmtNum(Math.abs(diffPts), 0)}<span class="unit-suffix">pts</span>`;
     document.getElementById("diff-a-cap").textContent = `desde ${mEra}`;
     document.getElementById("diff-b").textContent = fmtPct(inflacaoPeriodo);
     document.getElementById("diff-b-cap").textContent = "foi a inflação (IPCA) no mesmo período";
@@ -640,8 +678,7 @@ function renderAnswer(produto) {
   animateNumber(document.getElementById("agora-value"), vFim, render);
 
   const max = Math.max(vIni, vFim, vRef || 0);
-  document.getElementById("era-bar").style.transform = `scaleX(${(vIni / max).toFixed(3)})`;
-  document.getElementById("agora-bar").style.transform = `scaleX(${(vFim / max).toFixed(3)})`;
+  setRuler(vIni, vFim, max);
   const marker = document.getElementById("infl-marker");
   const posRef = vRef / max * 100;
   marker.style.left = `${posRef.toFixed(1)}%`;
@@ -706,7 +743,7 @@ function baseLayout() {
     separators: ",.",
     plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)",
     hovermode: "x",
-    hoverlabel: { bgcolor: "#ffffff", bordercolor: line, align: "left", font: { color: ink, size: 13, family: "Inter, sans-serif" } },
+    hoverlabel: { bgcolor: "#ffffff", bordercolor: ink, align: "left", font: { color: ink, size: 13, family: "Inter, sans-serif" } },
     xaxis: {
       type: "date", showgrid: false, showline: true, linecolor: ink, linewidth: 1,
       ticks: "outside", ticklen: 5, tickcolor: line, tickformat: "%Y", dtick: "M12",
@@ -719,8 +756,8 @@ function baseLayout() {
 }
 function periodShapes(xIni, xFim, cutoff) {
   return [
-    { type: "rect", xref: "x", yref: "paper", x0: xIni, x1: cutoff, y0: 0, y1: 1, fillcolor: cssVar("--p-bolsonaro-wash"), line: { width: 0 }, layer: "below" },
-    { type: "rect", xref: "x", yref: "paper", x0: cutoff, x1: xFim, y0: 0, y1: 1, fillcolor: cssVar("--p-lula-wash"), line: { width: 0 }, layer: "below" },
+    // sem tingir o fundo: o período fica na faixa fina do topo e no corte,
+    // para o gráfico não virar um painel com caixa colorida
     { type: "line", xref: "x", yref: "paper", x0: cutoff, x1: cutoff, y0: 0, y1: 1, line: { color: cssVar("--ink"), width: 1 } },
     // faixa fina no topo: identifica o período pela cor sem tingir o gráfico
     { type: "rect", xref: "x", yref: "paper", x0: xIni, x1: cutoff, y0: 1, y1: 1.012, fillcolor: cssVar("--p-bolsonaro"), line: { width: 0 } },
@@ -742,7 +779,7 @@ function endLabel(x, y, texto, lado) {
   return {
     x, y, xref: "x", yref: "y", text: `<b>${texto}</b>`, showarrow: false,
     xanchor: lado === "left" ? "left" : "right", yanchor: "bottom", yshift: 10,
-    font: { size: 14, color: cssVar("--ink"), family: "Inter, sans-serif" }, bgcolor: "rgba(255,255,255,0.88)", borderpad: 2,
+    font: { size: 14, color: cssVar("--ink"), family: "Inter, sans-serif" }, bgcolor: "rgba(246,243,236,0.92)", borderpad: 2,
   };
 }
 
@@ -893,7 +930,7 @@ function renderChart() {
     layout.annotations.push({
       x: x[idxPico], y: y[idxPico], xref: "x", yref: "y", showarrow: true, arrowhead: 0, arrowwidth: 1, arrowcolor: cssVar("--ink-soft"),
       ax: 0, ay: -28, text: `pico: <b>${fmtY(y[idxPico])}</b> · ${fmtMesAno(serie[idxPico].ano_mes)}`,
-      font: { size: 12, color: cssVar("--ink") }, bgcolor: "rgba(255,255,255,0.9)", borderpad: 3,
+      font: { size: 12, color: cssVar("--ink") }, bgcolor: "rgba(246,243,236,0.92)", borderpad: 3,
     });
   }
   Plotly.react("main-chart", traces, layout, { responsive: true, displayModeBar: false });
@@ -964,6 +1001,7 @@ function renderPurchasingPower(produto) {
   const eraRef = eraReferencia(produto.serie_mensal);
 
   if (!isComb) {
+    document.getElementById("pp-fact").hidden = true;
     const pcIni = eraRef.indice_poder_compra, pcFim = ultimo.indice_poder_compra;
     document.getElementById("pp-sub").innerHTML =
       `Índice de quanto um ${term("salario", "salário mínimo")} rende ${t.sem}: não é uma quantidade em kg/litros, porque não há preço absoluto em R$ para este item (ver nota na abertura).`;
@@ -990,6 +1028,17 @@ function renderPurchasingPower(produto) {
 
   const u = unidadeInfo(produto);
   const uIni = eraRef.unidades_por_salario_minimo, uFim = ultimo.unidades_por_salario_minimo;
+
+  // O fato editorial: o peso de uma unidade no salário, então e agora.
+  // Só para combustível — "1 dólar custa X% do salário" não é leitura útil.
+  const fact = document.getElementById("pp-fact");
+  fact.hidden = produto.tipo !== "combustivel";
+  if (produto.tipo === "combustivel") {
+    fact.innerHTML = `<span class="ppf-lead">Hoje, ${u.um.replace(/^1 /, "um ")} ${t.sem}</span>
+      <span class="ppf-verb">custa</span>
+      <span class="ppf-num tnum">${fmtNum(ultimo.pct_salario_minimo, 2)}%</span>
+      <span class="ppf-cap">do salário mínimo de ${fmtMesAno(ultimo.ano_mes)} (${fmtBRL.format(ultimo.salario_minimo)}). Em ${fmtMesAno(eraRef.ano_mes)}, custava <strong class="tnum">${fmtNum(eraRef.pct_salario_minimo, 2)}%</strong>.</span>`;
+  }
 
   document.getElementById("pp-sub").innerHTML =
     `Quantos ${u.plural} ${t.sem} dava para comprar gastando um ${term("salario", "salário mínimo")} inteiro.`;
@@ -1040,36 +1089,51 @@ function renderGovernos(produto) {
       ? "Comparando o governo inteiro de cada período, do primeiro ao último mês."
       : `Comparando os ${COHORT_LABEL[state.cohort]} de cada período.`;
 
-  // --- minigráficos: mesma escala vertical e mesma largura por mês nos dois ---
+  // --- placar contínuo: uma única linha do tempo 2019→hoje, cortada na troca
+  // de governo, mesma escala vertical e horizontal para os dois. O recorte
+  // escolhido (governo inteiro, 1º ano...) fica colorido; o resto, apagado. ---
   const valorDe = (r) => (isTaxa ? r.taxa_aa : isPontos ? r.pontos : isComb ? r.preco_nominal : r.indice_relativo);
-  const janelas = resumos.map((r) => r ? produto.serie_mensal.filter((m) => m.ano_mes >= r.mes_inicio && m.ano_mes <= r.mes_fim) : []);
-  const todos = janelas.flat().map(valorDe).filter((v) => !isNil(v));
+  const mIdx = (iso) => Number(iso.slice(0, 4)) * 12 + Number(iso.slice(5, 7)) - 1;
+  const inteiro = periodos.map((p) => produto.resumo_periodos[p]?.governo_inteiro);
+  const ini = mIdx((inteiro[0] || inteiro[1]).mes_inicio);
+  const fim = mIdx((inteiro[1] || inteiro[0]).mes_fim);
+  const corte = inteiro[0] && inteiro[1] ? mIdx(inteiro[1].mes_inicio) : null;
+  const serie = produto.serie_mensal.filter((m) => mIdx(m.ano_mes) >= ini && mIdx(m.ano_mes) <= fim);
+  const todos = serie.map(valorDe).filter((v) => !isNil(v));
   const yMin = Math.min(...todos), yMax = Math.max(...todos);
-  const nMax = Math.max(...janelas.map((j) => j.length), 2);
-  const W = 300, H = 100, PAD = 8;
-  const sx = (i) => (i / (nMax - 1)) * W;
+  const W = 600, H = 120, PAD = 8, span_m = Math.max(fim - ini, 1);
+  const sx = (mi) => ((mi - ini) / span_m) * W;
   const sy = (v) => PAD + (1 - (v - yMin) / ((yMax - yMin) || 1)) * (H - 2 * PAD);
-
-  function spark(janela, periodo) {
-    if (!janela.length) return "";
-    const cor = cssVar(periodo === "Bolsonaro" ? "--p-bolsonaro" : "--p-lula");
+  const trecho = (lista) => {
     let d = "", aberto = false;
-    janela.forEach((m, i) => {
+    lista.forEach((m) => {
       const v = valorDe(m);
       if (isNil(v)) { aberto = false; return; }
-      d += `${aberto ? "L" : "M"}${sx(i).toFixed(1)},${sy(v).toFixed(1)} `;
+      d += `${aberto ? "L" : "M"}${sx(mIdx(m.ano_mes)).toFixed(1)},${sy(v).toFixed(1)} `;
       aberto = true;
     });
-    const v0 = valorDe(janela[0]);
-    const ultimoI = janela.length - 1;
-    const v1 = ultimoValido(janela.map(valorDe));
-    const dot = (x, y, fill) => `<path d="M${x.toFixed(1)},${y.toFixed(1)} l0,0" stroke="${fill}" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
-    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="0" x2="${W}" y1="${sy(v0).toFixed(1)}" y2="${sy(v0).toFixed(1)}" stroke="${cssVar("--ink-faint")}" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
-      <path d="${d}" fill="none" stroke="${cor}" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-      ${dot(sx(0), sy(v0), cor)}${dot(sx(ultimoI), sy(v1), cor)}
-    </svg>`;
-  }
+    return d;
+  };
+  const dot = (x, y, fill) => `<path d="M${x.toFixed(1)},${y.toFixed(1)} l0,0" stroke="${fill}" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+  const stroke = (d, cor, w) => `<path d="${d}" fill="none" stroke="${cor}" stroke-width="${w}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+  const janelas = resumos.map((r) => r ? serie.filter((m) => m.ano_mes >= r.mes_inicio && m.ano_mes <= r.mes_fim) : []);
+  const sparkSvg = () => {
+    const partes = [stroke(trecho(serie), cssVar("--bar-muted"), 2)];
+    periodos.forEach((p, k) => {
+      const j = janelas[k];
+      if (!j.length) return;
+      const cor = cssVar(p === "Bolsonaro" ? "--p-bolsonaro" : "--p-lula");
+      const v0 = valorDe(j[0]);
+      const v1 = ultimoValido(j.map(valorDe));
+      const x0 = sx(mIdx(j[0].ano_mes)), x1 = sx(mIdx(j[j.length - 1].ano_mes));
+      partes.push(`<line x1="${x0.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${sy(v0).toFixed(1)}" y2="${sy(v0).toFixed(1)}" stroke="${cssVar("--ink-faint")}" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>`);
+      partes.push(stroke(trecho(j), cor, 2.5), dot(x0, sy(v0), cor), dot(x1, sy(v1), cor));
+    });
+    const xc = corte === null ? null : sx(corte - 0.5);
+    if (xc !== null) partes.push(`<line x1="${xc.toFixed(1)}" x2="${xc.toFixed(1)}" y1="0" y2="${H}" stroke="${cssVar("--ink")}" stroke-width="1" vector-effect="non-scaling-stroke"/>`);
+    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${partes.join("")}</svg>`;
+  };
+  const cortePct = corte === null ? 50 : (sx(corte - 0.5) / W) * 100;
 
   // Identificação dos períodos: mesma área, mesmo retrato, mesma hierarquia
   // para os dois. A cor (azul/vermelho) é só um identificador do período.
@@ -1086,24 +1150,22 @@ function renderGovernos(produto) {
       </div>
     </header>`;
   };
-
-  document.getElementById("gov-cols").innerHTML = periodos.map((p, k) => {
-    const r = resumos[k];
-    const cls = p.toLowerCase();
-    if (!r) return `<div class="gov ${cls}">${idHtml(p, null)}</div>`;
+  const endsHtml = (p, r) => {
+    if (!r) return "";
     const vIni = isTaxa ? r.taxa_inicio : isPontos ? r.pontos_inicio : isComb ? r.preco_nominal_inicio : r.indice_nominal_inicio;
     const vFim = isTaxa ? r.taxa_fim : isPontos ? r.pontos_fim : isComb ? r.preco_nominal_fim : r.indice_nominal_fim;
     const suf = isTaxa || isPontos || isComb ? "" : "<small>índice</small>";
-    return `<div class="gov ${cls}">
-      ${idHtml(p, r)}
-      ${spark(janelas[k], p)}
-      <div class="gov-ends">
-        <div class="gov-end"><span class="when">início · ${fmtMesAno(r.mes_inicio)}</span><span class="val tnum">${fmtGov(vIni)}${suf}</span></div>
-        <span class="gov-arrow" aria-hidden="true">→</span>
-        <div class="gov-end"><span class="when">fim · ${fmtMesAno(r.mes_fim)}</span><span class="val tnum">${fmtGov(vFim)}${suf}</span></div>
-      </div>
+    return `<div class="gov-ends">
+      <div class="gov-end"><span class="when">início · ${fmtMesAno(r.mes_inicio)}</span><span class="val tnum">${fmtGov(vIni)}${suf}</span></div>
+      <span class="gov-arrow" aria-hidden="true">→</span>
+      <div class="gov-end"><span class="when">fim · ${fmtMesAno(r.mes_fim)}</span><span class="val tnum">${fmtGov(vFim)}${suf}</span></div>
     </div>`;
-  }).join("");
+  };
+  const cols = `style="grid-template-columns: ${cortePct.toFixed(2)}% ${(100 - cortePct).toFixed(2)}%"`;
+  document.getElementById("gov-cols").innerHTML = `
+    <div class="placar-row placar-ids" ${cols}>${periodos.map((p, k) => `<div class="gov ${p.toLowerCase()}">${idHtml(p, resumos[k])}</div>`).join("")}</div>
+    <div class="placar-stage" style="--cut: ${cortePct.toFixed(2)}%">${sparkSvg()}<span class="placar-cut">${fmtMesAno(DATA.periodo_corte || (inteiro[1] && inteiro[1].mes_inicio))} · troca de governo</span></div>
+    <div class="placar-row placar-ends" ${cols}>${periodos.map((p, k) => `<div class="gov ${p.toLowerCase()}">${endsHtml(p, resumos[k])}</div>`).join("")}</div>`;
 
   // --- barras de variação: mesma escala para os quatro valores ---
   // Selic não tem "variação real" (isso exigiria uma conta de juro real que
@@ -1176,12 +1238,12 @@ function renderGovernos(produto) {
         ["Índice médio", "média de todos os meses do recorte", (r) => valorFormatado(produto, r?.indice_nominal_medio)],
       ];
   document.getElementById("comparison-table").innerHTML = `
-    <thead><tr><th></th><th>Bolsonaro</th><th>Lula</th></tr></thead>
-    <tbody>${linhas.map(([label, help, fn]) => `<tr><td>${label}<span class="row-help">${help}</span></td><td>${fn(rB)}</td><td>${fn(rL)}</td></tr>`).join("")}</tbody>`;
+    <thead><tr><th scope="col"><span class="sr-only">Indicador</span></th><th scope="col">Bolsonaro</th><th scope="col">Lula</th></tr></thead>
+    <tbody>${linhas.map(([label, help, fn]) => `<tr><th scope="row">${label}<span class="row-help">${help}</span></th><td>${fn(rB)}</td><td>${fn(rL)}</td></tr>`).join("")}</tbody>`;
 
   // CC BY 2.0 pede que alterações sejam indicadas (ver scripts/process_portraits.py)
   document.getElementById("photo-credit").textContent =
-    `Retratos: ${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}. Imagens recortadas e convertidas para preto e branco, com o mesmo tratamento para as duas.`;
+    `Retratos: ${DATA.presidentes.Bolsonaro.fonte_foto} · ${DATA.presidentes.Lula.fonte_foto}. Imagens recortadas e com cor parcialmente reduzida, com o mesmo tratamento para as duas.`;
 }
 
 // =====================================================================
@@ -1389,50 +1451,108 @@ function renderContext(produto) {
 // Python, a partir dos outros produtos) — nenhuma conta nova aqui.
 // =====================================================================
 const SNAPSHOT_CAMPOS = [
-  { chave: "dolar", label: "Dólar", fmt: (v) => fmtBRL.format(v) },
-  { chave: "ibovespa", label: "Ibovespa", fmt: (v) => `${fmtNum(v, 0)} pts` },
-  { chave: "selic", label: "Selic", fmt: (v) => `${fmtNum(v, 2)}% a.a.` },
-  { chave: "ipca", label: "Inflação (12m)", fmt: (v) => `${fmtNum(v, 2)}%` },
-  { chave: "salario_minimo", label: "Salário mínimo", fmt: (v) => fmtBRL.format(v) },
-  { chave: "gasolina", label: "Gasolina", fmt: (v) => `${fmtBRL.format(v)}/L` },
+  { chave: "gasolina", label: "Gasolina", nota: "por litro, média nacional", fmt: (v) => fmtBRL.format(v), peso: "lead" },
+  { chave: "dolar", label: "Dólar", nota: "reais por 1 dólar", fmt: (v) => fmtBRL.format(v), peso: "lead" },
+  { chave: "salario_minimo", label: "Salário mínimo", nota: "piso nacional", fmt: (v) => fmtBRL.format(v) },
+  { chave: "selic", label: "Selic", nota: "juros, % ao ano", fmt: (v) => `${fmtNum(v, 2)}%` },
+  { chave: "ipca", label: "Inflação", nota: "IPCA em 12 meses", fmt: (v) => `${fmtNum(v, 2)}%` },
+  { chave: "ibovespa", label: "Ibovespa", nota: "pontos, fechamento", fmt: (v) => fmtNum(v, 0) },
 ];
+const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 let snapshotBound = false;
 let selectedSnapshotIso = "2022-12-01";
+const mesesCapsula = () => Object.keys(DATA.fotografia_mensal || {}).sort();
+
+// Matérias do arquivo publicadas no mês escolhido ou até 2 meses de
+// distância — a data de cada uma fica visível, e a seção diz que é contexto.
+function noticiasDoMes(iso) {
+  const alvo = Number(iso.slice(0, 4)) * 12 + Number(iso.slice(5, 7));
+  return NEWS
+    .map((n) => ({ n, d: Math.abs(Number(n.data.slice(0, 4)) * 12 + Number(n.data.slice(5, 7)) - alvo) }))
+    .filter((x) => x.d <= 2)
+    .sort((x, y) => x.d - y.d || y.n.data.localeCompare(x.n.data))
+    .slice(0, 3)
+    .map((x) => x.n);
+}
 
 function renderSnapshot(produto) {
   const grid = document.getElementById("snapshot-grid");
-  if (!grid) return;
+  if (!grid || !DATA.fotografia_mensal) return;
+  const meses = mesesCapsula();
 
-  const eraRef = eraReferencia(produto.serie_mensal);
-  const ultimo = produto.serie_mensal[produto.serie_mensal.length - 1];
-
-  // Popula o dropdown de meses se ainda não populou
   const drop = document.getElementById("month-dropdown");
-  if (drop && DATA.fotografia_mensal && drop.children.length === 0) {
-    const meses = Object.keys(DATA.fotografia_mensal).sort();
+  if (drop && drop.children.length === 0) {
     drop.innerHTML = meses.map((iso) => `<option value="${iso}">${fmtMesAno(iso)}</option>`).join("");
     drop.value = selectedSnapshotIso;
+    montarEscalaMeses(meses);
   }
 
-  const mIso = selectedSnapshotIso || eraRef.ano_mes;
-  const momentos = [
-    { label: "Mês Selecionado", sub: fmtMesAno(mIso), dados: DATA.fotografia_mensal[mIso] },
-    { label: "Agora", sub: fmtMesAno(ultimo.ano_mes), dados: DATA.fotografia_mensal[ultimo.ano_mes] },
-  ];
+  const ultimoIso = meses[meses.length - 1];
+  const mIso = selectedSnapshotIso;
+  const entao = DATA.fotografia_mensal[mIso] || {};
+  const agora = DATA.fotografia_mensal[ultimoIso] || {};
+  const [anoSel, mesSel] = mIso.split("-");
+  const gov = mIso < DATA.periodo_corte ? "Bolsonaro" : "Lula";
+  const fmtV = (dados, c) => (isNil(dados[c.chave]) ? "—" : c.fmt(dados[c.chave]));
 
-  grid.innerHTML = momentos.map((m) => `
-    <div class="snap-card">
-      <div class="snap-head"><span class="snap-kicker">${m.label}</span><span class="snap-when">${m.sub}</span></div>
-      <div class="snap-rows">
-        ${SNAPSHOT_CAMPOS.map((c) => {
-          const v = m.dados ? m.dados[c.chave] : null;
-          return `<div class="snap-row"><span class="snap-label">${c.label}</span><span class="snap-value tnum">${isNil(v) ? "—" : c.fmt(v)}</span></div>`;
-        }).join("")}
+  const figura = (c) => `
+    <div class="cf ${c.peso === "lead" ? "cf-lead" : ""}">
+      <dt><span class="cf-label">${c.label}</span><span class="cf-note">${c.nota}</span></dt>
+      <dd class="cf-then tnum">${fmtV(entao, c)}</dd>
+      <dd class="cf-now">${fmtMesAno(ultimoIso)}: <span class="tnum">${fmtV(agora, c)}</span></dd>
+    </div>`;
+
+  const noticias = noticiasDoMes(mIso);
+  const notas = noticias.length
+    ? noticias.map((n) => clipHtml(n, { classe: n.imagem ? "clip-note has-img" : "clip-note" })).join("")
+    : `<p class="capsule-empty">Nenhuma matéria do nosso arquivo foi publicada perto de ${fmtMesAno(mIso)}. Os números ao lado continuam valendo.</p>`;
+
+  grid.innerHTML = `
+    <div class="capsule">
+      <header class="capsule-head">
+        <h3 class="capsule-date"><span class="cd-month">${MESES_LONGOS[parseInt(mesSel, 10) - 1]} de</span> <span class="cd-year">${anoSel}</span></h3>
+        <p class="capsule-gov ${gov.toLowerCase()}"><span class="gov-mark" aria-hidden="true"></span>governo ${gov} · comparado com ${fmtMesAno(ultimoIso)}</p>
+      </header>
+      <div class="capsule-body">
+        <dl class="capsule-figures">${SNAPSHOT_CAMPOS.map(figura).join("")}</dl>
+        <aside class="capsule-notes" aria-label="Notícias da mesma época">
+          <h4 class="capsule-notes-head">Na mesma época</h4>
+          ${notas}
+          ${noticias.length ? `<p class="news-disclaimer">Matérias publicadas no mês escolhido ou perto dele. Contexto do período, não explicação dos números.</p>` : ""}
+        </aside>
       </div>
-    </div>`).join("");
+    </div>`;
 
   bindSnapshotControls(produto);
+}
+
+// Escala de meses: um controle deslizante nativo (teclado e leitor de tela
+// funcionam sozinhos), anos marcados embaixo e os atalhos editoriais como
+// bandeirinhas na posição do mês que representam.
+function montarEscalaMeses(meses) {
+  const range = document.getElementById("month-range");
+  range.max = String(meses.length - 1);
+  range.value = String(Math.max(0, meses.indexOf(selectedSnapshotIso)));
+  const pos = (i) => (i / (meses.length - 1)) * 100;
+  const anos = [...new Set(meses.map((m) => m.slice(0, 4)))];
+  document.getElementById("month-years").innerHTML = anos.map((a) => {
+    const i = meses.indexOf(`${a}-01-01`) >= 0 ? meses.indexOf(`${a}-01-01`) : meses.findIndex((m) => m.startsWith(a));
+    return `<span style="left:${pos(i).toFixed(2)}%">${a}</span>`;
+  }).join("");
+  document.querySelectorAll(".month-pill").forEach((p) => {
+    const i = meses.indexOf(p.dataset.miso);
+    if (i < 0) { p.hidden = true; return; }
+    p.style.left = `${pos(i).toFixed(2)}%`;
+    p.classList.toggle("flip", pos(i) > 70);
+  });
+  atualizarTextoEscala();
+}
+function atualizarTextoEscala() {
+  const range = document.getElementById("month-range");
+  range.setAttribute("aria-valuetext", fmtMesAno(selectedSnapshotIso));
+  const pct = (Number(range.value) / Math.max(1, Number(range.max))) * 100;
+  range.style.setProperty("--fill", `${pct.toFixed(2)}%`);
 }
 
 function bindSnapshotControls(produto) {
@@ -1442,11 +1562,12 @@ function bindSnapshotControls(produto) {
   const drop = document.getElementById("month-dropdown");
   const prev = document.getElementById("month-prev");
   const next = document.getElementById("month-next");
+  const range = document.getElementById("month-range");
 
   // desabilita prev/next no início/fim do intervalo — sem isso, clicar
   // no limite não fazia nada e não dava nenhum sinal de por quê
   const atualizarLimites = (iso) => {
-    const meses = Object.keys(DATA.fotografia_mensal).sort();
+    const meses = mesesCapsula();
     const idx = meses.indexOf(iso);
     if (prev) prev.disabled = idx <= 0;
     if (next) next.disabled = idx < 0 || idx >= meses.length - 1;
@@ -1454,6 +1575,8 @@ function bindSnapshotControls(produto) {
   const updateSnapshot = (iso) => {
     selectedSnapshotIso = iso;
     if (drop) drop.value = iso;
+    if (range) range.value = String(mesesCapsula().indexOf(iso));
+    atualizarTextoEscala();
     document.querySelectorAll(".month-pill").forEach((p) => {
       const ativo = p.dataset.miso === iso;
       p.classList.toggle("active", ativo);
@@ -1464,23 +1587,15 @@ function bindSnapshotControls(produto) {
   };
   atualizarLimites(selectedSnapshotIso);
 
-  if (drop) {
-    drop.addEventListener("change", (e) => updateSnapshot(e.target.value));
-  }
-  if (prev) {
-    prev.addEventListener("click", () => {
-      const meses = Object.keys(DATA.fotografia_mensal).sort();
-      const idx = meses.indexOf(selectedSnapshotIso);
-      if (idx > 0) updateSnapshot(meses[idx - 1]);
-    });
-  }
-  if (next) {
-    next.addEventListener("click", () => {
-      const meses = Object.keys(DATA.fotografia_mensal).sort();
-      const idx = meses.indexOf(selectedSnapshotIso);
-      if (idx >= 0 && idx < meses.length - 1) updateSnapshot(meses[idx + 1]);
-    });
-  }
+  if (drop) drop.addEventListener("change", (e) => updateSnapshot(e.target.value));
+  if (range) range.addEventListener("input", () => updateSnapshot(mesesCapsula()[Number(range.value)]));
+  const passo = (d) => {
+    const meses = mesesCapsula();
+    const idx = meses.indexOf(selectedSnapshotIso) + d;
+    if (idx >= 0 && idx < meses.length) updateSnapshot(meses[idx]);
+  };
+  if (prev) prev.addEventListener("click", () => passo(-1));
+  if (next) next.addEventListener("click", () => passo(1));
   document.querySelectorAll(".month-pill").forEach((pill) => {
     pill.addEventListener("click", () => updateSnapshot(pill.dataset.miso));
   });
