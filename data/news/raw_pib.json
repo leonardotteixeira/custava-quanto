@@ -155,5 +155,60 @@
       "PIB"
     ],
     "tema": "pib"
+  },
+  {
+    "titulo": "Economia brasileira cresce 1,1% no 1º trimestre",
+    "veiculo": "Agência Brasil",
+    "data": "2026-05-29",
+    "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/economia-brasileira-cresce-11-no-1o-trimestre",
+    "resumo": "O PIB cresceu 1,1% no 1º trimestre de 2026 contra o trimestre anterior (série com ajuste sazonal), segundo o IBGE; em 12 meses a alta foi de 2,0%.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib"
+  },
+  {
+    "titulo": "PIB cresce 1,1% no primeiro trimestre de 2026",
+    "veiculo": "IBGE — Agência de Notícias",
+    "data": "2026-05-29",
+    "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46917-pib-cresce-1-1-no-primeiro-trimestre-de-2026",
+    "resumo": "Release oficial do IBGE: PIB de R$ 3,3 trilhões no 1º trimestre de 2026, alta de 1,1% contra o trimestre anterior (agropecuária +2,0%, indústria +1,0%, serviços +0,5%) e de 1,8% contra o 1º trimestre de 2025.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib",
+    "confirmado": true
+  },
+  {
+    "titulo": "PIB cresce 2,3% em 2025",
+    "veiculo": "IBGE — Agência de Notícias",
+    "data": "2026-03-03",
+    "url": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/45969-pib-cresce-2-3-em-2025",
+    "resumo": "Notícia do IBGE sobre o resultado anual de 2025: alta de 2,3% do PIB.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib",
+    "confirmado": true
+  },
+  {
+    "titulo": "PIB cresce 0,5% no segundo trimestre de 2026",
+    "veiculo": "IBGE — Agência de Notícias",
+    "data": "2026-09-01",
+    "url": "https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/47902-pib-cresce-0-5-no-segundo-trimestre-de-2026",
+    "resumo": "Release oficial do IBGE: PIB de R$ 3,4 trilhões no 2º trimestre de 2026, alta de 0,5% contra o trimestre anterior (agropecuária +2,8%, serviços +0,2%, indústria +0,1%) e de 2,0% contra o 2º trimestre de 2025.",
+    "imagem": null,
+    "credito_imagem": null,
+    "produtos": [
+      "PIB"
+    ],
+    "tema": "pib",
+    "confirmado": true
   }
 ]

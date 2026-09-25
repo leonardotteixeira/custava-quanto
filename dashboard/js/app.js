@@ -189,8 +189,8 @@ function renderHero() {
   // Fundo curado: só os indicadores de referência (cada um na SUA frequência) + a história
   // selecionada, que pode ser qualquer uma. Nada é preenchido entre observações.
   const HERO_SET = ["GASOLINA", "ETANOL", "DOLAR", "SELIC", "IPCA", "IBOVESPA", "PIB"];
-  const heroCodes = [...new Set([...HERO_SET, S.product])].filter((c) => D.produtos[c]);
-  const heroSeries = heroCodes.map((c) => ({ key: c, rows: heroRows(P(c)), maxGap: cadenceGap(P(c)) }));
+  // TODAS as séries entram (qualquer uma pode ser destacada); só as do fundo curado ficam visíveis o tempo todo.
+  const heroSeries = PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: heroRows(P(c)), maxGap: cadenceGap(P(c)), bg: HERO_SET.includes(c) }));
   const Fh = D.fotografia_mensal;
   heroSeries.push({ key: "SALARIO_MINIMO", rows: MONTHS.filter((m) => !isNil(Fh[m]?.salario_minimo)).map((m) => ({ iso: m, v: Fh[m].salario_minimo })), maxGap: 1 });
   heroChart = texture($("#hero-texture"), heroSeries, { cutoff: PERIODO_CORTE, highlight: S.product, window: [monthIdx(MONTHS[0]), monthIdx(MONTHS[MONTHS.length - 1])] });
@@ -579,7 +579,7 @@ function renderPrice(animate = true) {
     // PIB é anual: o release/reportagem de março de Y+1 fala do resultado de Y
     const r = pc.k === "pib" ? rows.find((q) => q.ano === anoDaNoticia(n) && !isNil(get(q))) : linhaDoMes(prod, n.data, get);
     return r ? { ...n, n: i + 1, iso: r.ano_mes, v: get(r) } : null;
-  }).filter(Boolean).map((n, i) => ({ ...n, n: i + 1 }));
+  }).filter(Boolean).filter((n, i, a) => pc.k !== "pib" || a.findIndex((q) => q.iso === n.iso) === i).map((n, i) => ({ ...n, n: i + 1 }));
   if (!nl.some((n) => n.id === S.newsId)) S.newsId = (nl.find((n) => mesKey(n.iso) === mesKey(hi.ano_mes)) || nl[nl.length - 1])?.id ?? null;
 
   const evs = eventsFor(prod);
@@ -595,7 +595,7 @@ function renderPrice(animate = true) {
       ...(ref ? [{ rows: rows.map((r) => ({ iso: r.ano_mes, v: ref(r) })), cls: "c-line c-line--ref", maxGap: cadenceGap(prod) }] : []),
     ],
     cutoff: PERIODO_CORTE, bands: "full", includeZero: true, headroom: 0.18, yFmt, animate,
-    ...(pc.k === "pib" ? { m0: monthIdx(PIB_JANELA_INICIO), m1: monthIdx(last.ano_mes) } : {}),
+    ...(pc.k === "pib" ? { m0: monthIdx(PIB_JANELA_INICIO), m1: monthIdx(last.ano_mes) + 11 } : {}),
     annotations: anns.map((a) => ({ iso: a.r.ano_mes, v: get(a.r), text: vFmt(get(a.r)), sub: a.sub, place: a.place, signal: a.signal })),
     events: pc.k === "pib" ? [] : evs,
     onSelect: pc.k === "pib" ? (mi) => { const r = rows.find((q) => monthIdx(q.ano_mes) === mi && !isNil(get(q))); if (r) { S.pibYear = r.ano; renderPrice(false); renderPibExtra(prod, { S, NEWS, clip }); } } : undefined,
