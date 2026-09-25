@@ -178,7 +178,7 @@ function labelBaseToggle() {
 function renderHero() {
   const first = MONTHS[0], last = MONTHS[MONTHS.length - 1];
   const veiculos = new Set(NEWS.map((n) => n.veiculo)).size;
-  $("#hero-dateline").innerHTML = ["Investigação em dados", "Brasil", `${mesAno(first)} → ${mesAno(last)}`, `Dados até ${mesAnoLongo(last)}`].map((s) => `<span>${s}</span>`).join("");
+  $("#hero-dateline").innerHTML = ["Investigação em dados", "Brasil", `${mesAno(first)} → ${mesAno(last)}`].map((s) => `<span>${s}</span>`).join("");
   $("#hero-facts").innerHTML = [
     `<span><b>${PRODUCT_ORDER.filter((c) => D.produtos[c]).length}</b> séries</span>`,
     `<span><b>${MONTHS.length}</b> meses</span>`,
@@ -279,11 +279,10 @@ function fitNameplate() {
 // 01 · ÍNDICE
 // =====================================================================
 function renderTOC() {
-  const html = FAMS.map((f) => {
-    const codes = PRODUCT_ORDER.filter((c) => D.produtos[c] && familia(P(c)) === f.key);
-    return `<div class="toc-col"><h3><span>${f.title}</span><span class="mono">${f.unit}</span></h3><ol class="toc-list">${codes.map(tocRow).join("")}</ol></div>`;
-  }).join("");
-  $("#toc").innerHTML = html;
+  const cols = FAMS.map((f) => ({ f, codes: PRODUCT_ORDER.filter((c) => D.produtos[c] && familia(P(c)) === f.key) })).filter((c) => c.codes.length);
+  const toc = $("#toc");
+  toc.style.setProperty("--toc-n", cols.length);
+  toc.innerHTML = cols.map(({ f, codes }) => `<div class="toc-col"><h3><span>${f.title}</span><span class="mono">${f.unit}</span></h3><ol class="toc-list">${codes.map(tocRow).join("")}</ol></div>`).join("");
   $("#toc-note").textContent = `Variação entre o ponto de partida escolhido (${S.base === "troca" ? `${mesAno(PERIODOS.trocaGoverno)}, último dado antes da troca de governo` : "o primeiro dado de cada série"}) e o último dado disponível. Dólar, Selic e Ibovespa usam o dado diário (com a data real de cada ponto); os demais, o mês. Taxas (Selic, inflação, PIB) variam em pontos percentuais. A série de inflação em 12 meses começa em jan/2020. Alimentos são índice de preço, não valor em reais. O PIB é anual, não mensal.`;
 }
 function tocRow(code) {

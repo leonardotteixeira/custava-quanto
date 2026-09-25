@@ -261,7 +261,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 
 /* ---------------------------------------------------------------- 01 índice */
 .index-sec { padding-bottom: clamp(40px, 5vw, 72px); }
-.toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 48px); }
+.toc { display: grid; grid-template-columns: repeat(var(--toc-n, 3), 1fr); gap: clamp(24px, 3vw, 48px); }
 .toc-col h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0 12px; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--line); }
 .toc-col h3 span:first-child { font-family: var(--sans); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: 0.02em; font-size: 1.05rem; }
 .toc-col h3 .mono { color: var(--fg-3); font-size: 0.66rem; }
@@ -551,7 +551,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .inst { padding: 16px 16px 18px 0; border-bottom: 1px solid var(--line); min-width: 0; }
 .inst:not(:nth-child(4n)) { border-right: 1px solid var(--line); }
 .inst:not(:nth-child(4n + 1)) { padding-left: 16px; }
-.inst-label { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-3); display: block; }
+.inst-label { font-family: var(--mono); font-size: 0.66rem; line-height: 1.45; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-3); display: block; min-height: 2.9em; }
 .inst-val { display: block; margin-top: 8px; font-weight: 800; font-variation-settings: "wdth" 72; font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
 .inst-val .suf { font-size: 0.45em; font-weight: 600; color: var(--fg-2); margin-left: 0.15em; }
 .inst-now { display: block; margin-top: 6px; font-size: 0.78rem; color: var(--fg-3); }
@@ -635,8 +635,12 @@ code { font-family: var(--mono); font-size: 0.88em; }
 /* ---------------------------------------------------------------- 08 método */
 .method-sec { background: var(--paper); border-top: 1px solid var(--rule); }
 .updated { color: var(--fg-3); text-transform: none; letter-spacing: 0; font-size: 0.76rem; line-height: 1.6; }
-.notebook { columns: 2; column-gap: clamp(24px, 3vw, 48px); column-rule: 1px solid var(--line-2); border-top: 3px solid var(--fg); }
-.nb { break-inside: avoid; }
+/* grid em vez de column-count: cada LINHA (não cada coluna inteira) se
+   ajusta à sua própria altura — evita que um par aberto e longo (A, B)
+   deixe uma coluna inteira desequilibrada frente aos itens fechados
+   (C–F), que o balanceamento automático de `columns` não resolve bem. */
+.notebook { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(24px, 3vw, 48px); border-top: 3px solid var(--fg); }
+.notebook .nb:nth-child(odd) { border-right: 1px solid var(--line-2); }
 .nb { border-bottom: 1px solid var(--line); }
 .nb[open] { border-bottom-color: var(--fg); }
 .nb summary { cursor: pointer; list-style: none; display: flex; gap: 14px; align-items: baseline; padding: 16px 0; font-family: var(--serif); font-size: 1.45rem; font-weight: 500; letter-spacing: -0.01em; }
@@ -755,7 +759,8 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .inst { padding: 14px 12px 16px 0 !important; border-right: 0 !important; }
   .inst:nth-child(2n + 1) { border-right: 1px solid var(--line) !important; }
   .inst:nth-child(2n) { padding-left: 14px !important; }
-  .notebook { columns: 1; }
+  .notebook { grid-template-columns: 1fr; }
+  .notebook .nb:nth-child(odd) { border-right: 0; }
   .ay { grid-template-columns: 1fr; gap: 18px; }
   .ay-side, .ay-lead, .ay-rest, .ay-empty { grid-column: 1; }
   .ay-side { position: static; display: grid; grid-template-columns: auto 1fr; gap: 0 18px; align-items: end; }
