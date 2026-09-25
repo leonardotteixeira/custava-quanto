@@ -110,7 +110,7 @@ function linhaDoMes(prod, iso, get) {
 }
 function clip(n, { lead = false, sum = true, value = "" } = {}) {
   const img = n.imagem
-    ? `<figure class="clip-fig"><img src="${esc(n.imagem)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('figure').remove()"><figcaption>Foto: ${esc(n.credito_imagem || n.veiculo)}</figcaption></figure>`
+    ? `<figure class="clip-fig"${n.imagem_foco ? ` style="--foco:${esc(n.imagem_foco)}"` : ""}><img src="${esc(n.imagem)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('figure').remove()"><figcaption>Foto: ${esc(n.credito_imagem || n.veiculo)}</figcaption></figure>`
     : "";
   // matérias do tema "guerra no Irã": sempre com a informação de contexto, para
   // ninguém ler a manchete sem saber a que ela se refere
@@ -368,9 +368,10 @@ function renderStory() {
     : `${what} entre ${mA} e ${mB}.`;
 
   // era → agora
-  $("#tn-then-when").textContent = daily ? dataCurta(pa.iso) : mesAnoLongo(a.ano_mes);
-  $("#tn-now-when").textContent = daily ? dataCurta(pb.iso) : mesAnoLongo(b.ano_mes);
-  const grain = daily ? "dado" : "mês";
+  // PIB é anual: o rótulo é o ANO (o resultado do ano), não um mês
+  $("#tn-then-when").textContent = k === "pib" ? `Resultado de ${pointLabel(pa)}` : daily ? dataCurta(pa.iso) : mesAnoLongo(a.ano_mes);
+  $("#tn-now-when").textContent = k === "pib" ? `Resultado de ${pointLabel(pb)}` : daily ? dataCurta(pb.iso) : mesAnoLongo(b.ano_mes);
+  const grain = daily ? "dado" : k === "pib" ? "ano" : "mês";
   const tag = (row, isNow) => `${pmark(row.periodo)}${isNow ? "último dado · " : S.base === "troca" ? `último ${grain} antes da troca · ` : "início da série · "}governo ${row.periodo}`;
   $("#tn-then-tag").innerHTML = tag(a, false);
   $("#tn-now-tag").innerHTML = tag(b, true);
@@ -388,8 +389,8 @@ function renderStory() {
   const refPos = vRef ? (vRef / max) * 100 : null;
   const refCls = refPos > 70 ? "flip" : refPos < 18 ? "flip0" : "";
   $("#tn-bars").innerHTML = `
-    <div class="tnb"><span>${mesAnoCurto(a.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVa / max).toFixed(4)})"></div></div></div>
-    <div class="tnb tnb--now"><span>${mesAnoCurto(b.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVb / max).toFixed(4)})"></div>
+    <div class="tnb"><span>${k === "pib" ? pointLabel(pa) : mesAnoCurto(a.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVa / max).toFixed(4)})"></div></div></div>
+    <div class="tnb tnb--now"><span>${k === "pib" ? pointLabel(pb) : mesAnoCurto(b.ano_mes)}</span><div class="tnb-track"><div class="tnb-fill" style="transform:scaleX(${(heroVb / max).toFixed(4)})"></div>
       ${vRef ? `<i class="tnb-ref" style="left:${refPos.toFixed(2)}%"></i><span class="tnb-ref-label ${refCls}" style="left:${refPos.toFixed(2)}%"><b>${heroFmtPlain(vRef)}</b> se tivesse acompanhado a inflação</span>` : ""}
     </div></div>`;
   $("#tn-bars").style.marginBottom = vRef ? "28px" : "";

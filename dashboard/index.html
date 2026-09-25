@@ -152,12 +152,12 @@
           </div>
         </div>
 
-        <aside class="story-side">
+        <div class="story-side">
           <p class="story-lede" id="story-lede">—</p>
           <dl class="facts" id="story-facts"></dl>
           <p class="live mono" id="story-live" hidden></p>
           <p class="story-note" id="story-note" hidden></p>
-        </aside>
+        </div>
       </div>
     </div>
   </section>
@@ -197,12 +197,12 @@
           </details>
         </figure>
 
-        <aside class="newsrail" id="newsrail" aria-labelledby="newsrail-title">
+        <div role="group" class="newsrail" id="newsrail" aria-labelledby="newsrail-title">
           <p class="nr-kicker mono" id="newsrail-title">O que se noticiava</p>
           <div class="nr-feature" id="nr-feature" aria-live="polite"></div>
           <ol class="nr-list" id="nr-list" aria-label="Notícias marcadas no gráfico"></ol>
           <p class="nr-disclaimer"><strong>Contexto, não causa.</strong> Matérias reais, com link para a publicação original. Mostram o que se noticiava naquele momento; estar perto de um ponto do gráfico não explica o número.</p>
-        </aside>
+        </div>
       </div>
     </div>
   </section>
@@ -215,7 +215,7 @@
         <p class="pib-hint mono" id="pib-year-hint"></p>
         <article class="year-card" id="pib-year-card" aria-live="polite"></article>
       </div>
-      <aside class="pib-ref" id="pib-ref" aria-label="Uma referência histórica: PIB de 2010"></aside>
+      <div role="group" class="pib-ref" id="pib-ref" aria-label="Uma referência histórica: PIB de 2010"></div>
       <div class="pib-quarter">
         <h3 class="pib-h">Movimento trimestre a trimestre</h3>
         <p class="pib-sub mono" id="pib-quarter-sub"></p>
@@ -308,11 +308,11 @@
 
       <div class="tm-grid">
         <div class="tm-instruments" id="tm-instruments" aria-live="polite"></div>
-        <aside class="tm-news" aria-labelledby="tm-news-title">
+        <div role="group" class="tm-news" aria-labelledby="tm-news-title">
           <p class="tm-news-kicker mono" id="tm-news-title">Naquele momento, no noticiário</p>
           <p class="tm-caveat"><strong>Contexto, não causa.</strong> Matérias publicadas perto do mês escolhido. Mostram o que se noticiava, não explicam os números ao lado.</p>
           <div id="tm-news"></div>
-        </aside>
+        </div>
       </div>
       <p class="tm-foot mono" id="tm-foot"></p>
     </div>

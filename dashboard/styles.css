@@ -428,8 +428,9 @@ code { font-family: var(--mono); font-size: 0.88em; }
 /* clip (matéria) */
 .clip { display: grid; gap: 8px; }
 .clip-fig { position: relative; overflow: hidden; background: var(--bg-2); aspect-ratio: 2 / 1; }
-.clip-fig img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.02); transition: transform 0.6s var(--ease), filter 0.4s; }
-.clip:hover .clip-fig img { transform: scale(1.025); filter: none; }
+/* foco: assuntos de foto costumam ficar no terço superior; `imagem_foco` (data) pode ajustar foto a foto */
+.clip-fig img { width: 100%; height: 100%; object-fit: cover; object-position: var(--foco, 50% 35%); filter: saturate(0.85); transition: filter 0.4s; }
+.clip:hover .clip-fig img { filter: none; }
 .clip-fig figcaption { position: absolute; right: 0; bottom: 0; background: rgba(16, 26, 29, 0.78); color: var(--on-night-2); font-family: var(--mono); font-size: 0.6rem; padding: 3px 6px; letter-spacing: 0.02em; }
 .clip-meta { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-3); }
 .clip-meta b { color: var(--fg); font-weight: 500; }

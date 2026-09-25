@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T17:38:17+00:00",
+  "gerado_em": "2026-09-25T18:05:44+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -337,7 +337,7 @@
       "produtos": [
         "Arroz"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14118_FE388DD8AA020ABE.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14118_FE388DD8AA020ABE.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -401,7 +401,7 @@
         "Óleo de soja",
         "Arroz"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14181_436739C0DA426C58-10.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/14181_436739C0DA426C58-10.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -589,7 +589,7 @@
       "produtos": [
         "GLP"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/10/Gas-de-Cozinha.jpg?w=860&h=570&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/10/Gas-de-Cozinha.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -636,7 +636,7 @@
         "GASOLINA",
         "combustiveis"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/03/GettyImages-88583608.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/03/GettyImages-88583608.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -794,7 +794,7 @@
       "produtos": [
         "DIESEL S10"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/07/GettyImages-1277539916-e1752005688974.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/07/GettyImages-1277539916-e1752005688974.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -967,7 +967,7 @@
         "Feijão carioca",
         "Arroz"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/12457_33A6EB3D322430F7.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/06/12457_33A6EB3D322430F7.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -984,7 +984,7 @@
         "Óleo de soja",
         "Carne bovina (patinho)"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/11/strawberry-gd825a39ef_1920.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2021/11/strawberry-gd825a39ef_1920.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1000,7 +1000,7 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/08/transporte_publico_brasilia_03.jpg?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/08/transporte_publico_brasilia_03.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
@@ -1466,6 +1466,24 @@
       "id": "n093"
     },
     {
+      "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
+      "veiculo": "Correio Braziliense",
+      "data": "2026-04-07",
+      "url": "https://www.correiobraziliense.com.br/aqui/2026/04/07/conflito-com-ira-como-o-preco-da-gasolina-no-brasil-e-afetado/",
+      "resumo": "Os ataques aéreos dos EUA e de Israel ao Irã em fevereiro de 2026, e a consequente resposta iraniana com",
+      "produtos": [
+        "GASOLINA",
+        "combustiveis"
+      ],
+      "imagem": "https://www.correiobraziliense.com.br/aqui/wp-content/uploads/2026/04/gasolina_1775595217731.jpg",
+      "credito_imagem": "Reprodução · Correio Braziliense",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "tema": "ormuz-ira",
+      "imagem_sem_licenca": true,
+      "id": "n094"
+    },
+    {
       "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
       "veiculo": "Agência Brasil",
       "data": "2026-04-08",
@@ -1478,7 +1496,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n094"
+      "id": "n095"
     },
     {
       "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
@@ -1493,7 +1511,7 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n095"
+      "id": "n096"
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em mais de dois anos",
@@ -1509,7 +1527,7 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n096"
+      "id": "n097"
     },
     {
       "titulo": "Banco Central reduz juros básicos para 14,5% ao ano",
@@ -1524,7 +1542,7 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n097"
+      "id": "n098"
     },
     {
       "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
@@ -1539,7 +1557,7 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n098"
+      "id": "n099"
     },
     {
       "titulo": "Economia brasileira cresce 1,1% no 1º trimestre",
@@ -1555,7 +1573,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n099"
+      "id": "n100"
     },
     {
       "titulo": "PIB cresce 1,1% no primeiro trimestre de 2026",
@@ -1570,7 +1588,7 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n100"
+      "id": "n101"
     },
     {
       "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
@@ -1585,7 +1603,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n101"
+      "id": "n102"
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -1596,12 +1614,12 @@
       "produtos": [
         "IPCA"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/06/visao-plana-de-alimentos-saudaveis-que-aumentam-imunidade.webp?w=1200&h=630&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/06/visao-plana-de-alimentos-saudaveis-que-aumentam-imunidade.webp?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n102"
+      "id": "n103"
     },
     {
       "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
@@ -1618,7 +1636,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n103"
+      "id": "n104"
     },
     {
       "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
@@ -1632,13 +1650,13 @@
         "IPCA",
         "combustiveis"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=800&h=533&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n104"
+      "id": "n105"
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -1649,12 +1667,12 @@
       "produtos": [
         "Feijão carioca"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/01/carioca.jpg?w=640&h=427&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/01/carioca.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n105"
+      "id": "n106"
     },
     {
       "titulo": "PIB do Brasil cresce 0,5% no segundo trimestre, mostra IBGE",
@@ -1670,7 +1688,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n106"
+      "id": "n107"
     },
     {
       "titulo": "PIB cresce 0,5% no segundo trimestre de 2026",
@@ -1685,7 +1703,7 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n107"
+      "id": "n108"
     },
     {
       "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
@@ -1703,7 +1721,7 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n108"
+      "id": "n109"
     },
     {
       "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
@@ -1716,13 +1734,13 @@
         "DIESEL",
         "combustiveis"
       ],
-      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=800&h=533&crop=1",
+      "imagem": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportAgribusinessNews/tagreuters.com2026binary_LYNXMPEM4Q23H-BASEIMAGE.jpg?w=1600",
       "credito_imagem": "Reprodução · CNN Brasil",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n109"
+      "id": "n110"
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -1737,7 +1755,7 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n110"
+      "id": "n111"
     }
   ]
 }
