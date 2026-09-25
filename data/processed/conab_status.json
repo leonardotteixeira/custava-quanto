@@ -2,7 +2,7 @@
   "fonte": "CONAB — Sistema de Informações de Mercado (SIM), Preços Agropecuários",
   "fonte_url": "https://portaldeinformacoes.conab.gov.br/precos-agropecuarios.html",
   "pagina_downloads": "https://portaldeinformacoes.conab.gov.br/download-arquivos.html",
-  "tentativa_em": "2026-09-25T15:19+00:00",
+  "tentativa_em": "2026-09-25T15:39+00:00",
   "ok": false,
   "mensagem": "ProxyError: HTTPSConnectionPool(host='portaldeinformacoes.conab.gov.br', port=443): Max retries exceeded with url: /download-arquivos.html (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))",
   "ultimo_sucesso_em": null
