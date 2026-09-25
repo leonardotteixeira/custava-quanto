@@ -1,0 +1,18 @@
+Produto;Nível de Comercialização;UF;Data;Preço (R$)
+Arroz Tipo 1;Varejo;SP;12/2022;4,32
+Arroz Tipo 1;Varejo;RS;12/2022;4,10
+Arroz Tipo 1;Varejo;MG;12/2022;4,55
+Arroz Tipo 1;Varejo;SP;08/2026;5,90
+Arroz Tipo 1;Varejo;RS;08/2026;5,60
+Arroz Tipo 1;Varejo;MG;08/2026;6,05
+Arroz Tipo 2;Varejo;SP;12/2022;99,99
+Arroz Tipo 1;Atacado;SP;12/2022;3,10
+Feijão Cores Tipo 1;Varejo;SP;12/2022;7,20
+Feijão Cores Tipo 1;Varejo;RS;12/2022;6,95
+Feijão Cores Tipo 1;Varejo;MG;12/2022;7,45
+Feijão Cores Tipo 1;Varejo;SP;08/2026;8,10
+Feijão Cores Tipo 1;Varejo;RS;08/2026;7,85
+Feijão Cores Tipo 1;Varejo;MG;08/2026;8,30
+Feijão Cores Tipo 2;Varejo;SP;12/2022;1,00
+Feijão Preto Tipo 1;Varejo;SP;12/2022;7,00
+Milho;Varejo;SP;12/2022;1,80

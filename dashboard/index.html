@@ -137,6 +137,11 @@
             </div>
           </div>
           <div class="tn-bars" id="tn-bars" aria-hidden="true"></div>
+          <div class="story-secondary" id="story-secondary" hidden>
+            <span class="ss-kicker mono" id="ss-kicker">—</span>
+            <span class="ss-val tnum" id="ss-val">—</span>
+            <span class="ss-src mono" id="ss-src">—</span>
+          </div>
         </div>
 
         <aside class="story-side">
@@ -165,6 +170,7 @@
           <button type="button" data-metric="nominal" aria-pressed="true">Na época</button>
           <button type="button" data-metric="real" aria-pressed="false">Corrigido pela inflação</button>
           <button type="button" data-metric="pct_sm" aria-pressed="false">% do salário mínimo</button>
+          <button type="button" data-metric="conab" aria-pressed="false">Preço observado (R$/kg)</button>
         </div>
         <p class="metric-help" id="metric-help"></p>
       </div>
@@ -354,6 +360,8 @@
               <dd><a href="https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-estatisticas-historicas.htm" target="_blank" rel="noopener">Estatísticas históricas públicas do índice</a>. Fechamento do último pregão de cada mês nos gráficos; nas comparações, o último pregão de dez/2022 e o último pregão disponível. Não é tempo real garantido.</dd>
               <dt>Petróleo — FRED (St. Louis Fed)</dt>
               <dd><a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">Brent</a>, dólares por barril, convertido para reais pelo câmbio médio do mês.</dd>
+              <dt>Preço observado de arroz e feijão — CONAB</dt>
+              <dd>Sistema de Informações de Mercado, dataset "Preços Agropecuários", nível <strong>Varejo</strong> — Arroz Tipo 1 e Feijão Cores Tipo 1, R$/kg, por UF. Somado ao índice IBGE (que continua existindo para os dois), nunca no lugar dele. Auditoria completa das fontes avaliadas para preço de alimento, incluindo por que carne, leite, óleo de soja e café continuam só com índice, em <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_PRECOS_ALIMENTOS.md" target="_blank" rel="noopener">docs/AUDITORIA_PRECOS_ALIMENTOS.md</a>.</dd>
             </dl>
           </div>
         </details>
@@ -368,6 +376,8 @@
               <dd>O preço de cada mês convertido para reais do mês mais recente, usando o IPCA geral. Responde: quanto isso custaria em dinheiro de hoje?</dd>
               <dt>% do salário mínimo</dt>
               <dd>Preço dividido pelo salário mínimo vigente naquele mês — não por um valor fixo atual.</dd>
+              <dt>Preço observado × índice encadeado (arroz e feijão)</dt>
+              <dd>São duas contas diferentes, nunca misturadas num só número. O <strong>preço observado</strong> (R$/kg) vem da CONAB, nível Varejo, e é a média simples entre as UFs que a CONAB pesquisou naquele mês — <strong>uma conta deste projeto</strong>, declarada como tal sempre que aparece; a CONAB não publica um preço nacional oficial para esta série. O <strong>índice de preço</strong> (jan/2019 = 100) vem do IBGE e mostra a variação oficial, não um valor em reais. As duas convivem lado a lado nas histórias de Arroz e Feijão; os outros quatro alimentos (carne, leite, óleo de soja, café) seguem só com o índice — ver Limitações.</dd>
               <dt>Três pontos de referência</dt>
               <dd><strong>Início da série</strong> (jan/2019): primeiro dado histórico; é também a base dos índices de alimentos (jan/2019 = 100). <strong>Troca de governo</strong> (dez/2022): último dado do governo Bolsonaro, ponto de partida padrão de toda comparação entre os dois períodos. <strong>Último dado disponível</strong>: descoberto automaticamente nos dados, sem data escrita no código. Trocar o ponto de partida no Índice para jan/2019 mostra a série completa, mas isso não é uma comparação entre governos.</dd>
               <dt>Variação</dt>
@@ -384,9 +394,10 @@
           <summary><span class="mono">C</span>Limitações</summary>
           <div class="nb-body">
             <ul class="nb-bullets">
-              <li>Nada aqui prova causa. Proximidade no tempo não é explicação.</li>
+              <li><strong>Proximidade temporal entre preço, notícia ou evento não implica relação de causa e efeito.</strong></li>
               <li>Os dois períodos têm durações diferentes: o primeiro tem 48 meses; o segundo ainda está em curso. Por isso existem os recortes de mesma duração.</li>
-              <li>Alimentos aparecem como <strong>índice</strong>, não em reais: o IBGE não publica preço médio nacional por item para todo o período.</li>
+              <li>Alimentos aparecem como <strong>índice</strong> (IBGE): o IBGE não publica preço médio nacional por item para todo o período. Arroz e feijão também têm um preço observado em R$/kg (CONAB, varejo) — uma média entre UFs calculada por este projeto, não um número nacional oficial; carne, leite, óleo de soja e café seguem só com índice, porque a fonte de preço mais próxima encontrada mede o produtor ou o atacado, não a prateleira (ver docs/AUDITORIA_PRECOS_ALIMENTOS.md).</li>
+              <li>"Feijão Cores Tipo 1" (nome da série da CONAB) pode não ser exatamente o mesmo produto que "Feijão carioca" (subitem do índice IBGE) — carioca é a variedade dominante da categoria "cores", mas a CONAB pode agregar outras cores junto. Os dois números aparecem lado a lado com o nome de cada fonte, nunca como se fossem o mesmo produto.</li>
               <li>"Carne" é o corte patinho, referência do IBGE; não é a média de todos os cortes.</li>
               <li id="lim-anp">A ANP não tem dado de alguns meses — por isso as linhas de combustíveis ficam interrompidas neles.</li>
               <li>Tudo é média nacional. Os dados de combustível têm quebra regional, que esta versão não mostra.</li>
@@ -406,6 +417,8 @@
               <dt>Ibovespa</dt><dd>Principal índice da bolsa brasileira. É medido em pontos, não em reais.</dd>
               <dt>Brent</dt><dd>Referência internacional do preço do barril de petróleo.</dd>
               <dt>Índice (base 100)</dt><dd>Mostra variação, não preço. 150 quer dizer 50% acima do ponto de referência.</dd>
+              <dt>Nível de comercialização (CONAB)</dt><dd>Em que ponto da cadeia o preço foi pesquisado: produtor, atacado ou varejo. Este projeto usa só <strong>varejo</strong> — o preço pago pelo consumidor final — porque é o único comparável com o que a pessoa paga na prateleira.</dd>
+              <dt>Preço nacional oficial × média calculada</dt><dd>A CONAB pesquisa preço por UF, não publica um número "Brasil" para esta série. Quando este projeto mostra um valor único, é a <strong>média simples entre as UFs pesquisadas naquele mês</strong> — sempre rotulada assim, nunca apresentada como um dado oficial da CONAB.</dd>
             </dl>
           </div>
         </details>

@@ -140,6 +140,12 @@ export const lastValid = (rows, get) => { for (let i = rows.length - 1; i >= 0; 
 export const firstValid = (rows, get) => rows.find((r) => !isNil(get(r))) || null;
 export const rowAt = (rows, iso) => rows.find((r) => mesKey(r.ano_mes) === mesKey(iso)) || null;
 
+// Item de cesta básica com preço observado (R$/kg) da CONAB somado ao índice
+// IBGE — ver scripts/download_conab.py e docs/AUDITORIA_PRECOS_ALIMENTOS.md.
+// Ausente para a maioria dos itens: nesse caso o produto segue só com o
+// índice, como sempre foi.
+export const temPrecoAbsoluto = (prod) => !!prod.preco_absoluto;
+
 // Ponto de partida das comparações: "troca" = último mês do governo
 // Bolsonaro com dado (dez/2022); "inicio" = primeiro mês da série. O mês da
 // troca vem de PERIODO_CORTE, nunca de uma data escrita à mão.
