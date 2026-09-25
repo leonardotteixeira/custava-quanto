@@ -184,7 +184,7 @@ function renderHero() {
     `<span>ANP · IBGE · Banco Central · B3 · FRED</span>`,
   ].join("");
 
-  heroChart = texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: nativeRows(P(c)), maxGap: cadenceGap(P(c)) })), { cutoff: PERIODO_CORTE, highlight: S.product });
+  heroChart = texture($("#hero-texture"), PRODUCT_ORDER.filter((c) => D.produtos[c]).map((c) => ({ key: c, rows: heroRows(P(c)), maxGap: cadenceGap(P(c)) })), { cutoff: PERIODO_CORTE, highlight: S.product, window: [monthIdx(MONTHS[0]), monthIdx(MONTHS[MONTHS.length - 1])] });
   updateHeroHighlight(S.product);
 
   // Faixa "da troca de governo ao último dado": seis indicadores. Dólar,
@@ -223,10 +223,22 @@ function renderHero() {
 // a história selecionada — chamado no load inicial e sempre que S.product
 // muda (ver selectProduct). Reusa a mesma API para qualquer uma das 15
 // séries, nada específico de gasolina.
+// Observações de cada série na textura da abertura, cada uma com a SUA data.
+// Séries mensais: o mês. PIB é anual (um resultado por ano, "acumulado no ano"):
+// o ponto entra no fim do ano a que se refere (dez), não em jan, para não
+// parecer que o resultado de um ano termina onde ele começa. Os dados em si
+// não mudam; é só a posição do ponto no eixo.
+function heroRows(prod) {
+  if (prod.tipo === "pib") return prod.serie_mensal.map((r) => ({ iso: `${r.ano}-12-01`, v: nativeValue(prod)(r) }));
+  return nativeRows(prod);
+}
+
 function updateHeroHighlight(code) {
   heroChart?.setHighlight(code);
   const label = $("#texture-highlight");
   if (label) label.textContent = META[code].curto;
+  const nota = $("#texture-note");
+  if (nota) nota.textContent = P(code).tipo === "pib" ? " O PIB é anual: cada ponto é o resultado do ano, no fim dele; a linha para no último ano fechado." : "";
 }
 
 // O nome ocupa a largura toda. O CSS acerta o tamanho com a fonte da casa;

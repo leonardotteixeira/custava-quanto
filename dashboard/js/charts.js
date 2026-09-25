@@ -354,7 +354,7 @@ export function spark(rows, o = {}) {
 }
 
 // ------------------------------------------------------------ textura da abertura (todas as séries, só o formato)
-export function texture(el, seriesList, { cutoff, highlight }) {
+export function texture(el, seriesList, { cutoff, highlight, window: janela }) {
   // `hl` é mutável (ver setHighlight): a série em destaque é um estado da
   // instância do gráfico, não algo fixo escolhido na criação — qualquer uma
   // das séries de seriesList pode assumir o destaque, a qualquer momento.
@@ -362,8 +362,12 @@ export function texture(el, seriesList, { cutoff, highlight }) {
   const render = () => {
     const W = el.clientWidth, H = el.clientHeight;
     if (!W || !H) return;
+    // Eixo comum: a janela do projeto (jan/2019 → último mês). Séries que
+    // começam antes (PIB desde 1996) só são CORTADAS na borda; séries que
+    // terminam antes (PIB anual) simplesmente param onde a observação real
+    // termina — nada é estendido, repetido ou interpolado.
     const all = seriesList.flatMap((s) => s.rows.map((r) => monthIdx(r.iso)));
-    const m0 = Math.min(...all), m1 = Math.max(...all);
+    const m0 = janela ? janela[0] : Math.min(...all), m1 = janela ? janela[1] : Math.max(...all);
     const X = (m) => ((m - m0) / (m1 - m0)) * W;
     const cutX = X(monthIdx(cutoff) - 0.5);
     const out = [];
@@ -373,13 +377,17 @@ export function texture(el, seriesList, { cutoff, highlight }) {
     // a série em destaque é desenhada por último (fica por cima das outras)
     const ordered = [...seriesList].sort((a, b) => (a.key === hl) - (b.key === hl));
     ordered.forEach((s) => {
-      const vals = s.rows.map((r) => r.v).filter((v) => !isNil(v));
+      // cada série usa as PRÓPRIAS observações (data real de cada uma); a
+      // única operação é ignorar as que caem fora da janela visível.
+      const rows = s.rows.filter((r) => { const m = monthIdx(r.iso); return m >= m0 && m <= m1; });
+      const vals = rows.map((r) => r.v).filter((v) => !isNil(v));
+      if (!vals.length) return;
       const lo = Math.min(...vals), hi = Math.max(...vals);
       const Y = (v) => H - 8 - ((v - lo) / (hi - lo || 1)) * (H - 30);
-      const pts = s.rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
+      const pts = rows.map((r) => ({ m: monthIdx(r.iso), v: r.v }));
       const isHl = s.key === hl;
       segments(pts, s.maxGap ?? 1).forEach((seg) => {
-        out.push(`<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${isHl ? "var(--signal)" : "var(--on-night-2)"}" stroke-width="${isHl ? 2.25 : 1}" stroke-opacity="${isHl ? 1 : 0.26}" stroke-linejoin="round" class="js-draw" pathLength="1"/>`);
+        out.push(`<path d="${pathOf(seg, X, Y)}" fill="none" stroke="${isHl ? "var(--signal)" : "var(--on-night-3)"}" stroke-width="${isHl ? 2.5 : 0.75}" stroke-opacity="${isHl ? 1 : 0.16}" stroke-linejoin="round" class="js-draw" pathLength="1"/>`);
       });
     });
     [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026].forEach((y) => {
