@@ -13,6 +13,7 @@ import {
   lastValid, firstValid, rowAt, rowAtYear, cadenceGap, baseRow, temPrecoAbsoluto, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
+import { initApoie } from "./apoie.js";
 import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel, PIB_JANELA_INICIO } from "./pib.js";
 
 const DATA_URL = "../data/processed/dashboard_data.json";
@@ -159,6 +160,7 @@ async function init() {
   initMachine();
   bindControls();
   bindPibControls(() => P("PIB"));
+  initApoie();
   selectProduct(S.product, { initial: true });
   renderMethod();
   bindScroll();
