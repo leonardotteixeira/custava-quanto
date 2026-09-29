@@ -71,6 +71,7 @@ def main() -> None:
     # Notícias: melhor esforço. Sem internet ou com alguma página fora do ar,
     # o dashboard continua funcionando com o noticias.json já existente.
     rodar("build_news.py", critico=False)
+    rodar("build_analise.py", critico=False)
 
     if falhas_download:
         logger.warning(f"Concluído com falhas não críticas em: {', '.join(falhas_download)}")

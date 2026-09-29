@@ -1,0 +1,595 @@
+{
+  "gerado_em": "2026-09-29T01:13:00+00:00",
+  "periodo_corte": "2023-01-01",
+  "periodos": {
+    "bolsonaro": {
+      "inicio": "2019-01-01",
+      "fim": "2022-12-31",
+      "label": "Jan/2019 – Dez/2022",
+      "em_curso": false
+    },
+    "lula": {
+      "inicio": "2023-01-01",
+      "fim": null,
+      "label": "Jan/2023 – atual",
+      "em_curso": true
+    }
+  },
+  "dimensoes": [
+    {
+      "id": "custo_vida",
+      "titulo": "Custo de vida",
+      "explicacao": "Preços de combustíveis e alimentos pagos pelo consumidor. Combustíveis são preço médio nacional em reais (ANP); alimentos são índice de preço encadeado (IBGE), não o valor em reais de cada item.",
+      "indicadores": [
+        {
+          "codigo": "GASOLINA",
+          "nome": "Gasolina Comum",
+          "tipo": "combustivel",
+          "unidade": "R$/litro",
+          "fonte": "ANP — Levantamento de Preços de Combustíveis",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 4.3189,
+            "valor_fim": 4.9635,
+            "variacao_nominal_pct": 14.93,
+            "variacao_real_pct": -9.17,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 5.0445,
+            "valor_fim": 6.5683,
+            "variacao_nominal_pct": 30.21,
+            "variacao_real_pct": 11.02,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "ETANOL",
+          "nome": "Etanol Hidratado",
+          "tipo": "combustivel",
+          "unidade": "R$/litro",
+          "fonte": "ANP — Levantamento de Preços de Combustíveis",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 3.0745,
+            "valor_fim": 3.9896,
+            "variacao_nominal_pct": 29.76,
+            "variacao_real_pct": 2.56,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 4.0713,
+            "valor_fim": 4.2462,
+            "variacao_nominal_pct": 4.29,
+            "variacao_real_pct": -11.07,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "DIESEL",
+          "nome": "Diesel Comum (S500)",
+          "tipo": "combustivel",
+          "unidade": "R$/litro",
+          "fonte": "ANP — Levantamento de Preços de Combustíveis",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 3.454,
+            "valor_fim": 6.3937,
+            "variacao_nominal_pct": 85.11,
+            "variacao_real_pct": 46.3,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 6.3402,
+            "valor_fim": 6.5985,
+            "variacao_nominal_pct": 4.07,
+            "variacao_real_pct": -11.26,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "DIESEL S10",
+          "nome": "Diesel S10",
+          "tipo": "combustivel",
+          "unidade": "R$/litro",
+          "fonte": "ANP — Levantamento de Preços de Combustíveis",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 3.5586,
+            "valor_fim": 6.5194,
+            "variacao_nominal_pct": 83.2,
+            "variacao_real_pct": 44.8,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 6.4533,
+            "valor_fim": 6.9417,
+            "variacao_nominal_pct": 7.57,
+            "variacao_real_pct": -8.28,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "GLP",
+          "nome": "GLP (botijão 13kg)",
+          "tipo": "combustivel",
+          "unidade": "R$/13kg",
+          "fonte": "ANP — Levantamento de Preços de Combustíveis",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 70.1759,
+            "valor_fim": 109.6475,
+            "variacao_nominal_pct": 56.25,
+            "variacao_real_pct": 23.49,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 109.1001,
+            "valor_fim": 115.3703,
+            "variacao_nominal_pct": 5.75,
+            "variacao_real_pct": -9.84,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Arroz",
+          "nome": "Arroz",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 156.57,
+            "variacao_nominal_pct": 56.57,
+            "variacao_real_pct": 23.75,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 161.47,
+            "valor_fim": 155.6,
+            "variacao_nominal_pct": -3.63,
+            "variacao_real_pct": -17.83,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Feijão carioca",
+          "nome": "Feijão carioca",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 177.68,
+            "variacao_nominal_pct": 77.68,
+            "variacao_real_pct": 40.44,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 187.79,
+            "valor_fim": 190.92,
+            "variacao_nominal_pct": 1.66,
+            "variacao_real_pct": -13.32,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Carne bovina (patinho)",
+          "nome": "Carne bovina (patinho)",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 171.82,
+            "variacao_nominal_pct": 71.82,
+            "variacao_real_pct": 35.8,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 172.32,
+            "valor_fim": 213.49,
+            "variacao_nominal_pct": 23.89,
+            "variacao_real_pct": 5.64,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Leite longa vida",
+          "nome": "Leite longa vida",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 160.15,
+            "variacao_nominal_pct": 60.15,
+            "variacao_real_pct": 26.58,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 159.67,
+            "valor_fim": 194.63,
+            "variacao_nominal_pct": 21.9,
+            "variacao_real_pct": 3.94,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 240.26,
+            "variacao_nominal_pct": 140.26,
+            "variacao_real_pct": 89.89,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 239.15,
+            "valor_fim": 207.16,
+            "variacao_nominal_pct": -13.38,
+            "variacao_real_pct": -26.14,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        },
+        {
+          "codigo": "Café moído",
+          "nome": "Café moído",
+          "tipo": "alimento_indice",
+          "unidade": "índice (base 100 = jan/2019)",
+          "fonte": "IBGE/SIDRA — IPCA por item (índice encadeado)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 100.0,
+            "valor_fim": 170.56,
+            "variacao_nominal_pct": 70.56,
+            "variacao_real_pct": 34.81,
+            "n_meses": 48
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 170.85,
+            "valor_fim": 248.84,
+            "variacao_nominal_pct": 45.65,
+            "variacao_real_pct": 24.18,
+            "n_meses": 44,
+            "periodo_incompleto": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "inflacao",
+      "titulo": "Inflação e preços",
+      "explicacao": "O IPCA mede a variação média de preços de uma cesta de consumo representativa; não é o gasto exato de nenhuma família específica.",
+      "indicadores": [
+        {
+          "codigo": "IPCA",
+          "nome": "Inflação (IPCA)",
+          "tipo": "taxa",
+          "unidade": "% ao ano (12 meses)",
+          "fonte": "IBGE — IPCA (variação acumulada em 12 meses)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2020-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 4.19,
+            "valor_fim": 5.79,
+            "variacao_pp": 1.59,
+            "n_meses": 36
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 5.77,
+            "valor_fim": 4.22,
+            "variacao_pp": -1.55,
+            "n_meses": 44
+          }
+        }
+      ]
+    },
+    {
+      "id": "renda",
+      "titulo": "Renda e poder de compra",
+      "explicacao": "O valor nominal do salário mínimo, e quanto dele um item de custo de vida consumia — uma leitura de poder de compra, não de renda familiar total.",
+      "indicadores": [
+        {
+          "codigo": "SALARIO_MINIMO",
+          "nome": "Salário mínimo",
+          "tipo": "renda",
+          "unidade": "R$ (valor nominal)",
+          "fonte": "Banco Central / Decretos de salário mínimo",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 998.01,
+            "valor_fim": 1211.99,
+            "variacao_nominal_pct": 21.44,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 1301.99,
+            "valor_fim": 1620.99,
+            "variacao_nominal_pct": 24.5,
+            "n_meses": 44
+          }
+        },
+        {
+          "codigo": "SM_GASOLINA",
+          "nome": "Litros de gasolina por salário mínimo",
+          "tipo": "poder_compra",
+          "unidade": "litros",
+          "fonte": "ANP + Banco Central (cálculo do projeto)",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-01",
+            "valor_inicio": 231.08,
+            "valor_fim": 244.18,
+            "variacao_nominal_pct": 5.67,
+            "n_meses": 47
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-08-01",
+            "valor_inicio": 258.1,
+            "valor_fim": 246.79,
+            "variacao_nominal_pct": -4.38,
+            "n_meses": 44
+          }
+        }
+      ]
+    },
+    {
+      "id": "atividade",
+      "titulo": "PIB e atividade econômica",
+      "explicacao": "O PIB mede a variação da atividade econômica agregada (bens e serviços finais produzidos); não é uma medida direta de renda individual, bem-estar ou custo de vida.",
+      "indicadores": [
+        {
+          "codigo": "PIB",
+          "nome": "PIB",
+          "tipo": "pib",
+          "unidade": "% ao ano (variação real, acumulada no ano)",
+          "fonte": "IBGE — Sistema de Contas Nacionais Trimestrais",
+          "frequencia": "mensal",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-01-01",
+            "valor_inicio": 1.2,
+            "valor_fim": 3.0,
+            "variacao_pp": 1.8,
+            "n_meses": 4
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2025-01-01",
+            "valor_inicio": 3.2,
+            "valor_fim": 2.3,
+            "variacao_pp": -0.9,
+            "n_meses": 3,
+            "periodo_incompleto": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "mercados",
+      "titulo": "Mercados e macroeconomia",
+      "explicacao": "Dólar, Selic e Ibovespa são variáveis financeiras. O Ibovespa representa o desempenho de uma carteira teórica de ações negociadas na B3, não o bem-estar da população; o dólar é uma cotação cambial; a Selic é a meta de juros definida pelo Copom.",
+      "indicadores": [
+        {
+          "codigo": "DOLAR",
+          "nome": "Dólar comercial",
+          "tipo": "cambio",
+          "unidade": "R$/US$",
+          "fonte": "Banco Central — PTAX venda",
+          "frequencia": "diário (último pregão/cotação de cada período)",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-02",
+            "fim": "2022-12-30",
+            "valor_inicio": 3.8595,
+            "valor_fim": 5.2177,
+            "variacao_pct": 35.19
+          },
+          "lula": {
+            "inicio": "2023-01-02",
+            "fim": "2026-09-22",
+            "valor_inicio": 5.3436,
+            "valor_fim": 5.1161,
+            "variacao_pct": -4.26
+          }
+        },
+        {
+          "codigo": "SELIC",
+          "nome": "Taxa Selic",
+          "tipo": "taxa",
+          "unidade": "% ao ano",
+          "fonte": "Banco Central — Meta Selic (Copom)",
+          "frequencia": "diário (último pregão/cotação de cada período)",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-01",
+            "fim": "2022-12-31",
+            "valor_inicio": 6.5,
+            "valor_fim": 13.75,
+            "variacao_pp": 7.25
+          },
+          "lula": {
+            "inicio": "2023-01-01",
+            "fim": "2026-09-22",
+            "valor_inicio": 13.75,
+            "valor_fim": 13.75,
+            "variacao_pp": 0.0
+          }
+        },
+        {
+          "codigo": "IBOVESPA",
+          "nome": "Ibovespa",
+          "tipo": "pontos",
+          "unidade": "pontos",
+          "fonte": "B3 — Ibovespa, fechamento",
+          "frequencia": "diário (último pregão/cotação de cada período)",
+          "excluido": false,
+          "bolsonaro": {
+            "inicio": "2019-01-02",
+            "fim": "2022-12-29",
+            "valor_inicio": 91012.32,
+            "valor_fim": 109734.6,
+            "variacao_pct": 20.57
+          },
+          "lula": {
+            "inicio": "2023-01-02",
+            "fim": "2026-09-22",
+            "valor_inicio": 106376.02,
+            "valor_fim": 187422.92,
+            "variacao_pct": 76.19
+          }
+        }
+      ]
+    }
+  ],
+  "contexto_externo": [
+    {
+      "iso": "2020-03-01",
+      "texto": "OMS declara pandemia de covid-19",
+      "fonte": "Organização Mundial da Saúde (declaração pública, 11/03/2020)"
+    },
+    {
+      "iso": "2022-02-01",
+      "texto": "Rússia invade a Ucrânia",
+      "fonte": "Fato amplamente noticiado internacionalmente, fevereiro de 2022"
+    },
+    {
+      "iso": "2022-06-01",
+      "texto": "Lei Complementar 194 limita o ICMS sobre combustíveis",
+      "fonte": "Diário Oficial da União, LC 194/2022"
+    },
+    {
+      "iso": "2023-03-01",
+      "texto": "Volta parcial da cobrança de PIS/Cofins sobre a gasolina",
+      "fonte": "Decreto federal de reoneração de combustíveis, 2023"
+    },
+    {
+      "iso": "2026-02-01",
+      "texto": "EUA e Israel iniciam ofensiva contra o Irã (28/fev)",
+      "fonte": "Cobertura internacional, fevereiro de 2026"
+    }
+  ],
+  "metodologia": {
+    "pesos": [
+      {
+        "id": "custo_vida",
+        "peso": 0.3
+      },
+      {
+        "id": "inflacao",
+        "peso": 0.15
+      },
+      {
+        "id": "renda",
+        "peso": 0.15
+      },
+      {
+        "id": "atividade",
+        "peso": 0.2
+      },
+      {
+        "id": "mercados",
+        "peso": 0.2
+      }
+    ],
+    "pesos_nota": "Os pesos documentam a ordem de apresentação das dimensões (custo de vida primeiro). Eles NÃO são usados para calcular uma pontuação, nota ou vencedor único: esta página nunca soma os indicadores num placar.",
+    "passos": [
+      "Definimos períodos comparáveis: jan/2019-dez/2022 (governo Bolsonaro) e jan/2023-último dado disponível (governo Lula, em curso).",
+      "Usamos as mesmas fontes públicas já citadas em cada indicador do projeto (ANP, IBGE/SIDRA, Banco Central, B3).",
+      "Mantivemos todos os indicadores já calculados pelo projeto; nenhum foi escolhido a dedo para esta página.",
+      "Diferenciamos, sempre que existe a informação, variação nominal e variação real (descontada a inflação).",
+      "Documentamos dados faltantes ou períodos incompletos em vez de estimar o que falta.",
+      "Não convertemos proximidade temporal entre um evento e uma variação em relação de causa.",
+      "Explicamos, em cada dimensão, o que a métrica mede e o que ela não mede.",
+      "Publicamos os números e a fórmula desta página para qualquer pessoa auditar (ver “Audite a análise”)."
+    ]
+  }
+}

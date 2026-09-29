@@ -36,7 +36,8 @@
         <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos</a></li>
         <li><a href="#arquivo" data-ch="arquivo"><i>07</i>Arquivo</a></li>
         <li><a href="#metodo" data-ch="metodo"><i>08</i>Método</a></li>
-        <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>09</i>Apoie</a></li>
+        <li><a href="#analise" data-ch="analise"><i>09</i>Análise</a></li>
+        <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>10</i>Apoie</a></li>
       </ol>
     </nav>
     <a class="mast-product" id="mast-product" href="#indice" aria-label="História atual. Trocar de história">
@@ -525,7 +526,103 @@
   </section>
 
   <!-- =====================================================================
-       09 · APOIE — página de apoio (PIX). Configuração em js/apoie.js (SUPPORT_CONFIG).
+       09 · ANÁLISE — comparação editorial entre períodos de governo.
+       Dados em data/processed/analise.json (scripts/build_analise.py); nada
+       calculado ou digitado aqui — só formatação do que já vem pronto.
+       ===================================================================== -->
+  <section class="chapter analise-sec" id="analise" aria-labelledby="analise-title" data-chapter="analise">
+    <div class="shell">
+      <header class="ch-head ch-head--quiet">
+        <p class="ch-kicker mono"><span>09</span>Análise</p>
+        <h2 class="ch-title" id="analise-title">Dois governos. Os mesmos dados.</h2>
+        <div class="ch-aside">
+          <p class="ch-deck">Uma comparação transparente entre <b id="an-periodos-b">—</b> e <b id="an-periodos-l">—</b>, indicador por indicador, com fonte e método abertos para qualquer pessoa auditar.</p>
+        </div>
+      </header>
+
+      <div id="an-body">
+        <div class="an-position">
+          <p>Esta página não tenta dizer ao leitor em quem votar ou no que acreditar. Ela organiza os indicadores já calculados pelo CUSTAVA QUANTO? numa comparação metodológica entre dois períodos de governo.</p>
+          <p>Os resultados dependem dos indicadores escolhidos, do período observado e da metodologia usada — por isso todos esses elementos ficam disponíveis para auditoria mais abaixo, em <a href="#an-audit-sec">Audite a análise</a> e <a href="#an-metodo-sec">Metodologia completa</a>.</p>
+          <p class="an-causa"><strong>Correlação temporal não é causalidade.</strong> Uma mudança observada durante um governo não significa, por si só, que tenha sido causada por uma decisão daquele governo — isso vale para combustíveis, alimentos, inflação, PIB, câmbio, bolsa e juros.</p>
+        </div>
+
+        <div class="an-periodos-cards" aria-label="Períodos comparados">
+          <div class="an-pcard" data-gov="b"><span class="an-pcard-tag">Governo Bolsonaro</span><span class="an-pcard-when" id="an-pb-when">Jan/2019 – Dez/2022</span><span class="an-pcard-note">Período fechado.</span></div>
+          <div class="an-pcard" data-gov="l"><span class="an-pcard-tag">Governo Lula</span><span class="an-pcard-when" id="an-pl-when">Jan/2023 – último dado disponível</span><span class="an-pcard-note">Período em curso: menos tempo de mandato até aqui do que o comparado.</span></div>
+        </div>
+
+        <div class="an-lente-wrap">
+          <p class="an-lente-label mono">Mude a lente</p>
+          <div class="an-lente" id="an-lente" role="group" aria-label="Filtrar por dimensão"></div>
+        </div>
+
+        <div id="an-dimensoes"></div>
+
+        <section class="an-block" aria-labelledby="an-matriz-title">
+          <h3 id="an-matriz-title" class="an-block-title">Síntese dos indicadores</h3>
+          <p class="an-block-lead">O resultado observado descreve os dados — não julga o governo. Não há nota, pontuação nem vencedor nesta página.</p>
+          <div id="an-matriz"></div>
+        </section>
+
+        <section class="an-block an-block--dark" aria-labelledby="an-sintese-title">
+          <h3 id="an-sintese-title" class="an-block-title">Então, o que os dados mostram?</h3>
+          <div id="an-sintese"></div>
+        </section>
+
+        <section class="an-block" aria-labelledby="an-alt-title">
+          <h3 id="an-alt-title" class="an-block-title">Como a mesma comparação pode ser lida de formas diferentes?</h3>
+          <ul class="an-alt-list">
+            <li>Valores nominais e valores reais (descontada a inflação) podem apontar direções diferentes para o mesmo indicador.</li>
+            <li>O ponto de partida e o ponto de chegada escolhidos mudam a conclusão — por isso este projeto usa sempre dez/2022 → último dado, ou jan/2019 → dez/2022 para o período fechado.</li>
+            <li>Condições externas diferentes afetam os dois períodos: a pandemia de covid-19 concentra-se em 2020-2021 (dentro do período Bolsonaro); o ciclo global de juros altos concentra-se em 2022-2024 (a cavaleiro dos dois períodos).</li>
+            <li>Preços de commodities internacionais (petróleo, grãos) e o câmbio afetam combustíveis e alimentos em ambos os períodos, por canais que não são uma decisão de governo isolada.</li>
+            <li>Indicadores respondem com atrasos diferentes: câmbio e bolsa reagem em dias; PIB e IPCA, em meses.</li>
+          </ul>
+        </section>
+
+        <section class="an-block" aria-labelledby="an-context-title">
+          <h3 id="an-context-title" class="an-block-title">Contexto externo</h3>
+          <p class="an-block-lead">Marcos que se sobrepõem aos dois períodos. Apresentados como contexto, nunca como causa atribuída a um governo.</p>
+          <div id="an-timeline"></div>
+        </section>
+
+        <section class="an-block" aria-labelledby="an-limites-title">
+          <h3 id="an-limites-title" class="an-block-title">O que não pode ser concluído</h3>
+          <ul class="an-limites-list">
+            <li>Esta análise não permite concluir que um único governo foi responsável por todas as mudanças observadas nos indicadores.</li>
+            <li>O PIB não mede todo o bem-estar de uma população; é a variação da atividade econômica agregada.</li>
+            <li>O Ibovespa não mede a prosperidade das famílias; é o desempenho de uma carteira teórica de ações da B3.</li>
+            <li>O IPCA é uma média nacional; não corresponde ao gasto exato de nenhuma família específica.</li>
+            <li>Preços de combustíveis dependem, em parte, de cotações internacionais e do câmbio, não só de decisões domésticas.</li>
+            <li>Os índices de alimentos são variação de preço encadeada (IBGE); não são o preço em reais pago em cada mercado.</li>
+            <li>Movimentos de curto prazo podem ter causas fora da política econômica federal.</li>
+            <li>O período do governo Lula está em curso: qualquer leitura sobre ele é parcial por definição, não um resultado final de mandato.</li>
+          </ul>
+        </section>
+
+        <section class="an-block" id="an-audit-sec" aria-labelledby="an-audit-title">
+          <details class="an-details">
+            <summary id="an-audit-title" class="an-block-title">Audite a análise</summary>
+            <div id="an-audit"></div>
+          </details>
+        </section>
+
+        <section class="an-block" id="an-metodo-sec" aria-labelledby="an-metodo-title">
+          <details class="an-details">
+            <summary id="an-metodo-title" class="an-block-title">Como chegamos a esta análise?</summary>
+            <ol class="an-passos" id="an-passos"></ol>
+            <div class="an-pesos" id="an-pesos"></div>
+          </details>
+        </section>
+
+        <p class="an-fontes">Fontes: as mesmas de cada indicador ao longo do projeto — ANP, IBGE/SIDRA, Banco Central e B3. Ver <a href="#metodo">08 Método</a> para a metodologia completa de cada série.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       10 · APOIE — página de apoio (PIX). Configuração em js/apoie.js (SUPPORT_CONFIG).
        ===================================================================== -->
   <section class="chapter apoie-sec" id="apoie" aria-labelledby="apoie-title" data-chapter="apoie">
     <svg class="apoie-line" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0,150 C90,140 140,90 230,105 S380,170 470,120 S620,40 720,80 S880,150 960,110 S1120,60 1200,84" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>

@@ -724,10 +724,16 @@ def montar_pib() -> dict:
     for ano in anos:
         iso = f"{ano}-01-01"
         extra = anual_por_ano.get(ano, {})
+        # A série do PIB guarda o histórico desde 1996 (ver montar_pib acima), mas o
+        # recorte "Bolsonaro" comparado neste projeto é jan/2019-dez/2022, como em
+        # qualquer outro indicador — anos antes de 2019 não entram em NENHUM dos dois
+        # governos (None), senão o cohort "Bolsonaro" ficaria com 1996-2022 inteiro
+        # contra só 2023-2025 de "Lula", uma comparação de tamanho e período diferentes.
+        periodo = ("Bolsonaro" if pd.Timestamp(iso) < pd.Timestamp(PERIODO_CORTE) else "Lula") if ano >= 2019 else None
         serie.append({
             "ano_mes": iso,
             "ano": ano,
-            "periodo": "Bolsonaro" if pd.Timestamp(iso) < pd.Timestamp(PERIODO_CORTE) else "Lula",
+            "periodo": periodo,
             "taxa_aa": round(taxa_fechada_por_ano[ano], 2) if ano in taxa_fechada_por_ano else None,
             "resultado_anual": ano in taxa_fechada_por_ano,
             "pib_nominal_bilhoes": extra.get("pib_nominal_bilhoes"),

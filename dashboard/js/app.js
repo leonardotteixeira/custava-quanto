@@ -14,6 +14,7 @@ import {
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
 import { initApoie } from "./apoie.js";
+import { initAnalise } from "./analise.js";
 import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel, PIB_JANELA_INICIO } from "./pib.js";
 
 const DATA_URL = "../data/processed/dashboard_data.json";
@@ -161,6 +162,7 @@ async function init() {
   bindControls();
   bindPibControls(() => P("PIB"));
   initApoie();
+  initAnalise();
   selectProduct(S.product, { initial: true });
   renderMethod();
   bindScroll();
@@ -626,7 +628,7 @@ function renderPrice(animate = true) {
   $("#chart-source").textContent = S.metric === "conab" ? `Fonte: CONAB (Sistema de Informações de Mercado, Preços Agropecuários, nível Varejo). ${pc.prod.preco_absoluto.oficial_nacional ? "" : "Média entre UFs calculada pelo projeto, não um número nacional oficial da CONAB. "}IBGE (IPCA, usado para a linha corrigida pela inflação).` : sourceFor(code);
 
   // tabela equivalente (acessível e verificável)
-  const cols = [pc.k === "pib" ? ["Ano", (r) => String(r.ano)] : ["Mês", (r) => mesAno(r.ano_mes)], ["Período", (r) => r.periodo]];
+  const cols = [pc.k === "pib" ? ["Ano", (r) => String(r.ano)] : ["Mês", (r) => mesAno(r.ano_mes)], ["Período", (r) => r.periodo || "antes de 2019"]];
   if (pc.k === "preco") {
     cols.push(["Na época", (r) => fmtBRL(r.preco_nominal)], [`Em reais de ${mesAno(last.ano_mes)}`, (r) => fmtBRL(r.preco_real)]);
     if (prod.tipo === "combustivel") cols.push(["% do salário mínimo", (r) => isNil(r.pct_salario_minimo) ? "—" : `${fmtNum(r.pct_salario_minimo, 2)}%`]);
