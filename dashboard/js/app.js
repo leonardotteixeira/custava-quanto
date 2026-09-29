@@ -151,8 +151,6 @@ async function init() {
   const slug = q.get("historia");
   const found = PRODUCT_ORDER.find((c) => META[c].slug === slug && D.produtos[c]);
   if (found) S.product = found;
-  if (q.get("desde") === "2019") S.base = "inicio";
-  setPressed($("#baseline-toggle"), $(`#baseline-toggle [data-base="${S.base}"]`));
 
   renderHero();
   fitNameplate();
@@ -172,11 +170,11 @@ async function init() {
 // =====================================================================
 // ABERTURA
 // =====================================================================
-// Rótulos do seletor de ponto de partida, vindos dos marcos centralizados.
+// Ponto de partida fixo: o último dado antes da troca de governo. Não há opção
+// "desde jan/2019": essa variação somaria os dois governos num número só. A
+// comparação entre governos fica em Períodos e Análise, com cada um separado.
 function labelBaseToggle() {
-  const t = $('#baseline-toggle [data-base="troca"]'), i = $('#baseline-toggle [data-base="inicio"]');
-  t.innerHTML = `<b>${mesAno(PERIODOS.trocaGoverno)}</b><span>último dado antes da troca de governo</span>`;
-  i.innerHTML = `<b>${mesAno(PERIODOS.serieInicio)}</b><span>início da série histórica</span>`;
+  $("#baseline-fixed").innerHTML = `<span class="mono">Ponto de partida</span> <b>${mesAno(PERIODOS.trocaGoverno)}</b>, último dado antes da troca de governo. Para comparar os dois governos lado a lado, veja <a href="#periodos">Períodos</a> e <a href="#analise">Análise</a>.`;
 }
 
 function renderHero() {
@@ -287,7 +285,7 @@ function renderTOC() {
   const toc = $("#toc");
   toc.style.setProperty("--toc-n", cols.length);
   toc.innerHTML = cols.map(({ f, codes }) => `<div class="toc-col"><h3><span>${f.title}</span><span class="mono">${f.unit}</span></h3><ol class="toc-list">${codes.map(tocRow).join("")}</ol></div>`).join("");
-  $("#toc-note").textContent = `Variação entre o ponto de partida escolhido (${S.base === "troca" ? `${mesAno(PERIODOS.trocaGoverno)}, último dado antes da troca de governo` : "o primeiro dado de cada série"}) e o último dado disponível. Dólar, Selic e Ibovespa usam o dado diário (com a data real de cada ponto); os demais, o mês. Taxas (Selic, inflação, PIB) variam em pontos percentuais. A série de inflação em 12 meses começa em jan/2020. Alimentos são índice de preço, não valor em reais. O PIB é anual, não mensal.`;
+  $("#toc-note").textContent = `Variação entre ${mesAno(PERIODOS.trocaGoverno)} (último dado antes da troca de governo) e o último dado disponível. Dólar, Selic e Ibovespa usam o dado diário (com a data real de cada ponto); os demais, o mês. Taxas (Selic, inflação, PIB) variam em pontos percentuais. A série de inflação em 12 meses começa em jan/2020. Alimentos são índice de preço, não valor em reais. O PIB é anual, não mensal.`;
 }
 function tocRow(code) {
   const prod = P(code), get = nativeValue(prod), k = kind(prod);
@@ -1174,7 +1172,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   if (changed || initial) { S.newsId = null; S.metric = "nominal"; S.ppIdx = null; S.pibYear = null; }
   const q = new URLSearchParams(location.search);
   q.set("historia", META[code].slug);
-  if (S.base === "inicio") q.set("desde", "2019"); else q.delete("desde");
+  q.delete("desde"); // links antigos com ?desde=2019 caem no ponto de partida padrão
   history.replaceState(null, "", `${location.pathname}?${q}${location.hash}`);
 
   renderTOC();
@@ -1191,13 +1189,6 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   updateMast();
   updateHeroHighlight(code);
   if (scroll) $("#historia").scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
-}
-
-function setBase(base) {
-  S.base = base;
-  S.ppIdx = null;
-  setPressed($("#baseline-toggle"), $(`#baseline-toggle [data-base="${base}"]`));
-  selectProduct(S.product);
 }
 
 function updateMast() {
@@ -1220,7 +1211,6 @@ function renumber() {
 }
 
 function bindControls() {
-  $("#baseline-toggle").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && b.dataset.base !== S.base) setBase(b.dataset.base); });
   $("#toc").addEventListener("click", (e) => { const b = e.target.closest(".toc-row"); if (b) selectProduct(b.dataset.code, { scroll: true }); });
   ["#story-prev", "#story-next"].forEach((id) => $(id).addEventListener("click", (e) => selectProduct(e.currentTarget.dataset.code)));
   $("#metric-toggle").addEventListener("click", (e) => {
