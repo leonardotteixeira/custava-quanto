@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-29T01:13:00+00:00",
+  "gerado_em": "2026-09-29T02:23:13+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -30410,6 +30410,7 @@
       "nome": "Jair Bolsonaro",
       "periodo_label": "Jan/2019 – Dez/2022",
       "foto": "assets/presidents/bolsonaro.jpg",
+      "foto_srcset": "assets/presidents/bolsonaro-140.jpg 140w, assets/presidents/bolsonaro-210.jpg 210w, assets/presidents/bolsonaro-280.jpg 280w",
       "fonte_foto": "Foto: Isac Nóbrega/PR — Flickr do Palácio do Planalto, CC BY 2.0 (Wikimedia Commons)",
       "fonte_foto_url": "https://commons.wikimedia.org/wiki/File:Jair_Bolsonaro_2019_Portrait_(3x4_cropped_center).jpg"
     },
@@ -30417,6 +30418,7 @@
       "nome": "Luiz Inácio Lula da Silva",
       "periodo_label": "Jan/2023 – atual",
       "foto": "assets/presidents/lula.jpg",
+      "foto_srcset": "assets/presidents/lula-140.jpg 140w, assets/presidents/lula-210.jpg 210w, assets/presidents/lula-280.jpg 280w",
       "fonte_foto": "Foto: Ricardo Stuckert/PR — Foto Oficial da Presidência, CC BY 2.0 (Wikimedia Commons)",
       "fonte_foto_url": "https://commons.wikimedia.org/wiki/File:Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_(ombros)_denoise.jpg"
     }
