@@ -526,97 +526,121 @@
   </section>
 
   <!-- =====================================================================
-       09 · ANÁLISE — comparação editorial entre períodos de governo.
-       Dados em data/processed/analise.json (scripts/build_analise.py); nada
-       calculado ou digitado aqui — só formatação do que já vem pronto.
+       09 · ANÁLISE — comparação entre períodos de governo.
+       Metodologia congelada em data/processed/analysis_methodology.json e
+       resultados em analysis_results.json (scripts/build_analise.py). Este
+       HTML e js/analise.js só apresentam: nenhum número é calculado aqui.
        ===================================================================== -->
   <section class="chapter analise-sec" id="analise" aria-labelledby="analise-title" data-chapter="analise">
     <div class="shell">
-      <header class="ch-head ch-head--quiet">
+      <header class="an-hero">
         <p class="ch-kicker mono"><span>09</span>Análise</p>
-        <h2 class="ch-title" id="analise-title">Dois governos. Os mesmos dados.</h2>
-        <div class="ch-aside">
-          <p class="ch-deck">Uma comparação transparente entre <b id="an-periodos-b">—</b> e <b id="an-periodos-l">—</b>, indicador por indicador, com fonte e método abertos para qualquer pessoa auditar.</p>
-        </div>
+        <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
+        <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
+        <p class="an-version mono" id="an-version"></p>
       </header>
 
       <div id="an-body">
-        <div class="an-position">
-          <p>Esta página não tenta dizer ao leitor em quem votar ou no que acreditar. Ela organiza os indicadores já calculados pelo CUSTAVA QUANTO? numa comparação metodológica entre dois períodos de governo.</p>
-          <p>Os resultados dependem dos indicadores escolhidos, do período observado e da metodologia usada — por isso todos esses elementos ficam disponíveis para auditoria mais abaixo, em <a href="#an-audit-sec">Audite a análise</a> e <a href="#an-metodo-sec">Metodologia completa</a>.</p>
-          <p class="an-causa"><strong>Correlação temporal não é causalidade.</strong> Uma mudança observada durante um governo não significa, por si só, que tenha sido causada por uma decisão daquele governo — isso vale para combustíveis, alimentos, inflação, PIB, câmbio, bolsa e juros.</p>
-        </div>
-
-        <div class="an-periodos-cards" aria-label="Períodos comparados">
-          <div class="an-pcard" data-gov="b"><span class="an-pcard-tag">Governo Bolsonaro</span><span class="an-pcard-when" id="an-pb-when">Jan/2019 – Dez/2022</span><span class="an-pcard-note">Período fechado.</span></div>
-          <div class="an-pcard" data-gov="l"><span class="an-pcard-tag">Governo Lula</span><span class="an-pcard-when" id="an-pl-when">Jan/2023 – último dado disponível</span><span class="an-pcard-note">Período em curso: menos tempo de mandato até aqui do que o comparado.</span></div>
-        </div>
-
-        <div class="an-lente-wrap">
-          <p class="an-lente-label mono">Mude a lente</p>
-          <div class="an-lente" id="an-lente" role="group" aria-label="Filtrar por dimensão"></div>
-        </div>
-
-        <div id="an-dimensoes"></div>
-
-        <section class="an-block" aria-labelledby="an-matriz-title">
-          <h3 id="an-matriz-title" class="an-block-title">Síntese dos indicadores</h3>
-          <p class="an-block-lead">O resultado observado descreve os dados — não julga o governo. Não há nota, pontuação nem vencedor nesta página.</p>
-          <div id="an-matriz"></div>
+        <!-- regra -->
+        <section class="an-rule" aria-labelledby="an-rule-title">
+          <h3 class="an-kick mono" id="an-rule-title">Antes de comparar, uma regra</h3>
+          <ol class="an-rule-list">
+            <li><b>A pergunta vem antes do resultado.</b> Cada dimensão tem uma pergunta e um critério escritos na metodologia antes do cálculo. Mudar depois exige nova versão.</li>
+            <li><b>“Subiu” não é “melhorou”.</b> Preço real em queda é favorável ao consumidor; PIB em alta indica mais atividade; dólar, Selic e Ibovespa não têm direção boa ou ruim para todos e só são descritos.</li>
+            <li><b>Sem nota, sem vencedor.</b> Cada dimensão vira uma leitura. A soma usa só o sentido de cada uma, com pesos visíveis que você pode mudar.</li>
+          </ol>
+          <p class="an-causa"><strong>Correlação temporal não é causalidade.</strong> Uma mudança observada durante um governo não significa, por si só, que tenha sido causada por uma decisão daquele governo.</p>
         </section>
 
-        <section class="an-block an-block--dark" aria-labelledby="an-sintese-title">
-          <h3 id="an-sintese-title" class="an-block-title">Então, o que os dados mostram?</h3>
+        <!-- parte 1: régua -->
+        <section class="an-part" aria-labelledby="an-p1-title">
+          <p class="an-part-n mono">Parte 1</p>
+          <h3 class="an-part-title" id="an-p1-title">Primeiro, colocamos os períodos na mesma régua.</h3>
+          <p class="an-part-lead">O governo Bolsonaro teve 48 meses; o governo Lula está em curso. Comparar o período inteiro de um com o pedaço já decorrido do outro distorce qualquer variação acumulada. Por isso o modo principal compara o mesmo tempo de mandato.</p>
+          <div class="an-mode" id="an-mode" role="group" aria-label="Janela da comparação">
+            <button type="button" data-modo="mesmo_tempo" aria-pressed="true"><b>Mesmo tempo de governo</b><span>o mesmo número de meses desde a posse</span></button>
+            <button type="button" data-modo="completo" aria-pressed="false"><b>Período completo disponível</b><span>Bolsonaro inteiro × Lula até o último dado</span></button>
+          </div>
+          <div class="an-ruler" id="an-ruler" aria-live="polite"></div>
+        </section>
+
+        <!-- em 1 minuto -->
+        <section class="an-minute" aria-labelledby="an-min-title">
+          <h3 class="an-kick mono" id="an-min-title">Em 1 minuto</h3>
+          <ol class="an-min-list" id="an-min-list"></ol>
+          <p class="an-min-foot">Quer conferir os cálculos? Continue abaixo: cada linha tem a pergunta, os números, o gráfico e a fonte.</p>
+        </section>
+
+        <!-- parte 2: o que medimos -->
+        <section class="an-part" aria-labelledby="an-p2-title">
+          <p class="an-part-n mono">Parte 2</p>
+          <h3 class="an-part-title" id="an-p2-title">O que estamos medindo?</h3>
+          <p class="an-part-lead" id="an-escopo"></p>
+          <div class="an-dimgrid" id="an-dimgrid"></div>
+        </section>
+
+        <!-- partes 3-7: dimensões -->
+        <div id="an-dims"></div>
+
+        <!-- parte 8: síntese -->
+        <section class="an-part" aria-labelledby="an-p8-title">
+          <p class="an-part-n mono">Parte 8</p>
+          <h3 class="an-part-title" id="an-p8-title">O que aparece quando juntamos as dimensões?</h3>
+          <p class="an-part-lead">Cada dimensão com direção definida vira uma única leitura, pela mediana das suas séries. Todas as séries de custo de vida juntas pesam o mesmo que a única série do PIB. Mercados ficam fora: são descritos, não pontuados.</p>
           <div id="an-sintese"></div>
         </section>
 
-        <section class="an-block" aria-labelledby="an-alt-title">
-          <h3 id="an-alt-title" class="an-block-title">Como a mesma comparação pode ser lida de formas diferentes?</h3>
-          <ul class="an-alt-list">
-            <li>Valores nominais e valores reais (descontada a inflação) podem apontar direções diferentes para o mesmo indicador.</li>
-            <li>O ponto de partida e o ponto de chegada escolhidos mudam a conclusão — por isso este projeto usa sempre dez/2022 → último dado, ou jan/2019 → dez/2022 para o período fechado.</li>
-            <li>Condições externas diferentes afetam os dois períodos: a pandemia de covid-19 concentra-se em 2020-2021 (dentro do período Bolsonaro); o ciclo global de juros altos concentra-se em 2022-2024 (a cavaleiro dos dois períodos).</li>
-            <li>Preços de commodities internacionais (petróleo, grãos) e o câmbio afetam combustíveis e alimentos em ambos os períodos, por canais que não são uma decisão de governo isolada.</li>
-            <li>Indicadores respondem com atrasos diferentes: câmbio e bolsa reagem em dias; PIB e IPCA, em meses.</li>
+        <!-- parte 9: sensibilidade -->
+        <section class="an-part" aria-labelledby="an-p9-title">
+          <p class="an-part-n mono">Parte 9</p>
+          <h3 class="an-part-title" id="an-p9-title">Mas quão robusta é essa leitura?</h3>
+          <p class="an-part-lead">A soma entre dimensões depende de quanto cada uma pesa, e isso é uma escolha de valores. Quatro cenários foram definidos antes do cálculo. Você também pode testar os seus.</p>
+          <div id="an-sens"></div>
+          <div class="an-weights" id="an-weights"></div>
+        </section>
+
+        <!-- parte 10: contexto -->
+        <section class="an-part" aria-labelledby="an-p10-title">
+          <p class="an-part-n mono">Parte 10</p>
+          <h3 class="an-part-title" id="an-p10-title">Contexto importa.</h3>
+          <p class="an-part-lead">Marcos que se sobrepõem aos períodos. A relação com os indicadores é só de tempo: coincidem, não causam.</p>
+          <ul class="an-timeline" id="an-timeline"></ul>
+        </section>
+
+        <!-- limites -->
+        <section class="an-limits" aria-labelledby="an-lim-title">
+          <h3 class="an-part-title" id="an-lim-title">O que os dados não permitem concluir</h3>
+          <ul class="an-limits-list">
+            <li><b>Causa.</b> Nenhum número desta página mostra que uma mudança foi causada por um governo.</li>
+            <li><b>Choques globais.</b> Pandemia, guerra, preço internacional do petróleo e de grãos e o ciclo global de juros atingem os dois períodos de formas diferentes.</li>
+            <li><b>Política fiscal e monetária.</b> A Selic é decidida pelo Copom do Banco Central, com mandato próprio; gastos e impostos passam pelo Congresso.</li>
+            <li><b>Estados e municípios.</b> ICMS e outras decisões locais mexem nos preços dos combustíveis e alimentos.</li>
+            <li><b>Defasagens.</b> Juros e câmbio afetam preços e atividade com meses de atraso, às vezes atravessando a troca de governo.</li>
+            <li><b>Período em curso.</b> O governo Lula não terminou: qualquer leitura sobre ele é parcial.</li>
+            <li><b>O que não está aqui.</b> Emprego, contas públicas, investimento e desigualdade não estão no projeto e não entram na análise.</li>
           </ul>
         </section>
 
-        <section class="an-block" aria-labelledby="an-context-title">
-          <h3 id="an-context-title" class="an-block-title">Contexto externo</h3>
-          <p class="an-block-lead">Marcos que se sobrepõem aos dois períodos. Apresentados como contexto, nunca como causa atribuída a um governo.</p>
-          <div id="an-timeline"></div>
+        <!-- conclusão -->
+        <section class="an-conclusion" aria-labelledby="an-conc-title">
+          <p class="an-part-n mono">Conclusão da análise</p>
+          <h3 class="an-part-title" id="an-conc-title">Nos indicadores em que definimos uma direção, os resultados foram:</h3>
+          <dl class="an-conc-list" id="an-conc-list"></dl>
+          <div class="an-conc-geral" id="an-conc-geral"></div>
         </section>
 
-        <section class="an-block" aria-labelledby="an-limites-title">
-          <h3 id="an-limites-title" class="an-block-title">O que não pode ser concluído</h3>
-          <ul class="an-limites-list">
-            <li>Esta análise não permite concluir que um único governo foi responsável por todas as mudanças observadas nos indicadores.</li>
-            <li>O PIB não mede todo o bem-estar de uma população; é a variação da atividade econômica agregada.</li>
-            <li>O Ibovespa não mede a prosperidade das famílias; é o desempenho de uma carteira teórica de ações da B3.</li>
-            <li>O IPCA é uma média nacional; não corresponde ao gasto exato de nenhuma família específica.</li>
-            <li>Preços de combustíveis dependem, em parte, de cotações internacionais e do câmbio, não só de decisões domésticas.</li>
-            <li>Os índices de alimentos são variação de preço encadeada (IBGE); não são o preço em reais pago em cada mercado.</li>
-            <li>Movimentos de curto prazo podem ter causas fora da política econômica federal.</li>
-            <li>O período do governo Lula está em curso: qualquer leitura sobre ele é parcial por definição, não um resultado final de mandato.</li>
-          </ul>
-        </section>
-
-        <section class="an-block" id="an-audit-sec" aria-labelledby="an-audit-title">
-          <details class="an-details">
-            <summary id="an-audit-title" class="an-block-title">Audite a análise</summary>
+        <!-- auditoria -->
+        <section class="an-audit-sec" id="an-audit-sec" aria-labelledby="an-audit-title">
+          <details class="an-details" open>
+            <summary><h3 class="an-part-title" id="an-audit-title">Audite a análise</h3></summary>
             <div id="an-audit"></div>
           </details>
         </section>
 
-        <section class="an-block" id="an-metodo-sec" aria-labelledby="an-metodo-title">
-          <details class="an-details">
-            <summary id="an-metodo-title" class="an-block-title">Como chegamos a esta análise?</summary>
-            <ol class="an-passos" id="an-passos"></ol>
-            <div class="an-pesos" id="an-pesos"></div>
-          </details>
+        <section class="an-contest" aria-labelledby="an-contest-title">
+          <h3 class="an-kick mono" id="an-contest-title">Encontrou um problema?</h3>
+          <p>Se você identificar uma fonte incorreta, um cálculo inconsistente ou uma escolha metodológica questionável, confira a metodologia e os arquivos acima e registre no <a href="https://github.com/leonardotteixeira/custava-quanto/issues" target="_blank" rel="noopener">repositório público do projeto</a>. Mudanças na metodologia ganham nova versão e ficam registradas.</p>
         </section>
-
-        <p class="an-fontes">Fontes: as mesmas de cada indicador ao longo do projeto — ANP, IBGE/SIDRA, Banco Central e B3. Ver <a href="#metodo">08 Método</a> para a metodologia completa de cada série.</p>
       </div>
     </div>
   </section>

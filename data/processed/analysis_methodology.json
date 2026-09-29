@@ -1,0 +1,515 @@
+{
+  "versao": "1.0",
+  "data": "2026-09-28",
+  "dimensoes": [
+    {
+      "id": "custo_vida",
+      "ordem": 1,
+      "titulo": "Custo de vida",
+      "tipo": "A",
+      "pergunta": "Em qual período os preços analisados tiveram menor pressão real (descontada a inflação) sobre o consumidor?",
+      "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período."
+    },
+    {
+      "id": "inflacao",
+      "ordem": 2,
+      "titulo": "Inflação",
+      "tipo": "A",
+      "pergunta": "Em qual período a inflação observada (IPCA em 12 meses) foi, em média, menor?",
+      "explicacao": "A média da inflação acumulada em 12 meses ao longo da janela. Mede pressão inflacionária no período, não se a inflação subiu ou caiu entre o primeiro e o último mês."
+    },
+    {
+      "id": "renda",
+      "ordem": 3,
+      "titulo": "Renda e poder de compra",
+      "tipo": "A",
+      "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra nos indicadores disponíveis?",
+      "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação."
+    },
+    {
+      "id": "atividade",
+      "ordem": 4,
+      "titulo": "Atividade econômica",
+      "tipo": "A",
+      "pergunta": "Em qual período a atividade econômica medida pelo PIB apresentou maior crescimento?",
+      "explicacao": "A média do crescimento real anual do PIB (IBGE). Só anos com resultado anual fechado: o ano em curso tem apenas trimestres e não entra na média."
+    },
+    {
+      "id": "mercados",
+      "ordem": 5,
+      "titulo": "Mercados e condições financeiras",
+      "tipo": "B",
+      "pergunta": "Como os principais indicadores financeiros evoluíram em cada período?",
+      "explicacao": "Dólar, Selic e Ibovespa são descritos, não pontuados: nenhum deles tem uma direção que seja boa ou ruim para todo mundo. Por isso esta dimensão não entra na síntese entre dimensões."
+    }
+  ],
+  "indicadores": [
+    {
+      "id": "GASOLINA",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "preco_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "R$ (em valores do último mês)",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "frequencia": "mensal",
+      "nome": "Gasolina",
+      "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
+        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "ETANOL",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "preco_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "R$ (em valores do último mês)",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "frequencia": "mensal",
+      "nome": "Etanol",
+      "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
+        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "DIESEL",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "preco_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "R$ (em valores do último mês)",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "frequencia": "mensal",
+      "nome": "Diesel",
+      "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
+        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "DIESEL S10",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "preco_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "R$ (em valores do último mês)",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "frequencia": "mensal",
+      "nome": "Diesel S10",
+      "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
+        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "GLP",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "preco_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "R$ (em valores do último mês)",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "frequencia": "mensal",
+      "nome": "Gás de cozinha (GLP)",
+      "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
+        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "Arroz",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Arroz",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "Feijão carioca",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Feijão",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "Carne bovina (patinho)",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Carne",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "Leite longa vida",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Leite",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "Óleo de soja",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Óleo de soja",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "Café moído",
+      "dimensao": "custo_vida",
+      "tipo": "A",
+      "campo": "indice_relativo_real",
+      "metrica": "variacao_pct",
+      "direcao": "menor",
+      "unidade": "índice (jan/2019 = 100), não é R$",
+      "fonte": "IBGE/SIDRA — IPCA por item",
+      "frequencia": "mensal",
+      "nome": "Café",
+      "indice": true,
+      "interpretacao": "Queda do índice real é, em geral, favorável ao consumidor.",
+      "limitacoes": [
+        "Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
+        "Safra, clima e preços internacionais de grãos pesam sobre o resultado."
+      ],
+      "confianca": "média"
+    },
+    {
+      "id": "IPCA",
+      "dimensao": "inflacao",
+      "tipo": "A",
+      "campo": "taxa_aa",
+      "metrica": "media",
+      "direcao": "menor",
+      "unidade": "% em 12 meses",
+      "fonte": "IBGE — IPCA",
+      "frequencia": "mensal",
+      "nome": "IPCA (12 meses)",
+      "interpretacao": "Inflação média menor representa menor pressão sobre os preços.",
+      "limitacoes": [
+        "Média nacional de uma cesta: não é a inflação de cada família.",
+        "A série de 12 meses começa em jan/2020 (precisa de 12 meses anteriores)."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "SALARIO_REAL",
+      "origem": "GASOLINA",
+      "dimensao": "renda",
+      "tipo": "A",
+      "campo": "salario_minimo_real",
+      "metrica": "variacao_pct",
+      "direcao": "maior",
+      "unidade": "R$ descontado o IPCA",
+      "fonte": "Banco Central (salário mínimo) + IBGE (IPCA)",
+      "frequencia": "mensal",
+      "nome": "Salário mínimo real",
+      "interpretacao": "Alta real do salário mínimo representa mais poder de compra para quem o recebe.",
+      "limitacoes": [
+        "Quem ganha o salário mínimo é uma parte da população; não mede a renda média nem a renda das famílias."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "SM_GASOLINA",
+      "origem": "GASOLINA",
+      "dimensao": "renda",
+      "tipo": "A",
+      "campo": "unidades_por_salario_minimo",
+      "metrica": "variacao_pct",
+      "direcao": "maior",
+      "unidade": "litros por salário mínimo",
+      "fonte": "ANP + Banco Central (cálculo do projeto)",
+      "frequencia": "mensal",
+      "nome": "Litros de gasolina por salário mínimo",
+      "interpretacao": "Mais litros por salário mínimo representa mais poder de compra em combustível.",
+      "limitacoes": [
+        "Mede o poder de compra em UM item; não é um índice de custo de vida."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "SALARIO_NOMINAL",
+      "origem": "GASOLINA",
+      "dimensao": "renda",
+      "tipo": "C",
+      "campo": "salario_minimo",
+      "metrica": "variacao_pct",
+      "direcao": null,
+      "unidade": "R$ (valor nominal)",
+      "fonte": "Banco Central / decretos do salário mínimo",
+      "frequencia": "mensal",
+      "nome": "Salário mínimo (nominal)",
+      "interpretacao": "Informativo: o valor nominal sobe com a inflação em qualquer período; a leitura de poder de compra está no valor real.",
+      "limitacoes": [
+        "Não descontado a inflação."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "PIB",
+      "dimensao": "atividade",
+      "tipo": "A",
+      "campo": "taxa_aa",
+      "metrica": "media",
+      "direcao": "maior",
+      "anual": true,
+      "unidade": "% de crescimento real no ano",
+      "fonte": "IBGE — Sistema de Contas Nacionais Trimestrais",
+      "frequencia": "anual (resultado do 4º trimestre)",
+      "nome": "PIB (crescimento real anual)",
+      "interpretacao": "Crescimento maior representa maior atividade econômica medida; não é uma medida direta de renda individual ou bem-estar.",
+      "limitacoes": [
+        "Não mede distribuição de renda nem bem-estar.",
+        "O IBGE revisa a série; usamos a última revisão disponível.",
+        "O ano em curso só tem trimestres e não entra na média anual."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "DOLAR",
+      "dimensao": "mercados",
+      "tipo": "B",
+      "campo": "preco_nominal",
+      "metrica": "variacao_pct",
+      "direcao": null,
+      "unidade": "R$ por US$",
+      "fonte": "Banco Central — PTAX venda",
+      "frequencia": "mensal (média do mês); diário nas pontas do período completo",
+      "nome": "Dólar",
+      "diario": true,
+      "interpretacao": "Efeitos mistos: real mais forte barateia importações e combustíveis; real mais fraco favorece exportadores. Não é bom nem ruim para todos.",
+      "limitacoes": [
+        "Muito sensível a juros globais e ao fluxo internacional de capital."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "SELIC",
+      "dimensao": "mercados",
+      "tipo": "B",
+      "campo": "taxa_aa",
+      "metrica": "nivel",
+      "direcao": null,
+      "unidade": "% ao ano",
+      "fonte": "Banco Central — meta Selic (Copom)",
+      "frequencia": "mensal (média do mês); diário nas pontas do período completo",
+      "nome": "Selic",
+      "diario": true,
+      "interpretacao": "Instrumento de política monetária: juros mais altos encarecem o crédito e tendem a conter a inflação. A leitura depende da inflação, da atividade e das expectativas.",
+      "limitacoes": [
+        "Definida pelo Copom do Banco Central, que tem mandato próprio."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "IBOVESPA",
+      "dimensao": "mercados",
+      "tipo": "B",
+      "campo": "pontos",
+      "metrica": "variacao_pct",
+      "direcao": null,
+      "unidade": "pontos",
+      "fonte": "B3 — Ibovespa, fechamento",
+      "frequencia": "mensal (fechamento do mês); diário nas pontas do período completo",
+      "nome": "Ibovespa",
+      "diario": true,
+      "interpretacao": "Desempenho de uma carteira teórica de ações. Reflete lucros das empresas, juros, câmbio, cenário externo e expectativas; não mede o bem-estar das famílias.",
+      "limitacoes": [
+        "Variação nominal, em pontos; não descontada a inflação."
+      ],
+      "confianca": "alta"
+    }
+  ],
+  "cenarios": [
+    {
+      "id": "iguais",
+      "nome": "Pesos iguais (padrão)",
+      "pesos": {
+        "custo_vida": 25,
+        "inflacao": 25,
+        "renda": 25,
+        "atividade": 25
+      },
+      "justificativa": "Nenhuma dimensão privilegiada."
+    },
+    {
+      "id": "bolso",
+      "nome": "Ênfase no custo de vida",
+      "pesos": {
+        "custo_vida": 40,
+        "inflacao": 20,
+        "renda": 20,
+        "atividade": 20
+      },
+      "justificativa": "Para quem prioriza o que chega ao bolso no dia a dia."
+    },
+    {
+      "id": "renda",
+      "nome": "Ênfase em renda e inflação",
+      "pesos": {
+        "custo_vida": 20,
+        "inflacao": 30,
+        "renda": 30,
+        "atividade": 20
+      },
+      "justificativa": "Para quem prioriza poder de compra e estabilidade de preços."
+    },
+    {
+      "id": "macro",
+      "nome": "Ênfase na atividade econômica",
+      "pesos": {
+        "custo_vida": 20,
+        "inflacao": 20,
+        "renda": 20,
+        "atividade": 40
+      },
+      "justificativa": "Para quem prioriza o crescimento da economia."
+    }
+  ],
+  "cenario_padrao": "iguais",
+  "regras": {
+    "modos": {
+      "mesmo_tempo": "Mês k de cada mandato (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada mandato, só anos fechados.",
+      "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas."
+    },
+    "modo_principal": "mesmo_tempo",
+    "formulas": {
+      "variacao_pct": "(valor no fim da janela / valor no início da janela - 1) x 100",
+      "media": "média simples dos valores mensais (ou anuais, no PIB) da janela",
+      "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
+      "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
+      "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
+      "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = sem diferença relevante.",
+      "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude."
+    },
+    "tolerancia": {
+      "variacao_pct": 1.0,
+      "media": 0.1
+    },
+    "exclusoes": [],
+    "fora_do_escopo": [
+      "Emprego e desemprego",
+      "Contas públicas e dívida",
+      "Investimento",
+      "Desigualdade de renda"
+    ],
+    "fora_do_escopo_nota": "Esta análise cobre estas dimensões porque são as séries atualmente disponíveis no projeto. Emprego, contas públicas e investimento ficam de fora por falta de série no projeto, não por escolha de resultado."
+  },
+  "contexto_externo": [
+    {
+      "iso": "2020-03-01",
+      "texto": "OMS declara pandemia de covid-19",
+      "categoria": "Choque externo",
+      "fonte": "Organização Mundial da Saúde, 11/03/2020",
+      "relacao": "coincide no tempo com a queda do PIB de 2020 e a alta de alimentos"
+    },
+    {
+      "iso": "2022-02-01",
+      "texto": "Rússia invade a Ucrânia",
+      "categoria": "Choque externo",
+      "fonte": "Fato amplamente documentado, 24/02/2022",
+      "relacao": "coincide no tempo com a alta internacional do petróleo e de grãos"
+    },
+    {
+      "iso": "2022-06-01",
+      "texto": "Lei Complementar 194 limita o ICMS sobre combustíveis",
+      "categoria": "Alteração regulatória",
+      "fonte": "Lei Complementar 194/2022",
+      "relacao": "coincide no tempo com a queda do preço dos combustíveis no 2º semestre de 2022"
+    },
+    {
+      "iso": "2023-03-01",
+      "texto": "Volta parcial da cobrança de PIS/Cofins sobre a gasolina",
+      "categoria": "Política econômica",
+      "fonte": "Governo federal, reoneração dos combustíveis, 2023",
+      "relacao": "coincide no tempo com a alta da gasolina no início de 2023"
+    },
+    {
+      "iso": "2026-02-01",
+      "texto": "EUA e Israel iniciam ofensiva contra o Irã (28/fev)",
+      "categoria": "Contexto internacional",
+      "fonte": "Cobertura internacional, fevereiro de 2026",
+      "relacao": "coincide no tempo com a alta do petróleo e dos combustíveis em 2026"
+    }
+  ],
+  "tipos": {
+    "A": "Direção interpretável definida antes do cálculo.",
+    "B": "Depende do contexto: descrito, nunca pontuado.",
+    "C": "Informativo: não entra em nenhuma leitura de direção."
+  }
+}
