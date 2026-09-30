@@ -1,5 +1,8 @@
 # PHASE 1: Implementação & Ajustes Técnicos — Plano Detalhado
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Plano de implementação de 23/09/2026 ("iniciando agora"). Já foi executado ou superado; não representa pendências atuais.
+
+
 **Data de Início:** 23/09/2026
 **Duração Estimada:** 6 dias (P0+P1+P2+P3)
 **Status:** 🚀 **INICIANDO AGORA**

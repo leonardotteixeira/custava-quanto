@@ -1,5 +1,8 @@
 # PHASE 1: QA & Polish — Relatório Final
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Relatório de QA da primeira rodada (23/09/2026). Descreve a página daquela data. Para o QA de hoje, ver docs/TESTING_AND_QA.md.
+
+
 **Data:** 23/09/2026
 **Status:** ✅ PASS — Phase 1 completa
 **Método:** Validação manual via browser (Chromium headless, servidor local :8420)

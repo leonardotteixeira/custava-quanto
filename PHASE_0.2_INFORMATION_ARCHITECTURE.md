@@ -1,5 +1,8 @@
 # PHASE 0.2: Information Architecture — Output
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Arquitetura de informação proposta em 23/09/2026 (9 seções). A página atual tem outra estrutura de capítulos — ver docs/CURRENT_STATE.md.
+
+
 **Data:** 23/09/2026
 **Status:** ✅ Concluído
 **Próximo:** Phase 1 — Implementação & Ajustes Técnicos

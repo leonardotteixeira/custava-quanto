@@ -1,5 +1,8 @@
 # PHASE 0.4: Máquina do Tempo — Output
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Conceito da Máquina do tempo (23/09/2026). A Máquina do tempo existe hoje (capítulo 05); este texto é o conceito original, não a especificação atual.
+
+
 **Data:** 23/09/2026
 **Status:** ✅ Concluído
 **Próximo:** Phase 1 — Implementação & Ajustes Técnicos

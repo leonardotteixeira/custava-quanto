@@ -1,5 +1,8 @@
 # Resumo: Combustíveis e Cesta Básica — Bolsonaro x Lula
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Resumo da primeira fase (combustíveis e cesta básica), gerado em 22/09/2026, antes do PIB, dos mercados diários e da Análise. Os números refletem aquela execução (ex.: variações calculadas por médias mensais) e **não são atualizados** por `update_data.py`. Para o estado atual, ver docs/CURRENT_STATE.md e docs/METHODOLOGY.md.
+
+
 *Gerado a partir de `data/processed/resumo_periodos_combustiveis.csv` e
 `resumo_periodos_cesta.csv`, produzidos por `scripts/build_dataset.py`.
 Períodos: Bolsonaro = jan/2019–dez/2022 (48 meses); Lula = jan/2023–ago/2026

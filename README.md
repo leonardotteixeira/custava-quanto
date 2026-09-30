@@ -1,323 +1,230 @@
-# CUSTAVA QUANTO? — Combustíveis e Alimentos: Bolsonaro x Lula
+# CUSTAVA QUANTO?
 
-Projeto pessoal de análise de dados comparando preços de combustíveis e itens
-da cesta básica entre o governo Bolsonaro (até 31/12/2022) e o governo Lula
-(desde 01/01/2023), com o contexto necessário (câmbio, petróleo Brent) para
-não atribuir a um governo o que é efeito de fatores externos.
+Última atualização: 28/09/2026 · Status: **CURRENT** (sincronizado com o código)
 
-**Objetivo declarado: entender o que os dados mostram, não confirmar uma
-narrativa.** Ver [output/RESUMO.md](output/RESUMO.md) para as conclusões e,
-principalmente, para as limitações da análise — elas importam tanto quanto os
-números. O projeto tem duas camadas de apresentação: um **dashboard
-interativo** ([dashboard/](dashboard/), ver [seção abaixo](#dashboard-custava-quanto))
-e os gráficos estáticos originais em `output/`.
+## 1. Visão geral
 
-## Fontes de dados
+**CUSTAVA QUANTO?** é um projeto independente de jornalismo de dados. Permite
+explorar como preços, inflação, poder de compra, atividade econômica e indicadores
+financeiros do Brasil mudaram desde 2019, comparando dois períodos de governo
+com indicadores e metodologia documentados: **Bolsonaro** (jan/2019–dez/2022) e
+**Lula** (jan/2023–último dado disponível; período em curso).
 
-| Fonte | O que | Cobertura |
+O projeto **não** é campanha, ranking de governos, nota, nem previsão. Não atribui
+causa: notícias e eventos aparecem como contexto. Cada número traz fonte,
+frequência e limitação.
+
+Tagline: "Quanto custava. Quanto custa. O que mudou."
+
+## 2. O que o projeto faz
+
+- Mostra 16 séries: 5 combustíveis, 6 alimentos, Dólar, Selic, IPCA, Ibovespa e PIB.
+- Compara cada série entre a troca de governo (dez/2022) e o último dado
+  disponível.
+- Compara os dois períodos lado a lado, com janelas de mesma duração.
+- Cruza os indicadores numa análise com critérios definidos antes do cálculo (sem
+  nota nem vencedor).
+- Acompanha matérias reais da época, conferidas contra a página de origem.
+
+## 3. Perguntas principais
+
+1. Quanto custava e quanto custa? 2. O que mudou entre os dois períodos, na mesma
+régua? 3. Como estava o Brasil em um mês qualquer? 4. O que os indicadores mostram
+juntos, e com que critério?
+
+## 4. Experiência atual
+
+Site estático em capítulos (`dashboard/index.html`): **Abertura**, **01 Índice**,
+**História** (era → agora), **02 Preço**, **03 Bolso**, **04 Contexto**, **05
+Máquina do tempo**, **06 Períodos**, **07 Arquivo**, **08 Método**, **09 Análise**,
+**10 Apoie**. A numeração é dinâmica (Bolso some nas histórias sem preço ou índice).
+A história escolhida fica na URL (`?historia=gasolina`). Descrição de cada capítulo,
+dados e limites: [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md).
+
+## 5. Indicadores
+
+| Grupo | Séries | Unidade |
 |---|---|---|
-| [ANP](https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-abertos/serie-historica-de-precos-de-combustiveis) | Gasolina comum, etanol hidratado, diesel (comum e S10), GLP (botijão 13kg) — preço por posto revendedor, agregado aqui por mês/região | 2019–hoje |
-| [IBGE/SIDRA](https://sidra.ibge.gov.br) | IPCA geral (deflator) e variação mensal de itens específicos (arroz, feijão, carne, leite, óleo de soja, café) | 2019–hoje |
-| [Banco Central (SGS)](https://www3.bcb.gov.br/sgspub/) | Câmbio USD/BRL e Selic (também tratados como "produtos" próprios no dashboard) e salário mínimo nacional (série 1619) | 2019–hoje |
-| [FRED (Brent)](https://fred.stlouisfed.org/series/DCOILBRENTEU) | Petróleo Brent, USD/barril — contexto | 2019–hoje |
-| [Yahoo Finance (^BVSP)](https://query1.finance.yahoo.com/v8/finance/chart/%5EBVSP) | Ibovespa, fechamento mensal em pontos — "produto" próprio no dashboard | 2019–hoje |
-| DIEESE (Cesta Básica Nacional) | **Não incluída no pipeline automático** — ver [Sobre o DIEESE](#sobre-o-dieese) | — |
+| Combustíveis | Gasolina, Etanol, Diesel, Diesel S10, GLP | R$/litro (GLP: R$/botijão de 13 kg) |
+| Alimentos | Arroz, Feijão carioca, Carne (patinho), Leite longa vida, Óleo de soja, Café moído | **índice** (base 100 = jan/2019), **não é R$** |
+| Mercados | Dólar (PTAX), Selic (meta), IPCA (12 meses), Ibovespa | R$/US$, % ao ano, % em 12 meses, pontos |
+| Atividade | PIB | % de crescimento real (anual; trimestral à parte) |
 
-## Estrutura do projeto
+Dados mensais até ago/2026; Dólar, Selic e Ibovespa diários até 22/09/2026; PIB até o
+2º trimestre de 2026 (resultado anual até 2025; **2026 não tem resultado anual**).
+
+## 6. Fontes de dados
+
+| Fonte | O que | Status |
+|---|---|---|
+| ANP | Preços de combustíveis (média simples mensal nacional) | Produção |
+| IBGE/SIDRA | IPCA (deflator e 12 meses), variação mensal por item de alimento, PIB e componentes (tabelas 5932, 6784, 1846) | Produção |
+| Banco Central (SGS) | Dólar PTAX (1), meta Selic (432), salário mínimo (1619) | Produção |
+| B3 | Ibovespa (fechamento diário, site público do índice) | Produção |
+| FRED | Brent (contexto dos combustíveis) | Produção (contexto) |
+| CONAB | Preço de varejo de arroz e feijão (R$/kg) | **Planejada, não integrada** (download falha; ver Limitações) |
+| DIEESE | Cesta básica em R$ | **Não usada** (sem acesso público em lote); só validação manual |
+| CEPEA/ESALQ, Procon, IBGE/POF | Avaliadas em auditoria | Descartadas para o consumidor ([auditoria](docs/AUDITORIA_PRECOS_ALIMENTOS.md)) |
+
+Tabela completa por indicador (frequência, campo, processamento, limitações):
+[docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md).
+
+## 7. Metodologia
+
+- **Variação** = `(fim ÷ início − 1) × 100`. Para taxas (Selic, IPCA, PIB), a
+  diferença é em **pontos percentuais**.
+- **Real** = nominal × IPCA do último mês ÷ IPCA do mês do preço ("a preços de
+  hoje"). O IPCA é o geral, não específico do item.
+- **Alimentos** são índices encadeados a partir da variação oficial do IPCA por item;
+  **não** são preço em reais.
+- **PIB anual** = taxa acumulada no ano lida no 4º trimestre; **trimestral** tem
+  quatro leituras que nunca se misturam.
+- Detalhes, fórmulas e limitações: [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
+
+## 8. Comparação entre os períodos
+
+| Janela | Bolsonaro | Lula |
+|---|---|---|
+| **Período completo disponível** | jan/2019–dez/2022 (48 meses) | jan/2023–último dado disponível (44 meses em ago/2026; **em curso**) |
+| **Mesmo tempo de governo** | meses 1 a *N* do mandato | meses 1 a *N* do mandato (*N* = duração comum calculada dos dados; 44) |
+| **Primeiros 12/24/36 meses** (Períodos) | primeiros *n* | primeiros *n* |
+
+O período Lula **não está completo**. As duas janelas existem porque comparar 48
+com 44 meses distorce variações acumuladas.
+
+**Análise (metodologia v1.0):** cinco dimensões (Custo de vida, Inflação, Renda e
+poder de compra, Atividade econômica, Mercados). Indicadores **Tipo A** têm direção
+favorável definida antes do cálculo (preço real e inflação menores; poder de compra e
+crescimento maiores); **Tipo B** (Dólar, Selic, Ibovespa) só são descritos;
+**Tipo C** (salário nominal) é informativo. Cada dimensão Tipo A vira um sentido pela
+**mediana** de suas séries, com tolerância de "sem diferença relevante"; a síntese
+soma sentidos ponderados e é testada em quatro cenários de peso. Sem nota, sem
+vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
+[docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md).
+
+## 9. Limitações dos dados
+
+1. **ANP**: amostra de postos e média simples; **setembro/2020 sem pesquisa**
+   (linhas interrompidas; a Máquina do tempo mostra uma estimativa "≈" marcada).
+2. **Alimentos**: índice, não R$; "carne" é só o corte patinho; feijão é o carioca.
+3. **Preço absoluto de alimentos**: a CONAB tem script e testes com dados sintéticos,
+   mas o download real falhou e **nenhum dado da CONAB está nos resultados**.
+4. **PIB**: o IBGE revisa a série; 2026 só tem trimestres; anos antes de 2019 ficam
+   fora dos dois períodos.
+5. **Ibovespa**: vem de um endpoint público do site da B3, sem garantia contratual;
+   "último dado disponível", não tempo real. Selic é a **meta**, não a efetiva.
+6. **Salário mínimo**: piso nacional.
+7. **Período Lula em curso**: toda leitura é parcial.
+8. Problemas verificados e lacunas: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
+
+## 10. Notícias e contexto
+
+Curadoria manual em `data/news/raw_*.json`; `scripts/build_news.py` abre cada URL e
+só publica se a página responde e o título confere (similaridade ≥ 0,80). Hoje: 111
+itens. Fotos: Agência Brasil quando o crédito é da EBC (CC BY 4.0); de outros
+veículos, a imagem de capa da matéria, com crédito e **sem licença de reprodução**
+(decisão editorial, desligável em `build_news.py`). Sem foto, só texto.
+**Proximidade no tempo é contexto, não prova de causa.**
+
+## 11. Arquitetura
 
 ```
-data/
-  raw/          dados brutos baixados (não versionado — ver .gitignore)
-  processed/    dados agregados/tratados (versionado, são pequenos)
-                inclui dashboard_data.json, a fonte única de dados do dashboard
-scripts/        download_*.py (coleta), build_dataset.py e
-                build_dashboard_data.py (consolidação)
-analysis/       analysis.py — gera os gráficos estáticos em /output
-output/         gráficos (.html) e RESUMO.md com as conclusões
-dashboard/      site estático interativo (HTML/CSS + módulos JS em js/,
-                gráficos em SVG próprio, sem biblioteca de gráficos),
-                lê data/processed/dashboard_data.json — nenhum cálculo
+scripts/        download_*.py, build_dataset.py, build_dashboard_data.py,
+                build_news.py, build_analise.py, update_data.py, test_analise.py
+data/raw/       cache dos downloads (não versionado)
+data/processed/ dados versionados; dashboard_data.json e analysis_*.json alimentam o site
+data/news/      curadoria manual de notícias
+dashboard/      site estático (index.html, styles.css, js/), lê os JSON; nenhum cálculo
                 econômico acontece no navegador
+docs/           documentação (ver docs/README.md)
+analysis/, output/  gráficos estáticos da primeira fase — HISTÓRICO
 ```
 
-## Como rodar
+Sem backend, sem framework, sem biblioteca de gráficos (SVG próprio). Externos em
+tempo de leitura: Google Fonts e as imagens das matérias.
 
-Requer Python 3.11+. Recomendado usar o ambiente virtual do projeto:
+## 12. Pipeline de dados
+
+`fonte → download_*.py → data/processed/*.csv → build_dataset.py →
+build_dashboard_data.py → dashboard_data.json → build_analise.py →
+analysis_*.json → dashboard`. Detalhes e quais scripts o `update_data.py` roda (e
+quais não): [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md).
+
+## 13. Desenvolvimento local
+
+Requer Python 3.11 (o ambiente atual usa 3.11.9). Nos exemplos, caminhos do Windows
+(Git Bash/PowerShell); em outros sistemas, troque `.venv/Scripts/` por `.venv/bin/`.
 
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt
 ```
 
-**Atalho:** depois da primeira execução completa (passos 1–4 abaixo pelo
-menos uma vez), `scripts/update_data.py` roda tudo de novo em sequência —
-baixa os dados mais recentes de cada fonte, consolida e reverifica as
-notícias — parando na primeira falha de uma etapa crítica:
+`process_portraits.py` também precisa de Pillow (`.venv/Scripts/pip install pillow`),
+que ainda não está no `requirements.txt`.
 
-```bash
-.venv/Scripts/python scripts/update_data.py            # pipeline completo (inclui ANP, IBGE — demorado)
-.venv/Scripts/python scripts/update_data.py --rapido    # pula ANP/IBGE; só atualiza dados de mercado (via download_mercados.py) e notícias
-```
-
-Os passos abaixo explicam o que cada etapa faz, para quem quiser rodar (ou
-depurar) uma de cada vez.
-
-### 1. Baixar os dados brutos
-
-```bash
-.venv/Scripts/python scripts/download_anp.py        # demorado (~1-2GB, vários arquivos grandes da ANP)
-.venv/Scripts/python scripts/download_ibge.py
-.venv/Scripts/python scripts/download_mercados.py   # Dólar, Selic, Ibovespa (dados diários desde 2019)
-.venv/Scripts/python scripts/download_brent.py
-.venv/Scripts/python scripts/download_salario_minimo.py
-```
-
-Todos os scripts são **idempotentes**: usam cache em `data/raw/` e podem ser
-re-executados a qualquer momento para atualizar com dados mais recentes (por
-padrão, `download_anp.py` baixa de 2019 até o ano atual; ajuste com
-`--ano-inicio`/`--ano-fim` se quiser um recorte diferente).
-
-### 2. Consolidar e deflacionar
-
-```bash
-.venv/Scripts/python scripts/build_dataset.py
-```
-
-Gera os datasets finais em `data/processed/`: séries mensais nominais e
-reais (deflacionadas pelo IPCA), e os resumos por período de governo.
-
-### 3. Gerar os gráficos estáticos
-
-```bash
-.venv/Scripts/python analysis/analysis.py
-```
-
-Gera arquivos `.html` interativos em `output/` (abra no navegador).
-
-### 4. Gerar os dados do dashboard e rodar o dashboard
-
-```bash
-.venv/Scripts/python scripts/build_dashboard_data.py
-```
-
-Gera `data/processed/dashboard_data.json` — a única fonte de dados que o
-dashboard lê (nenhum cálculo de preço/deflação acontece em JavaScript).
-
-O dashboard é HTML/CSS/JS estático e usa `fetch()`, então precisa ser servido
-por HTTP (abrir `dashboard/index.html` direto como `file://` não funciona).
-Da raiz do projeto:
+Servir o site (precisa de HTTP; `file://` não funciona):
 
 ```bash
 .venv/Scripts/python -m http.server 8420
 ```
 
-e abra `http://localhost:8420/dashboard/index.html`. (Há também um
-`.claude/launch.json` já configurado para isso, se estiver usando o Claude
-Code desktop app com preview de navegador.)
+e abrir `http://localhost:8420/dashboard/index.html`.
 
-## Dashboard CUSTAVA QUANTO?
+## 14. Atualizando os dados
 
-Camada de apresentação interativa sobre os mesmos dados do pipeline: escolha
-um produto (5 combustíveis, 6 itens da cesta básica ou um indicador de
-**Mercados** — Dólar, Selic, Ibovespa, IPCA) e veja a evolução no tempo,
-comparação Bolsonaro x Lula (governo inteiro ou primeiros 12/24/36 meses),
-contexto, notícias reais da época e histórico anual. Combustíveis e Dólar
-também têm preço em R$ (nominal, real ou % do salário mínimo) e poder de
-compra; Selic e IPCA (taxas, % ao ano) e Ibovespa (pontos, não é R$) têm cada
-um sua própria leitura — não fazem sentido nas mesmas contas de "preço" ou
-"poder de compra" dos outros produtos.
+```bash
+.venv/Scripts/python scripts/update_data.py            # completo (ANP e IBGE são lentos)
+.venv/Scripts/python scripts/update_data.py --rapido   # só mercados, salário mínimo, Brent, build, notícias, análise
+```
 
-- **Nada é calculado no navegador.** `scripts/build_dashboard_data.py` faz
-  todas as contas em Python e grava o resultado pronto em
-  `dashboard_data.json`; `dashboard/js/` só formata e desenha (as únicas
-  contas no navegador são razões de exibição entre valores prontos:
-  variação entre dois meses, base 100 num mês escolhido, largura de barras).
-- **Cotação de hoje (Dólar/Selic)**: `scripts/download_mercados.py` baixa
-  dados diários desde 2019 do Banco Central (SGS séries 1 e 432) e grava a
-  última cotação disponível em `data/processed/bcb_hoje.json`. Mostrada à
-  parte da série mensal (que fica limitada ao último mês fechado), para
-  acompanhar o valor mais recente sem esperar o mês fechar. Para a Selic,
-  essa cotação diária também traz `vigente_desde` (primeira data da sequência
-  atual do mesmo valor) — mostrado como "vigente desde" no dashboard,
-  separado da data da própria decisão do Copom, e sempre rotulado como
-  **Selic-meta** (a taxa definida pelo Copom), não a Selic efetiva diária.
-- **Cotação de hoje do Ibovespa**: `scripts/download_mercados.py` também
-  baixa dados diários do Ibovespa (B3) desde 2019, com fechamento de cada
-  pregão, e grava em `data/processed/ibovespa_hoje.json`. Não é tempo real
-  garantido — é a cotação mais recente que B3 publica, sujeito aos atrasos
-  normais de mercado; o dashboard deixa isso explícito no selo. Para
-  histórico: os meses fechados estão em `ibovespa_mensal.csv`.
-- **"Como estava o Brasil?"**: uma fotografia cross-indicador (Dólar,
-  Ibovespa, Selic, IPCA, salário mínimo, Gasolina) para os meses Era/Agora
-  do produto selecionado — montada em `montar_fotografia_mensal()`
-  (`build_dashboard_data.py`) só a partir de campos que os outros produtos
-  já calcularam, sem nenhuma conta nova.
-- **Salário mínimo**: Banco Central, SGS série 1619 (piso nacional, nominal
-  — não reflete pisos regionais mais altos em alguns estados).
-- **Fotos dos presidentes**: retratos oficiais do acervo do Palácio do
-  Planalto, licença CC BY 2.0, via Wikimedia Commons (mesmas fotos usadas
-  pela Wikipedia em pt-BR) — crédito visível no próprio card.
-- **Cesta básica no dashboard**: mostra o índice relativo (não R$), com a
-  mesma nota de limitação do restante do projeto, sempre visível na tela
-  (não escondida em tooltip).
-- **Escopo do MVP**: região é sempre "Brasil" (os dados têm quebra regional
-  em `combustiveis_final.csv`, mas o dashboard não expõe esse filtro ainda).
+**Não estão no `update_data.py`** e precisam de execução manual:
 
-### Estrutura da página (v2)
+```bash
+.venv/Scripts/python scripts/download_pib.py               # PIB trimestral e anual
+.venv/Scripts/python scripts/download_pib_componentes.py   # componentes e PIB nominal trimestral
+.venv/Scripts/python scripts/download_ibge_combustiveis.py # insumo da estimativa de set/2020
+.venv/Scripts/python scripts/download_conab.py             # CONAB (hoje falha)
+```
 
-A página é uma publicação em capítulos, não um painel: abertura (nome, frase
-e uma textura com as 15 séries reais), **01 Índice** (sumário com a variação
-de cada série e o ponto de partida: dez/2022 ou jan/2019), a **história** do
-produto escolhido (era → agora), **02 Preço** (gráfico mensal com faixas de
-período, marcos de contexto e notícias), **03 Bolso** (poder de compra do
-salário mínimo, com um seletor de mês), **04 Contexto** (pequenos múltiplos
-na mesma escala, base 100), **05 Máquina do tempo** (o Brasil em qualquer
-mês, com o noticiário daquele mês), **06 Períodos** (mesma régua para os dois
-governos, com recortes de mesma duração), **07 Arquivo** e **08 Método**.
-A história escolhida fica na URL (`?historia=gasolina&desde=2019`), então
-qualquer leitura pode ser compartilhada. Decisões visuais em
-[DESIGN.md](DESIGN.md).
+Depois de baixar o PIB, reconstrua: `scripts/build_dashboard_data.py`, `scripts/build_analise.py`
+e `scripts/test_analise.py`. Não rode `download_bcb.py` nem `download_ibovespa.py`
+(legados; sobrescrevem a fonte de produção). Para o Apoie, preencha `pixKey` (e, se
+quiser o "PIX copia e cola", `pixName`) em `dashboard/js/apoie.js`.
 
-## Notícias da época
+## 15. Testes e QA
 
-O dashboard intercala os dados com **matérias jornalísticas reais**:
-marcadores numerados e clicáveis no gráfico mensal (com a matéria aberta ao
-lado, em "O que se noticiava"), o noticiário de cada mês na Máquina do tempo
-e o Arquivo, ano a ano, com a média do produto em cada ano.
+```bash
+.venv/Scripts/python scripts/test_analise.py           # validações da Análise (automático)
+.venv/Scripts/python scripts/download_conab.py --autoteste   # dados sintéticos
+```
 
-- **Curadoria:** `data/news/raw_*.json` (título, veículo, data, URL, resumo e
-  tags de produto de cada matéria).
-- **Verificação:** `scripts/build_news.py` abre cada URL e só publica o item se
-  a página responder e o título curado bater com o título da própria página.
-  A descrição exibida é a publicada pela página (og:description). Saída em
-  `data/processed/noticias.json`.
+Não há testes automáticos do front-end nem de acessibilidade; essas checagens foram
+manuais. Ver [docs/TESTING_AND_QA.md](docs/TESTING_AND_QA.md).
 
-  ```bash
-  .venv/Scripts/python scripts/build_news.py
-  ```
-- **Fotos:** só aparecem quando a licença permite reprodução com crédito
-  (Agência Brasil, CC BY 4.0) **e** o crédito não indica restrição. Fotos da
-  Reuters/AFP, "Divulgação" ou "Direitos reservados" publicadas pela própria
-  Agência Brasil ficam de fora. As demais matérias aparecem só com texto.
-- **Não é causalidade:** as notícias mostram o que estava sendo noticiado em
-  cada momento. Elas não substituem os números nem provam que um evento
-  causou uma variação de preço.
+## 16. Documentação
 
-## Metodologia (resumo)
+Índice: [docs/README.md](docs/README.md). Principais:
+[CURRENT_STATE](docs/CURRENT_STATE.md) · [METHODOLOGY](docs/METHODOLOGY.md) ·
+[DATA_PIPELINE](docs/DATA_PIPELINE.md) · [KNOWN_ISSUES](docs/KNOWN_ISSUES.md) ·
+[ROADMAP](docs/ROADMAP.md) · [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md).
 
-- **Dois períodos**: Bolsonaro (01/2019–12/2022) e Lula (01/2023–mês mais
-  recente disponível). O marco de corte é `2023-01-01`, ver
-  `scripts/common.py`.
-- **Nominal vs. real**: preço nominal é o valor observado no mês; preço real
-  é o nominal multiplicado pelo IPCA do mês mais recente dividido pelo IPCA
-  do mês da observação (ou seja, "a preços de hoje"). Isso evita que a
-  inflação acumulada do período infle artificialmente a variação percentual.
-- **Variação dentro do período**: comparação entre o primeiro e o último mês
-  disponível de cada período, não entre o primeiro/último ponto de toda a
-  série.
-- **Contexto de combustíveis**: cada preço de combustível vem acompanhado do
-  câmbio USD/BRL e do Brent (em USD e convertido para BRL) do mesmo mês, para
-  visualizar quanto da variação de preço reflete fatores internacionais
-  (petróleo, câmbio) vs. decisões domésticas (política de preços da
-  Petrobras, tributos estaduais/federais).
-- **Cesta básica**: o SIDRA não publica preço médio absoluto em R$ por item a
-  nível nacional — só a variação percentual mensal oficial do IPCA por
-  subitem. Por isso o dataset de cesta básica é um **índice relativo**
-  (encadeado a partir dessa variação, base 100 em jan/2019), não um preço em
-  reais. Ver limitações abaixo.
+## 17. Roadmap
 
-## Limitações (leia antes de tirar conclusões)
+Em [docs/ROADMAP.md](docs/ROADMAP.md). Prioridades: alinhar o texto do Método aos
+dados (CONAB, seletor jan/2019), decidir a posição editorial sobre o PIB na Análise,
+incluir o PIB no fluxo de atualização e salvar as verificações de acessibilidade.
 
-1. **ANP tem defasagem e é uma amostra**: a pesquisa é semanal, feita por
-   empresa contratada, cobre um subconjunto de postos (não todos) e alguns
-   meses/regiões têm menos coletas que outras — isso afeta a precisão da
-   média, especialmente em regiões menores (Norte, Centro-Oeste).
-   **Setembro/2020 está completamente ausente** dos dados brutos publicados
-   pela ANP para todos os combustíveis (confirmado direto no arquivo fonte,
-   não é bug deste projeto) — coincide com um dos picos da pandemia, mas não
-   temos confirmação da causa. **Abril/2026 também está ausente** da série
-   processada atual (`anp_precos_mensais.csv`); a página detecta os meses
-   faltantes a partir dos próprios dados e os declara na fonte de cada
-   gráfico e em Método › Limitações.
-2. **Cesta básica não é preço em R$**: como explicado acima, os itens do
-   IBGE aqui são um índice relativo, não um valor monetário. Para preço
-   absoluto (ex.: "quanto custa 1kg de arroz"), a fonte de referência no
-   Brasil é o DIEESE — mas o banco de dados histórico do DIEESE por produto
-   deixou de ser público em abril/2018 (ver abaixo).
-3. **"Carne bovina" é um corte específico**: o IBGE não publica uma média
-   única de "carne bovina" — publica por corte (picanha, patinho, alcatra
-   etc.). Este projeto usa **Patinho** como referência por ser um corte
-   popular e de consumo disseminado, mas isso não representa todos os cortes
-   (cortes nobres tiveram trajetória de preço bem diferente de cortes
-   populares em alguns períodos, puxada por exportação).
-4. **Diesel "comum" perdeu participação de mercado**: a partir de ~2013 o
-   diesel S10 foi gradualmente substituindo o diesel S500 ("comum") nos
-   postos. O projeto reporta os dois separadamente — o S10 é hoje o mais
-   relevante para o consumidor.
-5. **Câmbio e Brent são contexto, não prova de causalidade**: mostrar que o
-   Brent ou o câmbio variaram na mesma direção que o preço do combustível não
-   isola o efeito de decisões domésticas (política de preços da Petrobras,
-   ICMS, PIS/COFINS/CIDE). Uma decomposição causal rigorosa exigiria um
-   modelo econométrico fora do escopo deste projeto — aqui o objetivo é dar
-   contexto visual, não atribuir causalidade.
-6. **IPCA é geral, não "cesta do projeto"**: o deflator usado é o IPCA cheio
-   (todos os produtos/serviços), não um índice específico de combustíveis ou
-   alimentos — é o padrão para "preço real", mas significa que o preço real
-   de um item específico pode divergir do IPCA cheio por razões que nada têm
-   a ver com o item (ex.: peso de serviços no IPCA).
-7. **Sem ajuste sazonal**: preços de alimentos (especialmente hortifruti,
-   fora do escopo aqui, mas também grãos) têm sazonalidade forte ligada à
-   safra; os itens escolhidos (arroz, feijão, café, óleo de soja, leite,
-   carne) são menos sazonais que hortifrutis, mas quebras de safra e
-   entressafra ainda afetam meses específicos — isso é mencionado no resumo
-   qualitativamente, não modelado formalmente.
-8. **Salário mínimo é o piso nacional**: usado no dashboard para "% do
-   salário mínimo" e "poder de compra" — é o valor nominal vigente em cada
-   mês (BCB SGS 1619), não ajustado por pisos regionais mais altos que
-   alguns estados praticam para certas categorias.
+## 18. Contribuição e manutenção
 
-### Sobre o DIEESE
+O repositório é público: <https://github.com/leonardotteixeira/custava-quanto>.
+Fonte incorreta, cálculo inconsistente ou escolha metodológica questionável: abra uma
+*issue*. Mudanças na metodologia da Análise exigem subir `METODOLOGIA_VERSAO` em
+`scripts/build_analise.py` e registrar em `docs/AUDITORIA_ANALISE_GOVERNOS.md`. Regra
+do projeto: nada de dado, fonte, notícia ou imagem inventados.
 
-O DIEESE mantém a Pesquisa Nacional da Cesta Básica de Alimentos (PNCBA),
-historicamente a referência para preço médio de itens da cesta básica por
-capital. Desde abril/2018, porém, os indicadores de preço por produto e
-cidade **não são mais de acesso público gratuito** — é preciso ser entidade
-sindical filiada ou contratar acesso (ver
-[nota oficial do DIEESE](https://www.dieese.org.br/analisecestabasica/notaBancoDados.html)).
-Existe uma ferramenta de consulta pública em
-[dieese.org.br/cesta](https://www.dieese.org.br/cesta/), mas não expõe
-download em lote (CSV/XLS) sem automação adicional fora do escopo deste
-projeto. Por isso o DIEESE **não está no pipeline automatizado** — é citado
-aqui como fonte para validação cruzada manual: se quiser conferir um número
-específico deste projeto contra o DIEESE, consulte o site diretamente ou os
-relatórios mensais em PDF publicados em
-[dieese.org.br/analisecestabasica](https://www.dieese.org.br/analisecestabasica/analiseCestaBasicaAnteriores.html).
+## 19. Licença
 
-### Preço absoluto (R$) para alimentos: por que ainda é só índice
-
-Os seis itens de alimento aparecem como índice de preço, não em R$, porque
-essa é a única coisa que o IBGE publica (ver acima). Antes de aceitar essa
-limitação como definitiva, o projeto auditou outras fontes possíveis —
-DIEESE, CONAB, CEPEA/ESALQ, Procon, IBGE/POF — avaliando cobertura
-geográfica, frequência, se o produto pesquisado é o mesmo do início ao fim
-da série e se o dado é preço absoluto de fato, não uma commodity num
-estágio diferente da cadeia (ex.: preço pago ao produtor, não ao
-consumidor). Resultado: nenhuma fonte passou em todos os critérios para
-nenhum dos seis itens hoje; arroz e feijão têm um candidato promissor
-(CONAB, preço de varejo por estado) que fica como próximo passo, pendente
-de verificar o arquivo real. Auditoria completa, fonte por fonte, em
-[docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md).
-
-## Atualizando os dados no futuro
-
-O jeito mais simples é `.venv/Scripts/python scripts/update_data.py` (ou
-`--rapido` para pular ANP/IBGE) — ver [Como rodar](#como-rodar). Isso
-equivale a rodar os 6 scripts de download novamente (eles buscam
-automaticamente até o dado mais recente disponível em cada fonte), depois
-`build_dataset.py`, `build_dashboard_data.py` e `build_news.py` (reverifica
-as notícias curadas contra as páginas originais). Quer os gráficos estáticos
-também? Rode `analysis/analysis.py` à parte. Não é preciso apagar
-`data/raw/` — o cache local evita rebaixar arquivos que não mudam (arquivos
-de meses/anos fechados da ANP raramente são revisados; se desconfiar de dado
-desatualizado, apague o arquivo específico em `data/raw/anp/` e rode de
-novo).
+O repositório **não tem arquivo de licença**. Retratos dos presidentes: CC BY 2.0
+(Wikimedia Commons, crédito no site). Fotos da Agência Brasil: CC BY 4.0. Fotos de
+outros veículos: sem licença de reprodução (ver seção 10).

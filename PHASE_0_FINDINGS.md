@@ -1,5 +1,8 @@
 # PHASE 0: Product Experience Audit & Findings
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Auditoria de experiência de produto feita em 23/09/2026, antes da reformulação. Os scores e problemas descrevem a página daquela data, não a atual.
+
+
 **Data:** 23/09/2026
 **Status:** ✅ Completo
 **Próximo:** Phase 0.2 — Information Architecture

@@ -50,6 +50,13 @@ rounded:
 
 # Design System: CUSTAVA QUANTO? (v2)
 
+> **Status (28/09/2026): CURRENT / EVOLVING.** Vale para os capítulos da v2 descritos
+> abaixo. Desde então foram acrescentados os capítulos **Análise** (`.an-*` em
+> `dashboard/styles.css`: régua de períodos, gráfico de pontos pareados, bloco escuro
+> de "Em 1 minuto" e de limites, tabelas de auditoria) e **Apoie** (`.ap-*`), que
+> seguem os mesmos tokens (papel, tinta, noite, âmbar, azul/vermelho só como
+> identificador de período). Esses dois ainda não têm seção própria neste documento.
+
 ## Direção: "Arquivo noturno"
 
 Uma publicação, não um painel. Papel de jornal quente para a leitura longa,

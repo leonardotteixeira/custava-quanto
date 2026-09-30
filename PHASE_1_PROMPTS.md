@@ -1,5 +1,8 @@
 # PHASE 1: Prompts Prontos para Execução
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Prompts usados na Fase 1 (23/09/2026). Registro de como o trabalho foi conduzido; não são tarefas em aberto.
+
+
 **Status:** ✅ Todos os prompts documentados
 **Como usar:** Copie cada prompt → Cole em @impeccable ou Claude Code
 

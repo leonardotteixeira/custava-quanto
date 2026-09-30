@@ -26,9 +26,10 @@ na primeira visita, não só a quem já conhece o autor.
 
 ## Product Purpose
 
-Mostrar como preços de combustíveis, itens da cesta básica e indicadores de
-mercado (Dólar, Selic, Ibovespa, IPCA) mudaram entre o governo Bolsonaro
-(2019–2022) e o governo Lula (2023–hoje), sempre acompanhados do contexto
+Mostrar como preços de combustíveis, itens da cesta básica e indicadores
+econômicos (Dólar, Selic, Ibovespa, IPCA, PIB) mudaram entre o governo Bolsonaro
+(jan/2019–dez/2022) e o governo Lula (jan/2023–último dado disponível, em curso),
+sempre acompanhados do contexto
 necessário (câmbio, petróleo Brent, inflação) para que o visitante não
 atribua a um governo o que é efeito de fatores externos. Sucesso = o
 visitante entende a magnitude e o contexto da mudança, sem o produto
@@ -41,8 +42,9 @@ jornalismo de dados neutro e auto-verificável. O que um concorrente não
 poderia copiar de forma verdadeira sem o mesmo rigor:
 
 - **Zero cálculo no navegador**: todo número exibido já foi calculado em
-  Python a partir de fontes públicas (ANP, IBGE, Banco Central, FRED, Yahoo
-  Finance) e gravado em `dashboard_data.json` — o front só formata e desenha.
+  Python a partir de fontes públicas (ANP, IBGE, Banco Central, B3, FRED) e
+  gravado em `dashboard_data.json` (a única exceção é a soma ponderada dos
+  sentidos já calculados quando o leitor muda os pesos em Análise) — o front só formata e desenha.
 - **Notícias verificadas contra a fonte, não curadas por IA**: cada matéria
   citada é conferida por script (`build_news.py`) contra a página original
   antes de publicar; título, veículo e data precisam bater.
@@ -61,15 +63,19 @@ gera JSON estático em `data/processed/`, servido por um dashboard HTML/CSS/JS
 + gráficos em SVG próprio, totalmente estático (sem backend em produção e sem
 biblioteca de gráficos). Dados atualizáveis
 via `scripts/update_data.py` (completo ou `--rapido`, pulando ANP/IBGE).
-Cotações "ao vivo" (Dólar, Selic, Ibovespa) vêm do Banco Central (SGS) e
-Yahoo Finance, com atraso declarado explicitamente na UI — nunca prometem
-tempo real.
+O "último dado disponível" de Dólar, Selic e Ibovespa vem do Banco Central (SGS)
+e da B3, gravado na última execução de `download_mercados.py` (arquivo estático,
+não consulta feita pelo navegador) — a UI nunca promete tempo real. PIB e alguns
+insumos precisam de execução manual dos scripts (ver docs/DATA_PIPELINE.md).
 
 ## Capabilities and Constraints
 
-- 15 produtos: 5 combustíveis, 6 itens de cesta básica, 4 indicadores de
-  mercado (Dólar, Selic, Ibovespa, IPCA) — cada categoria com sua própria
-  unidade e leitura (R$/litro, índice relativo, pontos, % a.a.).
+- 16 produtos: 5 combustíveis, 6 itens de cesta básica, 4 indicadores de
+  mercado (Dólar, Selic, Ibovespa, IPCA) e o PIB — cada categoria com sua própria
+  unidade e leitura (R$/litro, índice relativo, pontos, % a.a., % de crescimento).
+- Capítulos hoje: Índice, História, Preço, Bolso, Contexto, Máquina do tempo,
+  Períodos, Arquivo, Método, **Análise** (comparação entre períodos com metodologia
+  congelada v1.0, sem nota nem vencedor) e Apoie. Ver docs/CURRENT_STATE.md.
 - Comparação Era→Agora, timeline mensal 2019–hoje, Poder de Compra (litros
   por salário mínimo), Cápsula do Tempo (fotografia cross-indicador por
   mês), comparação Bolsonaro×Lula com cohorts (1º ano, 2 anos, 3 anos,
@@ -82,8 +88,9 @@ tempo real.
 - "Carne" = corte Patinho especificamente, não média de todos os cortes.
 - IPCA usado como deflator é o índice geral, não um índice específico do
   setor analisado.
-- WCAG AA já implementado (Phase 1): contraste corrigido, foco por teclado,
-  numeração de seções sem pulos.
+- Acessibilidade: contraste, foco por teclado e numeração de seções tratados na
+  Phase 1; verificações posteriores (axe-core) foram feitas à mão, sem script salvo
+  (ver docs/TESTING_AND_QA.md). Não há teste com leitor de tela.
 
 ## Brand Commitments
 
@@ -120,9 +127,9 @@ tempo real.
   brand book formal (3 direções conceituais exploradas, "Índice" escolhida).
   Fonte da paleta petróleo/âmbar e do símbolo; nome/tipografia do brand book
   não foram adotados, ver Brand Commitments acima.
-- Ausência confirmada: sem dado da DIEESE (cesta básica em R$), sem filtro
-  regional, sem modelo econométrico causal — nenhum destes deve ser
-  fabricado ou simulado.
+- Ausência confirmada: sem dado da DIEESE (cesta básica em R$), **sem dado da CONAB
+  integrado** (script existe; download real falhou), sem filtro regional, sem
+  modelo econométrico causal — nenhum destes deve ser fabricado ou simulado.
 
 ## Product Principles
 

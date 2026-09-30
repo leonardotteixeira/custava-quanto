@@ -1032,8 +1032,21 @@ code { font-family: var(--mono); font-size: 0.88em; }
 
 /* ---------------------------------------------------------------- 09 análise */
 .analise-sec { background: var(--paper); border-top: 1px solid var(--rule); }
-.an-hero { padding-bottom: clamp(28px, 4vw, 52px); border-bottom: 1px solid var(--line); }
-.an-hero-title { font-family: var(--serif); font-weight: 500; font-size: clamp(2.8rem, 7vw, 6.6rem); line-height: 0.95; letter-spacing: -0.035em; margin-top: 10px; }
+.an-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); align-items: end; padding-bottom: clamp(28px, 4vw, 52px); border-bottom: 1px solid var(--line); }
+.an-hero-fig { margin: 0; justify-self: end; width: 100%; max-width: 440px; }
+/* mesmo tratamento leve de cor dos retratos: o coral do vídeo não deve parecer o vermelho de período */
+.an-hero-video { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; background: var(--night); filter: saturate(0.6); }
+.an-hero-cap { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px 14px; margin-top: 8px; font-size: 0.68rem; line-height: 1.45; color: var(--fg-3); }
+.an-hero-cap .mono { text-transform: none; letter-spacing: 0; }
+.an-video-btn { flex: none; min-height: 32px; padding: 4px 10px; border: 1px solid var(--fg-3); background: transparent; color: var(--fg-2); font: inherit; font-size: 0.68rem; cursor: pointer; }
+.an-video-btn:hover { background: var(--bg-2); color: var(--fg); }
+.an-video-btn:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+@media (max-width: 860px) {
+  .an-hero { grid-template-columns: 1fr; }
+  .an-hero-fig { justify-self: start; max-width: 380px; }
+  .an-hero-video { aspect-ratio: 1 / 1; }
+}
+.an-hero-title { font-family: var(--serif); font-weight: 500; font-size: clamp(2.6rem, 5.6vw, 5.4rem); line-height: 0.95; letter-spacing: -0.035em; margin-top: 10px; }
 .an-hero-deck { max-width: 62ch; margin-top: clamp(18px, 2.4vw, 28px); font-family: var(--serif); font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.45; color: var(--fg-2); }
 .an-version { margin-top: 14px; font-size: 0.72rem; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -1044,7 +1057,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 
 /* regra */
 .an-rule { margin-top: clamp(32px, 4vw, 56px); display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 16px 32px; }
-.an-rule > .an-kick { padding-top: 4px; }
+.an-rule-side .an-kick { padding-top: 4px; display: block; }
 .an-rule-list { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 3px solid var(--fg); counter-reset: r; }
 .an-rule-list li { counter-increment: r; padding: 14px 18px 4px 0; font-size: 0.94rem; line-height: 1.5; color: var(--fg-2); }
 .an-rule-list li + li { padding-left: 18px; border-left: 1px solid var(--line); }
@@ -1275,4 +1288,27 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .an-timeline li { grid-template-columns: 1fr; }
   .an-tl-rel, .an-tl-src { grid-column: 1; }
   .an-limits-list, .an-aud-grid { grid-template-columns: 1fr; }
+}
+
+/* fotos editoriais (Análise e Apoie): sem ampliar além do tamanho real do arquivo */
+.an-fig { margin: 0; }
+.an-fig img { display: block; width: 100%; height: auto; }
+.an-fig figcaption { margin-top: 8px; font-size: 0.66rem; line-height: 1.45; letter-spacing: 0; text-transform: none; color: var(--fg-3); }
+/* uma das fotos é colorida e as outras duas são P&B: mesmo tratamento leve nas três */
+.an-fig--tone img { filter: grayscale(0.9) contrast(1.03); }
+.an-rule-side .an-fig { margin-top: 18px; max-width: 320px; }
+.an-limits-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 320px); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.an-limits-grid .an-limits-list { grid-template-columns: 1fr; }
+.an-fig--dark { max-width: 320px; justify-self: end; padding-top: 4px; }
+.an-fig--dark figcaption { color: var(--on-night-3); }
+.an-fig--dark img { filter: contrast(1.02); }
+.ap-fig { margin-top: 28px; max-width: 300px; }
+@media (max-width: 860px) {
+  .an-limits-grid { grid-template-columns: 1fr; }
+  .an-fig--dark { justify-self: start; }
+}
+@media (max-width: 1180px) {
+  .an-rule { grid-template-columns: 1fr; }
+  .an-causa { grid-column: 1; }
+  .an-rule-side .an-fig { max-width: 360px; }
 }

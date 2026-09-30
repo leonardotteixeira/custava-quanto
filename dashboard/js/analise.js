@@ -334,8 +334,30 @@ function renderModo() {
   renderConclusao();
 }
 
+// Vídeo decorativo da abertura: só toca com o bloco visível; nada toca com
+// movimento reduzido ou economia de dados (fica o pôster); o botão pausa/retoma.
+function initHeroVideo() {
+  const v = $("#an-video"), btn = $("#an-video-btn");
+  if (!v || !btn) return;
+  const economia = navigator.connection?.saveData === true;
+  let pausadoPeloLeitor = matchMedia("(prefers-reduced-motion: reduce)").matches || economia;
+  let visivel = false;
+  const rotulo = () => { btn.textContent = pausadoPeloLeitor ? "Reproduzir animação" : "Pausar animação"; btn.setAttribute("aria-pressed", String(pausadoPeloLeitor)); };
+  rotulo();
+  btn.addEventListener("click", () => {
+    pausadoPeloLeitor = !pausadoPeloLeitor; rotulo();
+    if (pausadoPeloLeitor) v.pause(); else if (visivel) v.play().catch(() => {});
+  });
+  if (!("IntersectionObserver" in window)) return;
+  new IntersectionObserver(([e]) => {
+    visivel = e.isIntersecting && e.intersectionRatio >= 0.35;
+    if (visivel && !pausadoPeloLeitor) v.play().catch(() => {}); else v.pause();
+  }, { threshold: [0, 0.35] }).observe(v);
+}
+
 export async function initAnalise() {
   if (!$("#analise")) return;
+  initHeroVideo();
   [M, R] = await Promise.all([getJSON("../data/processed/analysis_methodology.json"), getJSON("../data/processed/analysis_results.json")]);
   if (!M || !R) {
     $("#an-body").innerHTML = `<p class="an-part-lead">Não foi possível carregar a análise (<code>data/processed/analysis_methodology.json</code> e <code>analysis_results.json</code>). Rode <code>scripts/build_analise.py</code>.</p>`;

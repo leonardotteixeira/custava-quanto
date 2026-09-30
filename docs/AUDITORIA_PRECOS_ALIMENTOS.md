@@ -1,5 +1,13 @@
 # Auditoria de fontes: preço absoluto (R$) para os itens da cesta básica
 
+> **Status em 28/09/2026:** esta auditoria continua valendo como registro de por que
+> os alimentos aparecem como **índice**. O `download_conab.py` existe e foi testado
+> só com dados sintéticos (`--autoteste`). A tentativa real de
+> 25/09/2026 falhou (o script não achou o link de download na página da CONAB,
+> `conab_status.json`), então **nenhum preço da CONAB está integrado**. Ver
+> [KNOWN_ISSUES.md](KNOWN_ISSUES.md) H1 e [DATA_PIPELINE.md](DATA_PIPELINE.md).
+
+
 Pergunta que motivou esta auditoria: os seis itens de alimento do projeto
 (arroz, feijão carioca, carne bovina/patinho, leite longa vida, óleo de
 soja, café moído) hoje aparecem só como **índice de preço** (base 100 =

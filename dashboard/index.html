@@ -528,16 +528,33 @@
   <section class="chapter analise-sec" id="analise" aria-labelledby="analise-title" data-chapter="analise">
     <div class="shell">
       <header class="an-hero">
-        <p class="ch-kicker mono"><span>09</span>Análise</p>
-        <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
-        <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
-        <p class="an-version mono" id="an-version"></p>
+        <div class="an-hero-text">
+          <p class="ch-kicker mono"><span>09</span>Análise</p>
+          <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
+          <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
+          <p class="an-version mono" id="an-version"></p>
+        </div>
+        <figure class="an-hero-fig">
+          <video class="an-hero-video" id="an-video" muted loop playsinline preload="none" width="720" height="900" poster="assets/video/analise-ruido-poster.jpg" aria-hidden="true" tabindex="-1">
+            <source src="assets/video/analise-ruido.mp4" type="video/mp4">
+          </video>
+          <figcaption class="an-hero-cap">
+            <span class="mono">Ilustração gerada por IA: o barulho ao redor dos números. Não representa pessoa nem dado real.</span>
+            <button type="button" class="an-video-btn mono" id="an-video-btn" aria-controls="an-video" aria-pressed="false">Pausar animação</button>
+          </figcaption>
+        </figure>
       </header>
 
       <div id="an-body">
         <!-- regra -->
         <section class="an-rule" aria-labelledby="an-rule-title">
-          <h3 class="an-kick mono" id="an-rule-title">Antes de comparar, uma regra</h3>
+          <div class="an-rule-side">
+            <h3 class="an-kick mono" id="an-rule-title">Antes de comparar, uma regra</h3>
+            <figure class="an-fig an-fig--tone">
+              <img src="assets/imagens/urna-eletronica.jpg" width="984" height="656" loading="lazy" decoding="async" alt="Urna eletrônica da Justiça Eleitoral, com a tela apagada e o dedo de uma pessoa sobre a tecla verde Confirma.">
+              <figcaption class="mono">Urna eletrônica. Esta página não é sobre voto: não dá nota nem escolhe vencedor. Foto: reprodução; fonte e licença a confirmar.</figcaption>
+            </figure>
+          </div>
           <ol class="an-rule-list">
             <li><b>A pergunta vem antes do resultado.</b> Cada dimensão tem uma pergunta e um critério escritos na metodologia antes do cálculo. Mudar depois exige nova versão.</li>
             <li><b>“Subiu” não é “melhorou”.</b> Preço real em queda é favorável ao consumidor; PIB em alta indica mais atividade; dólar, Selic e Ibovespa não têm direção boa ou ruim para todos e só são descritos.</li>
@@ -603,6 +620,8 @@
 
         <!-- limites -->
         <section class="an-limits" aria-labelledby="an-lim-title">
+          <div class="an-limits-grid">
+          <div class="an-limits-main">
           <h3 class="an-part-title" id="an-lim-title">O que os dados não permitem concluir</h3>
           <ul class="an-limits-list">
             <li><b>Causa.</b> Nenhum número desta página mostra que uma mudança foi causada por um governo.</li>
@@ -613,6 +632,12 @@
             <li><b>Período em curso.</b> O governo Lula não terminou: qualquer leitura sobre ele é parcial.</li>
             <li><b>O que não está aqui.</b> Emprego, contas públicas, investimento e desigualdade não estão no projeto e não entram na análise.</li>
           </ul>
+          </div>
+          <figure class="an-fig an-fig--dark">
+            <img src="assets/imagens/protesto-cartaz.jpg" width="638" height="960" loading="lazy" decoding="async" alt="Fotografia em preto e branco de um protesto à noite: um homem de máscara segura a bandeira do Brasil sob um cartaz escrito Chega de políticos corruptos.">
+            <figcaption class="mono">Protesto. Foto de contexto sobre o clima político: não é dado nem posição do projeto. Foto: Jeferson Alves (nome impresso na imagem); fonte e licença a confirmar.</figcaption>
+          </figure>
+          </div>
         </section>
 
         <!-- conclusão -->
@@ -686,6 +711,10 @@
           <h3 class="ap-h2">Um projeto independente</h3>
           <p>O CUSTAVA QUANTO? não representa partido, governo, empresa ou campanha. O objetivo é organizar dados públicos e tornar suas mudanças ao longo do tempo mais fáceis de explorar.</p>
           <p>Os dados, fontes e metodologia continuam disponíveis para consulta: <a href="#metodo">08 Método</a> · <a href="#fontes" data-open="fontes">fontes dos dados</a>.</p>
+          <figure class="an-fig ap-fig">
+            <img src="assets/imagens/cabine-votacao.jpg" width="640" height="960" loading="lazy" decoding="async" alt="Fotografia em preto e branco de uma cabine de votação da Justiça Eleitoral, com uma pessoa parcialmente visível atrás dela.">
+            <figcaption class="mono">Cabine de votação. Sem partido, governo ou campanha por trás. Foto: reprodução; fonte e licença a confirmar.</figcaption>
+          </figure>
         </aside>
       </div>
 

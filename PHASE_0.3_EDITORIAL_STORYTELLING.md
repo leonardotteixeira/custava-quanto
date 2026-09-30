@@ -1,5 +1,8 @@
 # PHASE 0.3: Editorial Storytelling — Output
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Direção editorial definida em 23/09/2026. A voz e os princípios seguem valendo; exemplos de tela e fluxos são do momento.
+
+
 **Data:** 23/09/2026
 **Status:** ✅ Concluído
 **Próximo:** Phase 0.4 (Máquina do Tempo) ou Phase 1 (Implementação)

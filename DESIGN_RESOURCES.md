@@ -1,5 +1,8 @@
 # Design Resources & Roadmap
 
+> **HISTÓRICO** (rotulado em 28/09/2026). Lista de referências externas de design instaladas em `design-resources/` (pasta ignorada pelo git). Serviu à reformulação visual; o projeto final usa HTML/CSS/JS puro, sem shadcn/ui.
+
+
 ## Recursos Instalados
 
 Este projeto tem referências de design e componentes para uma eventual reformulação visual. Todos os recursos estão em `/design-resources/`.

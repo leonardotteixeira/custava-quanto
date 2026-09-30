@@ -1,5 +1,13 @@
 # 📖 Plano de Evolução da Experiência — CUSTAVA QUANTO?
 
+> **STATUS (atualizado em 28/09/2026): EM EXECUÇÃO — plano original preservado.**
+> Este documento nasceu como planejamento (23/09/2026, "aguardando aprovação").
+> Desde então a maior parte foi implementada, de forma diferente em alguns pontos.
+> O corpo abaixo é o **plano histórico, sem alterações**; o estado real de cada fase
+> está na seção **"Status atual"** ao final. Para o que o projeto é hoje, use
+> [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md); para o que falta,
+> [docs/ROADMAP.md](docs/ROADMAP.md).
+
 ## Visão do Produto
 
 **CUSTAVA QUANTO?** é uma experiência visual e interativa de dados econômicos que permite ao usuário voltar no tempo, comparar preços e indicadores, entender mudanças ao longo dos anos e descobrir o contexto histórico/econômico por trás desses números.
@@ -790,6 +798,10 @@ Não assumir que todo o produto será shadcn/ui. Diferenciar:
 
 ## Success Criteria
 
+> **Nota (28/09/2026):** os ✅ desta seção são os **critérios-alvo** do plano original, não
+> resultados verificados. O que foi de fato verificado está em "Status atual" e em
+> [docs/TESTING_AND_QA.md](docs/TESTING_AND_QA.md).
+
 ### Editorial & Narrative
 ✅ User understands "what is this?" in first 5 seconds
 ✅ Page has clear narrative flow (Mostrar → Comparar → Explicar → Contextualizar → Explorar)
@@ -931,22 +943,74 @@ If full redesign is too much, do 2-week sprints per phase:
 
 ---
 
-## Current Status
+## Status atual
 
-### ⏹️ PLANNING ONLY
+Última atualização: 28/09/2026 · Status: **EM EXECUÇÃO** (o plano deixou de ser "somente planejamento").
 
-No visual changes, no code changes, no skills executed.
+> Duas numerações convivem: as **fases deste plano** (0–7) e os documentos
+> `PHASE_0*.md` / `PHASE_1_*.md`, que são as **execuções** da Fase 0 e de uma
+> primeira rodada de implementação (23/09/2026). Todos os `PHASE_*.md` estão marcados
+> como **HISTÓRICO**.
 
-**Next step:** Review and approve this plan before moving to Phase 0.
+### CURRENT STATUS — fase por fase
 
-Once approved:
-1. Execute Phase 0 (Product Experience & Editorial Direction)
-2. Share findings
-3. Proceed with Phase 1 (Audit) if direction is clear
+| Fase do plano | Estado | Evidência no repositório |
+|---|---|---|
+| **0. Experiência de produto e direção editorial** (0.1–0.4) | **Concluída** | `PHASE_0_FINDINGS.md`, `PHASE_0.2_…`, `PHASE_0.3_…`, `PHASE_0.4_MAQUINA_DO_TEMPO.md`; a Máquina do tempo existe (capítulo 05) |
+| **1. Auditoria** (experiência, visual, acessibilidade) | **Feita uma vez, não recorrente** | `PHASE_1_QA_REPORT.md` (23/09/2026); axe-core rodado à mão em capítulos isolados depois; não há auditoria periódica salva |
+| **2. Direção de design e tokens** | **Concluída** | [DESIGN.md](DESIGN.md) (v2 "Arquivo noturno"), tokens em `dashboard/styles.css` |
+| **3. Arquitetura de componentes e informação** | **Concluída na prática** | Abertura com faixa de indicadores, Índice, Períodos, Máquina do tempo, Arquivo/notícias, navegação por capítulos |
+| **4. Visualização de dados e tipografia** | **Concluída** | Gráficos em SVG próprio (`dashboard/js/charts.js`); Newsreader, Archivo e IBM Plex Mono |
+| **5. Interações, acessibilidade, mobile** | **Parcial** | Movimento reduzido respeitado, teclado nos gráficos, layouts em 320–768 px checados à mão; **sem teste com leitor de tela, sem auditoria automatizada salva** |
+| **6. Implementação** | **Concluída, com decisão diferente da prevista** | 6.1 previa shadcn/ui para componentes de UI; o projeto ficou em **HTML/CSS/JS puro**, sem biblioteca de componentes nem de gráficos |
+| **7. Revisão e QA final** | **Parcial** | Verificações manuais (ver `docs/TESTING_AND_QA.md`); **desempenho e navegadores múltiplos não foram medidos** |
 
-**This plan is a blueprint, not a checklist to execute immediately.**
+### O que existe hoje e não estava neste plano
 
-Each phase requires approval before proceeding to the next.
+- Capítulo **Análise** (metodologia v1.0, dois modos de janela, direção por indicador, sensibilidade a pesos, testes).
+- Página do **PIB** como história própria, com anual, trimestral e componentes.
+- Capítulo **Apoie** (PIX configurável; chave ainda não configurada).
+- Estimativa transparente para a lacuna da ANP em set/2020.
+- Retratos dos presidentes com `srcset`.
+
+### COMPLETED (do plano original)
+
+Direção editorial e arco narrativo; identidade visual e tokens; arquitetura de
+capítulos; gráficos próprios; notícias integradas ao gráfico e ao Arquivo; Máquina
+do tempo; neutralidade visual (azul/vermelho só identificam período).
+
+### IN PROGRESS
+
+Correção de textos do Método que descrevem a CONAB e um seletor removido
+([KNOWN_ISSUES](docs/KNOWN_ISSUES.md) H1, M4); decisão editorial sobre o PIB na Análise (H2).
+
+### NEXT PHASE
+
+Auditoria de acessibilidade repetível (axe + teclado + leitor de tela), teste de
+desempenho, teste em outros navegadores e dispositivos reais — ver
+[docs/ROADMAP.md](docs/ROADMAP.md) "PRÓXIMO".
+
+### OPEN QUESTIONS
+
+- O PIB pode ter direção "favorável" na Análise, dado o que o Método promete? (H2)
+- Vale integrar preço absoluto de alimentos (CONAB) ou retirar a promessa do site? (H1)
+- Qual a política para fotos de veículos sem licença de reprodução? (hoje: mostradas, com crédito)
+- O Apoie entra em produção com PIX próprio? (chave não configurada)
+
+### Os 10 princípios de produto: situação hoje
+
+| # | Princípio | Situação | Observação |
+|---|---|---|---|
+| 1 | Data First | **Implementado** | O número de cada história vem antes da explicação |
+| 2 | Show Before Explain | **Implementado** | Valor e gráfico antes do texto |
+| 3 | Progressive Disclosure | **Implementado** | Tabelas e auditorias recolhidas; "Em 1 minuto" antes do detalhe |
+| 4 | Editorial, Not Dashboard | **Atual / em evolução** | Capítulos com título-pergunta; sem medição com leitores |
+| 5 | Context Matters | **Implementado** | Contexto, notícias, marcos, Máquina do tempo |
+| 6 | No Invented Data | **Implementado no pipeline; contrariado por 1 texto** | A estimativa de set/2020 é rotulada; o Método descreve dado da CONAB que não existe (H1) |
+| 7 | No Implied Causality | **Implementado** | "Contexto, não causa" no texto; marcos sempre como calendário |
+| 8 | Neutral Visual Language | **Implementado** | Sem verde/vermelho de bom/ruim; sem placar |
+| 9 | Consistency | **Atual / em evolução** | Padrões comuns, mas textos do Método divergem do resto (H1, H2, M4, L1) |
+| 10 | Mobile Clarity | **Parcial** | Checagem manual em 320–768 px; sem dispositivo real |
 
 ---
 
@@ -966,5 +1030,5 @@ Each phase requires approval before proceeding to the next.
 
 ---
 
-**Última atualização:** 23/09/2026
-**Status:** Aguardando aprovação do plano
+**Última atualização:** 28/09/2026 (status); o plano acima é de 23/09/2026
+**Status:** Em execução — ver "Status atual"
