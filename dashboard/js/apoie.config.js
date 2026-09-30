@@ -12,11 +12,11 @@
 
 // Chave Pix: CPF ou CNPJ (só dígitos), e-mail, celular no formato +5511999998888
 // ou chave aleatória (UUID). Até 77 caracteres.
-export const PIX_KEY = "COLOQUE_SUA_CHAVE_PIX_AQUI";
+export const PIX_KEY = "9bf0d836-a584-4436-8f45-61c650167cf3";
 
 // Nome do recebedor como no cadastro da conta. Até 25 caracteres; o código remove
 // acentos e usa maiúsculas, como o padrão do BR Code exige.
-export const MERCHANT_NAME = "COLOQUE_O_NOME_DO_RECEBEDOR";
+export const MERCHANT_NAME = "Leonardo Teixeira";
 
 // Cidade do recebedor. Até 15 caracteres, sem acentos. Confirme se é a cidade correta.
 export const MERCHANT_CITY = "CAMPINAS";
