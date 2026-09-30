@@ -1,6 +1,6 @@
 # Problemas conhecidos e lacunas
 
-Última atualização: 28/09/2026
+Última atualização: 30/09/2026
 Status: **CURRENT**. Todo item abaixo foi verificado no repositório nesta data.
 Nada aqui foi corrigido na sincronização de documentação: esta tarefa só registra.
 
@@ -116,9 +116,12 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
   quatro itens entram como `verificacao: "manual"`.
 - **L5.** O contexto externo da Análise (5 marcos) cita a fonte como instituição e
   data, **sem link**.
-- **L6.** Apoie: `SUPPORT_CONFIG.pixKey` está vazio (a página mostra "Chave PIX ainda
-  não configurada") e o QR Code não foi implementado (não há biblioteca de QR no
-  projeto).
+- **L6.** Apoie: `PIX_KEY` e `MERCHANT_NAME` em `dashboard/js/apoie.config.js` ainda são
+  "COLOQUE_…", então a página mostra "Chave Pix ainda não configurada" e não gera QR
+  Code nem Pix Copia e Cola. O fluxo está implementado e testado com uma chave falsa
+  em memória (QR decodificado por leitor independente; CRC e campos do BR Code
+  conferidos); falta a chave real e a confirmação de `MERCHANT_CITY`. Não foi testado
+  o pagamento de verdade em um app de banco.
 - **L7.** Higiene do repositório: existem dois PDFs de brand book na raiz — um
   versionado ("Custava Quanto - Brand Book.pdf") e outro **não** versionado com o
   nome grafado "Custavo" —, mais `p.html` e `.impeccable/review/` não versionados.
@@ -144,6 +147,9 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
   A do protesto mostra pessoas identificáveis e um cartaz político; foi mantida por
   decisão editorial do responsável, só como contexto e com legenda. Os arquivos
   `imagem 1.jpg`, `imagem 2.jpg` e `imagem 3.jpg` continuam na raiz, não versionados.
+- **L13.** Contraste do número "10" no item Apoie do menu superior: 3,7:1 (mínimo 4,5:1), por
+  `.mast-nav .nav-apoie a { opacity: 0.8 }` em `styles.css`. É a única violação do axe-core na
+  página inteira em 30/09/2026 e existia antes da reconstrução da Análise.
 - **L8.** O ambiente local usa Python 3.11.9; o README anterior dizia "3.11+".
   Nenhuma versão máxima é imposta.
 

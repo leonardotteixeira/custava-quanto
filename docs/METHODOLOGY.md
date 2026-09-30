@@ -2,7 +2,7 @@
 
 Última atualização: 28/09/2026
 Status: **CURRENT** — descreve o que o código calcula hoje. Metodologia da
-Análise: **v1.0** (arquivo congelado em `data/processed/analysis_methodology.json`).
+Análise: **v1.1** (arquivo congelado em `data/processed/analysis_methodology.json`).
 
 Este texto é para quem lê, não para quem programa. Onde há fórmula, ela é a que o
 código usa (arquivo indicado). Fontes, frequências e limitações de cada série
@@ -121,15 +121,15 @@ Marco: Bolsonaro até 31/12/2022; Lula desde 01/01/2023 (`PERIODO_CORTE`).
 | Janela | Bolsonaro | Lula | Onde é usada |
 |---|---|---|---|
 | **Troca → último dado** | dez/2022 (último dado antes da troca) | — | Índice, história (era → agora), Contexto, Bolso |
-| **Período completo disponível** | jan/2019–dez/2022 (48 meses) | jan/2023–último dado (44 meses em ago/2026, em curso) | Períodos "governo inteiro"; Análise, modo completo |
-| **Mesmo tempo de governo** | meses 1 a *N* do mandato | meses 1 a *N* do mandato | Análise (modo principal) |
+| **Período completo disponível** | jan/2019–dez/2022 (48 meses) | jan/2023–último dado (44 meses em ago/2026, em curso) | Períodos "governo inteiro"; Análise (comparação principal) |
+| **Mesmo tempo de governo** | meses 1 a *N* do mandato | meses 1 a *N* do mandato | Análise (comparação secundária, "igual duração") |
 | **Primeiros 12/24/36 meses** | primeiros *n* meses | primeiros *n* meses | Períodos |
 
 O período Lula **não está completo**: use "último dado disponível" ou "em curso".
 As janelas de mesma duração existem porque comparar 48 meses com 44 distorce
 qualquer variação acumulada.
 
-Em **mesmo tempo de governo**, *N* é a maior duração em que os dois períodos têm
+Na comparação por **igual duração**, *N* é a maior duração em que os dois períodos têm
 dado, calculada dos dados (44 meses, com dados mensais até ago/2026), não escolhida à mão. O IPCA em 12
 meses começa em jan/2020 (precisa de 12 meses anteriores) e o PIB é anual, então
 para eles vale o que os dois lados têm em comum: IPCA de jan/2020 a ago/2022 contra
@@ -140,7 +140,12 @@ Compara-se a **mesma posição no mandato**, não o mesmo calendário: os primei
 meses de cada período correspondem a momentos diferentes do ciclo econômico
 mundial.
 
-## Análise: como a leitura é construída (metodologia v1.0)
+## Análise: como a leitura é construída (metodologia v1.1)
+
+A **comparação principal** é a dos períodos inteiros ("período completo disponível":
+Bolsonaro jan/2019–dez/2022; Lula jan/2023–último dado, em curso). A comparação por
+igual duração é um controle secundário, ligado por um botão na página; as duas nunca
+se misturam num mesmo número.
 
 Implementação: `scripts/build_analise.py`. Ela grava a metodologia primeiro e só
 depois calcula, lendo a metodologia do disco; o hash SHA-256 do arquivo vai junto
@@ -160,8 +165,8 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 ### Tipos de indicador
 
 - **Tipo A — direção definida.** A metodologia diz de antemão qual sentido é
-  favorável: preço real ou inflação **menor**; poder de compra ou crescimento
-  **maior**. 15 séries.
+  o de menor pressão ou de mais atividade: preço real ou inflação **menor**; poder de
+  compra ou crescimento **maior**. 15 séries.
 - **Tipo B — depende do contexto.** Só descrito (início, fim, média, mínimo,
   máximo). Nunca recebe leitura de direção nem entra na síntese: Dólar, Selic,
   Ibovespa. Um dólar mais baixo barateia importações e prejudica exportadores; juro
@@ -188,21 +193,62 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 6. **Síntese**: soma dos sentidos ponderada por pesos. O sentido, não a
    magnitude, porque as dimensões têm unidades diferentes.
 
+### Nível de evidência
+
+Cada dimensão recebe um rótulo, calculado por regra (não é opinião):
+
+- **ALTA**: série medida da mesma forma nos dois períodos, com fonte oficial e valor em
+  unidade concreta.
+- **MÉDIA**: comparável, mas a medida tem uma limitação estrutural (por exemplo,
+  índice de preço encadeado em vez de preço em R$: é o caso dos alimentos, então
+  Custo de vida é MÉDIA).
+- **INFORMATIVA**: descrita, sem direção definida (Mercados): não entra na síntese.
+
+Para uma dimensão Tipo A, vale o **menor** nível de confiança entre as suas séries.
+O rótulo descreve a qualidade da medida, não o desempenho de nenhum governo.
+
 ### Sensibilidade aos pesos
 
-Quatro cenários definidos antes do cálculo, sobre as quatro dimensões Tipo A:
+Cinco cenários definidos antes do cálculo, sobre as quatro dimensões Tipo A:
 
 | Cenário | Custo de vida | Inflação | Renda | Atividade |
 |---|---|---|---|---|
 | Pesos iguais (padrão) | 25 | 25 | 25 | 25 |
-| Ênfase no custo de vida | 40 | 20 | 20 | 20 |
-| Ênfase em renda e inflação | 20 | 30 | 30 | 20 |
-| Ênfase na atividade | 20 | 20 | 20 | 40 |
+| Ênfase em custo de vida | 40 | 20 | 20 | 20 |
+| Ênfase em inflação | 20 | 40 | 20 | 20 |
+| Ênfase em renda e poder de compra | 20 | 20 | 40 | 20 |
+| Ênfase em atividade econômica | 20 | 20 | 20 | 40 |
 
 O padrão é igual porque não há razão a priori para privilegiar uma dimensão; qualquer
-outra escolha é juízo de valor. A página informa se o sentido da síntese muda entre
-cenários e permite ao leitor digitar seus próprios pesos. Os textos de leitura são
-gerados a partir dos números por modelos de frase; não há conclusão digitada à mão.
+outra escolha é juízo de valor. Além dos cenários, o script refaz a síntese para
+**todas as combinações de pesos de 5 em 5 pontos que somam 100** (1.771 combinações)
+e informa em quantas a síntese aponta para cada período e em quantas empata. Na
+página, o leitor move uma barra por dimensão ("Como diferentes prioridades mudam a
+leitura?"); a única conta feita no navegador é a soma ponderada dos sentidos já
+calculados (+1, 0, −1), a mesma fórmula da síntese. Os pesos são preferência do
+leitor, não dado: mudá-los muda a interpretação e não mostra qual governo foi
+melhor.
+
+### Outras verificações de robustez
+
+- **Sem uma série**: em dimensões com 3 ou mais séries (Custo de vida), a leitura é
+  refeita tirando uma série por vez; a página informa em quantos testes ela se
+  mantém.
+- **Custo de vida em dois grupos**: combustíveis (preço médio em R$) e alimentos
+  (índice de preço encadeado, não R$/kg) têm medianas separadas no gráfico, para que
+  o índice não seja lido como preço em reais.
+- **Maiores movimentos**: as maiores altas e quedas reais entre as séries de custo de
+  vida e poder de compra, e a maior diferença entre os períodos. Entram só séries em
+  variação real (mesma unidade de leitura).
+- **PIB**: barras anuais de 2019 ao último ano fechado; os trimestres do ano em curso
+  aparecem à parte, com três medidas rotuladas (contra o mesmo trimestre do ano
+  anterior, contra o trimestre anterior com ajuste sazonal, acumulado em 4
+  trimestres). Nenhuma delas é resultado anual e nenhuma entra na média.
+- **Janela**: se trocar entre "período completo" e "igual duração" muda a leitura de
+  uma dimensão, o texto gerado diz qual.
+
+Os textos de leitura são gerados a partir dos números por modelos de frase; não há
+conclusão digitada à mão, e o gerador não usa "favorável" nem "melhor".
 
 ### O que a Análise não faz
 

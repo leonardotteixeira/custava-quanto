@@ -1,17 +1,17 @@
-// CUSTAVA QUANTO? — página "Apoie" (capítulo 09).
+// CUSTAVA QUANTO? — capítulo "Apoie": valor sugerido, Pix Copia e Cola e QR Code.
 //
-// >>> CONFIGURAÇÃO: preencha aqui a chave PIX pública do projeto. <<<
-// Enquanto `pixKey` estiver vazio (ou com o texto de exemplo), a página mostra
-// "Chave PIX ainda não configurada." e nenhum dado de pagamento é exibido.
-// `pixName` (nome do recebedor, até 25 letras) e `pixCity` (até 15) só são
-// usados para montar o "PIX copia e cola" com o valor escolhido; sem `pixName`
-// a página mostra apenas a chave.
-export const SUPPORT_CONFIG = {
-  pixKey: "",
-  pixName: "",
-  pixCity: "CAMPINAS",
-};
-const PLACEHOLDER = "COLOQUE_SUA_CHAVE_PIX_AQUI";
+// A chave, o nome e a cidade do recebedor ficam em `apoie.config.js` (é lá que se
+// coloca a chave real). Este arquivo não guarda nenhum dado de pagamento.
+//
+// O que o site faz: monta o "Pix Copia e Cola" no padrão BR Code do Banco Central
+// (EMV QRCPS, com CRC16/CCITT-FALSE) e desenha o QR Code desse mesmo texto. O que o
+// site NÃO faz: processar, receber ou confirmar pagamento. A transferência acontece
+// no aplicativo do banco de quem paga.
+import { PIX_KEY, MERCHANT_NAME, MERCHANT_CITY } from "./apoie.config.js";
+
+// Cópia mutável da configuração: é o que a página lê (permite testar sem editar o
+// arquivo de configuração). Em produção, vale o que está em apoie.config.js.
+export const PIX_CONFIG = { key: PIX_KEY, name: MERCHANT_NAME, city: MERCHANT_CITY };
 
 // Outras formas de apoio (cartão, Mercado Pago, Stripe, Apoia.se…) entram aqui
 // quando existirem de verdade: { id, label, url }. Só as configuradas aparecem.
@@ -19,6 +19,7 @@ export const OUTROS_METODOS = [];
 
 const $ = (s, r = document) => r.querySelector(s);
 const SUGESTOES = [10, 25, 50, 100];
+const VALOR_MIN = 1, VALOR_MAX = 100000;
 const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
 // ---------------------------------------------------------------- valores
@@ -31,9 +32,13 @@ export function parseValor(txt) {
   const v = Number(t);
   return Number.isFinite(v) ? Math.round(v * 100) / 100 : NaN;
 }
-const VALOR_MIN = 1, VALOR_MAX = 100000;
 
-// ------------------------------------------------- PIX copia e cola (BR Code)
+// ------------------------------------------------- Pix Copia e Cola (BR Code)
+// Estrutura do Manual do BR Code (Banco Central): cada campo é ID(2) + tamanho(2) + valor.
+//   00 formato = 01 · 01 tipo de QR = 11 (estático) · 26 conta (00 = br.gov.bcb.pix, 01 = chave)
+//   52 categoria = 0000 · 53 moeda = 986 (BRL) · 54 valor · 58 país = BR
+//   59 nome do recebedor (≤ 25) · 60 cidade (≤ 15) · 62 dados adicionais (05 = "***")
+//   63 CRC16 (polinômio 0x1021, valor inicial 0xFFFF) sobre todo o texto até "6304".
 const tlv = (id, v) => `${id}${String(v.length).padStart(2, "0")}${v}`;
 export function crc16(str) {
   let crc = 0xffff;
@@ -43,23 +48,57 @@ export function crc16(str) {
   }
   return crc.toString(16).toUpperCase().padStart(4, "0");
 }
-const semAcento = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9 ]/g, "").toUpperCase();
+const semAcento = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9 ]/g, "").replace(/\s+/g, " ").trim().toUpperCase();
 export function pixPayload({ key, name, city }, valor) {
   const conta = tlv("00", "br.gov.bcb.pix") + tlv("01", key);
-  let p = tlv("00", "01") + tlv("26", conta) + tlv("52", "0000") + tlv("53", "986");
+  let p = tlv("00", "01") + tlv("01", "11") + tlv("26", conta) + tlv("52", "0000") + tlv("53", "986");
   if (valor) p += tlv("54", valor.toFixed(2));
   p += tlv("58", "BR") + tlv("59", semAcento(name).slice(0, 25)) + tlv("60", semAcento(city || "BRASIL").slice(0, 15)) + tlv("62", tlv("05", "***"));
   p += "6304";
   return p + crc16(p);
 }
 
-// ---------------------------------------------------------------- estado
-const st = { valor: null, outro: false };
-const chavePix = () => {
-  const k = String(SUPPORT_CONFIG.pixKey || "").trim();
-  return k && k !== PLACEHOLDER ? k : "";
-};
+// ---------------------------------------------------------------- configuração
+const ehPlaceholder = (v) => !String(v || "").trim() || /^COLOQUE_/i.test(String(v).trim());
+export function estadoConfig(cfg = PIX_CONFIG) {
+  const key = String(cfg.key || "").trim();
+  const nome = semAcento(cfg.name || "").slice(0, 25);
+  const faltam = [];
+  if (ehPlaceholder(key)) faltam.push("PIX_KEY");
+  else if (key.length > 77) faltam.push("PIX_KEY (mais de 77 caracteres)");
+  if (ehPlaceholder(cfg.name) || !nome) faltam.push("MERCHANT_NAME");
+  return { key: ehPlaceholder(key) ? "" : key, chaveOk: !faltam.some((f) => f.startsWith("PIX_KEY")), pronto: faltam.length === 0, faltam };
+}
 
+// ---------------------------------------------------------------- QR Code
+// Biblioteca: qrcode-generator (Kazuhiko Arase, MIT), copiada para dashboard/vendor/.
+// Só é carregada quando há um QR para desenhar.
+let promessaQR = null;
+function carregarQR() {
+  if (window.qrcode) return Promise.resolve(window.qrcode);
+  if (!promessaQR) {
+    promessaQR = new Promise((ok, erro) => {
+      const s = document.createElement("script");
+      s.src = "vendor/qrcode-generator.js";
+      s.onload = () => (window.qrcode ? ok(window.qrcode) : erro(new Error("biblioteca de QR sem retorno")));
+      s.onerror = () => { promessaQR = null; erro(new Error("não foi possível carregar a biblioteca de QR")); };
+      document.head.appendChild(s);
+    });
+  }
+  return promessaQR;
+}
+export function qrSvg(qrcode, texto, rotulo) {
+  const qr = qrcode(0, "M");            // versão automática, correção de erro M
+  qr.addData(texto, "Byte");
+  qr.make();
+  const n = qr.getModuleCount(), q = 4, lado = n + 2 * q; // 4 módulos de margem clara (padrão)
+  let d = "";
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + q} ${r + q}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${lado} ${lado}" role="img" aria-label="${rotulo}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect width="${lado}" height="${lado}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+}
+
+// ---------------------------------------------------------------- estado e tela
+const st = { valor: null, outro: false, gen: 0 };
 function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 
 function renderValores() {
@@ -68,29 +107,51 @@ function renderValores() {
     + `<button type="button" data-v="outro" aria-pressed="${st.outro}">Outro valor</button>`;
 }
 
-function renderPix() {
-  const key = chavePix();
+function qrBox(html, txt, vazio) {
+  $("#ap-qr").classList.toggle("ap-qr--vazio", !!vazio);
+  $("#ap-qr-img").innerHTML = html || "";
+  $("#ap-qr-txt").textContent = txt || "";
+}
+
+async function renderPix() {
+  const cfg = estadoConfig();
   const body = $("#ap-pix-body");
-  const cfg = SUPPORT_CONFIG;
-  $("#ap-pix-amount").textContent = st.valor ? `Valor escolhido: ${brl.format(st.valor)} (você confirma o valor no app do seu banco).` : "";
-  if (!key) {
-    body.innerHTML = `<p class="ap-nokey">Chave PIX ainda não configurada.</p>`;
+  const gen = ++st.gen;
+  $("#ap-pix-amount").textContent = st.valor ? `Valor escolhido: ${brl.format(st.valor)}. O código e o QR Code já levam esse valor; confira-o no app do seu banco antes de confirmar.` : "";
+  body.dataset.payload = "";
+
+  if (!cfg.chaveOk) {
+    body.innerHTML = `<p class="ap-nokey">Chave Pix ainda não configurada.</p>`;
+    qrBox("", "O QR Code e o Pix Copia e Cola serão gerados quando a chave Pix for configurada.", true);
+  } else if (!cfg.pronto) {
+    body.innerHTML = `<p class="ap-keylabel">Chave Pix</p><p class="ap-key" id="ap-key" tabindex="0">${esc(cfg.key)}</p>
+      <div class="ap-actions"><button type="button" class="ap-btn ap-btn--ghost" data-copy="key">Copiar chave</button></div>
+      <p class="ap-nokey ap-nokey--s">O QR Code ainda não está disponível: falta configurar ${esc(cfg.faltam.join(", "))}.</p>`;
+    qrBox("", "Falta configurar o nome do recebedor para gerar o QR Code.", true);
+  } else if (!st.valor) {
+    body.innerHTML = `<p class="ap-keylabel">Chave Pix</p><p class="ap-key" id="ap-key" tabindex="0">${esc(cfg.key)}</p>
+      <div class="ap-actions"><button type="button" class="ap-btn ap-btn--ghost" data-copy="key">Copiar chave</button></div>
+      <p class="ap-hint">Escolha um valor acima para gerar o QR Code e o Pix Copia e Cola.</p>`;
+    qrBox("", "Escolha um valor para gerar o QR Code.", true);
   } else {
-    const nome = String(cfg.pixName || "").trim();
-    const payload = nome ? pixPayload({ key, name: nome, city: cfg.pixCity }, st.valor) : "";
-    body.innerHTML = `<p class="ap-keylabel">Chave PIX</p>
-      <p class="ap-key" id="ap-key" tabindex="0">${esc(key)}</p>
-      <div class="ap-actions">
-        <button type="button" class="ap-btn" data-copy="key">Copiar chave</button>
-        ${payload ? `<button type="button" class="ap-btn ap-btn--ghost" data-copy="payload">Copiar “PIX copia e cola”${st.valor ? ` de ${esc(brl.format(st.valor))}` : ""}</button>` : ""}
-      </div>`;
+    const payload = pixPayload({ key: cfg.key, name: PIX_CONFIG.name, city: PIX_CONFIG.city }, st.valor);
     body.dataset.payload = payload;
+    body.innerHTML = `<div class="ap-actions ap-actions--main">
+        <button type="button" class="ap-btn" data-copy="payload">Copiar Pix Copia e Cola</button>
+        <button type="button" class="ap-btn ap-btn--ghost" data-copy="key">Copiar chave</button>
+      </div>
+      <p class="ap-keylabel">Chave Pix</p><p class="ap-key" id="ap-key" tabindex="0">${esc(cfg.key)}</p>
+      <details class="ap-payload"><summary>Ver o código Pix Copia e Cola</summary><p class="ap-payload-txt mono" tabindex="0">${esc(payload)}</p></details>`;
+    qrBox("", "Gerando o QR Code…", false);
+    try {
+      const qrcode = await carregarQR();
+      if (gen !== st.gen) return; // o valor mudou enquanto a biblioteca carregava
+      qrBox(qrSvg(qrcode, payload, `QR Code Pix no valor de ${brl.format(st.valor)}`), `QR Code de ${brl.format(st.valor)}`, false);
+    } catch (e) {
+      if (gen === st.gen) qrBox("", "Não foi possível gerar o QR Code. Use o Pix Copia e Cola ao lado.", true);
+    }
   }
-  // QR Code: nenhuma biblioteca de QR no projeto — nunca se desenha um QR inventado.
-  $("#ap-qr").hidden = false;
-  $("#ap-qr .ap-qr-txt").textContent = key
-    ? "O QR Code ainda não foi implementado neste site; use a chave ou o “PIX copia e cola” acima."
-    : "Será disponibilizado quando a chave PIX for configurada.";
+
   // outros métodos, só se realmente configurados
   const ativos = OUTROS_METODOS.filter((m) => m && m.url && /^https:\/\//.test(m.url));
   let extra = $("#ap-extra");
@@ -108,7 +169,6 @@ async function copiar(texto) {
   try {
     if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(texto); return true; }
   } catch { /* cai no plano B */ }
-  // plano B: seleciona um campo temporário e usa execCommand
   try {
     const ta = document.createElement("textarea");
     ta.value = texto; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;left:-9999px;top:0";
@@ -166,11 +226,14 @@ export function initApoie() {
     const b = e.target.closest("button[data-copy]");
     if (!b) return;
     const isPayload = b.dataset.copy === "payload";
-    const texto = isPayload ? $("#ap-pix-body").dataset.payload : chavePix();
-    if (await copiar(texto)) avisoCopiado(isPayload ? "PIX copia e cola copiado." : "Chave PIX copiada.");
+    const texto = isPayload ? $("#ap-pix-body").dataset.payload : estadoConfig().key;
+    if (!texto) return;
+    if (await copiar(texto)) avisoCopiado(isPayload ? "Pix copiado." : "Chave Pix copiada.");
     else {
-      const k = $("#ap-key"); if (k) { k.focus(); selecionarTexto(k); }
-      avisoCopiado("Não foi possível copiar automaticamente. A chave está selecionada: use Ctrl+C (ou toque e segure) para copiar.");
+      const alvo = isPayload ? $(".ap-payload-txt") : $("#ap-key");
+      if (isPayload) $(".ap-payload")?.setAttribute("open", "");
+      if (alvo) { alvo.focus(); selecionarTexto(alvo); }
+      avisoCopiado("Não foi possível copiar automaticamente. O texto está selecionado: use Ctrl+C (ou toque e segure) para copiar.");
     }
   });
 }

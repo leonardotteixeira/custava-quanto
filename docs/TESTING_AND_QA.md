@@ -1,6 +1,6 @@
 # Testes e QA
 
-Última atualização: 28/09/2026
+Última atualização: 30/09/2026
 Status: **CURRENT**. Só consta aqui o que existe e foi executado; o que é manual
 está dito como manual.
 
@@ -43,7 +43,16 @@ Verifica:
 - nenhum texto gerado contém "venceu", "vencedor", "melhor governo", "pior
   governo", "campeão", "perdeu";
 - os cenários da síntese batem com a metodologia; Mercados nunca recebem leitura;
-- o fim do período Lula na Gasolina é o último mês disponível.
+- o fim do período Lula na Gasolina é o último mês disponível;
+- **v1.1**: modo principal "completo" e nomes dos modos; regras de nível de evidência;
+  "mede/não mede/critério" em cada dimensão; nível de evidência recalculado por
+  regra; **soma da síntese recalculada** de forma independente (peso × sentido) para
+  cada cenário; total e soma da **grade** de 1.771 combinações; grupos de custo de
+  vida cobrindo todas as séries; maiores altas e quedas conferidas com as séries;
+  variação % recalculada de valor inicial e final; PIB anual só de 2019 em diante,
+  só anos fechados, período certo por ano, trimestres só de ano ainda não fechado;
+  "janela que muda a leitura" igual à diferença real entre os dois modos; nenhum
+  "favorável/desfavorável/melhorou/piorou" nos textos gerados.
 
 Foi testado também com resultado adulterado à mão (hash trocado, Selic com
 leitura): as duas falhas foram detectadas.
@@ -52,8 +61,10 @@ leitura): as duas falhas foram detectadas.
 
 Registradas para dar contexto; **não** substituem testes automáticos.
 
-- **Acessibilidade (axe-core no navegador):** capítulo Análise e página do PIB com 0
-  violações na última verificação (28/09/2026). Nos demais capítulos a checagem não
+- **Acessibilidade (axe-core no navegador):** capítulo Análise, Método (com "Audite a
+  análise") e Apoie com 0 violações em 30/09/2026 (depois de trocar os títulos do painel
+  de auditoria para `h3`). Na página inteira, a única violação é o contraste do número
+  "10" no item Apoie do menu (3,7:1, por `opacity: 0.8`; existia antes, KNOWN_ISSUES L13). Nos demais capítulos a checagem não
   foi refeita depois das últimas mudanças.
 - **Layout responsivo:** medidas de rolagem horizontal nas larguras 320, 390 e 768
   px para o capítulo Análise e o restante da página; captura em 1440 px. 1024 px e
@@ -64,9 +75,11 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   os controles da Análise, não com leitor de tela.
 - **Console do navegador:** sem erros nas páginas de Gasolina, Arroz, Dólar e PIB na
   última verificação.
-- **Cópia da chave PIX:** o caminho de sucesso não pôde ser exercitado no painel de
-  navegador usado (permissão de área de transferência negada); só o caminho de
-  reserva (chave selecionada para copiar à mão) foi verificado.
+- **Pix (Apoie):** com chave falsa em memória, validados o payload (campos e CRC por
+  validador independente), os 4 valores sugeridos e "outro valor" (válidos e inválidos),
+  a atualização do QR ao trocar de valor e a decodificação do QR por leitor independente
+  (jsQR, só no teste). A cópia foi verificada com a área de transferência simulada; o
+  caminho real do navegador e o pagamento em app de banco não foram exercitados.
 
 ## Histórico
 

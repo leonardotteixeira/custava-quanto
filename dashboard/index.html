@@ -35,8 +35,8 @@
         <li><a href="#maquina" data-ch="maquina"><i>05</i>Máquina do tempo</a></li>
         <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos</a></li>
         <li><a href="#arquivo" data-ch="arquivo"><i>07</i>Arquivo</a></li>
-        <li><a href="#metodo" data-ch="metodo"><i>08</i>Método</a></li>
-        <li><a href="#analise" data-ch="analise"><i>09</i>Análise</a></li>
+        <li><a href="#analise" data-ch="analise"><i>08</i>Análise</a></li>
+        <li><a href="#metodo" data-ch="metodo"><i>09</i>Método</a></li>
         <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>10</i>Apoie</a></li>
       </ol>
     </nav>
@@ -364,12 +364,166 @@
   </section>
 
   <!-- =====================================================================
-       08 · MÉTODO — o caderno da investigação
+       ANÁLISE — comparação entre períodos de governo.
+       Metodologia congelada em data/processed/analysis_methodology.json e
+       resultados em analysis_results.json (scripts/build_analise.py). Este
+       HTML e js/analise.js só apresentam: nenhum número é calculado aqui.
+       ===================================================================== -->
+  <section class="chapter analise-sec" id="analise" aria-labelledby="analise-title" data-chapter="analise">
+    <div class="shell">
+      <header class="an-hero">
+        <div class="an-hero-text">
+          <p class="ch-kicker mono"><span>08</span>Análise</p>
+          <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
+          <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
+          <p class="an-version mono" id="an-version"></p>
+        </div>
+        <figure class="an-hero-fig">
+          <video class="an-hero-video" id="an-video" muted loop playsinline preload="none" width="720" height="900" poster="assets/video/analise-ruido-poster.jpg" aria-hidden="true" tabindex="-1">
+            <source src="assets/video/analise-ruido.mp4" type="video/mp4">
+          </video>
+          <figcaption class="an-hero-cap">
+            <span class="mono">Ilustração gerada por IA: o barulho ao redor dos números. Não representa pessoa nem dado real.</span>
+            <button type="button" class="an-video-btn mono" id="an-video-btn" aria-controls="an-video" aria-pressed="false">Pausar animação</button>
+          </figcaption>
+        </figure>
+      </header>
+
+      <div id="an-body">
+        <section class="an-rule" aria-labelledby="an-rule-title">
+          <div class="an-rule-side">
+            <h3 class="an-kick mono" id="an-rule-title">Antes de comparar, uma regra</h3>
+            <figure class="an-fig an-fig--tone">
+              <img src="assets/imagens/urna-eletronica.jpg" width="984" height="656" loading="lazy" decoding="async" alt="Urna eletrônica da Justiça Eleitoral, com a tela apagada e o dedo de uma pessoa sobre a tecla verde Confirma.">
+              <figcaption class="mono">Urna eletrônica. Esta página não é sobre voto: não dá nota nem escolhe vencedor. Foto: reprodução; fonte e licença a confirmar.</figcaption>
+            </figure>
+          </div>
+          <ol class="an-rule-list">
+            <li><b>A pergunta vem antes do resultado.</b> Cada dimensão tem uma pergunta e um critério escritos na metodologia antes do cálculo. Mudar depois exige nova versão.</li>
+            <li><b>“Subiu” não é “melhorou”.</b> Preço real em queda significa menos pressão sobre o consumidor; PIB em alta, mais atividade. Dólar, Selic e Ibovespa não têm direção única para todos e só são descritos.</li>
+            <li><b>Sem nota, sem vencedor.</b> Cada dimensão vira uma leitura. A soma usa só o sentido de cada uma, com pesos visíveis que você pode mudar.</li>
+          </ol>
+          <p class="an-causa"><strong>Correlação temporal não é causalidade.</strong> Uma mudança observada durante um governo não significa, por si só, que tenha sido causada por uma decisão daquele governo.</p>
+        </section>
+
+        <!-- PARTE 2 — a régua -->
+        <section class="an-part" aria-labelledby="an-p2-title">
+          <p class="an-part-n mono">Parte 1</p>
+          <h3 class="an-part-title" id="an-p2-title">Primeiro, colocamos os períodos na mesma régua.</h3>
+          <p class="an-part-lead" id="an-p2-lead"></p>
+          <div class="an-ruler" id="an-ruler" aria-live="polite"></div>
+          <div class="an-control">
+            <label class="an-switch" for="an-igual">
+              <input type="checkbox" id="an-igual">
+              <span class="an-switch-box" aria-hidden="true"></span>
+              <span class="an-switch-txt"><b>Comparar pelo mesmo número de meses</b><small>Controle secundário: a comparação principal é a dos períodos inteiros.</small></span>
+            </label>
+            <p class="an-control-note" id="an-control-note"></p>
+          </div>
+        </section>
+
+        <section class="an-minute" aria-labelledby="an-min-title">
+          <h3 class="an-kick mono" id="an-min-title">Em 1 minuto</h3>
+          <ol class="an-min-list" id="an-min-list"></ol>
+          <p class="an-min-foot">Quer conferir os cálculos? Continue abaixo: cada linha tem a pergunta, os números, o gráfico e a fonte.</p>
+        </section>
+
+        <!-- PARTE 3 — o que medimos -->
+        <section class="an-part" aria-labelledby="an-p3-title">
+          <p class="an-part-n mono">Parte 2</p>
+          <h3 class="an-part-title" id="an-p3-title">O que estamos medindo?</h3>
+          <p class="an-part-lead" id="an-escopo"></p>
+          <div class="an-dimgrid" id="an-dimgrid"></div>
+          <div class="an-legend" id="an-legenda"></div>
+          <p class="an-evid-nota" id="an-evid-nota"></p>
+        </section>
+
+        <!-- PARTES 4 a 8 — uma por dimensão (montadas em analise.js) -->
+        <div id="an-dims"></div>
+
+        <!-- PARTE 9 — o que mais pesou -->
+        <section class="an-part" aria-labelledby="an-p9-title">
+          <p class="an-part-n mono">Parte 8</p>
+          <h3 class="an-part-title" id="an-p9-title">O que mais pesou?</h3>
+          <p class="an-part-lead">Os maiores movimentos entre as séries em variação real, do custo de vida e do poder de compra. Um item extremo não decide a leitura sozinho, porque cada dimensão é lida pela mediana.</p>
+          <div id="an-pesou"></div>
+        </section>
+
+        <!-- PARTE 10 — sensibilidade -->
+        <section class="an-part" aria-labelledby="an-p10-title">
+          <p class="an-part-n mono">Parte 9</p>
+          <h3 class="an-part-title" id="an-p10-title">Como diferentes prioridades mudam a leitura?</h3>
+          <p class="an-part-lead">Nenhuma dimensão representa sozinha a situação econômica. Aqui você pode alterar quanto cada dimensão pesa na leitura agregada e observar como a síntese muda.</p>
+          <div class="an-prio">
+            <div class="an-prio-ctl">
+              <h4 class="an-kick mono">Suas prioridades</h4>
+              <p class="an-prio-aviso">Os pesos são uma preferência sua, não um dado: não existe um conjunto certo. Mudar os pesos muda a interpretação, e isso <b>não prova qual governo foi melhor</b>. É uma análise de sensibilidade.</p>
+              <div id="an-sliders"></div>
+              <button type="button" class="an-btn-mini" id="an-prio-reset">Voltar aos pesos iguais</button>
+            </div>
+            <div class="an-prio-out" aria-live="polite">
+              <h4 class="an-kick mono">Leitura com estes pesos</h4>
+              <div id="an-prio-leitura"></div>
+            </div>
+          </div>
+          <h4 class="an-sub">Quanto a conclusão depende dos pesos?</h4>
+          <div id="an-sens"></div>
+        </section>
+
+        <!-- PARTE 11 — em resumo -->
+        <section class="an-part" aria-labelledby="an-p11-title">
+          <p class="an-part-n mono">Parte 10</p>
+          <h3 class="an-part-title" id="an-p11-title">Em resumo</h3>
+          <div id="an-resumo"></div>
+          <div class="an-geral" id="an-geral"></div>
+        </section>
+
+        <!-- PARTE 12 — contexto -->
+        <section class="an-part" aria-labelledby="an-p12-title">
+          <p class="an-part-n mono">Parte 11</p>
+          <h3 class="an-part-title" id="an-p12-title">Contexto importa.</h3>
+          <p class="an-part-lead">Marcos que se sobrepõem aos períodos. A relação com os indicadores é só de tempo: coincidem, não se explicam.</p>
+          <ul class="an-timeline" id="an-timeline"></ul>
+        </section>
+
+        <!-- limites -->
+        <section class="an-limits" aria-labelledby="an-lim-title">
+          <div class="an-limits-grid">
+            <div class="an-limits-main">
+              <h3 class="an-part-title" id="an-lim-title">O que os dados não permitem concluir</h3>
+              <div class="an-limit-cards">
+                <article><b class="mono">Causalidade</b><p>Uma mudança durante um governo não prova que o governo a causou.</p></article>
+                <article><b class="mono">Choques externos</b><p>Pandemia, guerra, commodities e juros internacionais atingem os dois períodos de formas diferentes.</p></article>
+                <article><b class="mono">Defasagens</b><p>Alguns efeitos aparecem meses depois, às vezes já sob outro governo.</p></article>
+                <article><b class="mono">Outros poderes</b><p>A Selic é decidida pelo Copom, do Banco Central, com mandato próprio; gastos e impostos passam pelo Congresso.</p></article>
+                <article><b class="mono">Estados e municípios</b><p>ICMS e outras decisões locais afetam os preços de combustíveis e alimentos.</p></article>
+                <article><b class="mono">Composição dos indicadores</b><p>Dar o mesmo peso à gasolina e ao PIB não os torna equivalentes: cada indicador mede uma coisa diferente.</p></article>
+                <article><b class="mono">Dados ausentes</b><p>Emprego, desigualdade, contas públicas e investimento não fazem parte desta versão.</p></article>
+                <article><b class="mono">Período em curso</b><p>O período Lula ainda não terminou: qualquer leitura sobre ele é parcial.</p></article>
+              </div>
+            </div>
+            <figure class="an-fig an-fig--dark">
+              <img src="assets/imagens/protesto-cartaz.jpg" width="638" height="960" loading="lazy" decoding="async" alt="Fotografia em preto e branco de um protesto à noite: um homem de máscara segura a bandeira do Brasil sob um cartaz escrito Chega de políticos corruptos.">
+              <figcaption class="mono">Protesto. Foto de contexto sobre o clima político: não é dado nem posição do projeto. Foto: Jeferson Alves (nome impresso na imagem); fonte e licença a confirmar.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="an-contest" aria-labelledby="an-contest-title">
+          <h3 class="an-kick mono" id="an-contest-title">Encontrou um problema?</h3>
+          <p>Se você identificar uma fonte incorreta, um cálculo inconsistente ou uma escolha metodológica questionável, confira a metodologia e os arquivos em <a href="#audite-analise">Método › Audite a análise</a> e registre no <a href="https://github.com/leonardotteixeira/custava-quanto/issues" target="_blank" rel="noopener">repositório público do projeto</a>. Mudanças na metodologia ganham nova versão e ficam registradas.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MÉTODO — o caderno da investigação
        ===================================================================== -->
   <section class="chapter method-sec" id="metodo" aria-labelledby="metodo-title" data-chapter="metodo">
     <div class="shell">
       <header class="ch-head ch-head--quiet">
-        <p class="ch-kicker mono"><span>08</span>Método</p>
+        <p class="ch-kicker mono"><span>09</span>Método</p>
         <h2 class="ch-title" id="metodo-title">Como chegamos a estes números.</h2>
         <div class="ch-aside">
           <p class="ch-deck">As séries foram calculadas antes, em Python, a partir de fontes públicas, e gravadas num arquivo que qualquer pessoa pode conferir. O navegador só escolhe dois pontos já prontos, compara e desenha.</p>
@@ -515,163 +669,23 @@
           <summary><span class="mono">F</span>Atualização dos dados</summary>
           <div class="nb-body" id="freshness"></div>
         </details>
+
+        <details class="nb nb--wide" id="audite-analise" open>
+          <summary><span class="mono">G</span>Audite a análise</summary>
+          <div class="nb-body"><div id="an-audit"></div></div>
+        </details>
       </div>
     </div>
   </section>
 
   <!-- =====================================================================
-       09 · ANÁLISE — comparação entre períodos de governo.
-       Metodologia congelada em data/processed/analysis_methodology.json e
-       resultados em analysis_results.json (scripts/build_analise.py). Este
-       HTML e js/analise.js só apresentam: nenhum número é calculado aqui.
-       ===================================================================== -->
-  <section class="chapter analise-sec" id="analise" aria-labelledby="analise-title" data-chapter="analise">
-    <div class="shell">
-      <header class="an-hero">
-        <div class="an-hero-text">
-          <p class="ch-kicker mono"><span>09</span>Análise</p>
-          <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
-          <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
-          <p class="an-version mono" id="an-version"></p>
-        </div>
-        <figure class="an-hero-fig">
-          <video class="an-hero-video" id="an-video" muted loop playsinline preload="none" width="720" height="900" poster="assets/video/analise-ruido-poster.jpg" aria-hidden="true" tabindex="-1">
-            <source src="assets/video/analise-ruido.mp4" type="video/mp4">
-          </video>
-          <figcaption class="an-hero-cap">
-            <span class="mono">Ilustração gerada por IA: o barulho ao redor dos números. Não representa pessoa nem dado real.</span>
-            <button type="button" class="an-video-btn mono" id="an-video-btn" aria-controls="an-video" aria-pressed="false">Pausar animação</button>
-          </figcaption>
-        </figure>
-      </header>
-
-      <div id="an-body">
-        <!-- regra -->
-        <section class="an-rule" aria-labelledby="an-rule-title">
-          <div class="an-rule-side">
-            <h3 class="an-kick mono" id="an-rule-title">Antes de comparar, uma regra</h3>
-            <figure class="an-fig an-fig--tone">
-              <img src="assets/imagens/urna-eletronica.jpg" width="984" height="656" loading="lazy" decoding="async" alt="Urna eletrônica da Justiça Eleitoral, com a tela apagada e o dedo de uma pessoa sobre a tecla verde Confirma.">
-              <figcaption class="mono">Urna eletrônica. Esta página não é sobre voto: não dá nota nem escolhe vencedor. Foto: reprodução; fonte e licença a confirmar.</figcaption>
-            </figure>
-          </div>
-          <ol class="an-rule-list">
-            <li><b>A pergunta vem antes do resultado.</b> Cada dimensão tem uma pergunta e um critério escritos na metodologia antes do cálculo. Mudar depois exige nova versão.</li>
-            <li><b>“Subiu” não é “melhorou”.</b> Preço real em queda é favorável ao consumidor; PIB em alta indica mais atividade; dólar, Selic e Ibovespa não têm direção boa ou ruim para todos e só são descritos.</li>
-            <li><b>Sem nota, sem vencedor.</b> Cada dimensão vira uma leitura. A soma usa só o sentido de cada uma, com pesos visíveis que você pode mudar.</li>
-          </ol>
-          <p class="an-causa"><strong>Correlação temporal não é causalidade.</strong> Uma mudança observada durante um governo não significa, por si só, que tenha sido causada por uma decisão daquele governo.</p>
-        </section>
-
-        <!-- parte 1: régua -->
-        <section class="an-part" aria-labelledby="an-p1-title">
-          <p class="an-part-n mono">Parte 1</p>
-          <h3 class="an-part-title" id="an-p1-title">Primeiro, colocamos os períodos na mesma régua.</h3>
-          <p class="an-part-lead">O governo Bolsonaro teve 48 meses; o governo Lula está em curso. Comparar o período inteiro de um com o pedaço já decorrido do outro distorce qualquer variação acumulada. Por isso o modo principal compara o mesmo tempo de mandato.</p>
-          <div class="an-mode" id="an-mode" role="group" aria-label="Janela da comparação">
-            <button type="button" data-modo="mesmo_tempo" aria-pressed="true"><b>Mesmo tempo de governo</b><span>o mesmo número de meses desde a posse</span></button>
-            <button type="button" data-modo="completo" aria-pressed="false"><b>Período completo disponível</b><span>Bolsonaro inteiro × Lula até o último dado</span></button>
-          </div>
-          <div class="an-ruler" id="an-ruler" aria-live="polite"></div>
-        </section>
-
-        <!-- em 1 minuto -->
-        <section class="an-minute" aria-labelledby="an-min-title">
-          <h3 class="an-kick mono" id="an-min-title">Em 1 minuto</h3>
-          <ol class="an-min-list" id="an-min-list"></ol>
-          <p class="an-min-foot">Quer conferir os cálculos? Continue abaixo: cada linha tem a pergunta, os números, o gráfico e a fonte.</p>
-        </section>
-
-        <!-- parte 2: o que medimos -->
-        <section class="an-part" aria-labelledby="an-p2-title">
-          <p class="an-part-n mono">Parte 2</p>
-          <h3 class="an-part-title" id="an-p2-title">O que estamos medindo?</h3>
-          <p class="an-part-lead" id="an-escopo"></p>
-          <div class="an-dimgrid" id="an-dimgrid"></div>
-        </section>
-
-        <!-- partes 3-7: dimensões -->
-        <div id="an-dims"></div>
-
-        <!-- parte 8: síntese -->
-        <section class="an-part" aria-labelledby="an-p8-title">
-          <p class="an-part-n mono">Parte 8</p>
-          <h3 class="an-part-title" id="an-p8-title">O que aparece quando juntamos as dimensões?</h3>
-          <p class="an-part-lead">Cada dimensão com direção definida vira uma única leitura, pela mediana das suas séries. Todas as séries de custo de vida juntas pesam o mesmo que a única série do PIB. Mercados ficam fora: são descritos, não pontuados.</p>
-          <div id="an-sintese"></div>
-        </section>
-
-        <!-- parte 9: sensibilidade -->
-        <section class="an-part" aria-labelledby="an-p9-title">
-          <p class="an-part-n mono">Parte 9</p>
-          <h3 class="an-part-title" id="an-p9-title">Mas quão robusta é essa leitura?</h3>
-          <p class="an-part-lead">A soma entre dimensões depende de quanto cada uma pesa, e isso é uma escolha de valores. Quatro cenários foram definidos antes do cálculo. Você também pode testar os seus.</p>
-          <div id="an-sens"></div>
-          <div class="an-weights" id="an-weights"></div>
-        </section>
-
-        <!-- parte 10: contexto -->
-        <section class="an-part" aria-labelledby="an-p10-title">
-          <p class="an-part-n mono">Parte 10</p>
-          <h3 class="an-part-title" id="an-p10-title">Contexto importa.</h3>
-          <p class="an-part-lead">Marcos que se sobrepõem aos períodos. A relação com os indicadores é só de tempo: coincidem, não causam.</p>
-          <ul class="an-timeline" id="an-timeline"></ul>
-        </section>
-
-        <!-- limites -->
-        <section class="an-limits" aria-labelledby="an-lim-title">
-          <div class="an-limits-grid">
-          <div class="an-limits-main">
-          <h3 class="an-part-title" id="an-lim-title">O que os dados não permitem concluir</h3>
-          <ul class="an-limits-list">
-            <li><b>Causa.</b> Nenhum número desta página mostra que uma mudança foi causada por um governo.</li>
-            <li><b>Choques globais.</b> Pandemia, guerra, preço internacional do petróleo e de grãos e o ciclo global de juros atingem os dois períodos de formas diferentes.</li>
-            <li><b>Política fiscal e monetária.</b> A Selic é decidida pelo Copom do Banco Central, com mandato próprio; gastos e impostos passam pelo Congresso.</li>
-            <li><b>Estados e municípios.</b> ICMS e outras decisões locais mexem nos preços dos combustíveis e alimentos.</li>
-            <li><b>Defasagens.</b> Juros e câmbio afetam preços e atividade com meses de atraso, às vezes atravessando a troca de governo.</li>
-            <li><b>Período em curso.</b> O governo Lula não terminou: qualquer leitura sobre ele é parcial.</li>
-            <li><b>O que não está aqui.</b> Emprego, contas públicas, investimento e desigualdade não estão no projeto e não entram na análise.</li>
-          </ul>
-          </div>
-          <figure class="an-fig an-fig--dark">
-            <img src="assets/imagens/protesto-cartaz.jpg" width="638" height="960" loading="lazy" decoding="async" alt="Fotografia em preto e branco de um protesto à noite: um homem de máscara segura a bandeira do Brasil sob um cartaz escrito Chega de políticos corruptos.">
-            <figcaption class="mono">Protesto. Foto de contexto sobre o clima político: não é dado nem posição do projeto. Foto: Jeferson Alves (nome impresso na imagem); fonte e licença a confirmar.</figcaption>
-          </figure>
-          </div>
-        </section>
-
-        <!-- conclusão -->
-        <section class="an-conclusion" aria-labelledby="an-conc-title">
-          <p class="an-part-n mono">Conclusão da análise</p>
-          <h3 class="an-part-title" id="an-conc-title">Nos indicadores em que definimos uma direção, os resultados foram:</h3>
-          <dl class="an-conc-list" id="an-conc-list"></dl>
-          <div class="an-conc-geral" id="an-conc-geral"></div>
-        </section>
-
-        <!-- auditoria -->
-        <section class="an-audit-sec" id="an-audit-sec" aria-labelledby="an-audit-title">
-          <details class="an-details" open>
-            <summary><h3 class="an-part-title" id="an-audit-title">Audite a análise</h3></summary>
-            <div id="an-audit"></div>
-          </details>
-        </section>
-
-        <section class="an-contest" aria-labelledby="an-contest-title">
-          <h3 class="an-kick mono" id="an-contest-title">Encontrou um problema?</h3>
-          <p>Se você identificar uma fonte incorreta, um cálculo inconsistente ou uma escolha metodológica questionável, confira a metodologia e os arquivos acima e registre no <a href="https://github.com/leonardotteixeira/custava-quanto/issues" target="_blank" rel="noopener">repositório público do projeto</a>. Mudanças na metodologia ganham nova versão e ficam registradas.</p>
-        </section>
-      </div>
-    </div>
-  </section>
-
-  <!-- =====================================================================
-       10 · APOIE — página de apoio (PIX). Configuração em js/apoie.js (SUPPORT_CONFIG).
+       APOIE — página de apoio (PIX). Configuração em js/apoie.js (SUPPORT_CONFIG).
        ===================================================================== -->
   <section class="chapter apoie-sec" id="apoie" aria-labelledby="apoie-title" data-chapter="apoie">
     <svg class="apoie-line" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0,150 C90,140 140,90 230,105 S380,170 470,120 S620,40 720,80 S880,150 960,110 S1120,60 1200,84" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
     <div class="shell">
       <header class="ch-head ch-head--quiet">
-        <p class="ch-kicker mono"><span>09</span>Apoie</p>
+        <p class="ch-kicker mono"><span>10</span>Apoie</p>
         <h2 class="ch-title" id="apoie-title">Se você acha que este projeto vale a pena, ajude a mantê-lo.</h2>
         <div class="ch-aside">
           <p class="ch-deck">O CUSTAVA QUANTO? é um projeto independente feito para transformar dados econômicos em histórias que qualquer pessoa consegue explorar.</p>
@@ -698,24 +712,25 @@
               <div class="ap-pix-body" id="ap-pix-body"></div>
               <p class="ap-copied" id="ap-copied" role="status" aria-live="polite"></p>
             </section>
-            <div class="ap-qr" id="ap-qr">
-              <p class="ap-mh mono">QR Code PIX</p>
-              <p class="ap-qr-txt">Será disponibilizado quando a chave PIX for configurada.</p>
+            <div class="ap-qr ap-qr--vazio" id="ap-qr">
+              <p class="ap-mh mono">QR Code Pix</p>
+              <div class="ap-qr-img" id="ap-qr-img"></div>
+              <p class="ap-qr-txt" id="ap-qr-txt">Será gerado quando a chave Pix for configurada.</p>
             </div>
           </div>
           <p class="ap-fine">Este site não processa pagamentos nem recebe confirmação deles: a transferência acontece no aplicativo do seu banco.</p>
         </div>
 
-        <aside class="ap-side" aria-label="Sobre o apoio">
+        <div role="group" class="ap-side" aria-label="Sobre o apoio">
           <p class="ap-quote">Se você prefere não contribuir, tudo bem. Continue usando, compartilhando e auditando o projeto.</p>
           <h3 class="ap-h2">Um projeto independente</h3>
           <p>O CUSTAVA QUANTO? não representa partido, governo, empresa ou campanha. O objetivo é organizar dados públicos e tornar suas mudanças ao longo do tempo mais fáceis de explorar.</p>
-          <p>Os dados, fontes e metodologia continuam disponíveis para consulta: <a href="#metodo">08 Método</a> · <a href="#fontes" data-open="fontes">fontes dos dados</a>.</p>
+          <p>Os dados, fontes e metodologia continuam disponíveis para consulta: <a href="#metodo">Método</a> · <a href="#fontes" data-open="fontes">fontes dos dados</a>.</p>
           <figure class="an-fig ap-fig">
             <img src="assets/imagens/cabine-votacao.jpg" width="640" height="960" loading="lazy" decoding="async" alt="Fotografia em preto e branco de uma cabine de votação da Justiça Eleitoral, com uma pessoa parcialmente visível atrás dela.">
             <figcaption class="mono">Cabine de votação. Sem partido, governo ou campanha por trás. Foto: reprodução; fonte e licença a confirmar.</figcaption>
           </figure>
-        </aside>
+        </div>
       </div>
 
       <div class="ap-where">

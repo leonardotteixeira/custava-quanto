@@ -120,6 +120,80 @@ def main() -> None:
     gas = next(i for i in res["indicadores"] if i["id"] == "GASOLINA")
     check(gas["completo"]["Lula"]["fim"] == ult_mes, f"Gasolina/completo: fim do período Lula ({gas['completo']['Lula']['fim']}) não é o último mês disponível ({ult_mes})")
 
+
+    # ---------------------------------------------------------------- v1.1
+    check(met["regras"].get("modo_principal") == "completo", "o modo principal deve ser a comparação por períodos inteiros ('completo')")
+    check(set(met["regras"]["modos_nomes"]) == {"completo", "mesmo_tempo"}, "nomes dos dois modos ausentes na metodologia")
+    check(set(met["regras"]["nivel_evidencia"]) >= {"alta", "média", "informativa", "regra"}, "regras de nível de evidência incompletas")
+    for d in met["dimensoes"]:
+        for campo in ("mede", "nao_mede", "pergunta") + (("criterio",) if d["tipo"] == "A" else ()):
+            check(bool(d.get(campo)), f"dimensão {d['id']}: falta '{campo}' na metodologia")
+
+    ordem = {"alta": 0, "média": 1}
+    for modo, bloco in res["modos"].items():
+        for d in bloco["dimensoes"]:
+            dm = next(x for x in met["dimensoes"] if x["id"] == d["id"])
+            # nível de evidência: informativa (tipo B) ou o menor nível de confiança entre as séries com direção
+            if dm["tipo"] != "A":
+                check(d["nivel_evidencia"] == "informativa", f"{modo}/{d['id']}: dimensão sem direção deve ser 'informativa'")
+            else:
+                confs = [i["confianca"] for i in met["indicadores"] if i["dimensao"] == d["id"] and i["tipo"] == "A"]
+                esperado = max(confs, key=lambda c: ordem[c])
+                check(d["nivel_evidencia"] == esperado, f"{modo}/{d['id']}: nível de evidência {d['nivel_evidencia']} != {esperado}")
+                check(d["leitura"] in (-1, 0, 1), f"{modo}/{d['id']}: leitura inválida")
+        # a síntese é a soma ponderada dos sentidos, recalculada aqui de forma independente
+        leit = {d["id"]: d["leitura"] for d in bloco["dimensoes"] if d.get("leitura") is not None}
+        for c, sr in zip(met["cenarios"], bloco["sintese"]):
+            soma = sum(c["pesos"][k] * v for k, v in leit.items())
+            check(sr["soma"] == soma, f"{modo}/{c['id']}: soma da síntese não confere")
+            check(sr["sentido"] == (soma > 0) - (soma < 0), f"{modo}/{c['id']}: sentido da síntese não segue o sinal da soma")
+        # grade de pesos: todas as combinações de 5 em 5 pontos, com soma consistente
+        g = bloco["grade"]
+        n = 100 // g["passo"]
+        check(g["combinacoes"] == (n + 1) * (n + 2) * (n + 3) // 6, f"{modo}: número de combinações da grade errado")
+        check(g["lula"] + g["bolsonaro"] + g["empate"] == g["combinacoes"], f"{modo}: grade não soma o total de combinações")
+        # custo de vida: medianas de combustíveis e alimentos separadas
+        cv = next(d for d in bloco["dimensoes"] if d["id"] == "custo_vida")
+        check(cv["grupos"] and cv["grupos"]["combustiveis"]["n"] + cv["grupos"]["alimentos"]["n"] == cv["n_series"], f"{modo}: grupos de custo de vida não cobrem todas as séries")
+        # sem-uma-série só para dimensões com 3+ séries
+        for d in bloco["dimensoes"]:
+            if d.get("sem_uma_serie"):
+                check(d["sem_uma_serie"]["n"] == len([i for i in met["indicadores"] if i["dimensao"] == d["id"] and i["tipo"] == "A"]), f"{modo}/{d['id']}: sem_uma_serie com número errado de séries")
+        # maiores movimentos coerentes com os números das séries
+        mm = bloco["maiores_movimentos"]
+        vals = [(i[modo][p]["valor"], i["id"], p) for i in res["indicadores"] if not i.get("excluido") and imeta[i["id"]]["tipo"] == "A"
+                and imeta[i["id"]]["metrica"] == "variacao_pct" and i.get(modo) for p in ("Bolsonaro", "Lula") if i[modo][p]]
+        check(mm["top_alta"][0]["valor"] == max(v[0] for v in vals), f"{modo}: maior alta não confere com as séries")
+        check(mm["top_queda"][0]["valor"] == min(v[0] for v in vals), f"{modo}: maior queda não confere com as séries")
+        # texto gerado: sem juízo de valor
+        tudo = json.dumps(bloco["textos"], ensure_ascii=False).lower()
+        for p_ in ("favorável", "desfavorável", "melhorou", "piorou"):
+            check(p_ not in tudo, f"{modo}: texto gerado contém '{p_}'")
+
+    # variação percentual recalculada a partir do valor inicial e final (séries sem dado diário nas pontas)
+    for i in res["indicadores"]:
+        if i.get("excluido") or imeta[i["id"]]["metrica"] != "variacao_pct":
+            continue
+        for modo in ("completo", "mesmo_tempo"):
+            for p in ("Bolsonaro", "Lula"):
+                sp = i[modo][p] if i.get(modo) else None
+                if sp and sp.get("valor_inicio"):
+                    check(abs(sp["valor"] - round((sp["valor_fim"] / sp["valor_inicio"] - 1) * 100, 2)) <= 0.01,
+                          f"{i['id']}/{modo}/{p}: variação % não confere com valor inicial e final")
+
+    # PIB: barras anuais começam em 2019, só anos fechados, sem 2026 anual
+    anos_pib = res["pib"]["anos"]
+    check(all(a["ano"] >= 2019 for a in anos_pib), "PIB: ano anterior a 2019 no bloco anual")
+    check({a["ano"] for a in anos_pib} <= anos_fechados, "PIB: ano sem resultado anual fechado no bloco anual")
+    check(all(a["periodo"] == ("Bolsonaro" if a["ano"] < 2023 else "Lula") for a in anos_pib), "PIB: ano atribuído ao período errado")
+    check(all(int(t["trimestre"][:4]) > res["pib"]["ultimo_ano_fechado"] for t in res["pib"]["trimestres_sem_resultado_anual"]),
+          "PIB: trimestre de ano fechado listado como 'sem resultado anual'")
+
+    # janela que muda a leitura: só as dimensões cuja leitura difere entre os modos
+    diferem = {a["id"] for a, b in zip(res["modos"]["completo"]["dimensoes"], res["modos"]["mesmo_tempo"]["dimensoes"])
+               if a.get("leitura") is not None and a["leitura"] != b["leitura"]}
+    check({x["id"] for x in (res.get("janela_muda") or {}).get("dimensoes", [])} == diferem, "janela_muda não confere com as leituras dos dois modos")
+
     if falhas:
         print(f"{len(falhas)} falha(s):")
         for f in falhas:

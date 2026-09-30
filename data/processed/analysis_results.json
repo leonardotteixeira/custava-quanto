@@ -1,8 +1,8 @@
 {
-  "gerado_em": "2026-09-29T02:23+00:00",
+  "gerado_em": "2026-09-30T03:24+00:00",
   "dados_gerados_em": "2026-09-29T02:23:13+00:00",
-  "metodologia_versao": "1.0",
-  "metodologia_sha256": "1e129f0f5a10a1cbde2811e41ef27966e601f5ae712a7d9be29d6b4b8c9a29fe",
+  "metodologia_versao": "1.1",
+  "metodologia_sha256": "11dfa6a70282e91fdde1b9e8b62cf2bbb9d5c23ebe1d270c7b28ba07383c89e9",
   "indicadores": [
     {
       "id": "GASOLINA",
@@ -8118,247 +8118,29 @@
     }
   ],
   "modos": {
-    "mesmo_tempo": {
-      "dimensoes": [
-        {
-          "id": "custo_vida",
-          "n_series": 11,
-          "modo": "mesmo_tempo",
-          "por_periodo": {
-            "Bolsonaro": {
-              "n": 11,
-              "mediana_f": -39.36,
-              "mediana_valor": 39.36,
-              "media_valor": 45.15,
-              "min_valor": 0.57,
-              "max_valor": 107.1,
-              "n_favoravel": 0,
-              "n_desfavoravel": 11
-            },
-            "Lula": {
-              "n": 11,
-              "mediana_f": 9.84,
-              "mediana_valor": -9.84,
-              "media_valor": -4.81,
-              "min_valor": -26.14,
-              "max_valor": 24.18,
-              "n_favoravel": 7,
-              "n_desfavoravel": 4
-            }
-          },
-          "leitura": 1,
-          "tolerancia": 1.0,
-          "metrica": "variacao_pct",
-          "maior_favoravel": {
-            "id": "Óleo de soja",
-            "periodo": "Lula",
-            "f": 26.14
-          },
-          "maior_desfavoravel": {
-            "id": "Óleo de soja",
-            "periodo": "Bolsonaro",
-            "f": -107.1
-          },
-          "maior_divergencia": "Óleo de soja",
-          "outliers": [
-            {
-              "id": "Óleo de soja",
-              "periodo": "Bolsonaro",
-              "f": -107.1,
-              "mediana_f": -39.36
-            },
-            {
-              "id": "GASOLINA",
-              "periodo": "Lula",
-              "f": -11.02,
-              "mediana_f": 9.84
-            },
-            {
-              "id": "Café moído",
-              "periodo": "Lula",
-              "f": -24.18,
-              "mediana_f": 9.84
-            }
-          ]
-        },
-        {
-          "id": "inflacao",
-          "n_series": 1,
-          "modo": "mesmo_tempo",
-          "por_periodo": {
-            "Bolsonaro": {
-              "n": 1,
-              "mediana_f": -7.02,
-              "mediana_valor": 7.02,
-              "media_valor": 7.02,
-              "min_valor": 7.02,
-              "max_valor": 7.02,
-              "n_favoravel": 0,
-              "n_desfavoravel": 1
-            },
-            "Lula": {
-              "n": 1,
-              "mediana_f": -4.61,
-              "mediana_valor": 4.61,
-              "media_valor": 4.61,
-              "min_valor": 4.61,
-              "max_valor": 4.61,
-              "n_favoravel": 0,
-              "n_desfavoravel": 1
-            }
-          },
-          "leitura": 1,
-          "tolerancia": 0.1,
-          "metrica": "media",
-          "maior_favoravel": {
-            "id": "IPCA",
-            "periodo": "Lula",
-            "f": -4.61
-          },
-          "maior_desfavoravel": {
-            "id": "IPCA",
-            "periodo": "Bolsonaro",
-            "f": -7.02
-          },
-          "maior_divergencia": "IPCA",
-          "outliers": []
-        },
-        {
-          "id": "renda",
-          "n_series": 3,
-          "modo": "mesmo_tempo",
-          "por_periodo": {
-            "Bolsonaro": {
-              "n": 2,
-              "mediana_f": -3.01,
-              "mediana_valor": -3.01,
-              "media_valor": -3.01,
-              "min_valor": -3.29,
-              "max_valor": -2.73,
-              "n_favoravel": 0,
-              "n_desfavoravel": 2
-            },
-            "Lula": {
-              "n": 2,
-              "mediana_f": 0.89,
-              "mediana_valor": 0.89,
-              "media_valor": 0.89,
-              "min_valor": -4.38,
-              "max_valor": 6.15,
-              "n_favoravel": 1,
-              "n_desfavoravel": 1
-            }
-          },
-          "leitura": 1,
-          "tolerancia": 1.0,
-          "metrica": "variacao_pct",
-          "maior_favoravel": {
-            "id": "SALARIO_REAL",
-            "periodo": "Lula",
-            "f": 6.15
-          },
-          "maior_desfavoravel": {
-            "id": "SM_GASOLINA",
-            "periodo": "Lula",
-            "f": -4.38
-          },
-          "maior_divergencia": "SALARIO_REAL",
-          "outliers": []
-        },
-        {
-          "id": "atividade",
-          "n_series": 1,
-          "modo": "mesmo_tempo",
-          "por_periodo": {
-            "Bolsonaro": {
-              "n": 1,
-              "mediana_f": 0.9,
-              "mediana_valor": 0.9,
-              "media_valor": 0.9,
-              "min_valor": 0.9,
-              "max_valor": 0.9,
-              "n_favoravel": 1,
-              "n_desfavoravel": 0
-            },
-            "Lula": {
-              "n": 1,
-              "mediana_f": 2.97,
-              "mediana_valor": 2.97,
-              "media_valor": 2.97,
-              "min_valor": 2.97,
-              "max_valor": 2.97,
-              "n_favoravel": 1,
-              "n_desfavoravel": 0
-            }
-          },
-          "leitura": 1,
-          "tolerancia": 0.1,
-          "metrica": "media",
-          "maior_favoravel": {
-            "id": "PIB",
-            "periodo": "Lula",
-            "f": 2.97
-          },
-          "maior_desfavoravel": {
-            "id": "PIB",
-            "periodo": "Bolsonaro",
-            "f": 0.9
-          },
-          "maior_divergencia": "PIB",
-          "outliers": []
-        },
-        {
-          "id": "mercados",
-          "n_series": 3,
-          "modo": "mesmo_tempo",
-          "leitura": null,
-          "maior_variacao": "IBOVESPA"
-        }
-      ],
-      "sintese": [
-        {
-          "id": "iguais",
-          "soma": 100,
-          "total_pesos": 100,
-          "sentido": 1
-        },
-        {
-          "id": "bolso",
-          "soma": 100,
-          "total_pesos": 100,
-          "sentido": 1
-        },
-        {
-          "id": "renda",
-          "soma": 100,
-          "total_pesos": 100,
-          "sentido": 1
-        },
-        {
-          "id": "macro",
-          "soma": 100,
-          "total_pesos": 100,
-          "sentido": 1
-        }
-      ],
-      "textos": {
-        "por_dimensao": {
-          "custo_vida": "11 séries com direção definida; variação real mediana de +39,4% no período Bolsonaro e −9,8% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "inflacao": "inflação média em 12 meses de +7,0% no período Bolsonaro e +4,6% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "renda": "2 séries com direção definida (e 1 informativa); variação mediana do poder de compra de −3,0% no período Bolsonaro e +0,9% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "atividade": "crescimento médio anual do PIB de +0,9% no período Bolsonaro e +3,0% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "mercados": "Dólar: +37,5% no período Bolsonaro e −0,9% no período Lula; Selic: +7,20 p.p. no período Bolsonaro e +0,29 p.p. no período Lula; Ibovespa: +12,4% no período Bolsonaro e +56,4% no período Lula. Descrição, não avaliação: estes indicadores não têm uma direção boa ou ruim para todos."
-        },
-        "geral": "Com pesos iguais, 4 das 4 dimensões com direção interpretável têm leitura mais favorável no período Lula, 0 no período Bolsonaro e 0 sem diferença relevante.",
-        "robustez": "O sentido da leitura agregada é o mesmo nos quatro cenários de peso testados."
-      }
-    },
     "completo": {
       "dimensoes": [
         {
           "id": "custo_vida",
           "n_series": 11,
           "modo": "completo",
+          "nivel_evidencia": "média",
+          "evidencia_contagem": {
+            "alta": 5,
+            "média": 6
+          },
+          "grupos": {
+            "combustiveis": {
+              "n": 5,
+              "Bolsonaro": 23.49,
+              "Lula": -9.84
+            },
+            "alimentos": {
+              "n": 6,
+              "Bolsonaro": 35.3,
+              "Lula": -4.69
+            }
+          },
           "por_periodo": {
             "Bolsonaro": {
               "n": 11,
@@ -8426,12 +8208,67 @@
               "f": -24.18,
               "mediana_f": 9.84
             }
-          ]
+          ],
+          "sem_uma_serie": {
+            "n": 11,
+            "iguais": 11,
+            "casos": [
+              {
+                "removido": "GASOLINA",
+                "leitura": 1
+              },
+              {
+                "removido": "ETANOL",
+                "leitura": 1
+              },
+              {
+                "removido": "DIESEL",
+                "leitura": 1
+              },
+              {
+                "removido": "DIESEL S10",
+                "leitura": 1
+              },
+              {
+                "removido": "GLP",
+                "leitura": 1
+              },
+              {
+                "removido": "Arroz",
+                "leitura": 1
+              },
+              {
+                "removido": "Feijão carioca",
+                "leitura": 1
+              },
+              {
+                "removido": "Carne bovina (patinho)",
+                "leitura": 1
+              },
+              {
+                "removido": "Leite longa vida",
+                "leitura": 1
+              },
+              {
+                "removido": "Óleo de soja",
+                "leitura": 1
+              },
+              {
+                "removido": "Café moído",
+                "leitura": 1
+              }
+            ]
+          }
         },
         {
           "id": "inflacao",
           "n_series": 1,
           "modo": "completo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 1
+          },
+          "grupos": null,
           "por_periodo": {
             "Bolsonaro": {
               "n": 1,
@@ -8468,12 +8305,18 @@
             "f": -6.95
           },
           "maior_divergencia": "IPCA",
-          "outliers": []
+          "outliers": [],
+          "sem_uma_serie": null
         },
         {
           "id": "renda",
           "n_series": 3,
           "modo": "completo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 2
+          },
+          "grupos": null,
           "por_periodo": {
             "Bolsonaro": {
               "n": 2,
@@ -8510,12 +8353,18 @@
             "f": -4.38
           },
           "maior_divergencia": "SALARIO_REAL",
-          "outliers": []
+          "outliers": [],
+          "sem_uma_serie": null
         },
         {
           "id": "atividade",
           "n_series": 1,
           "modo": "completo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 1
+          },
+          "grupos": null,
           "por_periodo": {
             "Bolsonaro": {
               "n": 1,
@@ -8552,12 +8401,15 @@
             "f": 1.43
           },
           "maior_divergencia": "PIB",
-          "outliers": []
+          "outliers": [],
+          "sem_uma_serie": null
         },
         {
           "id": "mercados",
           "n_series": 3,
           "modo": "completo",
+          "nivel_evidencia": "informativa",
+          "evidencia_contagem": {},
           "leitura": null,
           "maior_variacao": "IBOVESPA"
         }
@@ -8567,37 +8419,705 @@
           "id": "iguais",
           "soma": 75,
           "total_pesos": 100,
-          "sentido": 1
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 25,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 25,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 25,
+              "leitura": 0
+            },
+            "atividade": {
+              "peso": 25,
+              "leitura": 1
+            }
+          }
         },
         {
-          "id": "bolso",
+          "id": "custo_vida",
           "soma": 80,
           "total_pesos": 100,
-          "sentido": 1
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 0
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "inflacao",
+          "soma": 80,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 0
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
         },
         {
           "id": "renda",
-          "soma": 70,
+          "soma": 60,
           "total_pesos": 100,
-          "sentido": 1
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 40,
+              "leitura": 0
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
         },
         {
-          "id": "macro",
+          "id": "atividade",
           "soma": 80,
           "total_pesos": 100,
-          "sentido": 1
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 0
+            },
+            "atividade": {
+              "peso": 40,
+              "leitura": 1
+            }
+          }
         }
       ],
+      "grade": {
+        "combinacoes": 1771,
+        "lula": 1770,
+        "bolsonaro": 0,
+        "empate": 1,
+        "passo": 5,
+        "mesmo_lado": true
+      },
+      "maiores_movimentos": {
+        "alta": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "periodo": "Bolsonaro",
+          "valor": 89.88,
+          "indice": true
+        },
+        "queda": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "periodo": "Lula",
+          "valor": -26.14,
+          "indice": true
+        },
+        "top_alta": [
+          {
+            "id": "Óleo de soja",
+            "nome": "Óleo de soja",
+            "periodo": "Bolsonaro",
+            "valor": 89.88,
+            "indice": true
+          },
+          {
+            "id": "DIESEL",
+            "nome": "Diesel",
+            "periodo": "Bolsonaro",
+            "valor": 46.3,
+            "indice": false
+          },
+          {
+            "id": "DIESEL S10",
+            "nome": "Diesel S10",
+            "periodo": "Bolsonaro",
+            "valor": 44.8,
+            "indice": false
+          }
+        ],
+        "top_queda": [
+          {
+            "id": "Óleo de soja",
+            "nome": "Óleo de soja",
+            "periodo": "Lula",
+            "valor": -26.14,
+            "indice": true
+          },
+          {
+            "id": "Arroz",
+            "nome": "Arroz",
+            "periodo": "Lula",
+            "valor": -17.83,
+            "indice": true
+          },
+          {
+            "id": "Feijão carioca",
+            "nome": "Feijão",
+            "periodo": "Lula",
+            "valor": -13.32,
+            "indice": true
+          }
+        ],
+        "diferenca": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "indice": true,
+          "bolsonaro": 89.88,
+          "lula": -26.14
+        }
+      },
       "textos": {
         "por_dimensao": {
-          "custo_vida": "11 séries com direção definida; variação real mediana de +34,8% no período Bolsonaro e −9,8% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "inflacao": "inflação média em 12 meses de +7,0% no período Bolsonaro e +4,6% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "renda": "2 séries com direção definida (e 1 informativa); variação mediana do poder de compra de +0,8% no período Bolsonaro e +0,9% no período Lula — sem diferença relevante pelo critério definido.",
-          "atividade": "crescimento médio anual do PIB de +1,4% no período Bolsonaro e +3,0% no período Lula — leitura mais favorável no período Lula, pelo critério definido.",
-          "mercados": "Dólar: +35,2% no período Bolsonaro e −4,3% no período Lula; Selic: +7,25 p.p. no período Bolsonaro e 0,00 p.p. no período Lula; Ibovespa: +20,6% no período Bolsonaro e +76,2% no período Lula. Descrição, não avaliação: estes indicadores não têm uma direção boa ou ruim para todos."
+          "custo_vida": "Neste critério (variação real mediana das 11 séries; menor variação real = menor pressão sobre o consumidor), o valor foi menor no período Lula (−9,8%) do que no período Bolsonaro (+34,8%).",
+          "inflacao": "Neste critério (média do IPCA em 12 meses; média menor = menor pressão inflacionária no período), o valor foi menor no período Lula (4,6%) do que no período Bolsonaro (7,0%).",
+          "renda": "Neste critério (variação mediana do poder de compra das 2 séries), os dois períodos ficaram praticamente iguais: +0,8% no período Bolsonaro e +0,9% no período Lula (diferença abaixo da tolerância de 1,0 ponto).",
+          "atividade": "Neste critério (crescimento médio anual do PIB; média maior = a produção cresceu mais por ano), o valor foi maior no período Lula (3,0%) do que no período Bolsonaro (1,4%).",
+          "mercados": "Dólar: +35,2% no período Bolsonaro e −4,3% no período Lula; Selic: +7,25 p.p. no período Bolsonaro e 0,00 p.p. no período Lula; Ibovespa: +20,6% no período Bolsonaro e +76,2% no período Lula. Sem direção definida."
         },
-        "geral": "Com pesos iguais, 3 das 4 dimensões com direção interpretável têm leitura mais favorável no período Lula, 0 no período Bolsonaro e 1 sem diferença relevante.",
-        "robustez": "O sentido da leitura agregada é o mesmo nos quatro cenários de peso testados."
+        "geral": "Nas 4 dimensões com critério definido, 3 apontam para o período Lula, 0 para o período Bolsonaro e 1 fica praticamente igual (janela: período completo disponível).",
+        "robustez": "Nenhuma das 1.771 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 1.770 (99,9%) e fica empatada em 1 (quando todo o peso cai em dimensões que ficam praticamente iguais). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
+      }
+    },
+    "mesmo_tempo": {
+      "dimensoes": [
+        {
+          "id": "custo_vida",
+          "n_series": 11,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "média",
+          "evidencia_contagem": {
+            "alta": 5,
+            "média": 6
+          },
+          "grupos": {
+            "combustiveis": {
+              "n": 5,
+              "Bolsonaro": 28.14,
+              "Lula": -9.84
+            },
+            "alimentos": {
+              "n": 6,
+              "Bolsonaro": 42.7,
+              "Lula": -4.69
+            }
+          },
+          "por_periodo": {
+            "Bolsonaro": {
+              "n": 11,
+              "mediana_f": -39.36,
+              "mediana_valor": 39.36,
+              "media_valor": 45.15,
+              "min_valor": 0.57,
+              "max_valor": 107.1,
+              "n_favoravel": 0,
+              "n_desfavoravel": 11
+            },
+            "Lula": {
+              "n": 11,
+              "mediana_f": 9.84,
+              "mediana_valor": -9.84,
+              "media_valor": -4.81,
+              "min_valor": -26.14,
+              "max_valor": 24.18,
+              "n_favoravel": 7,
+              "n_desfavoravel": 4
+            }
+          },
+          "leitura": 1,
+          "tolerancia": 1.0,
+          "metrica": "variacao_pct",
+          "maior_favoravel": {
+            "id": "Óleo de soja",
+            "periodo": "Lula",
+            "f": 26.14
+          },
+          "maior_desfavoravel": {
+            "id": "Óleo de soja",
+            "periodo": "Bolsonaro",
+            "f": -107.1
+          },
+          "maior_divergencia": "Óleo de soja",
+          "outliers": [
+            {
+              "id": "Óleo de soja",
+              "periodo": "Bolsonaro",
+              "f": -107.1,
+              "mediana_f": -39.36
+            },
+            {
+              "id": "GASOLINA",
+              "periodo": "Lula",
+              "f": -11.02,
+              "mediana_f": 9.84
+            },
+            {
+              "id": "Café moído",
+              "periodo": "Lula",
+              "f": -24.18,
+              "mediana_f": 9.84
+            }
+          ],
+          "sem_uma_serie": {
+            "n": 11,
+            "iguais": 11,
+            "casos": [
+              {
+                "removido": "GASOLINA",
+                "leitura": 1
+              },
+              {
+                "removido": "ETANOL",
+                "leitura": 1
+              },
+              {
+                "removido": "DIESEL",
+                "leitura": 1
+              },
+              {
+                "removido": "DIESEL S10",
+                "leitura": 1
+              },
+              {
+                "removido": "GLP",
+                "leitura": 1
+              },
+              {
+                "removido": "Arroz",
+                "leitura": 1
+              },
+              {
+                "removido": "Feijão carioca",
+                "leitura": 1
+              },
+              {
+                "removido": "Carne bovina (patinho)",
+                "leitura": 1
+              },
+              {
+                "removido": "Leite longa vida",
+                "leitura": 1
+              },
+              {
+                "removido": "Óleo de soja",
+                "leitura": 1
+              },
+              {
+                "removido": "Café moído",
+                "leitura": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "inflacao",
+          "n_series": 1,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 1
+          },
+          "grupos": null,
+          "por_periodo": {
+            "Bolsonaro": {
+              "n": 1,
+              "mediana_f": -7.02,
+              "mediana_valor": 7.02,
+              "media_valor": 7.02,
+              "min_valor": 7.02,
+              "max_valor": 7.02,
+              "n_favoravel": 0,
+              "n_desfavoravel": 1
+            },
+            "Lula": {
+              "n": 1,
+              "mediana_f": -4.61,
+              "mediana_valor": 4.61,
+              "media_valor": 4.61,
+              "min_valor": 4.61,
+              "max_valor": 4.61,
+              "n_favoravel": 0,
+              "n_desfavoravel": 1
+            }
+          },
+          "leitura": 1,
+          "tolerancia": 0.1,
+          "metrica": "media",
+          "maior_favoravel": {
+            "id": "IPCA",
+            "periodo": "Lula",
+            "f": -4.61
+          },
+          "maior_desfavoravel": {
+            "id": "IPCA",
+            "periodo": "Bolsonaro",
+            "f": -7.02
+          },
+          "maior_divergencia": "IPCA",
+          "outliers": [],
+          "sem_uma_serie": null
+        },
+        {
+          "id": "renda",
+          "n_series": 3,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 2
+          },
+          "grupos": null,
+          "por_periodo": {
+            "Bolsonaro": {
+              "n": 2,
+              "mediana_f": -3.01,
+              "mediana_valor": -3.01,
+              "media_valor": -3.01,
+              "min_valor": -3.29,
+              "max_valor": -2.73,
+              "n_favoravel": 0,
+              "n_desfavoravel": 2
+            },
+            "Lula": {
+              "n": 2,
+              "mediana_f": 0.89,
+              "mediana_valor": 0.89,
+              "media_valor": 0.89,
+              "min_valor": -4.38,
+              "max_valor": 6.15,
+              "n_favoravel": 1,
+              "n_desfavoravel": 1
+            }
+          },
+          "leitura": 1,
+          "tolerancia": 1.0,
+          "metrica": "variacao_pct",
+          "maior_favoravel": {
+            "id": "SALARIO_REAL",
+            "periodo": "Lula",
+            "f": 6.15
+          },
+          "maior_desfavoravel": {
+            "id": "SM_GASOLINA",
+            "periodo": "Lula",
+            "f": -4.38
+          },
+          "maior_divergencia": "SALARIO_REAL",
+          "outliers": [],
+          "sem_uma_serie": null
+        },
+        {
+          "id": "atividade",
+          "n_series": 1,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 1
+          },
+          "grupos": null,
+          "por_periodo": {
+            "Bolsonaro": {
+              "n": 1,
+              "mediana_f": 0.9,
+              "mediana_valor": 0.9,
+              "media_valor": 0.9,
+              "min_valor": 0.9,
+              "max_valor": 0.9,
+              "n_favoravel": 1,
+              "n_desfavoravel": 0
+            },
+            "Lula": {
+              "n": 1,
+              "mediana_f": 2.97,
+              "mediana_valor": 2.97,
+              "media_valor": 2.97,
+              "min_valor": 2.97,
+              "max_valor": 2.97,
+              "n_favoravel": 1,
+              "n_desfavoravel": 0
+            }
+          },
+          "leitura": 1,
+          "tolerancia": 0.1,
+          "metrica": "media",
+          "maior_favoravel": {
+            "id": "PIB",
+            "periodo": "Lula",
+            "f": 2.97
+          },
+          "maior_desfavoravel": {
+            "id": "PIB",
+            "periodo": "Bolsonaro",
+            "f": 0.9
+          },
+          "maior_divergencia": "PIB",
+          "outliers": [],
+          "sem_uma_serie": null
+        },
+        {
+          "id": "mercados",
+          "n_series": 3,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "informativa",
+          "evidencia_contagem": {},
+          "leitura": null,
+          "maior_variacao": "IBOVESPA"
+        }
+      ],
+      "sintese": [
+        {
+          "id": "iguais",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 25,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 25,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 25,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 25,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "custo_vida",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "inflacao",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "renda",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 20,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "atividade",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 20,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 40,
+              "leitura": 1
+            }
+          }
+        }
+      ],
+      "grade": {
+        "combinacoes": 1771,
+        "lula": 1771,
+        "bolsonaro": 0,
+        "empate": 0,
+        "passo": 5,
+        "mesmo_lado": true
+      },
+      "maiores_movimentos": {
+        "alta": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "periodo": "Bolsonaro",
+          "valor": 107.1,
+          "indice": true
+        },
+        "queda": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "periodo": "Lula",
+          "valor": -26.14,
+          "indice": true
+        },
+        "top_alta": [
+          {
+            "id": "Óleo de soja",
+            "nome": "Óleo de soja",
+            "periodo": "Bolsonaro",
+            "valor": 107.1,
+            "indice": true
+          },
+          {
+            "id": "Leite longa vida",
+            "nome": "Leite",
+            "periodo": "Bolsonaro",
+            "valor": 77.58,
+            "indice": true
+          },
+          {
+            "id": "DIESEL",
+            "nome": "Diesel",
+            "periodo": "Bolsonaro",
+            "valor": 65.42,
+            "indice": false
+          }
+        ],
+        "top_queda": [
+          {
+            "id": "Óleo de soja",
+            "nome": "Óleo de soja",
+            "periodo": "Lula",
+            "valor": -26.14,
+            "indice": true
+          },
+          {
+            "id": "Arroz",
+            "nome": "Arroz",
+            "periodo": "Lula",
+            "valor": -17.83,
+            "indice": true
+          },
+          {
+            "id": "Feijão carioca",
+            "nome": "Feijão",
+            "periodo": "Lula",
+            "valor": -13.32,
+            "indice": true
+          }
+        ],
+        "diferenca": {
+          "id": "Óleo de soja",
+          "nome": "Óleo de soja",
+          "indice": true,
+          "bolsonaro": 107.1,
+          "lula": -26.14
+        }
+      },
+      "textos": {
+        "por_dimensao": {
+          "custo_vida": "Neste critério (variação real mediana das 11 séries; menor variação real = menor pressão sobre o consumidor), o valor foi menor no período Lula (−9,8%) do que no período Bolsonaro (+39,4%).",
+          "inflacao": "Neste critério (média do IPCA em 12 meses; média menor = menor pressão inflacionária no período), o valor foi menor no período Lula (4,6%) do que no período Bolsonaro (7,0%).",
+          "renda": "Neste critério (variação mediana do poder de compra das 2 séries; variação maior = o piso rende mais), o valor foi maior no período Lula (+0,9%) do que no período Bolsonaro (−3,0%).",
+          "atividade": "Neste critério (crescimento médio anual do PIB; média maior = a produção cresceu mais por ano), o valor foi maior no período Lula (3,0%) do que no período Bolsonaro (0,9%).",
+          "mercados": "Dólar: +37,5% no período Bolsonaro e −0,9% no período Lula; Selic: +7,20 p.p. no período Bolsonaro e +0,29 p.p. no período Lula; Ibovespa: +12,4% no período Bolsonaro e +56,4% no período Lula. Sem direção definida."
+        },
+        "geral": "Nas 4 dimensões com critério definido, 4 apontam para o período Lula, 0 para o período Bolsonaro e 0 ficam praticamente iguais (janela: comparação por igual duração).",
+        "robustez": "Nenhuma das 1.771 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 1.771 (100,0%). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
       }
     }
   },
@@ -8613,5 +9133,77 @@
     "variacao_dessazonalizada": 0.5,
     "acumulado_4tri": 1.9,
     "acumulado_ano": 1.9
+  },
+  "pib": {
+    "anos": [
+      {
+        "ano": 2019,
+        "taxa": 1.2,
+        "periodo": "Bolsonaro"
+      },
+      {
+        "ano": 2020,
+        "taxa": -3.3,
+        "periodo": "Bolsonaro"
+      },
+      {
+        "ano": 2021,
+        "taxa": 4.8,
+        "periodo": "Bolsonaro"
+      },
+      {
+        "ano": 2022,
+        "taxa": 3.0,
+        "periodo": "Bolsonaro"
+      },
+      {
+        "ano": 2023,
+        "taxa": 3.2,
+        "periodo": "Lula"
+      },
+      {
+        "ano": 2024,
+        "taxa": 3.4,
+        "periodo": "Lula"
+      },
+      {
+        "ano": 2025,
+        "taxa": 2.3,
+        "periodo": "Lula"
+      }
+    ],
+    "ultimo_ano_fechado": 2025,
+    "trimestres_sem_resultado_anual": [
+      {
+        "trimestre": "2026-T1",
+        "interanual": 1.8,
+        "dessazonalizada": 1.1,
+        "acumulado_4tri": 2.0
+      },
+      {
+        "trimestre": "2026-T2",
+        "interanual": 2.0,
+        "dessazonalizada": 0.5,
+        "acumulado_4tri": 1.9
+      }
+    ],
+    "ultimo_trimestre": {
+      "trimestre": "2026-T2",
+      "ano_mes": "2026-04-01",
+      "variacao_interanual": 2.0,
+      "variacao_dessazonalizada": 0.5,
+      "acumulado_4tri": 1.9,
+      "acumulado_ano": 1.9
+    }
+  },
+  "janela_muda": {
+    "dimensoes": [
+      {
+        "id": "renda",
+        "completo": 0,
+        "mesmo_tempo": 1
+      }
+    ],
+    "texto": "A janela escolhida muda a leitura de uma dimensão. Renda e poder de compra: no período completo disponível, os dois períodos ficam praticamente iguais; na comparação por igual duração, a dimensão aponta para o período Lula. Nas demais dimensões a leitura é a mesma nas duas janelas."
   }
 }

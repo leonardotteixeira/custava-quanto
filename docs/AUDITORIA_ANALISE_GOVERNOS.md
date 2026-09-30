@@ -1,6 +1,6 @@
 # Auditoria da análise entre períodos de governo
 
-Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.0 · 28/09/2026
+Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.1 · 29/09/2026
 
 Este documento registra o que estava errado ou frágil na primeira versão do
 capítulo (commit `9844300`), o que mudou, e as limitações que continuam.
@@ -16,6 +16,57 @@ Qualquer mudança futura na metodologia deve subir a versão em
 | `data/processed/analysis_results.json` | Resultados, com o hash SHA-256 da metodologia usada |
 | `scripts/test_analise.py` | Validações (roda no `update_data.py` depois do build) |
 | `dashboard/js/analise.js` | Só apresentação: escolhe o modo e formata; não calcula nada econômico |
+
+## Histórico de versões
+
+### v1.1 · 29/09/2026 — reconstrução editorial e metodológica
+
+Mudanças (a metodologia foi regravada e recebeu novo hash; nenhuma série foi
+excluída, nenhuma direção de indicador mudou):
+
+1. **Comparação principal.** O modo principal passou a ser "período completo
+   disponível" (Bolsonaro jan/2019–dez/2022; Lula jan/2023–último dado, em curso); a
+   comparação por igual duração virou controle secundário (botão na página).
+   **Registro honesto:** a v1.0 tinha "igual duração" como principal, por causa do
+   achado 2 abaixo. A mudança foi pedida pelo responsável pelo projeto **depois de os
+   resultados da v1.0 já terem sido vistos**, porque os períodos inteiros são como o
+   projeto os define em todo o site. Por isso a página informa, num texto gerado dos
+   dados, quando trocar a janela muda a leitura de alguma dimensão (hoje: Renda). O
+   achado 2 continua válido como limitação: as durações diferem (48 × 44 meses).
+2. **Nível de evidência** (ALTA, MÉDIA, INFORMATIVA) por dimensão, por regra escrita na
+   metodologia (menor nível de confiança entre as séries com direção); Custo de vida
+   é MÉDIA porque alimentos são índice de preço, não R$/kg.
+3. **Cinco cenários de peso** (iguais e uma ênfase por dimensão, em vez de quatro) e
+   **grade completa** de 1.771 combinações de 5 em 5 pontos; o leitor mexe em barras
+   de prioridade ("Como diferentes prioridades mudam a leitura?") em vez de digitar
+   pesos. Pesos continuam sendo preferência do leitor, não dado.
+4. **Robustez por dimensão**: refazer a leitura sem uma série de cada vez (Custo de
+   vida); combustíveis e alimentos com medianas separadas; maiores altas e quedas
+   reais e maior diferença entre períodos ("O que mais pesou?").
+5. **PIB**: barras anuais de 2019 ao último ano fechado (nenhum ano anterior a 2019,
+   nenhum resultado anual de 2026); trimestres de 2026 em bloco à parte, com três
+   medidas rotuladas (interanual, contra o trimestre anterior dessazonalizado,
+   acumulado em 4 trimestres), que não entram na média anual.
+6. **Linguagem.** Saiu "favorável"/"mais favorável" dos textos gerados e do capítulo:
+   a leitura agora diz "a leitura aponta para o período X" ou "praticamente iguais".
+   O contexto externo é escrito como "coincide no tempo com…". Cada dimensão ganhou
+   "o que mede" e "o que não mede", escritos na metodologia.
+7. **Estrutura da página**: Partes 1 a 11 (régua, o que medimos, uma parte por
+   dimensão, o que mais pesou, prioridades, em resumo, contexto), limites em cartões.
+   O painel "Audite a análise" foi para a seção Método.
+8. **Testes**: `test_analise.py` passou a recalcular de forma independente a soma da
+   síntese, o total da grade, o nível de evidência, as variações percentuais e os
+   maiores movimentos, e a conferir o PIB anual e a coerência da "janela que muda a
+   leitura". Foi testado com resultado adulterado (soma, grade e período do PIB
+   trocados): as três falhas foram detectadas.
+
+Achado de dados registrado nesta rodada: a série de Gasolina tem 47 observações no
+período Bolsonaro completo (48 meses; um mês sem dado), e a página informa "N com
+dado" quando o número de observações é menor que o de meses.
+
+### v1.0 · 28/09/2026 — primeira versão auditada
+
+Os achados abaixo são os da auditoria que gerou a v1.0.
 
 ## Achados da auditoria (versão anterior)
 
@@ -105,7 +156,7 @@ versão e registrar aqui o motivo.
     JSON, fórmulas escritas, script público e hash.
 11. **Toda fonte é identificável?** Sim, por indicador.
 12. **Toda escolha metodológica é identificável?** Sim, em
-    `analysis_methodology.json` e no painel "Audite a análise".
+    `analysis_methodology.json` e no painel "Audite a análise" (hoje na seção Método, subseção G).
 13. **Alguém com outra preferência política consegue auditar?** É o objetivo; o
     painel permite mudar pesos e ver cada número de origem.
 14. **O período Lula está marcado como em curso?** Sim.

@@ -1,6 +1,6 @@
 {
-  "versao": "1.0",
-  "data": "2026-09-28",
+  "versao": "1.1",
+  "data": "2026-09-29",
   "dimensoes": [
     {
       "id": "custo_vida",
@@ -8,7 +8,14 @@
       "titulo": "Custo de vida",
       "tipo": "A",
       "pergunta": "Em qual período os preços analisados tiveram menor pressão real (descontada a inflação) sobre o consumidor?",
-      "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período."
+      "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período.",
+      "mede": "quanto variou, descontada a inflação, o preço de cinco combustíveis (em R$) e o índice de preço de seis alimentos",
+      "nao_mede": "o gasto de uma família nem o preço em reais dos alimentos",
+      "criterio": {
+        "metrica": "variação real mediana das 11 séries",
+        "sentido": "menor",
+        "explica": "menor variação real = menor pressão sobre o consumidor"
+      }
     },
     {
       "id": "inflacao",
@@ -16,7 +23,14 @@
       "titulo": "Inflação",
       "tipo": "A",
       "pergunta": "Em qual período a inflação observada (IPCA em 12 meses) foi, em média, menor?",
-      "explicacao": "A média da inflação acumulada em 12 meses ao longo da janela. Mede pressão inflacionária no período, não se a inflação subiu ou caiu entre o primeiro e o último mês."
+      "explicacao": "A média da inflação acumulada em 12 meses ao longo da janela. Mede pressão inflacionária no período, não se a inflação subiu ou caiu entre o primeiro e o último mês.",
+      "mede": "a variação média de preços de uma cesta de consumo nacional, acumulada em 12 meses",
+      "nao_mede": "a inflação vivida por cada família",
+      "criterio": {
+        "metrica": "média do IPCA em 12 meses",
+        "sentido": "menor",
+        "explica": "média menor = menor pressão inflacionária no período"
+      }
     },
     {
       "id": "renda",
@@ -24,7 +38,14 @@
       "titulo": "Renda e poder de compra",
       "tipo": "A",
       "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra nos indicadores disponíveis?",
-      "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação."
+      "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação.",
+      "mede": "quanto o piso nacional rende, descontada a inflação, e quantos litros de gasolina ele compra",
+      "nao_mede": "a renda média das famílias nem a de quem ganha acima do piso",
+      "criterio": {
+        "metrica": "variação mediana do poder de compra das 2 séries",
+        "sentido": "maior",
+        "explica": "variação maior = o piso rende mais"
+      }
     },
     {
       "id": "atividade",
@@ -32,7 +53,14 @@
       "titulo": "Atividade econômica",
       "tipo": "A",
       "pergunta": "Em qual período a atividade econômica medida pelo PIB apresentou maior crescimento?",
-      "explicacao": "A média do crescimento real anual do PIB (IBGE). Só anos com resultado anual fechado: o ano em curso tem apenas trimestres e não entra na média."
+      "explicacao": "A média do crescimento real anual do PIB (IBGE). Só anos com resultado anual fechado: o ano em curso tem apenas trimestres e não entra na média.",
+      "mede": "o crescimento real da produção do país, ano a ano",
+      "nao_mede": "renda individual, distribuição de renda ou bem-estar",
+      "criterio": {
+        "metrica": "crescimento médio anual do PIB",
+        "sentido": "maior",
+        "explica": "média maior = a produção cresceu mais por ano"
+      }
     },
     {
       "id": "mercados",
@@ -40,7 +68,10 @@
       "titulo": "Mercados e condições financeiras",
       "tipo": "B",
       "pergunta": "Como os principais indicadores financeiros evoluíram em cada período?",
-      "explicacao": "Dólar, Selic e Ibovespa são descritos, não pontuados: nenhum deles tem uma direção que seja boa ou ruim para todo mundo. Por isso esta dimensão não entra na síntese entre dimensões."
+      "explicacao": "Dólar, Selic e Ibovespa são descritos, não pontuados: nenhum deles tem uma direção que seja boa ou ruim para todo mundo. Por isso esta dimensão não entra na síntese entre dimensões.",
+      "mede": "cotações e taxas financeiras: câmbio, juros básicos e o principal índice da bolsa",
+      "nao_mede": "o bem-estar da população; nenhuma delas tem direção boa ou ruim para todos",
+      "criterio": null
     }
   ],
   "indicadores": [
@@ -398,7 +429,7 @@
   "cenarios": [
     {
       "id": "iguais",
-      "nome": "Pesos iguais (padrão)",
+      "nome": "Pesos iguais",
       "pesos": {
         "custo_vida": 25,
         "inflacao": 25,
@@ -408,8 +439,8 @@
       "justificativa": "Nenhuma dimensão privilegiada."
     },
     {
-      "id": "bolso",
-      "nome": "Ênfase no custo de vida",
+      "id": "custo_vida",
+      "nome": "Ênfase em custo de vida",
       "pesos": {
         "custo_vida": 40,
         "inflacao": 20,
@@ -419,19 +450,30 @@
       "justificativa": "Para quem prioriza o que chega ao bolso no dia a dia."
     },
     {
-      "id": "renda",
-      "nome": "Ênfase em renda e inflação",
+      "id": "inflacao",
+      "nome": "Ênfase em inflação",
       "pesos": {
         "custo_vida": 20,
-        "inflacao": 30,
-        "renda": 30,
+        "inflacao": 40,
+        "renda": 20,
         "atividade": 20
       },
-      "justificativa": "Para quem prioriza poder de compra e estabilidade de preços."
+      "justificativa": "Para quem prioriza a estabilidade de preços."
     },
     {
-      "id": "macro",
-      "nome": "Ênfase na atividade econômica",
+      "id": "renda",
+      "nome": "Ênfase em renda e poder de compra",
+      "pesos": {
+        "custo_vida": 20,
+        "inflacao": 20,
+        "renda": 40,
+        "atividade": 20
+      },
+      "justificativa": "Para quem prioriza o que o salário compra."
+    },
+    {
+      "id": "atividade",
+      "nome": "Ênfase em atividade econômica",
       "pesos": {
         "custo_vida": 20,
         "inflacao": 20,
@@ -444,17 +486,34 @@
   "cenario_padrao": "iguais",
   "regras": {
     "modos": {
-      "mesmo_tempo": "Mês k de cada mandato (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada mandato, só anos fechados.",
-      "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas."
+      "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas.",
+      "mesmo_tempo": "Os primeiros N meses de cada período (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada período, só anos fechados."
     },
-    "modo_principal": "mesmo_tempo",
+    "modos_nomes": {
+      "completo": "Período completo disponível",
+      "mesmo_tempo": "Comparação por igual duração"
+    },
+    "modo_principal": "completo",
+    "modo_principal_nota": "A comparação principal é a dos períodos inteiros, como o projeto os define (Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado). A comparação por igual duração é um controle secundário, para quando os tamanhos diferentes dos períodos importam. As duas nunca se misturam num mesmo número.",
+    "sensibilidade": {
+      "passo_pesos": 5,
+      "descricao": "Todas as combinações de pesos das quatro dimensões com critério definido, de 5 em 5 pontos, somando 100 (1.771 combinações)."
+    },
+    "nivel_evidencia": {
+      "regra": "Dimensão de tipo B: informativa. Dimensão de tipo A: o menor nível de confiança entre as séries com direção definida (alta > média). O nível de cada série está em 'confianca' e resume fonte, consistência de medida e comparabilidade entre os períodos. Não é uma nota para o desempenho de nenhum governo.",
+      "alta": "Série medida da mesma forma nos dois períodos, com fonte oficial e valor em unidade concreta.",
+      "média": "Comparável, mas a medida tem uma limitação estrutural (por exemplo, índice de preço encadeado em vez de preço em R$).",
+      "informativa": "Descrita, sem direção definida: não entra na síntese."
+    },
     "formulas": {
       "variacao_pct": "(valor no fim da janela / valor no início da janela - 1) x 100",
       "media": "média simples dos valores mensais (ou anuais, no PIB) da janela",
       "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
       "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
       "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
-      "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = sem diferença relevante.",
+      "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
+      "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",
+      "grade_de_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em que fração delas a síntese aponta para cada lado.",
       "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude."
     },
     "tolerancia": {

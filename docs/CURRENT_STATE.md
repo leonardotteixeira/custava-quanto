@@ -34,11 +34,11 @@ recalculada no navegador: o capítulo **Bolso** some nas histórias sem preço o
 | **05 Máquina do tempo** | Como estava o Brasil em um mês qualquer? | Fotografia do mês, notícias de ±1 mês, atalhos (jan/19, mar/20, set/20, mai/22, dez/22, jul/25, ago/26) | `fotografia_mensal`, `estimativas` | Set/2020 sem dado da ANP: estimativa "≈" só aqui |
 | **06 Períodos** | Como se comparam os dois períodos? | Mesma régua, recortes "governo inteiro" e primeiros 12/24/36 meses, retratos oficiais | `resumo_periodos`, `diario` | Bolsonaro 48 meses × Lula em curso; os recortes de mesma duração existem por isso |
 | **07 Arquivo** | O que se noticiava, ano a ano? | Matérias por ano, com foto quando existe | `noticias.json` | Contexto, não causa; fotos de outros veículos sem licença de reprodução (ver README) |
-| **08 Método** | Como chegaram a estes números? | Fontes, cálculo, PIB, estimativa da ANP, limitações, definições, frescor | texto + `mercados_status.json` | Contém textos **desatualizados** (ver KNOWN_ISSUES H1, H2, M4) |
-| **09 Análise** | O que os dados mostram nos dois períodos, com que critério? | Abertura com vídeo decorativo (ilustração gerada por IA, 3 s em laço, sem áudio, `dashboard/assets/video/analise-ruido.mp4`; toca só quando visível, respeita movimento reduzido e tem botão de pausa), regra (com foto da urna eletrônica), régua (mesmo tempo × completo), "Em 1 minuto", uma seção por dimensão (pergunta, números, gráfico, leitura, maiores movimentos), síntese, sensibilidade a pesos, contexto, limites (com foto de protesto, só como contexto), conclusão, auditoria | `analysis_methodology.json`, `analysis_results.json` | Sem nota nem vencedor; pesos editáveis; arquivos para baixar |
-| **10 Apoie** | Como ajudar a manter o projeto? | Valores sugeridos, PIX, "para onde vai o apoio", transparência | `SUPPORT_CONFIG` em `dashboard/js/apoie.js` | **Chave PIX não configurada**; sem QR Code; o site não processa nem confirma pagamentos |
+| **08 Análise** | O que os dados mostram nos dois períodos, com que critério? | Abertura com vídeo decorativo (ilustração gerada por IA, 3 s em laço, sem áudio, `dashboard/assets/video/analise-ruido.mp4`; toca só quando visível, respeita movimento reduzido e tem botão de pausa), regra (com foto da urna eletrônica), Parte 1 régua (comparação principal por períodos inteiros; botão para "igual duração"), "Em 1 minuto", Parte 2 o que medimos (níveis de evidência), Partes 3 a 7 uma por dimensão (pergunta, mede/não mede, números, gráfico, leitura, robustez, maiores movimentos), Parte 8 "O que mais pesou?", Parte 9 "Como diferentes prioridades mudam a leitura?" (barras de prioridade, 5 cenários, 1.771 combinações), Parte 10 "Em resumo" (matriz), Parte 11 contexto ("coincide no tempo com"), limites em cartões (com foto de protesto, só como contexto) | `analysis_methodology.json`, `analysis_results.json` | Sem nota nem vencedor; pesos editáveis; arquivos para baixar |
+| **09 Método** | Como chegaram a estes números? | Fontes, cálculo, PIB, estimativa da ANP, limitações, definições, frescor, **Audite a análise** (versão e hash da metodologia, períodos, tipos, indicadores, fórmulas e arquivos para baixar) | texto + `mercados_status.json` | Contém textos **desatualizados** (ver KNOWN_ISSUES H1, H2, M4) |
+| **10 Apoie** | Como ajudar a manter o projeto? | Valores sugeridos (R$ 10, 25, 50, 100 e outro valor), Pix Copia e Cola no padrão BR Code e QR Code com o valor escolhido, "para onde vai o apoio", transparência | `PIX_KEY`, `MERCHANT_NAME` e `MERCHANT_CITY` em `dashboard/js/apoie.config.js`; QR pela biblioteca `qrcode-generator` (MIT) em `dashboard/vendor/`, carregada só quando há QR | **Chave Pix e nome do recebedor ainda são "COLOQUE_…"**: sem eles a página não gera QR nem código; o site não processa nem confirma pagamentos |
 
-## Dimensões da Análise (metodologia v1.0)
+## Dimensões da Análise (metodologia v1.1)
 
 | Dimensão | Tipo | Séries |
 |---|---|---|
@@ -48,12 +48,15 @@ recalculada no navegador: o capítulo **Bolso** some nas histórias sem preço o
 | Atividade econômica | A | PIB (média do crescimento real anual) |
 | Mercados | B (só descrição) | Dólar, Selic, Ibovespa |
 
-Janelas: **mesmo tempo de governo** (principal; 44 meses de cada período nos dados
-de ago/2026) e **período completo disponível** (Bolsonaro 48 meses × Lula em
-curso). Estado do resultado hoje: as quatro dimensões Tipo A têm leitura "mais
-favorável" no período Lula no modo principal; no modo completo, Renda fica "sem
-diferença relevante". O sentido não muda nos quatro cenários de peso. Detalhes:
-[METHODOLOGY.md](METHODOLOGY.md).
+Janelas: **período completo disponível** (principal: Bolsonaro jan/2019–dez/2022,
+48 meses × Lula jan/2023–último dado, em curso) e **comparação por igual duração**
+(secundária; 44 meses de cada período nos dados de ago/2026). Níveis de evidência:
+Custo de vida MÉDIA (alimentos são índice), Inflação, Renda e Atividade ALTA,
+Mercados INFORMATIVA. Estado do resultado hoje (29/09/2026): no período completo,
+três dimensões apontam para o período Lula e Renda fica "praticamente igual"; por
+igual duração, as quatro apontam para o período Lula (a janela muda só a leitura de
+Renda). Nenhuma das 1.771 combinações de pesos leva a síntese ao período
+Bolsonaro. Detalhes: [METHODOLOGY.md](METHODOLOGY.md).
 
 ## Séries e frescor
 
@@ -75,7 +78,7 @@ diferença relevante". O sentido não muda nos quatro cenários de peso. Detalhe
 - `data/processed/` — dados versionados; `data/news/` — curadoria manual de
   notícias; `data/raw/` — cache local, não versionado.
 - `dashboard/` — `index.html`, `styles.css`, `js/app.js` (orquestra), `charts.js`
-  (gráficos SVG), `pib.js`, `analise.js`, `apoie.js`, `util.js`; assets em
+  (gráficos SVG), `pib.js`, `analise.js`, `apoie.js` e `apoie.config.js`, `util.js`; biblioteca de QR em `vendor/`; assets em
   `assets/`.
 - `analysis/analysis.py` e `output/` — gráficos estáticos da primeira fase,
   **HISTÓRICO**, fora do pipeline.

@@ -36,7 +36,7 @@ juntos, e com que critério?
 
 Site estático em capítulos (`dashboard/index.html`): **Abertura**, **01 Índice**,
 **História** (era → agora), **02 Preço**, **03 Bolso**, **04 Contexto**, **05
-Máquina do tempo**, **06 Períodos**, **07 Arquivo**, **08 Método**, **09 Análise**,
+Máquina do tempo**, **06 Períodos**, **07 Arquivo**, **08 Análise**, **09 Método**,
 **10 Apoie**. A numeração é dinâmica (Bolso some nas histórias sem preço ou índice).
 A história escolhida fica na URL (`?historia=gasolina`). Descrição de cada capítulo,
 dados e limites: [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md).
@@ -92,14 +92,17 @@ Tabela completa por indicador (frequência, campo, processamento, limitações):
 O período Lula **não está completo**. As duas janelas existem porque comparar 48
 com 44 meses distorce variações acumuladas.
 
-**Análise (metodologia v1.0):** cinco dimensões (Custo de vida, Inflação, Renda e
-poder de compra, Atividade econômica, Mercados). Indicadores **Tipo A** têm direção
-favorável definida antes do cálculo (preço real e inflação menores; poder de compra e
-crescimento maiores); **Tipo B** (Dólar, Selic, Ibovespa) só são descritos;
-**Tipo C** (salário nominal) é informativo. Cada dimensão Tipo A vira um sentido pela
-**mediana** de suas séries, com tolerância de "sem diferença relevante"; a síntese
-soma sentidos ponderados e é testada em quatro cenários de peso. Sem nota, sem
-vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
+**Análise (metodologia v1.1):** cinco dimensões (Custo de vida, Inflação, Renda e
+poder de compra, Atividade econômica, Mercados), com nível de evidência (ALTA, MÉDIA,
+INFORMATIVA). A comparação principal é a dos períodos inteiros (Bolsonaro jan/2019–
+dez/2022; Lula jan/2023–último dado, em curso); "igual duração" é um controle
+secundário. Indicadores **Tipo A** têm direção definida antes do cálculo (preço real e
+inflação menores; poder de compra e crescimento maiores); **Tipo B** (Dólar, Selic,
+Ibovespa) só são descritos; **Tipo C** (salário nominal) é informativo. Cada dimensão
+Tipo A vira um sentido pela **mediana** de suas séries, com tolerância de "praticamente
+iguais"; a síntese soma sentidos ponderados, é testada em cinco cenários e em todas as
+combinações de pesos de 5 em 5 pontos, e o leitor pode mover as prioridades. Sem nota,
+sem vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
 [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md).
 
 ## 9. Limitações dos dados
@@ -189,8 +192,9 @@ e abrir `http://localhost:8420/dashboard/index.html`.
 
 Depois de baixar o PIB, reconstrua: `scripts/build_dashboard_data.py`, `scripts/build_analise.py`
 e `scripts/test_analise.py`. Não rode `download_bcb.py` nem `download_ibovespa.py`
-(legados; sobrescrevem a fonte de produção). Para o Apoie, preencha `pixKey` (e, se
-quiser o "PIX copia e cola", `pixName`) em `dashboard/js/apoie.js`.
+(legados; sobrescrevem a fonte de produção). Para o Apoie, preencha `PIX_KEY`,
+`MERCHANT_NAME` e `MERCHANT_CITY` em `dashboard/js/apoie.config.js` (enquanto forem
+"COLOQUE_…", a página não gera QR Code nem Pix Copia e Cola).
 
 ## 15. Testes e QA
 

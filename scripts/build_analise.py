@@ -35,8 +35,8 @@ from common import DATA_PROCESSED, ensure_dirs, get_logger
 
 logger = get_logger("build_analise")
 
-METODOLOGIA_VERSAO = "1.0"
-METODOLOGIA_DATA = "2026-09-28"
+METODOLOGIA_VERSAO = "1.1"
+METODOLOGIA_DATA = "2026-09-29"
 
 INICIO = {"Bolsonaro": (2019, 1), "Lula": (2023, 1)}
 
@@ -45,19 +45,34 @@ INICIO = {"Bolsonaro": (2019, 1), "Lula": (2023, 1)}
 DIMENSOES = [
     {"id": "custo_vida", "ordem": 1, "titulo": "Custo de vida", "tipo": "A",
      "pergunta": "Em qual período os preços analisados tiveram menor pressão real (descontada a inflação) sobre o consumidor?",
-     "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período."},
+     "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período.",
+     "mede": "quanto variou, descontada a inflação, o preço de cinco combustíveis (em R$) e o índice de preço de seis alimentos",
+     "nao_mede": "o gasto de uma família nem o preço em reais dos alimentos",
+     "criterio": {"metrica": "variação real mediana das 11 séries", "sentido": "menor", "explica": "menor variação real = menor pressão sobre o consumidor"}},
     {"id": "inflacao", "ordem": 2, "titulo": "Inflação", "tipo": "A",
      "pergunta": "Em qual período a inflação observada (IPCA em 12 meses) foi, em média, menor?",
-     "explicacao": "A média da inflação acumulada em 12 meses ao longo da janela. Mede pressão inflacionária no período, não se a inflação subiu ou caiu entre o primeiro e o último mês."},
+     "explicacao": "A média da inflação acumulada em 12 meses ao longo da janela. Mede pressão inflacionária no período, não se a inflação subiu ou caiu entre o primeiro e o último mês.",
+     "mede": "a variação média de preços de uma cesta de consumo nacional, acumulada em 12 meses",
+     "nao_mede": "a inflação vivida por cada família",
+     "criterio": {"metrica": "média do IPCA em 12 meses", "sentido": "menor", "explica": "média menor = menor pressão inflacionária no período"}},
     {"id": "renda", "ordem": 3, "titulo": "Renda e poder de compra", "tipo": "A",
      "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra nos indicadores disponíveis?",
-     "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação."},
+     "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação.",
+     "mede": "quanto o piso nacional rende, descontada a inflação, e quantos litros de gasolina ele compra",
+     "nao_mede": "a renda média das famílias nem a de quem ganha acima do piso",
+     "criterio": {"metrica": "variação mediana do poder de compra das 2 séries", "sentido": "maior", "explica": "variação maior = o piso rende mais"}},
     {"id": "atividade", "ordem": 4, "titulo": "Atividade econômica", "tipo": "A",
      "pergunta": "Em qual período a atividade econômica medida pelo PIB apresentou maior crescimento?",
-     "explicacao": "A média do crescimento real anual do PIB (IBGE). Só anos com resultado anual fechado: o ano em curso tem apenas trimestres e não entra na média."},
+     "explicacao": "A média do crescimento real anual do PIB (IBGE). Só anos com resultado anual fechado: o ano em curso tem apenas trimestres e não entra na média.",
+     "mede": "o crescimento real da produção do país, ano a ano",
+     "nao_mede": "renda individual, distribuição de renda ou bem-estar",
+     "criterio": {"metrica": "crescimento médio anual do PIB", "sentido": "maior", "explica": "média maior = a produção cresceu mais por ano"}},
     {"id": "mercados", "ordem": 5, "titulo": "Mercados e condições financeiras", "tipo": "B",
      "pergunta": "Como os principais indicadores financeiros evoluíram em cada período?",
-     "explicacao": "Dólar, Selic e Ibovespa são descritos, não pontuados: nenhum deles tem uma direção que seja boa ou ruim para todo mundo. Por isso esta dimensão não entra na síntese entre dimensões."},
+     "explicacao": "Dólar, Selic e Ibovespa são descritos, não pontuados: nenhum deles tem uma direção que seja boa ou ruim para todo mundo. Por isso esta dimensão não entra na síntese entre dimensões.",
+     "mede": "cotações e taxas financeiras: câmbio, juros básicos e o principal índice da bolsa",
+     "nao_mede": "o bem-estar da população; nenhuma delas tem direção boa ou ruim para todos",
+     "criterio": None},
 ]
 
 # Tipo A: direção interpretável definida. Tipo B: depende do contexto (só descrição).
@@ -134,29 +149,42 @@ INDICADORES = [
 # não há razão a priori para privilegiar uma delas; qualquer outra escolha é um
 # juízo de valor. Os cenários testam juízos diferentes, definidos antes do cálculo.
 CENARIOS = [
-    {"id": "iguais", "nome": "Pesos iguais (padrão)", "pesos": {"custo_vida": 25, "inflacao": 25, "renda": 25, "atividade": 25},
+    {"id": "iguais", "nome": "Pesos iguais", "pesos": {"custo_vida": 25, "inflacao": 25, "renda": 25, "atividade": 25},
      "justificativa": "Nenhuma dimensão privilegiada."},
-    {"id": "bolso", "nome": "Ênfase no custo de vida", "pesos": {"custo_vida": 40, "inflacao": 20, "renda": 20, "atividade": 20},
+    {"id": "custo_vida", "nome": "Ênfase em custo de vida", "pesos": {"custo_vida": 40, "inflacao": 20, "renda": 20, "atividade": 20},
      "justificativa": "Para quem prioriza o que chega ao bolso no dia a dia."},
-    {"id": "renda", "nome": "Ênfase em renda e inflação", "pesos": {"custo_vida": 20, "inflacao": 30, "renda": 30, "atividade": 20},
-     "justificativa": "Para quem prioriza poder de compra e estabilidade de preços."},
-    {"id": "macro", "nome": "Ênfase na atividade econômica", "pesos": {"custo_vida": 20, "inflacao": 20, "renda": 20, "atividade": 40},
+    {"id": "inflacao", "nome": "Ênfase em inflação", "pesos": {"custo_vida": 20, "inflacao": 40, "renda": 20, "atividade": 20},
+     "justificativa": "Para quem prioriza a estabilidade de preços."},
+    {"id": "renda", "nome": "Ênfase em renda e poder de compra", "pesos": {"custo_vida": 20, "inflacao": 20, "renda": 40, "atividade": 20},
+     "justificativa": "Para quem prioriza o que o salário compra."},
+    {"id": "atividade", "nome": "Ênfase em atividade econômica", "pesos": {"custo_vida": 20, "inflacao": 20, "renda": 20, "atividade": 40},
      "justificativa": "Para quem prioriza o crescimento da economia."},
 ]
 
 REGRAS = {
     "modos": {
-        "mesmo_tempo": "Mês k de cada mandato (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada mandato, só anos fechados.",
         "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas.",
+        "mesmo_tempo": "Os primeiros N meses de cada período (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada período, só anos fechados.",
     },
-    "modo_principal": "mesmo_tempo",
+    "modos_nomes": {"completo": "Período completo disponível", "mesmo_tempo": "Comparação por igual duração"},
+    "modo_principal": "completo",
+    "modo_principal_nota": "A comparação principal é a dos períodos inteiros, como o projeto os define (Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado). A comparação por igual duração é um controle secundário, para quando os tamanhos diferentes dos períodos importam. As duas nunca se misturam num mesmo número.",
+    "sensibilidade": {"passo_pesos": 5, "descricao": "Todas as combinações de pesos das quatro dimensões com critério definido, de 5 em 5 pontos, somando 100 (1.771 combinações)."},
+    "nivel_evidencia": {
+        "regra": "Dimensão de tipo B: informativa. Dimensão de tipo A: o menor nível de confiança entre as séries com direção definida (alta > média). O nível de cada série está em 'confianca' e resume fonte, consistência de medida e comparabilidade entre os períodos. Não é uma nota para o desempenho de nenhum governo.",
+        "alta": "Série medida da mesma forma nos dois períodos, com fonte oficial e valor em unidade concreta.",
+        "média": "Comparável, mas a medida tem uma limitação estrutural (por exemplo, índice de preço encadeado em vez de preço em R$).",
+        "informativa": "Descrita, sem direção definida: não entra na síntese.",
+    },
     "formulas": {
         "variacao_pct": "(valor no fim da janela / valor no início da janela - 1) x 100",
         "media": "média simples dos valores mensais (ou anuais, no PIB) da janela",
         "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
         "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
         "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
-        "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = sem diferença relevante.",
+        "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
+        "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",
+        "grade_de_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em que fração delas a síntese aponta para cada lado.",
         "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude.",
     },
     "tolerancia": {"variacao_pct": 1.0, "media": 0.1},
@@ -284,17 +312,46 @@ def _indicador(ind: dict, produtos: dict) -> dict:
     return res
 
 
+NIVEL_ORDEM = {"alta": 2, "média": 1}
+PERIODOS = ("Bolsonaro", "Lula")
+NOME_P = {1: "Lula", -1: "Bolsonaro"}
+
+
+def _medianas_f(direcionais: list, modo: str, excluir: str | None = None) -> dict:
+    out = {}
+    for p in PERIODOS:
+        fs = [i[modo][p]["f"] for i in direcionais if i["id"] != excluir and i[modo][p] and i[modo][p]["f"] is not None]
+        out[p] = statistics.median(fs) if fs else None
+    return out
+
+
+def _leitura(m: dict, tol: float) -> int:
+    mb, ml = m["Bolsonaro"], m["Lula"]
+    return 0 if mb is None or ml is None or abs(ml - mb) < tol else (1 if ml > mb else -1)
+
+
+def _nivel_evidencia(dim: dict, met: dict):
+    if dim["tipo"] != "A":
+        return "informativa", {}
+    inds = [i for i in met["indicadores"] if i["dimensao"] == dim["id"] and i["tipo"] == "A"]
+    cont: dict = {}
+    for i in inds:
+        cont[i["confianca"]] = cont.get(i["confianca"], 0) + 1
+    return min((i["confianca"] for i in inds), key=lambda c: NIVEL_ORDEM[c]), cont
+
+
 def _dimensao(dim: dict, inds: list, met: dict, modo: str) -> dict:
     ativos = [i for i in inds if not i.get("excluido") and i.get(modo)]
     tol_por_ind = met["regras"]["tolerancia"]
-    out = {"id": dim["id"], "n_series": len(ativos), "modo": modo}
+    nivel, cont = _nivel_evidencia(dim, met)
+    out = {"id": dim["id"], "n_series": len(ativos), "modo": modo, "nivel_evidencia": nivel, "evidencia_contagem": cont}
     if dim["tipo"] != "A":
         maior = max(ativos, key=lambda i: abs((i[modo]["Lula"] or {}).get("valor") or 0) + abs((i[modo]["Bolsonaro"] or {}).get("valor") or 0), default=None)
         out.update({"leitura": None, "maior_variacao": maior["id"] if maior else None})
         return out
     direcionais = [i for i in ativos if i["tipo"] == "A"]
     por = {}
-    for p in ("Bolsonaro", "Lula"):
+    for p in PERIODOS:
         fs = [i[modo][p]["f"] for i in direcionais if i[modo][p] and i[modo][p]["f"] is not None]
         vs = [i[modo][p]["valor"] for i in direcionais if i[modo][p] and i[modo][p].get("valor") is not None]
         por[p] = {"n": len(fs), "mediana_f": round(statistics.median(fs), 2) if fs else None,
@@ -304,27 +361,34 @@ def _dimensao(dim: dict, inds: list, met: dict, modo: str) -> dict:
                   "n_favoravel": sum(1 for f in fs if f > 0), "n_desfavoravel": sum(1 for f in fs if f < 0)}
     metrica = direcionais[0]["_metrica"] if direcionais else "variacao_pct"
     tol = tol_por_ind.get(metrica, 1.0)
-    mb, ml = por["Bolsonaro"]["mediana_f"], por["Lula"]["mediana_f"]
-    leitura = 0 if mb is None or ml is None or abs(ml - mb) < tol else (1 if ml > mb else -1)
-    # maiores movimentos (na direção definida pela metadata)
-    todos = [(i, p, i[modo][p]["f"]) for i in direcionais for p in ("Bolsonaro", "Lula") if i[modo][p] and i[modo][p]["f"] is not None]
+    leitura = _leitura({p: por[p]["mediana_f"] for p in PERIODOS}, tol)
+    todos = [(i, p, i[modo][p]["f"]) for i in direcionais for p in PERIODOS if i[modo][p] and i[modo][p]["f"] is not None]
     fav = max(todos, key=lambda x: x[2], default=None)
     desf = min(todos, key=lambda x: x[2], default=None)
     div = max(direcionais, key=lambda i: abs((i[modo]["Lula"]["f"] or 0) - (i[modo]["Bolsonaro"]["f"] or 0)), default=None)
-    # outliers: distância à mediana > 2,5 x MAD, só com 5+ séries
     outliers = []
     if len(direcionais) >= 5:
-        for p in ("Bolsonaro", "Lula"):
+        for p in PERIODOS:
             fs = [(i, i[modo][p]["f"]) for i in direcionais if i[modo][p]["f"] is not None]
             med = statistics.median([f for _, f in fs])
             mad = statistics.median([abs(f - med) for _, f in fs]) or 1e-9
             for i, f in fs:
                 if abs(f - med) > 2.5 * mad:
                     outliers.append({"id": i["id"], "periodo": p, "f": f, "mediana_f": round(med, 2)})
-    out.update({"por_periodo": por, "leitura": leitura, "tolerancia": tol, "metrica": metrica,
+    sem_uma = None
+    if len(direcionais) >= 3:
+        casos = [{"removido": i["id"], "leitura": _leitura(_medianas_f(direcionais, modo, i["id"]), tol)} for i in direcionais]
+        sem_uma = {"n": len(casos), "iguais": sum(1 for c in casos if c["leitura"] == leitura), "casos": casos}
+    grupos = None
+    if dim["id"] == "custo_vida":  # combustíveis (R$) e alimentos (índice) não são a mesma medida: medianas separadas
+        grupos = {}
+        for nome, filtro in (("combustiveis", lambda i: i["id"] not in INDICES_ALIMENTO), ("alimentos", lambda i: i["id"] in INDICES_ALIMENTO)):
+            sub = [i for i in direcionais if filtro(i)]
+            grupos[nome] = {"n": len(sub), **{p: round(statistics.median([i[modo][p]["valor"] for i in sub]), 2) for p in PERIODOS}}
+    out.update({"grupos": grupos, "por_periodo": por, "leitura": leitura, "tolerancia": tol, "metrica": metrica,
                 "maior_favoravel": {"id": fav[0]["id"], "periodo": fav[1], "f": fav[2]} if fav else None,
                 "maior_desfavoravel": {"id": desf[0]["id"], "periodo": desf[1], "f": desf[2]} if desf else None,
-                "maior_divergencia": div["id"] if div else None, "outliers": outliers})
+                "maior_divergencia": div["id"] if div else None, "outliers": outliers, "sem_uma_serie": sem_uma})
     return out
 
 
@@ -332,14 +396,54 @@ def _sintese(dims: list, cenarios: list) -> list:
     leituras = {d["id"]: d["leitura"] for d in dims if d.get("leitura") is not None}
     res = []
     for c in cenarios:
-        soma = sum(c["pesos"].get(k, 0) * v for k, v in leituras.items())
         total = sum(c["pesos"].get(k, 0) for k in leituras)
-        res.append({"id": c["id"], "soma": soma, "total_pesos": total,
-                    "sentido": 0 if soma == 0 else (1 if soma > 0 else -1)})
+        soma = sum(c["pesos"].get(k, 0) * v for k, v in leituras.items())
+        res.append({"id": c["id"], "soma": soma, "total_pesos": total, "sentido": 0 if soma == 0 else (1 if soma > 0 else -1),
+                    "contribuicoes": {k: {"peso": c["pesos"].get(k, 0), "leitura": v} for k, v in leituras.items()}})
     return res
 
 
-NOME_P = {1: "Lula", -1: "Bolsonaro"}
+def _grade(dims: list, met: dict) -> dict:
+    ids = [d["id"] for d in met["dimensoes"] if d["tipo"] == "A"]
+    leit = {d["id"]: d["leitura"] for d in dims if d.get("leitura") is not None}
+    passo = met["regras"]["sensibilidade"]["passo_pesos"]
+    n = 100 // passo
+    cont = {1: 0, -1: 0, 0: 0}
+    total = 0
+    for a in range(n + 1):
+        for b in range(n + 1 - a):
+            for c in range(n + 1 - a - b):
+                w = (a, b, c, n - a - b - c)
+                soma = sum(x * leit[k] for x, k in zip(w, ids))
+                cont[0 if soma == 0 else (1 if soma > 0 else -1)] += 1
+                total += 1
+    return {"combinacoes": total, "lula": cont[1], "bolsonaro": cont[-1], "empate": cont[0], "passo": passo,
+            "mesmo_lado": not (cont[1] > 0 and cont[-1] > 0)}
+
+
+def _maiores_movimentos(inds: list, modo: str) -> dict:
+    """Só séries com a mesma unidade de leitura (variação % real): custo de vida e poder de compra."""
+    cands = []
+    for i in inds:
+        if i.get("excluido") or i["tipo"] != "A" or i.get("_metrica") != "variacao_pct" or not i.get(modo):
+            continue
+        for p in PERIODOS:
+            s_ = i[modo][p]
+            if s_ and s_.get("valor") is not None:
+                cands.append({"id": i["id"], "nome": i["nome"], "periodo": p, "valor": s_["valor"], "indice": i["dimensao"] == "custo_vida" and i["id"] in INDICES_ALIMENTO})
+    if not cands:
+        return {}
+    por_serie = {}
+    for c in cands:
+        por_serie.setdefault(c["id"], {})[c["periodo"]] = c
+    dif = max((v for v in por_serie.values() if len(v) == 2), key=lambda v: abs(v["Lula"]["valor"] - v["Bolsonaro"]["valor"]), default=None)
+    return {"alta": max(cands, key=lambda c: c["valor"]), "queda": min(cands, key=lambda c: c["valor"]),
+            "top_alta": sorted(cands, key=lambda c: -c["valor"])[:3], "top_queda": sorted(cands, key=lambda c: c["valor"])[:3],
+            "diferenca": {"id": dif["Lula"]["id"], "nome": dif["Lula"]["nome"], "indice": dif["Lula"]["indice"],
+                          "bolsonaro": dif["Bolsonaro"]["valor"], "lula": dif["Lula"]["valor"]} if dif else None}
+
+
+INDICES_ALIMENTO = {"Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído"}
 
 
 def _fmt(v, d=1):
@@ -347,9 +451,17 @@ def _fmt(v, d=1):
     return ("+" if v > 0 else "−" if v < 0 else "") + s
 
 
-def _textos(dims_res: list, inds: list, met: dict, modo: str, sint: list) -> dict:
-    """Frases geradas a partir dos números (templates auditáveis, sem conclusão digitada à mão)."""
-    idx = {i["id"]: i for i in inds}
+def _v(v, metrica, d=1):
+    return f"{_fmt(v, d)}%" if metrica == "variacao_pct" else f"{abs(v):.{d}f}".replace(".", ",") + "%"
+
+
+def _txt_leitura(l: int) -> str:
+    return "a dimensão aponta para o período Lula" if l == 1 else "a dimensão aponta para o período Bolsonaro" if l == -1 else "os dois períodos ficam praticamente iguais"
+
+
+def _textos(dims_res: list, inds: list, met: dict, modo: str, sint: list, grade: dict) -> dict:
+    """Frases geradas a partir dos números (modelos de frase auditáveis; nenhuma conclusão digitada à mão).
+    Descrevem o valor bruto e o critério da dimensão, sem 'favorável'/'melhor'."""
     dmeta = {d["id"]: d for d in met["dimensoes"]}
     linhas = {}
     for d in dims_res:
@@ -359,37 +471,58 @@ def _textos(dims_res: list, inds: list, met: dict, modo: str, sint: list) -> dic
             for i in [x for x in inds if x["dimensao"] == d["id"] and not x.get("excluido") and x.get(modo)]:
                 b, l = i[modo]["Bolsonaro"], i[modo]["Lula"]
                 un = " p.p." if i.get("_metrica") == "nivel" else "%"
-                partes.append(f"{i['nome']}: {_fmt(b['valor'], 2 if un == ' p.p.' else 1)}{un} no período Bolsonaro e {_fmt(l['valor'], 2 if un == ' p.p.' else 1)}{un} no período Lula")
-            linhas[d["id"]] = "; ".join(partes) + ". Descrição, não avaliação: estes indicadores não têm uma direção boa ou ruim para todos."
+                nd = 2 if un == " p.p." else 1
+                partes.append(f"{i['nome']}: {_fmt(b['valor'], nd)}{un} no período Bolsonaro e {_fmt(l['valor'], nd)}{un} no período Lula")
+            linhas[d["id"]] = "; ".join(partes) + ". Sem direção definida."
             continue
+        crit = dm["criterio"]
         pb, pl = d["por_periodo"]["Bolsonaro"], d["por_periodo"]["Lula"]
-        met_txt = {"custo_vida": "variação real mediana", "renda": "variação mediana do poder de compra",
-                   "inflacao": "inflação média em 12 meses", "atividade": "crescimento médio anual do PIB"}.get(d["id"], "mediana")
-        un = "%"
-        base = f"{met_txt} de {_fmt(pb['mediana_valor'])}{un} no período Bolsonaro e {_fmt(pl['mediana_valor'])}{un} no período Lula"
-        n_info = d["n_series"] - pb["n"]
-        if pb["n"] > 1:
-            base = f"{pb['n']} séries com direção definida{f' (e {n_info} informativa)' if n_info == 1 else f' (e {n_info} informativas)' if n_info > 1 else ''}; " + base
+        vb, vl, m = pb["mediana_valor"], pl["mediana_valor"], d["metrica"]
         if d["leitura"] == 0:
-            leit = "sem diferença relevante pelo critério definido"
+            frase = (f"Neste critério ({crit['metrica']}), os dois períodos ficaram praticamente iguais: {_v(vb, m)} no período Bolsonaro "
+                     f"e {_v(vl, m)} no período Lula (diferença abaixo da tolerância de {str(d['tolerancia']).replace('.', ',')} ponto).")
         else:
-            leit = f"leitura mais favorável no período {NOME_P[d['leitura']]}, pelo critério definido"
-        linhas[d["id"]] = f"{base} — {leit}."
-    padrao = next(s for s in sint if s["id"] == met["cenario_padrao"])
-    sentidos = {s["sentido"] for s in sint}
+            P, O = ("Lula", "Bolsonaro") if d["leitura"] == 1 else ("Bolsonaro", "Lula")
+            vP, vO = (vl, vb) if d["leitura"] == 1 else (vb, vl)
+            frase = (f"Neste critério ({crit['metrica']}; {crit['explica']}), o valor foi {crit['sentido']} no período {P} "
+                     f"({_v(vP, m)}) do que no período {O} ({_v(vO, m)}).")
+        linhas[d["id"]] = frase
     n_dir = len([d for d in dims_res if d.get("leitura") is not None])
-    cont = {1: sum(1 for d in dims_res if d.get("leitura") == 1), -1: sum(1 for d in dims_res if d.get("leitura") == -1), 0: sum(1 for d in dims_res if d.get("leitura") == 0)}
-    if padrao["sentido"] == 0:
-        geral = f"Com pesos iguais, as {n_dir} dimensões com direção interpretável se equilibram: não há um sentido predominante."
+    cont = {k: sum(1 for d in dims_res if d.get("leitura") == k) for k in (1, -1, 0)}
+    nome_modo = met["regras"]["modos_nomes"][modo]
+    ap = lambda n: "aponta" if n == 1 else "apontam"
+    ig = "fica praticamente igual" if cont[0] == 1 else "ficam praticamente iguais"
+    geral = (f"Nas {n_dir} dimensões com critério definido, {cont[1]} {ap(cont[1])} para o período Lula, {cont[-1]} para o período Bolsonaro "
+             f"e {cont[0]} {ig} (janela: {nome_modo.lower()}).")
+    t = grade["combinacoes"]
+    fmt_n = lambda n: f"{n:,}".replace(",", ".")
+    pct_ = lambda n: (f"{100 * n / t:.1f}".replace(".", ",") + "%")
+    if grade["lula"] > 0 and grade["bolsonaro"] > 0:
+        rob = (f"A síntese depende dos pesos: aponta para o período Lula em {pct_(grade['lula'])} das {fmt_n(t)} combinações testadas, "
+               f"para o período Bolsonaro em {pct_(grade['bolsonaro'])} e fica empatada em {pct_(grade['empate'])}. "
+               "O lado da conclusão depende do peso que cada leitor dá a cada dimensão.")
+    elif grade["lula"] == 0 and grade["bolsonaro"] == 0:
+        rob = f"Nas {fmt_n(t)} combinações de pesos testadas a síntese fica empatada."
     else:
-        geral = (f"Com pesos iguais, {cont[padrao['sentido']]} das {n_dir} dimensões com direção interpretável têm leitura mais favorável no período "
-                 f"{NOME_P[padrao['sentido']]}, {cont[-padrao['sentido']]} no período {NOME_P[-padrao['sentido']]} e {cont[0]} sem diferença relevante.")
-    if len(sentidos) == 1:
-        rob = "O sentido da leitura agregada é o mesmo nos quatro cenários de peso testados."
-    else:
-        mudam = [c["nome"] for c, s in zip(met["cenarios"], sint) if s["sentido"] != padrao["sentido"]]
-        rob = f"O sentido da leitura agregada MUDA conforme os pesos: difere do cenário padrão em {', '.join(mudam)}."
+        lado = "Lula" if grade["lula"] > 0 else "Bolsonaro"
+        oposto = "Bolsonaro" if lado == "Lula" else "Lula"
+        n_lado = grade["lula"] if lado == "Lula" else grade["bolsonaro"]
+        emp = (f" e fica empatada em {fmt_n(grade['empate'])} (quando todo o peso cai em dimensões que ficam praticamente iguais)"
+               if grade["empate"] else "")
+        rob = (f"Nenhuma das {fmt_n(t)} combinações de pesos testadas leva a síntese ao período {oposto}: ela aponta para o período {lado} em "
+               f"{fmt_n(n_lado)} ({pct_(n_lado)}){emp}. Isso ocorre porque nenhuma dimensão aponta para o período {oposto}; "
+               "os pesos mudam o tamanho da diferença, não o lado.")
     return {"por_dimensao": linhas, "geral": geral, "robustez": rob}
+
+
+def _bloco_pib(pib: dict) -> dict:
+    anos = [{"ano": r["ano"], "taxa": r["taxa_aa"], "periodo": r["periodo"]} for r in pib.get("serie_mensal", [])
+            if r["ano"] >= 2019 and r.get("taxa_aa") is not None]
+    ult_fechado = max((a["ano"] for a in anos), default=None)
+    tri = [{"trimestre": q["trimestre"], "interanual": q.get("variacao_interanual"), "dessazonalizada": q.get("variacao_dessazonalizada"),
+            "acumulado_4tri": q.get("acumulado_4tri")} for q in pib.get("serie_trimestral", [])
+           if ult_fechado is not None and int(q["trimestre"][:4]) > ult_fechado]
+    return {"anos": anos, "ultimo_ano_fechado": ult_fechado, "trimestres_sem_resultado_anual": tri, "ultimo_trimestre": pib.get("ultimo_trimestre")}
 
 
 def calcular_resultados() -> dict:
@@ -406,7 +539,6 @@ def calcular_resultados() -> dict:
     saida = {"gerado_em": datetime.now(timezone.utc).isoformat(timespec="minutes"), "dados_gerados_em": d.get("gerado_em"),
              "metodologia_versao": met["versao"], "metodologia_sha256": hashlib.sha256(texto_met.encode("utf-8")).hexdigest(),
              "indicadores": inds, "modos": {}}
-    # duração comum (mês k) nos indicadores mensais, e anos no PIB
     mensais = [i for i in inds if not i.get("excluido") and i.get("k_comum") and not next(x for x in met["indicadores"] if x["id"] == i["id"]).get("anual")]
     kmax = max((i["k_comum"][1] for i in mensais), default=None)
     saida["duracao"] = {"mesmo_tempo_meses": kmax,
@@ -414,10 +546,25 @@ def calcular_resultados() -> dict:
                         "bolsonaro_meses": max((i["k_bolsonaro"][1] for i in mensais), default=None)}
     pib = produtos.get("PIB", {})
     saida["pib_ultimo_trimestre"] = pib.get("ultimo_trimestre")
-    for modo in ("mesmo_tempo", "completo"):
+    saida["pib"] = _bloco_pib(pib)
+    for modo in ("completo", "mesmo_tempo"):
         dims_res = [_dimensao(dim, [i for i in inds if i["dimensao"] == dim["id"]], met, modo) for dim in met["dimensoes"]]
         sint = _sintese(dims_res, met["cenarios"])
-        saida["modos"][modo] = {"dimensoes": dims_res, "sintese": sint, "textos": _textos(dims_res, inds, met, modo, sint)}
+        grade = _grade(dims_res, met)
+        saida["modos"][modo] = {"dimensoes": dims_res, "sintese": sint, "grade": grade, "maiores_movimentos": _maiores_movimentos(inds, modo),
+                                "textos": _textos(dims_res, inds, met, modo, sint, grade)}
+    # o que muda de leitura quando se troca a janela
+    dm = {x["id"]: x for x in met["dimensoes"]}
+    muda = []
+    for a, b in zip(saida["modos"]["completo"]["dimensoes"], saida["modos"]["mesmo_tempo"]["dimensoes"]):
+        if a.get("leitura") is not None and a["leitura"] != b["leitura"]:
+            muda.append({"id": a["id"], "completo": a["leitura"], "mesmo_tempo": b["leitura"]})
+    if muda:
+        partes = [f"{dm[m['id']]['titulo']}: no período completo disponível, {_txt_leitura(m['completo'])}; na comparação por igual duração, {_txt_leitura(m['mesmo_tempo'])}" for m in muda]
+        texto = "A janela escolhida muda a leitura de uma dimensão. " + ". ".join(partes) + ". Nas demais dimensões a leitura é a mesma nas duas janelas."
+    else:
+        texto = "A leitura de todas as dimensões com critério definido é a mesma nas duas janelas."
+    saida["janela_muda"] = {"dimensoes": muda, "texto": texto}
     (DATA_PROCESSED / "analysis_results.json").write_text(json.dumps(saida, ensure_ascii=False, indent=2), encoding="utf-8")
     return saida
 

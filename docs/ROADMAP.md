@@ -23,10 +23,11 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
   2023–2025).
 
 **Metodologia**
-- Análise entre períodos com metodologia congelada (v1.0), hash, modos "mesmo tempo
-  de governo" e "período completo disponível", direção e tipo por indicador, mediana
-  por dimensão, tolerância, sensibilidade a quatro cenários de peso e testes
-  (`test_analise.py`).
+- Análise entre períodos com metodologia congelada (v1.1), hash, comparação principal
+  por períodos inteiros e secundária por igual duração, direção e tipo por indicador,
+  mediana por dimensão, tolerância, nível de evidência, sensibilidade (cinco cenários,
+  1.771 combinações e barras de prioridade), robustez sem uma série, PIB anual e
+  trimestral separados e testes (`test_analise.py`).
 - Auditoria da análise ([AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md))
   e auditoria de fontes de preço de alimentos
   ([AUDITORIA_PRECOS_ALIMENTOS.md](AUDITORIA_PRECOS_ALIMENTOS.md)).
@@ -35,7 +36,7 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
 - Notícias verificadas contra a página de origem (111 itens), com foto quando
   existe e crédito; regra "contexto, não causa".
 - Site em capítulos: Índice, História, Preço, Bolso, Contexto, Máquina do tempo,
-  Períodos, Arquivo, Método, Análise, Apoie.
+  Períodos, Arquivo, Análise, Método, Apoie.
 - Ponto de partida único (dez/2022) no Índice.
 - Retratos dos presidentes nítidos (`srcset` de 140/210/280 px).
 
@@ -48,8 +49,9 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
 - **Preço absoluto de arroz e feijão (CONAB).** Código escrito e testado com dados
   sintéticos; o download real falha (link não encontrado na página) e não há dado
   integrado. Bloqueado por acesso à fonte.
-- **Apoie.** Página implementada; falta configurar `SUPPORT_CONFIG.pixKey` (decisão
-  do responsável pelo projeto) e decidir sobre QR Code.
+- **Apoie.** Pix Copia e Cola e QR Code implementados e testados; falta inserir a chave
+  real, o nome do recebedor e confirmar a cidade em `dashboard/js/apoie.config.js`, e
+  testar um pagamento real em um app de banco.
 
 ## PRÓXIMO
 
@@ -72,8 +74,8 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
 - `requirements.txt` completo (Pillow, numpy) e versão de Python declarada.
 - Indicadores hoje fora do escopo: emprego, contas públicas, investimento,
   desigualdade — só entram se houver fonte pública confiável e série comparável.
-- PIB trimestral no modo "mesmo tempo de governo" da Análise (hoje usa só anos
-  fechados: 2019–2021 × 2023–2025).
+- PIB trimestral na comparação por igual duração da Análise (hoje usa só anos
+  fechados: 2019–2021 × 2023–2025; os trimestres de 2026 aparecem à parte).
 - Filtro regional para combustíveis (os dados já têm quebra por região).
 - Mais cobertura de notícias para PIB (2022–2024) e links para as fontes do
   contexto externo da Análise (L4, L5).
