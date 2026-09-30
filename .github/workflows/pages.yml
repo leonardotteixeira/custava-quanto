@@ -1,0 +1,49 @@
+# Publica o site estático no GitHub Pages (https://custavaquanto.me/).
+#
+# O site vive em dashboard/ e lê os dados por caminhos relativos "../data/processed/*.json".
+# Aqui montamos a pasta _site/ com dashboard/ na raiz e data/processed/*.json em /data/processed/:
+# a partir da raiz do domínio, "../data/processed/x.json" resolve para "/data/processed/x.json".
+#
+# Requer, uma única vez, em Settings > Pages do repositório: Source = "GitHub Actions" e
+# Custom domain = custavaquanto.me (ver docs/DEPLOY.md). Nada é gerado aqui: os JSON são os
+# versionados em data/processed/ (rode scripts/update_data.py localmente e faça commit).
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "dashboard/**"
+      - "data/processed/*.json"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar _site
+        run: |
+          mkdir -p _site/data/processed
+          cp -r dashboard/. _site/
+          cp data/processed/*.json _site/data/processed/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
