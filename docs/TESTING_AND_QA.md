@@ -86,6 +86,18 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   animação de entrada (opacidade 0,25; o valor final tem contraste suficiente). Navegação por
   menu (abrir, Esc, foco preso, `inert` no conteúdo, fechar ao escolher capítulo e ao
   passar de 900 px) testada. Não testado em aparelho físico nem em leitor de tela.
+- **Celular, segunda rodada (30/09/2026):** Playwright com emulação de celular (`isMobile`,
+  `hasTouch`) em 320, 360, 375, 390, 412 e 430 px, e 768, 1024, 1280 e 1440 px sem emulação.
+  **Checar `window.innerWidth` igual à largura do aparelho**, não só `scrollWidth − clientWidth`:
+  com emulação de celular a janela de layout cresce junto com o conteúdo que vaza, e as duas
+  medidas continuam iguais (foi assim que a página em 624 px passou despercebida; iframes também
+  não mostram o problema). Medido também com todos os `<details>` e detalhes da Análise abertos.
+  axe-core (WCAG 2 A/AA e boas práticas) em 390, 768 e 1440 px, nas histórias Gasolina, Selic,
+  Arroz e PIB e com tudo expandido: 0 violações. Desktop 1440 e 1024 px com ?historia=gasolina:
+  captura de página inteira sem diferença acima de 24/255 por canal em relação ao `master` anterior
+  (a única mudança de desktop abaixo desse limiar é a cor do "10" do Apoie). Toque no gráfico
+  principal, gaveta aberta no meio da página, alvos de toque (nenhum botão ou link isolado com
+  menos de 44 px). Não testado em aparelho físico nem em leitor de tela.
 - **Teclado:** foco e ativação dos controles de janela da Análise; nos gráficos
   as setas percorrem os pontos e, no gráfico anual do PIB, Enter/Espaço selecionam o
   ano (implementado em `charts.js`); a checagem foi feita lendo o código e testando

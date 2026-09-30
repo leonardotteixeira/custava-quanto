@@ -34,17 +34,18 @@
       <span>Custava quanto<b>?</b></span>
     </a>
     <nav class="mast-nav" id="mast-nav" aria-label="Capítulos">
+      <a class="nav-story" id="nav-story" href="#indice"><span class="mono">História</span> <b id="nav-story-name">Escolha uma história</b> <i aria-hidden="true">Trocar ↑</i></a>
       <ol>
-        <li><a href="#indice" data-ch="indice"><i>01</i>Índice</a></li>
-        <li><a href="#preco" data-ch="preco"><i>02</i>Preço</a></li>
-        <li data-nav="bolso"><a href="#bolso" data-ch="bolso"><i>03</i>Bolso</a></li>
-        <li><a href="#contexto" data-ch="contexto"><i>04</i>Contexto</a></li>
-        <li><a href="#maquina" data-ch="maquina"><i>05</i>Máquina do tempo</a></li>
-        <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos</a></li>
-        <li><a href="#analise" data-ch="analise"><i>07</i>Análise</a></li>
-        <li><a href="#arquivo" data-ch="arquivo"><i>08</i>Arquivo</a></li>
-        <li><a href="#metodo" data-ch="metodo"><i>09</i>Método</a></li>
-        <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>10</i>Apoie</a></li>
+        <li><a href="#indice" data-ch="indice"><i>01</i>Índice<span class="nav-q">Por onde começo?</span></a></li>
+        <li><a href="#preco" data-ch="preco"><i>02</i>Preço<span class="nav-q">Como mudou, mês a mês?</span></a></li>
+        <li data-nav="bolso"><a href="#bolso" data-ch="bolso"><i>03</i>Bolso<span class="nav-q">Quanto isso pesa no salário?</span></a></li>
+        <li><a href="#contexto" data-ch="contexto"><i>04</i>Contexto<span class="nav-q">O que mais estava acontecendo?</span></a></li>
+        <li><a href="#maquina" data-ch="maquina"><i>05</i>Máquina do tempo<span class="nav-q">Como estava o Brasil num mês?</span></a></li>
+        <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos<span class="nav-q">Como os dois períodos se comparam?</span></a></li>
+        <li><a href="#analise" data-ch="analise"><i>07</i>Análise<span class="nav-q">O que os números permitem afirmar?</span></a></li>
+        <li><a href="#arquivo" data-ch="arquivo"><i>08</i>Arquivo<span class="nav-q">De onde vêm as informações?</span></a></li>
+        <li><a href="#metodo" data-ch="metodo"><i>09</i>Método<span class="nav-q">Como tudo foi calculado?</span></a></li>
+        <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>10</i>Apoie<span class="nav-q">Como ajudar a manter o projeto?</span></a></li>
       </ol>
     </nav>
     <a class="mast-product" id="mast-product" href="#indice" aria-label="História atual. Trocar de história">
@@ -52,6 +53,7 @@
       <span class="mp-name" id="mast-product-name">—</span>
       <span class="mp-delta" id="mast-product-delta"></span>
     </a>
+    <span class="mast-now" id="mast-now" aria-hidden="true"></span>
     <button type="button" class="mast-menu" id="mast-menu" aria-expanded="false" aria-controls="mast-nav" aria-label="Abrir menu"><span class="mast-menu-ico" aria-hidden="true"></span><span class="mast-menu-txt">Menu</span></button>
   </div>
   <div class="mast-progress" aria-hidden="true"><span id="progress"></span></div>
@@ -83,6 +85,7 @@
     <div class="shell">
       <div class="ribbon-head">
         <h2 class="ribbon-title">De <span id="ribbon-from">dez/2022</span>, na troca de governo, ao último dado</h2>
+        <p class="ribbon-swipe mono" aria-hidden="true">Deslize para os lados →</p>
         <p class="ribbon-note mono">Dólar, Selic e Ibovespa: dado diário · demais: mês · fontes: ANP, Banco Central, IBGE, B3</p>
       </div>
       <ol class="ribbon" id="hero-ribbon" aria-label="Seis indicadores no último dado antes da troca de governo e no último dado disponível"></ol>
@@ -97,6 +100,7 @@
     <div class="shell">
       <header class="ch-head ch-head--split">
         <p class="ch-kicker mono"><span>01</span>Índice</p>
+        <p class="ch-q">Por onde começo?</p>
         <h2 class="ch-title" id="indice-title">Escolha uma história.</h2>
         <div class="ch-aside">
           <p class="ch-deck">Quinze séries, três famílias. Cada linha mostra o valor na troca de governo, o último dado e a variação entre os dois.</p>
@@ -120,6 +124,7 @@
           <button type="button" id="story-next" class="step-btn"><span id="story-next-name">—</span> <span aria-hidden="true">→</span></button>
         </nav>
       </div>
+      <p class="story-pick" id="story-pick" hidden>Você ainda não escolheu uma história. Abaixo, a <b id="story-pick-name">gasolina</b> como ponto de partida. <a href="#indice">Escolher outra ↑</a></p>
       <h2 class="story-name" id="story-name">—</h2>
 
       <!-- Só na história do PIB: o que é, e "em uma olhada" -->
@@ -132,9 +137,11 @@
 
       <div class="story-grid">
         <div class="story-main">
+          <p class="ch-q story-q story-q--change">O que mudou?</p>
           <p class="story-big" id="story-big"><span class="sb-num" id="story-change">—</span></p>
           <p class="story-big-cap" id="story-change-cap">—</p>
 
+          <p class="ch-q story-q story-q--then">Quanto custava — e quanto custa?</p>
           <div class="thennow" id="thennow">
             <div class="tn tn-then">
               <span class="tn-when mono" id="tn-then-when">—</span>
@@ -173,6 +180,7 @@
     <div class="shell">
       <header class="ch-head ch-head--wide">
         <p class="ch-kicker mono"><span>02</span>Preço</p>
+        <p class="ch-q">Como mudou, mês a mês?</p>
         <h2 class="ch-title" id="preco-title">Mês a mês, desde 2019.</h2>
         <p class="ch-deck" id="preco-deck">—</p>
       </header>
@@ -274,6 +282,7 @@
     <div class="shell">
       <header class="ch-head ch-head--split">
         <p class="ch-kicker mono"><span>04</span>Contexto</p>
+        <p class="ch-q">O que mais estava acontecendo?</p>
         <h2 class="ch-title" id="contexto-title">O que mais se movia ao mesmo tempo.</h2>
         <div class="ch-aside">
           <p class="ch-deck" id="context-deck">—</p>
@@ -330,6 +339,7 @@
     <div class="shell">
       <header class="ch-head ch-head--banner">
         <p class="ch-kicker mono"><span>06</span>Períodos</p>
+        <p class="ch-q">Como os dois períodos se comparam?</p>
         <h2 class="ch-title" id="periodos-title">Mesma régua, dois períodos.</h2>
         <div class="ch-aside">
           <p class="ch-deck">O que aconteceu com cada indicador durante cada governo, medido do mesmo jeito: do primeiro ao último dado de cada recorte. Sem nota e sem placar. As cores só identificam o período.</p>
@@ -362,6 +372,7 @@
       <header class="an-hero">
         <div class="an-hero-text">
           <p class="ch-kicker mono"><span>07</span>Análise</p>
+        <p class="ch-q">O que os números permitem afirmar?</p>
           <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
           <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
           <p class="an-version mono" id="an-version"></p>
@@ -377,6 +388,7 @@
         </figure>
       </header>
 
+      <nav class="an-toc" id="an-toc" aria-label="Partes da análise"></nav>
       <div id="an-body">
         <section class="an-rule" aria-labelledby="an-rule-title">
           <div class="an-rule-side">
@@ -472,6 +484,7 @@
           <h3 class="an-part-title" id="an-p12-title">Contexto importa.</h3>
           <p class="an-part-lead">Marcos que se sobrepõem aos períodos, cada um com a fonte original. A relação com os indicadores é só de data: proximidade no tempo não é evidência de causalidade.</p>
           <ul class="an-timeline" id="an-timeline"></ul>
+          <button type="button" class="an-ev-mais an-tl-mais" id="an-tl-mais" aria-expanded="false" aria-controls="an-timeline" hidden></button>
           <p class="an-ctx-todos"><span id="an-ctx-todos"></span> <a href="#contexto">Ver a linha do tempo completa</a>.</p>
         </section>
 
@@ -514,6 +527,7 @@
     <div class="shell">
       <header class="ch-head ch-head--flag">
         <p class="ch-kicker mono"><span>08</span>Arquivo</p>
+        <p class="ch-q">De onde vêm as informações?</p>
         <h2 class="ch-title" id="arquivo-title">As fontes por trás dos números.</h2>
         <div class="ch-aside">
           <p class="ch-deck">Matérias, documentos e registros usados para contextualizar os dados do CUSTAVA QUANTO?.</p>
@@ -531,6 +545,7 @@
     <div class="shell">
       <header class="ch-head ch-head--quiet">
         <p class="ch-kicker mono"><span>09</span>Método</p>
+        <p class="ch-q">Como tudo foi calculado?</p>
         <h2 class="ch-title" id="metodo-title">Como chegamos a estes números.</h2>
         <div class="ch-aside">
           <p class="ch-deck">As séries foram calculadas antes, em Python, a partir de fontes públicas, e gravadas num arquivo que qualquer pessoa pode conferir. O navegador só escolhe dois pontos já prontos, compara e desenha.</p>
@@ -708,6 +723,7 @@
     <div class="shell">
       <header class="ch-head ch-head--quiet">
         <p class="ch-kicker mono"><span>10</span>Apoie</p>
+        <p class="ch-q">Como ajudar a manter o projeto?</p>
         <h2 class="ch-title" id="apoie-title">Se você acha que este projeto vale a pena, ajude a mantê-lo.</h2>
         <div class="ch-aside">
           <p class="ch-deck">O CUSTAVA QUANTO? é um projeto independente feito para transformar dados econômicos em histórias que qualquer pessoa consegue explorar.</p>

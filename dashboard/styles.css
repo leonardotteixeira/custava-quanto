@@ -404,7 +404,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .c-news.is-active circle { fill: var(--signal); stroke: var(--fg); }
 .c-news.is-active text { fill: var(--night); }
 .c-cross { stroke: var(--fg); stroke-width: 1; opacity: 0.55; shape-rendering: crispEdges; }
-.c-hit { fill: transparent; cursor: crosshair; }
+.c-hit { fill: transparent; cursor: crosshair; touch-action: pan-y; } /* arrastar o dedo de lado percorre os meses; na vertical, a página rola */
 .c-sel { stroke: var(--signal); stroke-width: 2; }
 
 /* tooltip */
@@ -744,7 +744,10 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .mast-nav a[aria-current="true"] { color: var(--signal); border-bottom-color: rgba(238, 232, 220, 0.12); }
   .mast-nav a[aria-current="true"] i { color: var(--signal); }
   .mast-nav .nav-apoie a { opacity: 1; }
-  html.menu-open, html.menu-open body { overflow: hidden; }
+  /* Gaveta aberta: a barra fica fixa na tela. (Travar a rolagem também no <body> fazia dele o contêiner de
+     rolagem: a barra "grudenta" voltava ao topo da página, fora da tela, e o foco puxava a página junto.) */
+  html.menu-open { overflow: hidden; overscroll-behavior: none; }
+  .mast.is-open { position: fixed; top: 0; left: 0; right: 0; }
   html { scroll-padding-top: calc(var(--mast-h) + 12px); }
   .hero-grid { grid-template-columns: 1fr; gap: 20px; }
   .hero-tagline, .hero-deck { grid-column: 1; }
@@ -1000,7 +1003,8 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .ap-where-list li { padding: 14px 18px 4px 0; font-size: 0.95rem; line-height: 1.5; color: var(--fg-2); }
 .ap-where-list li + li { padding-left: 18px; border-left: 1px solid var(--line); }
 .ap-where-list b { display: block; font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-3); margin-bottom: 6px; }
-.mast-nav .nav-apoie a { opacity: 0.8; }
+.mast-nav .nav-apoie a { color: var(--on-night-3); }
+.mast-nav .nav-apoie a:hover, .mast-nav .nav-apoie a[aria-current="true"] { color: var(--on-night); }
 .foot-apoie { grid-column: 1 / -1; font-size: 0.82rem; color: var(--on-night-3); }
 .foot-apoie a { color: var(--on-night-2); }
 @media (max-width: 900px) {
@@ -1637,7 +1641,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .tl-fig figcaption, .arq-fig figcaption { margin-top: 6px; }
 }
 @media (max-width: 359px) {
-  .mast-product { display: none; }
+  .mast-product, .mast-now { display: none !important; }
   .mast-menu { margin-left: auto; }
 }
 
@@ -1661,4 +1665,154 @@ code { font-family: var(--mono); font-size: 0.88em; }
 }
 @media (max-width: 760px) {
   .an-scroll, .table-scroll:has(> .an-stack) { overflow: visible; }
+}
+
+/* =====================================================================
+   CELULAR COMO LEITURA PRINCIPAL
+   O celular conta a mesma história em outra ordem de leitura: uma pergunta
+   por capítulo, o essencial primeiro e o detalhe a um toque. Nada aqui muda
+   dado, fonte ou ressalva — só a apresentação. (Desktop: estas peças somem.)
+   ===================================================================== */
+.ch-q, .nav-q, .mast-now, .ribbon-swipe, .an-toc, .an-deep-btn, .mast-nav .nav-story { display: none; }
+.story-pick { margin-top: 16px; padding: 10px 12px 11px; border-top: 2px solid var(--signal); background: var(--paper-2); font-size: var(--t-note); line-height: 1.5; color: var(--ink-2); max-width: 62ch; }
+.story-pick b { color: var(--ink); font-weight: 600; }
+.story-pick a { color: var(--ink); font-weight: 600; text-decoration-color: var(--signal); white-space: nowrap; }
+@media (max-width: 900px) { .an-timeline:not(.is-open) > li:nth-child(n + 5) { display: none; } }
+@media (min-width: 761px) { .arq-fdet > summary { display: none; } }
+
+/* gaveta (celular e tablet): cada capítulo diz que pergunta responde; a história atual vem primeiro */
+@media (max-width: 900px) {
+  /* bolso: os dois meses lado a lado também no tablet — a comparação é o ponto do capítulo */
+  .pp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px clamp(16px, 4vw, 40px); }
+  .mast-nav li > a { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 12px; align-items: baseline; }
+  .mast-nav li > a i { width: auto; grid-row: 1 / span 2; }
+  .nav-q { display: block; grid-column: 2; margin-top: 2px; font-family: var(--serif); font-weight: 400; font-size: 1rem; line-height: 1.3; color: var(--on-night-2); }
+  .mast-nav a[aria-current="true"] .nav-q { color: var(--on-night); }
+  .mast-nav a.nav-story { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-height: 64px; margin: 8px 0 10px; padding: 14px 16px; border: 1px solid rgba(238, 232, 220, 0.22); text-decoration: none; color: var(--on-night); }
+  .nav-story .mono { color: var(--on-night-3); font-size: 0.75rem; }
+  .nav-story b { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; }
+  .mast-nav .nav-story i { width: auto; margin-right: 0; font-family: var(--sans); }
+  .nav-story i { margin-left: auto; font-style: normal; font-size: 0.9rem; font-weight: 600; color: var(--signal); }
+}
+
+@media (max-width: 760px) {
+  /* ---------- cabeçalho: marca, onde estou, menu (a série atual mora na gaveta) */
+  .mast-brand { font-size: 1rem; }
+  .mast-product { display: none !important; }
+  .mast-now { display: block; flex: 1 1 auto; min-width: 0; text-align: right; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-night-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mast-menu { margin-left: 0; }
+
+  /* ---------- a pergunta de cada capítulo, logo abaixo do número */
+  .ch-q { display: block; grid-column: 1 / -1; margin: -4px 0 0; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.2rem; line-height: 1.3; letter-spacing: -0.005em; color: var(--accent-text); }
+  .machine-head .ch-q, .an-hero-text .ch-q { margin: 8px 0 6px; }
+
+  /* ---------- abertura: a escolha chega cedo; os oito indicadores viram uma faixa que desliza */
+  .hero-texture { margin-top: 24px; }
+  .ribbon-head { margin-top: 32px; }
+  .ribbon-swipe { display: block; order: 3; color: var(--signal); }
+  .ribbon { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .ribbon::-webkit-scrollbar { display: none; }
+  .ribbon:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+  .ribbon li:nth-child(n) { flex: 0 0 min(76%, 300px); scroll-snap-align: start; padding: 16px 18px 18px !important; border: 0 !important; border-right: 1px solid var(--line) !important; }
+  .ribbon li:nth-child(1) { padding-left: 0 !important; }
+  .ribbon li:last-child { border-right: 0 !important; }
+  .scroll-cue { display: flex; justify-content: space-between; width: 100%; min-height: 56px; margin: 28px 0 36px; font-size: 1.1rem; background: var(--signal); color: var(--night); border-color: var(--signal); }
+  .scroll-cue span:last-child { color: var(--night); }
+
+  /* ---------- índice: nome forte, o resto subordinado; a nota longa vira letra de rodapé */
+  .toc-col h3 { position: sticky; top: var(--mast-h); z-index: 2; background: var(--bg); }
+  .toc-row { grid-template-columns: minmax(0, 1fr) 56px auto; column-gap: 12px; padding-block: 12px; }
+  .toc-name { font-size: 1.4rem; }
+  .toc-change { font-size: 1.45rem; }
+
+  /* ---------- história: primeiro "quanto custava", depois "o que mudou" */
+  .story { padding-top: 32px; }
+  .story-name { margin-top: 14px; }
+  .story-main { display: flex; flex-direction: column; }
+  .story-q { margin: 0; }
+  .story-q--then { order: 1; margin-top: 4px; }
+  .thennow { order: 2; margin-top: 12px; padding-top: 0; border-top: 0; }
+  .tn-bars { order: 3; }
+  .story-secondary { order: 4; }
+  .story-q--change { order: 5; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .story-big { order: 6; margin-top: 6px; }
+  .story-big-cap { order: 7; }
+  .story-side { margin-top: 12px; }
+  /* anterior/próxima história: no fim da leitura, como "leia também", não antes do título */
+  .story > .shell { display: flex; flex-direction: column; }
+  .story-top { display: contents; }
+  .story-step { order: 10; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .story-step .step-btn { min-height: 52px; font-size: 0.95rem; }
+  .story-step .step-btn:last-child { text-align: right; }
+
+  /* ---------- preço: o gráfico com espaço de protagonista, controles do tamanho do dedo */
+  .chart-controls .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); width: 100%; }
+  .chart-controls .seg button { text-align: center; line-height: 1.25; }
+  .chart--main { height: min(66vh, 480px); min-height: 360px; }
+  .newsrail { margin-top: 28px; }
+
+  /* ---------- bolso: os dois meses lado a lado — a comparação é o ponto */
+  .pp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 16px; }
+  .pp-col { gap: 10px; }
+  .pp-when { min-height: 2.9em; line-height: 1.45; align-content: flex-start; row-gap: 0; }
+  .pp-num { font-size: clamp(2.9rem, 15vw, 4.4rem); }
+  .pp-unit { font-size: 1.02rem; line-height: 1.3; }
+  .pp-wage { font-size: 0.8rem; line-height: 1.45; }
+  .pp-grid { gap: 2px; margin-top: 4px; }
+
+  /* ---------- contexto: filtros numa faixa só; o ano acompanha a leitura */
+  .mult .chart { height: 150px; }
+  .tl-dims { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter) 6px; }
+  .tl-dims::-webkit-scrollbar { display: none; }
+  .tl-dim { flex: none; }
+  .tl-year { padding-top: 0; }
+  .tl-side { position: sticky; top: var(--mast-h); z-index: 2; background: var(--bg); padding: 12px 0 10px; border-bottom: 1px solid var(--line); }
+  .tl-y { font-size: 1.9rem; }
+
+  /* ---------- análise: sumário, e em cada dimensão o essencial antes do detalhe */
+  .an-toc { display: block; margin: 20px 0 8px; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--line); }
+  .an-toc summary { list-style: none; display: flex; align-items: center; gap: 12px; min-height: 56px; cursor: pointer; font-family: var(--serif); font-size: 1.2rem; }
+  .an-toc summary::-webkit-details-marker { display: none; }
+  .an-toc summary .mono { color: var(--accent-text); }
+  .an-toc summary::after { content: "+"; margin-left: auto; font-family: var(--mono); color: var(--fg-3); }
+  .an-toc details[open] summary::after { content: "–"; }
+  .an-toc ol { list-style: none; padding: 0 0 10px; margin: 0; }
+  .an-toc a { display: flex; gap: 12px; align-items: baseline; min-height: 48px; padding: 12px 0; border-top: 1px solid var(--line-2); text-decoration: none; font-size: 1rem; line-height: 1.35; }
+  .an-toc a .mono { flex: none; width: 5.2em; color: var(--accent-text); }
+  .an-hero-fig { max-width: none; }
+  .an-hero-video { aspect-ratio: 4 / 3; max-height: 48vh; }
+  .an-dim { display: flex; flex-direction: column; }
+  .an-dim > :is(.an-ctx-block, .an-robdim, .an-moves, .an-nums) { order: 10; }
+  .an-dim:not(.is-deep) > :is(.an-ctx-block, .an-robdim, .an-moves, .an-nums) { display: none; }
+  .an-deep-btn { display: flex; order: 9; align-items: center; justify-content: center; width: 100%; min-height: 52px; margin-top: 22px; padding: 12px 16px; background: transparent; color: var(--fg); border: 1px solid var(--fg); font: inherit; font-weight: 600; font-size: 0.95rem; line-height: 1.3; text-align: center; cursor: pointer; }
+  .an-dim.is-deep .an-deep-btn { background: var(--fg); color: var(--bg); }
+  .an-deep-btn:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+  /* célula numérica que vira linha de cartão precisa quebrar: com nowrap (herdado da tabela do desktop) ela
+     alargava a página inteira para 624px no celular, e o navegador mostrava tudo reduzido */
+  .an-stack td.num, .an-stack td { white-space: normal; }
+  /* cenários de pesos: os cinco pesos numa linha corrida, a síntese logo abaixo */
+  .an-sens-t.an-stack tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+  .an-sens-t.an-stack th[scope="row"] { flex-basis: 100%; }
+  .an-sens-t.an-stack td.num { display: inline-flex; gap: 6px; padding: 0; font-size: 0.95rem; font-weight: 600; }
+  .an-sens-t.an-stack td.num::before { font-family: var(--sans); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.85rem !important; color: var(--fg-2); }
+  .an-sens-t.an-stack td:last-child { flex-basis: 100%; justify-content: flex-start; gap: 10px; padding-top: 8px; }
+  .an-acc { border-top: 1px solid var(--line); }
+  .an-acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; min-height: 52px; cursor: pointer; }
+  .an-acc > summary::-webkit-details-marker { display: none; }
+  .an-acc > summary .an-kick { margin: 0; }
+  .an-acc > summary::after { content: "+"; margin-left: auto; font-family: var(--mono); color: var(--fg-3); }
+  .an-acc[open] > summary::after { content: "–"; }
+  .an-acc[open] { padding-bottom: 14px; }
+
+  /* ---------- arquivo: pesquisa à mão, filtros a um toque */
+  .ch-head--flag .ch-title { font-size: clamp(2.3rem, 11.5vw, 3rem); text-wrap: balance; }
+  .arq-fdet { margin-top: 12px; }
+  .arq-fdet > summary { list-style: none; display: flex; align-items: center; min-height: 48px; padding: 10px 14px; border: 1px solid var(--fg); font-weight: 600; font-size: 0.95rem; cursor: pointer; }
+  .arq-fdet > summary::-webkit-details-marker { display: none; }
+  .arq-fdet > summary::after { content: "+"; margin-left: auto; font-family: var(--mono); }
+  .arq-fdet[open] > summary { margin-bottom: 14px; }
+  .arq-fdet[open] > summary::after { content: "–"; }
+
+  /* ---------- fim de capítulo: o próximo passo é um alvo grande */
+  .ch-next { min-height: 64px; padding-block: 16px 6px; }
 }

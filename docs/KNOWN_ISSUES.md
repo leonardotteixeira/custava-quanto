@@ -147,9 +147,6 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
   A do protesto mostra pessoas identificáveis e um cartaz político; foi mantida por
   decisão editorial do responsável, só como contexto e com legenda. Os arquivos
   `imagem 1.jpg`, `imagem 2.jpg` e `imagem 3.jpg` continuam na raiz, não versionados.
-- **L13.** Contraste do número "10" no item Apoie do menu superior: 3,7:1 (mínimo 4,5:1), por
-  `.mast-nav .nav-apoie a { opacity: 0.8 }` em `styles.css`. É a única violação do axe-core na
-  página inteira em 30/09/2026 e existia antes da reconstrução da Análise.
 - **L14.** Mercado de trabalho: duas das três séries (desocupação e subutilização) medem quase
   o mesmo fenômeno e andam juntas, então a dimensão pesa mais nelas do que no rendimento; a
   leitura "sem uma série" (3 de 3) mostra que nenhuma série sozinha muda o resultado. Com a métrica
@@ -190,12 +187,21 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
   `anp_precos_mensais.csv`).
 - Seletor "jan/2019" do Índice — removido (`c27dbac`).
 - Fotos dos presidentes pixeladas — versões pré-reduzidas via `srcset` (`f19abcc`).
+- L13, contraste do "10" do item Apoie no menu: a opacidade 0,8 virou cor própria (`--on-night-3`).
+- No celular a página era montada com 624 px de largura e reduzida para caber na tela (todo texto a
+  ~62% do tamanho): uma célula `nowrap` da tabela "Em resumo" da Análise vazava do cartão. Corrigido.
+- Menu do celular aberto no meio da página: a gaveta ficava fora da tela e a página voltava ~3.500 px.
+  A trava de rolagem no `<body>` tirava a barra do lugar; agora só o `<html>` trava e a barra fica fixa.
+- Gráficos no toque: a leitura do mês sumia ao levantar o dedo; agora fica até rolar ou tocar fora.
 
-## Celular (30/09/2026)
+## Celular (30/09/2026, segunda rodada)
 
-- A página tem ~85 mil px de altura em 390 px (a Análise sozinha passa de 35 mil). Os eventos de
-  cada dimensão ficam recolhidos (3 visíveis + botão) e a linha do tempo do Contexto mostra 8
-  marcos por vez; o restante do conteúdo segue inteiro.
+- A página tem ~55 mil px de altura em 390 px (era ~88 mil). A Análise ainda passa de 25 mil: é
+  leitura longa por escolha; o sumário "Nesta análise" no topo leva direto a cada parte.
+- Sem ?historia= no endereço, nenhuma série vem marcada como escolhida: a gasolina aparece como
+  ponto de partida, com aviso, até o leitor escolher. Isso vale também no desktop.
+- A ordem da história no celular (valores antes da variação) é feita com `order` de flexbox: a
+  ordem visual difere da ordem do HTML nesse bloco e nas camadas de detalhe da Análise.
 - A tabela mensal do capítulo Preço continua com rolagem horizontal controlada (5 colunas, até
   ~560 px); as demais tabelas viram cartões empilhados.
 - Abaixo de 360 px o atalho da série atual some do cabeçalho (só resta o menu).

@@ -31,6 +31,7 @@ let MONTHS = [];
 let heroChart = null; // API do gráfico-textura da abertura (ver charts.js:texture) — sincronizado com S.product
 const S = { pibYear: null, product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null };
 const P = (code) => D.produtos[code];
+const PHONE = matchMedia("(max-width: 760px)");
 
 // Datas públicas e amplamente documentadas, só como referência de
 // calendário nos gráficos. Não implicam causa (ver Método > E).
@@ -152,7 +153,7 @@ async function init() {
   const q = new URLSearchParams(location.search);
   const slug = q.get("historia");
   const found = PRODUCT_ORDER.find((c) => META[c].slug === slug && D.produtos[c]);
-  if (found) S.product = found;
+  if (found) { S.product = found; S.chosen = true; }
 
   renderHero();
   fitNameplate();
@@ -169,6 +170,10 @@ async function init() {
   renderMethod();
   bindMenu();
   bindTabelas();
+  if (PHONE.matches) {
+    $$("#metodo details.nb[open]").forEach((d) => { d.open = false; });
+    $("#hero-ribbon").tabIndex = 0;
+  }
   bindScroll();
   bindReveal();
 }
@@ -304,7 +309,7 @@ function tocRow(code) {
     : `${fmtValue(prod, va)} → ${fmtValue(prod, vb)}`;
   const sp = spark(nativeRows(prod), { dots: [{ iso: a.ano_mes, size: 6, color: "var(--fg-3)" }, { iso: b.ano_mes, size: 7, color: "var(--fg)" }], width: 1.5, maxGap: cadenceGap(prod) });
   const label = `${META[code].titulo}: ${vals.replace("→", "em " + pointLabel(pa) + ", para")} em ${pointLabel(pb)}; variação ${fmtChange(c)}.`;
-  const active = code === S.product;
+  const active = !!S.chosen && code === S.product;
   return `<li><button type="button" class="toc-row" data-code="${esc(code)}" aria-pressed="${active}" aria-label="${esc(label)}">
     <span class="toc-name">${META[code].curto}</span>
     <span class="toc-vals">${vals}</span>
@@ -1133,11 +1138,15 @@ function renderMethod() {
 function selectProduct(code, { initial = false, scroll = false } = {}) {
   const changed = code !== S.product;
   S.product = code;
+  if (!initial) S.chosen = true;
   if (changed || initial) { S.newsId = null; S.metric = "nominal"; S.ppIdx = null; S.pibYear = null; }
-  const q = new URLSearchParams(location.search);
-  q.set("historia", META[code].slug);
-  q.delete("desde"); // links antigos com ?desde=2019 caem no ponto de partida padrão
-  history.replaceState(null, "", `${location.pathname}?${q}${location.hash}`);
+  // Sem escolha do leitor, o endereço não ganha ?historia=: a gasolina é só o ponto de partida, não uma escolha.
+  if (S.chosen) {
+    const q = new URLSearchParams(location.search);
+    q.set("historia", META[code].slug);
+    q.delete("desde"); // links antigos com ?desde=2019 caem no ponto de partida padrão
+    history.replaceState(null, "", `${location.pathname}?${q}${location.hash}`);
+  }
 
   renderTOC();
   renderStory();
@@ -1151,6 +1160,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   renderNextLinks();
   updateMast();
   updateHeroHighlight(code);
+  updateStoryPrompts();
   if (scroll) $("#historia").scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
 }
 
@@ -1159,6 +1169,19 @@ function updateMast() {
   const cp = comparisonPoints(prod, S.base), c = change(prod, cp.a.v, cp.b.v);
   $("#mast-product-name").textContent = META[S.product].curto;
   $("#mast-product-delta").textContent = fmtChange(c, c.unit === "p.p." ? 1 : 1);
+  $("#mast").classList.toggle("has-story", !!S.chosen);
+  $("#nav-story-name").textContent = S.chosen ? META[S.product].curto : "Escolha uma história";
+}
+
+// Perguntas que organizam a história no celular (o texto depende do tipo de série: taxa não "custa"),
+// e o aviso de que nenhuma história foi escolhida ainda.
+function updateStoryPrompts() {
+  const k = kind(P(S.product)), pib = P(S.product).tipo === "pib";
+  $(".story-q--then").textContent = pib ? "Quanto cresceu — antes e agora?"
+    : k === "preco" || k === "indice" ? "Quanto custava — e quanto custa?" : "Onde estava — e onde está?";
+  $(".story-q--change").textContent = "O que mudou?";
+  $("#story-pick").hidden = !!S.chosen;
+  $("#story-pick-name").textContent = META[S.product].titulo.toLowerCase();
 }
 
 // Numeração dos capítulos segue os visíveis (Bolso some para taxa/pontos).
@@ -1232,6 +1255,14 @@ function bindMenu() {
 
 // Tabelas largas viram cartões empilhados no celular (o CSS só age em telas estreitas): cada célula ganha o
 // nome da sua coluna em data-label. O conteúdo é o mesmo; nada é escondido nem calculado aqui.
+// Tabelas que rolam de lado precisam ser alcançáveis pelo teclado (setas rolam a área focada).
+function focarRolaveis() {
+  $$(".table-scroll").forEach((el) => {
+    const rola = el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1;
+    if (rola && !el.hasAttribute("tabindex")) { el.tabIndex = 0; el.dataset.rolavel = "1"; }
+    else if (!rola && el.dataset.rolavel) { el.removeAttribute("tabindex"); delete el.dataset.rolavel; }
+  });
+}
 function rotularTabelas(raiz = document) {
   $$("table.an-table, table.fresh", raiz).forEach((t) => {
     if (t.classList.contains("an-stack") && !t.dataset.rotulada) { t.dataset.rotulada = "proprio"; return; }
@@ -1250,8 +1281,11 @@ function bindTabelas() {
   const obs = new MutationObserver(() => {
     if (agendado) return;
     agendado = true;
-    setTimeout(() => { agendado = false; rotularTabelas(); }, 60);
+    setTimeout(() => { agendado = false; rotularTabelas(); focarRolaveis(); }, 60);
   });
+  focarRolaveis();
+  document.addEventListener("toggle", () => requestAnimationFrame(focarRolaveis), true);
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(focarRolaveis, 150); });
   ["#analise", "#metodo"].forEach((id) => { const el = $(id); if (el) obs.observe(el, { childList: true, subtree: true }); });
   const fr = $("#freshness"); if (fr) obs.observe(fr, { childList: true, subtree: true });
 }
@@ -1263,7 +1297,8 @@ function bindScroll() {
     ticking = false;
     const h = document.documentElement.scrollHeight - innerHeight;
     bar.style.transform = `scaleX(${h > 0 ? Math.min(1, scrollY / h) : 0})`;
-    mast.classList.toggle("show-product", idx.getBoundingClientRect().bottom < 80);
+    mast.classList.toggle("show-product", !!S.chosen && idx.getBoundingClientRect().bottom < 80);
+    if (idx.getBoundingClientRect().top > innerHeight * 0.5) { const now = $("#mast-now"); if (now) now.textContent = ""; }
   };
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
@@ -1274,6 +1309,9 @@ function bindScroll() {
       if (!en.isIntersecting) return;
       links.forEach((a) => a.removeAttribute("aria-current"));
       const a = links.get(en.target.id);
+      const now = $("#mast-now");
+      if (now) now.textContent = en.target.id === "historia" ? META[S.product].curto
+        : a ? `${a.querySelector("i")?.textContent || ""} ${a.firstChild?.nextSibling?.textContent || ""}`.trim() : "";
       if (a) {
         a.setAttribute("aria-current", "true");
         const nav = a.closest("ol");
@@ -1282,6 +1320,7 @@ function bindScroll() {
     });
   }, { rootMargin: "-40% 0px -55% 0px" });
   $$("[data-chapter]").forEach((s) => io.observe(s));
+  io.observe($("#historia"));
 }
 
 // Fim de cada capítulo: uma linha dizendo para onde a leitura segue, com a

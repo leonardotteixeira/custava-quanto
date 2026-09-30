@@ -341,6 +341,10 @@ function cartaoEvento(e, k, id) {
 // No celular só os 3 primeiros eventos de cada dimensão ficam abertos; o botão mostra o resto (no computador o botão some e a lista é inteira).
 const EV_VISIVEIS = 3;
 const evAbertos = new Set();
+// No celular cada dimensão mostra primeiro o essencial (pergunta, números, gráfico, leitura, o que não mede);
+// contexto do período, robustez, maiores movimentos e a tabela por série ficam atrás de um botão. Nada é removido.
+const deepAbertos = new Set();
+const CELULAR = matchMedia("(max-width: 760px)");
 function blocoContexto(dimId) {
   const ids = (CTX_SERIES[dimId] || []).filter((id) => ind(id) && !ind(id).excluido);
   if (!ids.length) return "";
@@ -438,7 +442,9 @@ function evidencia(d) {
   }).join("");
   const n = d.tipo === "A" ? `${idsA.length} série${idsA.length > 1 ? "s" : ""} · entra na síntese` : `${ids.length} séries · só descrição`;
   const leitura = d.tipo === "A" ? `<p>${esc(res().textos.por_dimensao[d.id])}</p><p class="an-read-lado">${chipLado(r.leitura)}</p>${r.por_serie ? `<p class="an-read-alt">Com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), a dimensão ${r.leitura_alternativa === 0 ? "ficaria praticamente igual entre os períodos" : `apontaria para o período ${r.leitura_alternativa > 0 ? "Lula" : "Bolsonaro"}`}. A métrica principal foi fixada antes do cálculo (regra da métrica na metodologia).</p>` : ""}` : `<p>${esc(res().textos.por_dimensao[d.id])}</p>`;
-  return `<section class="an-part an-dim" id="an-dim-${d.id}" aria-labelledby="an-dt-${d.id}">
+  const aberto = deepAbertos.has(d.id);
+  const temDeep = [blocoContexto(d.id), robustezDim(r), movimentos(d), numeros(ids)].some(Boolean);
+  return `<section class="an-part an-dim${aberto ? " is-deep" : ""}" id="an-dim-${d.id}" aria-labelledby="an-dt-${d.id}">
     <p class="an-part-n mono">Parte ${d.ordem + 2} · ${esc(d.titulo)}</p>
     <h3 class="an-part-title" id="an-dt-${d.id}">${TITULOS[d.id] || esc(d.titulo)}</h3>
     <div class="an-q"><span class="mono">A pergunta</span><p>${esc(d.pergunta)}</p><span class="an-dim-type">${badgeEvid(r.nivel_evidencia)}<span class="mono">${n}</span></span></div>
@@ -449,6 +455,7 @@ function evidencia(d) {
     ${blocoContexto(d.id)}
     <div class="an-read"><h4 class="an-kick mono">Leitura dos dados</h4><div>${leitura}</div></div>
     ${infos}
+    ${temDeep ? `<button type="button" class="an-deep-btn" data-dim="${d.id}" aria-expanded="${aberto}">${aberto ? "Recolher o detalhe" : "Ver o detalhe: contexto do período, robustez e números por série"}</button>` : ""}
     ${robustezDim(r)}
     ${movimentos(d)}
     ${numeros(ids)}
@@ -574,6 +581,8 @@ function renderContexto() {
   $("#an-timeline").innerHTML = escolhidos.length
     ? escolhidos.map((e) => `<li><time datetime="${e.data}">${mesAno(e.data)}</time><span class="an-tl-cat mono">${esc(TIPO_ROTULO[e.marco.tipo] || e.marco.tipo)}</span><span class="an-tl-txt"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.titulo)}</a> <span class="an-ev-src">${esc(e.veiculo)}</span></span><span class="an-tl-rel">${esc(e.marco.resumo)}</span></li>`).join("")
     : `<li><span class="an-tl-txt">Sem marcos de contexto carregados (data/processed/noticias.json).</span></li>`;
+  const tlb = $("#an-tl-mais");
+  if (tlb) { tlb.hidden = escolhidos.length <= 4; tlb.textContent = `Mostrar os outros ${escolhidos.length - 4} marcos`; }
   const todos = $("#an-ctx-todos");
   if (todos) todos.textContent = `${MARCOS.length} marcos verificados na fonte, de ${new Set(MARCOS.map((m) => m.data.slice(0, 4))).size} anos. Linha do tempo completa em Contexto.`;
 }
@@ -605,6 +614,32 @@ function renderAuditoria() {
     <h3 class="an-kick mono">Arquivos para conferir</h3>
     <p class="an-files"><a href="../data/processed/analysis_methodology.json" download>analysis_methodology.json</a> (metodologia) · <a href="../data/processed/analysis_results.json" download>analysis_results.json</a> (resultados) · <a href="../data/processed/dashboard_data.json" download>dashboard_data.json</a> (séries de origem) · <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/scripts/build_analise.py" target="_blank" rel="noopener">build_analise.py</a> (cálculo) · <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_ANALISE_GOVERNOS.md" target="_blank" rel="noopener">auditoria</a></p>
     <p class="an-files">Para refazer o cálculo: <code>python scripts/build_analise.py</code> e depois <code>python scripts/test_analise.py</code>.</p>`;
+  if (CELULAR.matches) sanfonar(alvo);
+}
+
+// Cada subtítulo (h3.an-kick) vira um <details> com o que vem depois dele, até o próximo subtítulo.
+function sanfonar(raiz) {
+  $$("h3.an-kick", raiz).forEach((h) => {
+    const det = document.createElement("details");
+    det.className = "an-acc";
+    const sum = document.createElement("summary");
+    h.replaceWith(det);
+    sum.appendChild(h);
+    det.appendChild(sum);
+    let n = det.nextSibling;
+    while (n && !(n.nodeType === 1 && n.matches("h3.an-kick"))) { const nx = n.nextSibling; det.appendChild(n); n = nx; }
+  });
+}
+
+// Sumário da análise (celular): as partes em ordem, para pular direto para uma delas.
+function renderSumario() {
+  const nav = $("#an-toc");
+  if (!nav) return;
+  const itens = $$("#an-body h3.an-part-title[id], #an-body .an-rule h3[id], #an-body .an-minute h3[id]");
+  nav.innerHTML = `<details><summary><span class="mono">Nesta análise</span> ${itens.length} partes</summary><ol>${itens.map((h) => {
+    const n = h.closest("section")?.querySelector(".an-part-n")?.textContent.split("·")[0].trim();
+    return `<li><a href="#${h.id}">${n ? `<span class="mono">${esc(n)}</span>` : ""}${esc(h.textContent.trim())}</a></li>`;
+  }).join("")}</ol></details>`;
 }
 
 // ------------------------------------------------------------ montagem
@@ -656,7 +691,22 @@ export async function initAnalise() {
   renderContexto();
   renderAuditoria();
   renderModo();
+  renderSumario();
+  $("#an-toc")?.addEventListener("click", (e) => { if (e.target.closest("a")) e.target.closest("details").open = false; });
+  $("#an-tl-mais")?.addEventListener("click", (e) => {
+    const ul = $("#an-timeline"), aberto = ul.classList.toggle("is-open");
+    e.currentTarget.setAttribute("aria-expanded", String(aberto));
+    e.currentTarget.textContent = aberto ? "Mostrar menos marcos" : `Mostrar os outros ${ul.children.length - 4} marcos`;
+  });
   $("#an-dims").addEventListener("click", (e) => {
+    const deep = e.target.closest(".an-deep-btn");
+    if (deep) {
+      const dim = deep.dataset.dim, sec = deep.closest(".an-dim"), aberto = sec.classList.toggle("is-deep");
+      if (aberto) deepAbertos.add(dim); else deepAbertos.delete(dim);
+      deep.setAttribute("aria-expanded", String(aberto));
+      deep.textContent = aberto ? "Recolher o detalhe" : "Ver o detalhe: contexto do período, robustez e números por série";
+      return;
+    }
     const mais = e.target.closest(".an-ev-mais");
     if (mais) {
       const dim = mais.dataset.dim;

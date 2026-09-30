@@ -236,6 +236,14 @@ export function lineChart(el, cfg) {
     const px = evt ? evt.clientX : r.left + x;
     const py = evt ? evt.clientY : r.top + y;
     const w = t.offsetWidth, hgt = t.offsetHeight;
+    if (api.touch) {
+      // toque: a leitura vai para logo abaixo do eixo (o dedo cobre a área de baixo; em cima cobriria a linha)
+      const l = Math.min(Math.max(8, px - w / 2), window.innerWidth - w - 8);
+      const below = r.bottom + 6, above = r.top - hgt - 6;
+      t.style.left = `${l}px`;
+      t.style.top = `${below + hgt <= window.innerHeight - 8 || above < 60 ? below : above}px`;
+      return;
+    }
     let left = px + 16;
     if (left + w > window.innerWidth - 8) left = px - w - 16;
     let topY = py - hgt - 14;
@@ -262,12 +270,20 @@ export function lineChart(el, cfg) {
     };
     const move = (evt) => {
       const m = toM(evt);
+      api.touch = evt.pointerType === "touch";
       api.setHover(m, true, evt);
       cfg.onHover?.(m);
     };
     hit.addEventListener("pointermove", move);
     hit.addEventListener("pointerdown", (evt) => { move(evt); if (cfg.onSelect && api.hover != null) cfg.onSelect(api.hover); });
-    hit.addEventListener("pointerleave", () => { api.setHover(null); cfg.onHover?.(null); });
+    // No toque o dedo "sai" do gráfico assim que levanta: a leitura fica na tela até rolar ou tocar fora.
+    hit.addEventListener("pointerleave", (evt) => { if (evt.pointerType === "touch") return; api.setHover(null); cfg.onHover?.(null); });
+    if (!el._touchDismiss) {
+      el._touchDismiss = true;
+      const dismiss = () => { const c = el._chart; if (c?.touch && c.hover != null) { c.touch = false; c.setHover(null); c.cfg.onHover?.(null); } };
+      addEventListener("scroll", dismiss, { passive: true });
+      document.addEventListener("pointerdown", (e) => { if (!el.contains(e.target)) dismiss(); });
+    }
     el.querySelectorAll(".c-news").forEach((g) => {
       g.addEventListener("click", () => cfg.onNews?.(g.dataset.id));
       g.addEventListener("pointerenter", (evt) => {

@@ -25,7 +25,9 @@ const TIPO_ROTULO = {
   politica_energetica: "Preço dos combustíveis", protecao_social: "Proteção social", regulatoria: "Regulação", comercio_exterior: "Comércio exterior",
   calamidade: "Calamidade", mercado: "Mercado", dado_oficial: "Dado oficial",
 };
-const PAGINA = 24;
+// No celular a lista vem em lotes menores: cada matéria ocupa a largura toda, com imagem.
+const CELULAR = matchMedia("(max-width: 760px)");
+const PAGINA = CELULAR.matches ? 8 : 24;
 
 const norm = (s) => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -67,6 +69,7 @@ export function initArquivo({ NEWS }) {
         <label for="arq-q" class="arq-lab mono">Pesquisar</label>
         <input id="arq-q" class="arq-input" type="search" placeholder="Pesquisar no arquivo..." enterkeyhint="search" spellcheck="false">
       </div>
+      <details class="arq-fdet"${CELULAR.matches ? "" : " open"}><summary>Filtrar por ano, indicador, fonte ou dimensão</summary>
       <div class="arq-filtros">
         <div class="arq-f"><label for="arq-ano" class="arq-lab mono">Ano</label><select id="arq-ano"><option value="">Todos</option>${opcoes(porAno, [...porAno.keys()].sort())}</select></div>
         <div class="arq-f"><label for="arq-ind" class="arq-lab mono">Indicador</label><select id="arq-ind"><option value="">Todos</option>${opcoes(porInd, IND_ORDEM)}</select></div>
@@ -74,6 +77,7 @@ export function initArquivo({ NEWS }) {
         <div class="arq-f"><label for="arq-dim" class="arq-lab mono">Dimensão</label><select id="arq-dim"><option value="">Todas</option>${opcoes(porDim, Object.values(DIM_ROTULO))}</select></div>
         <div class="arq-f"><label for="arq-ordem" class="arq-lab mono">Ordenar</label><select id="arq-ordem"><option value="recentes">Mais recentes</option><option value="antigas">Mais antigas</option><option value="relevantes" disabled>Mais relevantes (com pesquisa)</option></select></div>
       </div>
+      </details>
       <button type="button" class="arq-limpar" id="arq-limpar" hidden>Limpar pesquisa e filtros</button>
     </form>
     <p class="arq-count" id="arq-count" role="status" aria-live="polite"></p>
@@ -147,6 +151,7 @@ export function initArquivo({ NEWS }) {
   raiz.querySelector("form").addEventListener("submit", (e) => e.preventDefault());
   [["ano", "#arq-ano"], ["ind", "#arq-ind"], ["fonte", "#arq-fonte"], ["dim", "#arq-dim"], ["ordem", "#arq-ordem"]].forEach(([k, sel]) =>
     $(sel).addEventListener("change", (e) => { st[k] = e.target.value; reiniciar(); }));
+  CELULAR.addEventListener("change", () => { if (!CELULAR.matches) raiz.querySelector(".arq-fdet").open = true; });
   $("#arq-limpar").addEventListener("click", () => {
     Object.assign(st, { q: "", ano: "", ind: "", fonte: "", dim: "", ordem: "recentes" });
     $("#arq-q").value = ""; ["#arq-ano", "#arq-ind", "#arq-fonte", "#arq-dim"].forEach((s) => { $(s).value = ""; }); $("#arq-ordem").value = "recentes";
