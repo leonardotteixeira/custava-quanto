@@ -88,7 +88,7 @@ período Bolsonaro. Detalhes: [METHODOLOGY.md](METHODOLOGY.md).
   **HISTÓRICO**, fora do pipeline.
 - Dependências externas em tempo de leitura: Google Fonts e as imagens das matérias
   (servidas pelos veículos). Dependências Python: `requirements.txt`.
-- Deploy: workflow do GitHub Pages e `CNAME` no repositório; Pages, DNS e HTTPS de `custavaquanto.me` ainda pendentes (ver [DEPLOY.md](DEPLOY.md)). Não há CI de testes nem licença.
+- Deploy: no ar em https://custavaquanto.me/ (GitHub Pages por branch, raiz redireciona para `/dashboard/`; ver [DEPLOY.md](DEPLOY.md)). Não há CI de testes nem licença.
 
 ## Problemas e lacunas conhecidos (resumo)
 

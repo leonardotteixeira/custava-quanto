@@ -4,19 +4,16 @@
 # Aqui montamos a pasta _site/ com dashboard/ na raiz e data/processed/*.json em /data/processed/:
 # a partir da raiz do domínio, "../data/processed/x.json" resolve para "/data/processed/x.json".
 #
-# Requer, uma única vez, em Settings > Pages do repositório: Source = "GitHub Actions" e
-# Custom domain = custavaquanto.me (ver docs/DEPLOY.md). Nada é gerado aqui: os JSON são os
-# versionados em data/processed/ (rode scripts/update_data.py localmente e faça commit).
+# OPCIONAL. Hoje o GitHub Pages publica direto da branch master (raiz do repositório), com um
+# index.html na raiz que redireciona para dashboard/index.html. Este workflow publica o site
+# na RAIZ do domínio (https://custavaquanto.me/, sem /dashboard/), e só vale se, em Settings >
+# Pages, o Source for trocado para "GitHub Actions" (ver docs/DEPLOY.md). Enquanto o Source for
+# "Deploy from a branch", rodá-lo não muda o site. Nada é gerado aqui: os JSON são os versionados
+# em data/processed/ (rode scripts/update_data.py localmente e faça commit).
 name: Publicar no GitHub Pages
 
 on:
-  push:
-    branches: [master]
-    paths:
-      - "dashboard/**"
-      - "data/processed/*.json"
-      - ".github/workflows/pages.yml"
-  workflow_dispatch:
+  workflow_dispatch:   # só manual: hoje o Pages publica direto da branch (ver docs/DEPLOY.md)
 
 permissions:
   contents: read
@@ -40,6 +37,7 @@ jobs:
           mkdir -p _site/data/processed
           cp -r dashboard/. _site/
           cp data/processed/*.json _site/data/processed/
+          cp CNAME robots.txt sitemap.xml _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

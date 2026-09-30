@@ -50,7 +50,7 @@ Descrevem a página e as decisões de 22–23/09/2026. Não são pendências.
 
 ## Não há (ainda)
 
-- Documento de **implantação**: existe em [DEPLOY.md](DEPLOY.md) (workflow do GitHub Pages e
-  `CNAME` no repositório), mas Pages, DNS e HTTPS ainda dependem de passos à mão.
+- Documento de **implantação**: existe em [DEPLOY.md](DEPLOY.md) (GitHub Pages por branch, `CNAME`, DNS e
+  workflow opcional para publicar na raiz do domínio).
 - **Licença** do repositório.
 - Testes automáticos de front-end e de acessibilidade.

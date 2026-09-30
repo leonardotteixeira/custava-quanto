@@ -1,116 +1,93 @@
 # Publicação e domínio
 
 Última atualização: 30/09/2026
-Status: **CONFIGURAÇÃO NO REPOSITÓRIO PRONTA; PUBLICAÇÃO E DNS AINDA PENDENTES** (ver "O que falta fazer à mão").
+Status: **NO AR em https://custavaquanto.me/** (GitHub Pages, publicando direto da branch `master`).
+Verificado em 30/09/2026 por consulta ao DNS e ao servidor (ver "Estado da verificação").
 
 Endereço oficial: **https://custavaquanto.me/**
 
-## O que o repositório tinha (verificado em 30/09/2026)
+## Como está publicado hoje
 
-- Nenhuma configuração de publicação: sem `.github/`, `CNAME`, `vercel.json`, `netlify.toml`,
-  `robots.txt` nem `sitemap.xml`.
-- GitHub Pages **desligado** em `leonardotteixeira/custava-quanto` (a API do GitHub
-  devolve `has_pages: false`). O repositório é público e a branch padrão é `master`.
-- O domínio `custavaquanto.me` já estava ligado a **outro** repositório da mesma conta,
-  `leonardotteixeira/leonardotteixeira.github.io` (site de usuário; tem só `README.md` e um
-  `CNAME` com `custavaquanto.me`). Por isso `https://leonardotteixeira.github.io/custava-quanto/`
-  redireciona hoje para `custavaquanto.me/custava-quanto/`.
-- O DNS de `custavaquanto.me` **ainda não resolvia** (consulta ao 8.8.8.8 devolveu
-  "Non-existent domain"): nenhum registro foi criado ainda ou o domínio recém-registrado
-  ainda não propagou.
+- **Provedor:** GitHub Pages, opção "Deploy from a branch" (`master`, raiz do repositório). O
+  GitHub informa `has_pages: true` para `leonardotteixeira/custava-quanto`.
+- **Domínio personalizado:** `CNAME` na raiz do repositório com `custavaquanto.me`. O domínio foi
+  retirado do repositório antigo `leonardotteixeira.github.io` (o `CNAME` de lá não existe mais).
+- **DNS (Namecheap):** `custavaquanto.me` resolve para os IPs do GitHub Pages
+  (`185.199.108.153`, `185.199.110.153`, `185.199.111.153`, entre os quatro recomendados).
+- **Raiz do site:** o `index.html` da raiz (commit `47ded14`) redireciona por `meta refresh` para
+  `dashboard/index.html`, onde o site vive. Como `dashboard/` e `data/` ficam lado a lado no
+  repositório, o site lê os dados por `../data/processed/*.json` sem nenhuma montagem.
+- **Consequência:** a página aparece em `https://custavaquanto.me/dashboard/index.html` depois do
+  redirecionamento, e não na raiz do domínio.
 
-Provedor escolhido: **GitHub Pages**, publicado por **GitHub Actions**. Motivo: o `CNAME`
-criado no repositório do usuário indica essa intenção, e a estrutura do site pede uma
-montagem de pastas (abaixo), que a publicação "a partir de uma branch" do Pages não faz.
-
-## O que foi configurado no repositório
+## O que o repositório contém para o domínio
 
 | Arquivo | Para quê |
 |---|---|
-| `.github/workflows/pages.yml` | A cada push na `master` que mexe em `dashboard/`, `data/processed/*.json` ou no próprio workflow, monta `_site/` e publica. Também roda à mão (`workflow_dispatch`). |
-| `dashboard/CNAME` | Contém exatamente `custavaquanto.me`. Vai para a raiz do site publicado. |
-| `dashboard/index.html` | `<link rel="canonical">` e `og:url` apontam para `https://custavaquanto.me/`; foram acrescentados também `og:type`, `og:site_name`, `og:locale`, `og:title` e `og:description` (mesmo texto do `<title>` e da `description` que já existiam). Não há imagem de compartilhamento: nenhuma foi inventada. |
-| `dashboard/robots.txt` | Permite tudo e aponta para o sitemap em `https://custavaquanto.me/sitemap.xml`. |
-| `dashboard/sitemap.xml` | Uma única URL: `https://custavaquanto.me/` (o site é uma página só, com capítulos em âncoras). |
+| `CNAME` (raiz) | `custavaquanto.me`; é o que o Pages usa na publicação por branch. |
+| `.nojekyll` e `index.html` (raiz) | Desligam o Jekyll e redirecionam a raiz para `dashboard/index.html`. |
+| `robots.txt` e `sitemap.xml` (raiz) | Permitem tudo e listam `https://custavaquanto.me/`. Ficam na raiz porque os rastreadores só procuram `/robots.txt` e `/sitemap.xml` ali. |
+| `dashboard/index.html` | `<link rel="canonical">` e `og:url` apontam para `https://custavaquanto.me/`; também `og:type`, `og:site_name`, `og:locale`, `og:title` e `og:description` (mesmo texto do `<title>` e da `description` que já existiam). Não há imagem de compartilhamento: nenhuma foi inventada. |
+| `.github/workflows/pages.yml` | **Opcional, só manual.** Publica o site na raiz do domínio (sem `/dashboard/`) por GitHub Actions. Só vale se o *Source* do Pages for trocado (abaixo). |
 
-**Como as pastas são montadas.** O site vive em `dashboard/` e lê os dados por caminhos
-relativos (`../data/processed/*.json`). O workflow copia `dashboard/` para a raiz de `_site/`
-e `data/processed/*.json` para `_site/data/processed/`. Na raiz do domínio,
-`../data/processed/x.json` resolve para `/data/processed/x.json`, então **o código do site não
-mudou**. Testado localmente servindo `_site/` na raiz: as cinco requisições de dados
-(`dashboard_data.json`, `noticias.json`, `mercados_status.json`, `analysis_methodology.json` e
-`analysis_results.json`) devolvem 200 e nenhum recurso usa `http://`.
+Todos os recursos externos do site (Google Fonts, links de fonte, imagens de matérias) usam
+`https://`; não há `http://` no site além de `localhost` em ferramentas de desenvolvimento.
 
-**HTTPS.** Todos os recursos externos do site (Google Fonts, links de fonte, imagens de
-matérias) já usam `https://`; a busca por `http://` não achou nada além de `localhost` em
-ferramentas de desenvolvimento. O HTTPS do domínio é emitido pelo GitHub Pages depois que o
-DNS propagar (ver abaixo).
+## Opcional: publicar na raiz do domínio (sem `/dashboard/`)
 
-**Nada foi feito nas configurações do GitHub nem no Namecheap:** isso exige a sua conta. Nenhuma
-credencial foi pedida nem gravada.
+O redirecionamento atual funciona, mas deixa o endereço final com `/dashboard/index.html` e o
+canonical (`https://custavaquanto.me/`) apontando para uma página que só redireciona. Para o site
+aparecer direto na raiz:
 
-## O que falta fazer à mão
+1. Em `leonardotteixeira/custava-quanto` > Settings > Pages > *Build and deployment*, troque o
+   **Source** de "Deploy from a branch" para **GitHub Actions**. O campo *Custom domain* continua
+   `custavaquanto.me`.
+2. Em Actions > *Publicar no GitHub Pages* > **Run workflow** (a cada atualização dos dados ou do
+   site; o workflow é só manual para não falhar enquanto o Source for "branch").
+3. O workflow monta `_site/` com `dashboard/` na raiz e `data/processed/*.json` em
+   `/data/processed/`: a partir da raiz do domínio, `../data/processed/x.json` resolve para
+   `/data/processed/x.json`, então o código do site não muda. Para voltar, restaure o Source para
+   "Deploy from a branch".
 
-Ordem recomendada. Enquanto os passos 1 a 3 não forem feitos, o site **não** está no ar em
-`custavaquanto.me`.
+Se quiser que ele rode a cada push, troque `on:` por `push: { branches: [master], paths: [...] }`.
 
-1. **Namecheap, registros DNS** (Domain List > Manage > **Advanced DNS** > Host Records; os
-   nameservers do domínio devem ser os da Namecheap, "Namecheap BasicDNS"). Remova registros
-   de estacionamento ou redirecionamento que a Namecheap criar por padrão para `@` e `www`, e
-   crie os registros abaixo. Os valores vêm da documentação do GitHub Pages
-   ("Managing a custom domain for your GitHub Pages site", consultada em 30/09/2026):
+## DNS: registros no Namecheap
 
-   | Tipo | Host | Valor |
-   |---|---|---|
-   | A | `@` | `185.199.108.153` |
-   | A | `@` | `185.199.109.153` |
-   | A | `@` | `185.199.110.153` |
-   | A | `@` | `185.199.111.153` |
-   | AAAA (opcional, recomendado pelo GitHub) | `@` | `2606:50c0:8000::153` |
-   | AAAA (opcional) | `@` | `2606:50c0:8001::153` |
-   | AAAA (opcional) | `@` | `2606:50c0:8002::153` |
-   | AAAA (opcional) | `@` | `2606:50c0:8003::153` |
-   | CNAME (opcional, só se quiser que `www` também funcione) | `www` | `leonardotteixeira.github.io.` |
+Valores da documentação do GitHub Pages ("Managing a custom domain for your GitHub Pages site",
+consultada em 30/09/2026). Advanced DNS > Host Records, com os nameservers da Namecheap:
 
-   O `www` não é necessário: o endereço oficial é o domínio sem `www`. Se criar o CNAME, o
-   GitHub redireciona `www.custavaquanto.me` para `custavaquanto.me`. Nunca aponte para o
-   nome do repositório, só para `leonardotteixeira.github.io`.
+| Tipo | Host | Valor |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| AAAA (opcional) | `@` | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| CNAME (opcional, só se quiser que `www` funcione) | `www` | `leonardotteixeira.github.io.` |
 
-2. **GitHub, tirar o domínio do outro repositório.** Em
-   `leonardotteixeira/leonardotteixeira.github.io` > Settings > Pages, remova o *Custom
-   domain* (ou apague esse repositório, que só tem um `README` e um `CNAME`). Um domínio
-   personalizado só pode estar em um site do Pages por vez; se ele continuar lá, o site do
-   projeto será servido em `custavaquanto.me/custava-quanto/` em vez da raiz, ou o GitHub
-   recusará o domínio como "já em uso".
+O `www` não é necessário: o endereço oficial é o domínio sem `www`. Nunca aponte para o nome do
+repositório, só para `leonardotteixeira.github.io`. Opcional e recomendado: *verificar* o domínio na
+conta do GitHub (Settings > Pages > Add a domain, registro TXT no Namecheap), o que impede outras
+pessoas de usarem `custavaquanto.me` ou subdomínios em repositórios delas.
 
-3. **GitHub, ligar o Pages neste repositório.** Em `leonardotteixeira/custava-quanto` >
-   Settings > Pages:
-   - *Build and deployment > Source*: **GitHub Actions**;
-   - *Custom domain*: `custavaquanto.me` > Save (o GitHub confere o DNS; pode levar de minutos
-     a horas, e o aviso "DNS check unsuccessful" é normal até propagar);
-   - quando a verificação passar, marque **Enforce HTTPS**.
-   - Com a publicação por Actions, o `CNAME` do repositório é ignorado pelo GitHub (o que vale
-     é o campo *Custom domain* das configurações); ele fica no repositório por clareza.
-
-4. **Opcional, recomendado:** *verificar* o domínio na sua conta do GitHub (Settings > Pages >
-   Add a domain), que impede outras pessoas de usarem `custavaquanto.me` ou subdomínios em
-   repositórios delas. O GitHub pede um registro TXT no Namecheap (o valor aparece na tela).
-
-5. Depois do primeiro push na `master` (ou de rodar o workflow em Actions > *Publicar no
-   GitHub Pages* > Run workflow), confira `https://custavaquanto.me/`.
-
-## Como conferir depois
+## Como conferir
 
 ```bash
-nslookup custavaquanto.me 8.8.8.8            # deve listar os IPs 185.199.108-111.153
-curl -sI https://custavaquanto.me/ | head -3  # HTTP/2 200
-curl -sI http://custavaquanto.me/ | head -3   # 301 para https (depois de "Enforce HTTPS")
+nslookup custavaquanto.me 8.8.8.8             # deve listar IPs 185.199.108-111.153
+curl -sI https://custavaquanto.me/ | head -3  # HTTP/1.1 200 OK (redirecionamento para /dashboard/)
+curl -sI http://custavaquanto.me/ | head -3   # depois de "Enforce HTTPS": 301 para https
 curl -s https://custavaquanto.me/robots.txt
 ```
 
 ## Estado da verificação (30/09/2026)
 
-- **Configuração do repositório:** feita (arquivos acima); ainda **não commitada** neste momento.
-- **DNS:** **não** configurado ou não propagado (`Non-existent domain` no 8.8.8.8).
-- **Pages/Actions:** **não** ligados em `custava-quanto` (`has_pages: false`).
-- **HTTPS ao vivo:** **não verificado**; depende dos passos 1 a 3.
+- **Repositório:** `CNAME`, `index.html` de redirecionamento, canonical e `og:url`, `robots.txt`,
+  `sitemap.xml`, workflow opcional. Testado localmente servindo `dashboard/` + `data/` como o
+  Pages faz: os cinco JSON de dados devolvem 200, sem recursos `http://`.
+- **DNS:** resolve para os IPs do GitHub Pages (consulta ao 8.8.8.8).
+- **Pages:** ativo (`has_pages: true`); o domínio antigo foi liberado.
+- **HTTPS:** `https://custavaquanto.me/` respondeu 200 com certificado válido. Falta conferir se
+  **Enforce HTTPS** está marcado: `http://custavaquanto.me/` também respondeu 200 (sem redirecionar
+  para https). Marque a opção em Settings > Pages.
+- **Ainda não conferido:** o site completo no domínio depois deste push (o Pages republica sozinho
+  a cada push na `master`; leva alguns minutos), `robots.txt` e `sitemap.xml` ao vivo.

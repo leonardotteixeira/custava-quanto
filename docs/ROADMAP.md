@@ -84,7 +84,7 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
 - Mais cobertura de notícias para PIB (2022–2024) e links para as fontes do
   contexto externo da Análise (L4, L5).
 - Retratos maiores em Períodos (hoje 56×70 px).
-- Licença do repositório. Deploy: configuração no repositório pronta; falta ligar Pages, DNS e HTTPS (DEPLOY.md).
+- Licença do repositório. Deploy: no ar em custavaquanto.me; falta conferir "Enforce HTTPS" e, se quiser o site na raiz sem `/dashboard/`, trocar o Source do Pages para Actions (DEPLOY.md).
 - Servir `dashboard_data.json` em partes (hoje ~960 KB de uma vez).
 
 ## EXPERIMENTAL / OPCIONAL

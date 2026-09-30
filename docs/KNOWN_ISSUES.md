@@ -125,9 +125,8 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 - **L7.** Higiene do repositório: existem dois PDFs de brand book na raiz — um
   versionado ("Custava Quanto - Brand Book.pdf") e outro **não** versionado com o
   nome grafado "Custavo" —, mais `p.html` e `.impeccable/review/` não versionados.
-  Não há arquivo `LICENSE`. A configuração de deploy existe no repositório
-  (`.github/workflows/pages.yml`, `dashboard/CNAME`), mas o Pages, o DNS e o HTTPS de
-  `custavaquanto.me` ainda dependem de passos à mão (ver [DEPLOY.md](DEPLOY.md)).
+  Não há arquivo `LICENSE`. O site está no ar em `custavaquanto.me` (GitHub Pages por branch, raiz
+  redirecionando para `/dashboard/`); falta conferir o "Enforce HTTPS" (ver [DEPLOY.md](DEPLOY.md)).
 - **L9.** Docstrings antigas: `download_pib.py` diz que a API do IBGE "está
   bloqueada nesta sessão" e que nenhuma tabela foi aberta diretamente, e
   `download_conab.py` foi escrito sem o arquivo real. O primeiro já baixou dados reais;

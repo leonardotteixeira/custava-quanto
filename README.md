@@ -16,7 +16,7 @@ frequência e limitação.
 
 Tagline: "Quanto custava. Quanto custa. O que mudou."
 
-**Endereço oficial: <https://custavaquanto.me/>** (GitHub Pages, publicado por GitHub Actions). Como o domínio, o DNS e a publicação foram configurados, e o que ainda falta fazer à mão: [docs/DEPLOY.md](docs/DEPLOY.md).
+**Endereço oficial: <https://custavaquanto.me/>** (GitHub Pages). Como o domínio, o DNS e a publicação estão configurados: [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## 2. O que o projeto faz
 
