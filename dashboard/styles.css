@@ -135,6 +135,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .mast-brand b, .foot-mark b, .np-q { color: var(--signal); }
 .mast-symbol { width: 18px; height: 18px; }
 .mast-nav { flex: 1; min-width: 0; }
+.mast-menu { display: none; }
 .mast-nav ol { list-style: none; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
 .mast-nav ol::-webkit-scrollbar { display: none; }
 .mast-nav a {
@@ -719,13 +720,32 @@ code { font-family: var(--mono); font-size: 0.88em; }
 @media (max-width: 900px) {
   :root { --mast-h: 50px; }
   body { font-size: 16px; }
-  .mast-row { gap: 12px; height: auto; flex-wrap: wrap; padding-block: 8px 0; }
-  .mast-brand { height: 34px; }
-  .mast-product { margin-left: auto; padding: 4px 10px; }
+  /* celular e tablet: barra enxuta (nome + série + botão de menu); os capítulos viram uma gaveta em tela cheia */
+  .mast-row { gap: 10px; height: var(--mast-h); flex-wrap: nowrap; padding-block: 0; }
+  .mast-brand { min-height: 44px; }
+  .mast-product { margin-left: auto; padding: 4px 10px; align-items: center; }
   .mp-label { display: none; }
-  .mast-nav { flex-basis: 100%; order: 3; margin-inline: calc(-1 * var(--gutter)); padding-inline: calc(var(--gutter) - 10px); }
-  .mast-nav a { padding: 8px 10px 9px; font-size: 0.8rem; }
-  html { scroll-padding-top: 104px; }
+  .mast-menu { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 44px; height: 44px; margin-right: -8px; padding: 0; background: transparent; color: var(--on-night); border: 0; cursor: pointer; }
+  .mast-menu-txt { display: none; }
+  .mast-menu-ico, .mast-menu-ico::before, .mast-menu-ico::after { display: block; width: 22px; height: 2px; background: currentColor; transition: transform 0.2s var(--ease), opacity 0.2s; }
+  .mast-menu-ico { position: relative; }
+  .mast-menu-ico::before, .mast-menu-ico::after { content: ""; position: absolute; left: 0; }
+  .mast-menu-ico::before { top: -7px; }
+  .mast-menu-ico::after { top: 7px; }
+  .mast.is-open .mast-menu-ico { background: transparent; }
+  .mast.is-open .mast-menu-ico::before { transform: translateY(7px) rotate(45deg); }
+  .mast.is-open .mast-menu-ico::after { transform: translateY(-7px) rotate(-45deg); }
+  .mast-menu:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+  .mast-nav { position: absolute; top: 100%; left: 0; right: 0; height: calc(100vh - var(--mast-h)); height: calc(100dvh - var(--mast-h)); padding: 6px var(--gutter) 40px; background: var(--night); overflow-y: auto; overscroll-behavior: contain; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity 0.2s, transform 0.2s var(--ease), visibility 0s 0.2s; }
+  .mast.is-open .mast-nav { visibility: visible; opacity: 1; transform: none; transition: opacity 0.2s, transform 0.2s var(--ease); }
+  .mast-nav ol { display: block; overflow: visible; }
+  .mast-nav a { display: flex; align-items: baseline; gap: 16px; min-height: 56px; padding: 14px 4px; font-size: 1.2rem; font-weight: 600; color: var(--on-night); border-bottom: 1px solid rgba(238, 232, 220, 0.12); white-space: normal; }
+  .mast-nav a i { flex: none; width: 2.2ch; margin: 0; font-size: 0.8rem; color: var(--on-night-3); }
+  .mast-nav a[aria-current="true"] { color: var(--signal); border-bottom-color: rgba(238, 232, 220, 0.12); }
+  .mast-nav a[aria-current="true"] i { color: var(--signal); }
+  .mast-nav .nav-apoie a { opacity: 1; }
+  html.menu-open, html.menu-open body { overflow: hidden; }
+  html { scroll-padding-top: calc(var(--mast-h) + 12px); }
   .hero-grid { grid-template-columns: 1fr; gap: 20px; }
   .hero-tagline, .hero-deck { grid-column: 1; }
   .ch-head, .ch-head--split, .ch-head--wide { grid-template-columns: 1fr; }
@@ -773,8 +793,8 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .seg--compact button { padding: 7px 10px; font-size: 0.78rem; }
   .tm-scrub { grid-template-columns: 1fr; }
   .tm-step { display: none; }
-  .tm-moments { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
-  .tm-moment { flex: none; }
+  .tm-moments { gap: 8px; }
+  .tm-moment { flex: 1 1 calc(50% - 4px); min-width: 0; }
   .pp-grid { gap: 2px; }
   .facts dd { font-size: 1.25rem; }
   .clip-title { font-size: 1.18rem; }
@@ -1580,4 +1600,65 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .arq-fig { order: -1; display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: end; width: auto; }
   .arq-fig figcaption { margin: 0; }
   .arq-t { font-size: 1.1rem; }
+}
+
+/* ===== Celular: alvos de toque, leitura e listas (desktop não muda) ===== */
+@media (max-width: 900px) {
+  :root { --t-micro: 0.75rem; }
+  /* alvos de toque de 44px */
+  .step-btn, .tm-moment, .seg button, .seg--compact button, .an-video-btn, .tl-dim, .tl-more, .arq-limpar, .arq-mais, .an-ctx-btn, .an-btn-mini, .nb > summary, .an-nums > summary, .guia-mapa summary { min-height: 44px; }
+  .step-btn, .seg button, .seg--compact button, .tm-moment, .an-video-btn { padding-block: 10px; }
+  .an-min-dim, .clip-link, .tl-link, .arq-links a, .tl-arq { display: inline-flex; align-items: center; min-height: 44px; }
+  .story-step .step-btn { padding-inline: 12px; font-size: 0.85rem; }
+  .toc-row { min-height: 64px; }
+  .mono { font-size: 0.75rem; }
+  /* rótulos e metadados: piso de 12px no celular (!important: vence as regras de tamanho por componente) */
+  .rb-label, .rb-freq, .baseline-fixed span, thead th, figcaption, .sp-mobile-lab, .an-tag, .an-min-leit small, .an-evid-badge,
+  .an-ev-src, .an-tipo, .an-limit-cards b, .arq-tags li, .an-hash, .ap-where-list b, .an-mv-dif span, .nr-t, .nr-num, .pp-when, .pp-when b,
+  .ribbon-note, .story-kicker, .story-kicker b, .tnb-ref-label, .ev-key, #chart-events time, .clip-meta b, .clip-meta time,
+  .pp-scrub-label, .machine-period, .cur, .inst-extra, .baseline-label, .tm-moment time, .sp-name small, .sp-val small,
+  .an-dot-axis span, .nr-t time, .an-q .mono, .an-dim-type .mono, .an-scope dt, li > span.mono, summary .mono, .an-tb-vals small, .an-prio-leg li, .an-prio-leg b, .an-video-btn, .an-ev-n, .an-pib-v, .an-sl-val, .photo-credit, .mp-label { font-size: 0.75rem !important; }
+  .tl-meta, .arq-meta, .an-ev-meta { line-height: 1.5; }
+  .mp-delta { display: none; }
+  .mast-product { min-height: 44px; }
+  .clip-title a { display: inline-flex; align-items: center; min-height: 44px; }
+  .mp-name { max-width: 34vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* "Em 1 minuto": cada par rótulo/valor numa linha, sem ponto solto na quebra */
+  .an-min-res { display: grid; gap: 4px; }
+  .an-pair + .an-pair::before { content: none; }
+}
+@media (min-width: 901px) {
+  .an-pair + .an-pair::before { content: "·"; margin: 0 0.6em 0 0.2em; }
+}
+@media (max-width: 760px) {
+  /* imagens das matérias: largura total do cartão, proporção fixa (sem pulo de layout) */
+  .tl-fig, .arq-fig { display: block; width: 100%; }
+  .tl-fig img, .arq-fig img { width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  .tl-fig figcaption, .arq-fig figcaption { margin-top: 6px; }
+}
+@media (max-width: 359px) {
+  .mast-product { display: none; }
+  .mast-menu { margin-left: auto; }
+}
+
+/* Análise no celular: lista de eventos recolhida e controle de pesos mais fácil de pegar com o dedo */
+.an-ev-mais { display: none; }
+@media (max-width: 900px) {
+  .an-ev-list:not(.is-open) > li:nth-child(n+4) { display: none; }
+  .an-ev-mais { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 14px; padding: 10px 14px; background: transparent; color: var(--fg); border: 1px solid var(--fg); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+  .an-sl input[type="range"]::-webkit-slider-thumb { width: 30px; height: 30px; margin-top: -13px; }
+  .an-sl input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; }
+}
+
+/* tabelas viradas em cartões (classe an-stack vem de rotularTabelas); aqui só o que faltava para as tabelas sem <th scope="row"> */
+@media (max-width: 760px) {
+  .fresh.an-stack td:first-child { display: block; text-align: left; font-weight: 600; padding-bottom: 6px; font-size: 1rem; }
+  .fresh.an-stack td:first-child::before { content: none; }
+  .an-stack td, .an-stack th[scope="row"] { overflow-wrap: anywhere; }
+  .an-stack td::before { font-size: 0.75rem; }
+  .an-stack td { font-size: 0.92rem; }
+  .an-stack td a { overflow-wrap: anywhere; display: inline-block; padding-block: 10px; }
+}
+@media (max-width: 760px) {
+  .an-scroll, .table-scroll:has(> .an-stack) { overflow: visible; }
 }

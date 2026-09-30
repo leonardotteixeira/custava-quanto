@@ -191,6 +191,16 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 - Seletor "jan/2019" do Índice — removido (`c27dbac`).
 - Fotos dos presidentes pixeladas — versões pré-reduzidas via `srcset` (`f19abcc`).
 
+## Celular (30/09/2026)
+
+- A página tem ~85 mil px de altura em 390 px (a Análise sozinha passa de 35 mil). Os eventos de
+  cada dimensão ficam recolhidos (3 visíveis + botão) e a linha do tempo do Contexto mostra 8
+  marcos por vez; o restante do conteúdo segue inteiro.
+- A tabela mensal do capítulo Preço continua com rolagem horizontal controlada (5 colunas, até
+  ~560 px); as demais tabelas viram cartões empilhados.
+- Abaixo de 360 px o atalho da série atual some do cabeçalho (só resta o menu).
+- Não há item "mercado de trabalho" no Índice: ele só existe na Análise (não é série do painel).
+
 ## Ideias
 
 - Colocar `download_pib*.py` e `download_ibge_combustiveis.py` no `update_data.py`

@@ -26,7 +26,9 @@ export function initLinhaDoTempo({ NEWS }) {
   if (!box) return;
   const marcos = NEWS.filter((n) => n.marco).sort((a, b) => a.data.localeCompare(b.data));
   if (!marcos.length) { box.hidden = true; return; }
-  const st = { dim: "todas", todos: false };
+  const compacto = matchMedia("(max-width: 760px)");
+  const LOTE = 8; // no celular a lista começa com 8 marcos e cresce de 8 em 8
+  const st = { dim: "todas", todos: false, lim: compacto.matches ? LOTE : Infinity };
   const anos = [...new Set(marcos.map((m) => m.data.slice(0, 4)))];
   const veic = new Set(marcos.map((m) => m.veiculo)).size;
 
@@ -54,7 +56,12 @@ export function initLinhaDoTempo({ NEWS }) {
     $("#tl-more").setAttribute("aria-pressed", String(st.todos));
     $$dim().forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dim === st.dim)));
     const porAno = new Map();
-    lista.forEach((n) => { const y = n.data.slice(0, 4); (porAno.get(y) || porAno.set(y, []).get(y)).push(n); });
+    const visiveis = lista.slice(0, st.lim);
+    visiveis.forEach((n) => { const y = n.data.slice(0, 4); (porAno.get(y) || porAno.set(y, []).get(y)).push(n); });
+    const resto = lista.length - visiveis.length;
+    const mais = $("#tl-lote");
+    mais.hidden = resto <= 0;
+    mais.textContent = `Mostrar mais marcos (${Math.min(LOTE, resto)} de ${resto} restantes)`;
     $("#tl-years").innerHTML = anos.filter((y) => porAno.has(y)).map((y) => `<article class="tl-year" aria-label="${y}">
         <div class="tl-side"><p class="tl-y">${y}</p><span class="tl-per mono">Governo ${+y < 2023 ? "Bolsonaro" : "Lula"}</span><span class="tl-n mono">${porAno.get(y).length} ${porAno.get(y).length === 1 ? "marco" : "marcos"}</span></div>
         <ul class="tl-list">${porAno.get(y).map(item).join("")}</ul></article>`).join("") || `<p class="tl-vazio">Nenhum marco nesta seleção.</p>`;
@@ -71,14 +78,17 @@ export function initLinhaDoTempo({ NEWS }) {
       <button type="button" class="tl-more" id="tl-more" aria-pressed="false"></button>
     </div>
     <p class="tl-count mono" id="tl-count" aria-live="polite"></p>
-    <div class="tl-years" id="tl-years"></div>`;
+    <div class="tl-years" id="tl-years"></div>
+    <button type="button" class="tl-more tl-lote" id="tl-lote" hidden></button>`;
   box.addEventListener("click", (e) => {
     const a = e.target.closest("[data-arq]");
     if (a) { e.preventDefault(); document.dispatchEvent(new CustomEvent("arq:abrir", { detail: { id: a.dataset.arq } })); return; }
     const d = e.target.closest(".tl-dim");
-    if (d) { st.dim = d.dataset.dim; desenhar(); return; }
-    if (e.target.closest("#tl-more")) { st.todos = !st.todos; desenhar(); }
+    if (d) { st.dim = d.dataset.dim; st.lim = compacto.matches ? LOTE : Infinity; desenhar(); return; }
+    if (e.target.closest("#tl-lote")) { st.lim += LOTE; desenhar(); return; }
+    if (e.target.closest("#tl-more")) { st.todos = !st.todos; st.lim = compacto.matches ? LOTE : Infinity; desenhar(); }
   });
+  compacto.addEventListener("change", () => { st.lim = compacto.matches ? LOTE : Infinity; desenhar(); });
   desenhar();
 
   // Arquivo → Contexto: mostra o marco na linha do tempo (zera o filtro e, se for de relevância média, mostra todos)
@@ -87,6 +97,7 @@ export function initLinhaDoTempo({ NEWS }) {
     if (!n) return;
     st.dim = "todas";
     if (n.marco.relevancia !== "alta") st.todos = true;
+    st.lim = Infinity;
     desenhar();
     const alvo = document.getElementById(`tl-${n.id}`);
     if (!alvo) return;

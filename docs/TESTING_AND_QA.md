@@ -77,6 +77,15 @@ Registradas para dar contexto; **não** substituem testes automáticos.
 - **Layout responsivo:** medidas de rolagem horizontal nas larguras 320, 390 e 768
   px para o capítulo Análise e o restante da página; captura em 1440 px. 1024 px e
   1920 px não foram cobertos nesta rodada.
+- **Celular (30/09/2026):** páginas de Gasolina em 320, 360, 375, 390, 412 e 430 px (iframe
+  na largura pedida; o painel do navegador não desce de ~386 px) e em 768, 1024, 1280, 1440
+  e 1920 px: sem rolagem horizontal da página, nenhum botão ou link isolado com menos de
+  44 px de altura e nenhum texto abaixo de 12 px nas larguras de celular. axe-core (WCAG 2
+  A/AA e boas práticas) em 390 e 1280 px: únicas violações são o contraste do "10" do menu
+  em tela larga (L13, anterior) e o número grande da Máquina do tempo medido no meio da
+  animação de entrada (opacidade 0,25; o valor final tem contraste suficiente). Navegação por
+  menu (abrir, Esc, foco preso, `inert` no conteúdo, fechar ao escolher capítulo e ao
+  passar de 900 px) testada. Não testado em aparelho físico nem em leitor de tela.
 - **Teclado:** foco e ativação dos controles de janela da Análise; nos gráficos
   as setas percorrem os pontos e, no gráfico anual do PIB, Enter/Espaço selecionam o
   ano (implementado em `charts.js`); a checagem foi feita lendo o código e testando

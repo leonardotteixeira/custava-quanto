@@ -167,6 +167,8 @@ async function init() {
   initArquivo({ NEWS });
   selectProduct(S.product, { initial: true });
   renderMethod();
+  bindMenu();
+  bindTabelas();
   bindScroll();
   bindReveal();
 }
@@ -1195,6 +1197,63 @@ function bindControls() {
   $("#tm-moments").addEventListener("click", (e) => { const b = e.target.closest(".tm-moment"); if (b) setMachine(b.dataset.iso); });
   // links do cabeçalho abrem o capítulo do caderno correspondente
   $$('a[href^="#"]').forEach((a) => a.addEventListener("click", () => { const t = document.getElementById(a.getAttribute("href").slice(1)); if (t?.tagName === "DETAILS") t.open = true; }));
+}
+
+// Menu do celular/tablet: os capítulos viram uma gaveta em tela cheia. É o MESMO <nav> do computador
+// (numeração, itens escondidos e aria-current continuam valendo), só apresentado de outro jeito.
+function bindMenu() {
+  const mast = $("#mast"), btn = $("#mast-menu"), nav = $("#mast-nav");
+  if (!btn || !nav) return;
+  const mq = matchMedia("(max-width: 900px)");
+  const fora = () => [$("main"), $("footer")].filter(Boolean);
+  const set = (open, { devolverFoco = false } = {}) => {
+    if (open && !mq.matches) open = false;
+    mast.classList.toggle("is-open", open);
+    btn.setAttribute("aria-expanded", String(open));
+    btn.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+    document.documentElement.classList.toggle("menu-open", open);
+    fora().forEach((el) => { el.inert = open; });
+    if (open) $$("a", nav).find((a) => !a.closest("[hidden]"))?.focus();
+    else if (devolverFoco) btn.focus();
+  };
+  btn.addEventListener("click", () => set(!mast.classList.contains("is-open"), { devolverFoco: true }));
+  nav.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
+  mast.addEventListener("keydown", (e) => {
+    if (!mast.classList.contains("is-open")) return;
+    if (e.key === "Escape") { e.preventDefault(); set(false, { devolverFoco: true }); return; }
+    if (e.key !== "Tab") return;
+    const itens = [$(".mast-brand"), $("#mast-product"), btn, ...$$("a", nav).filter((a) => !a.closest("[hidden]"))].filter((el) => el && el.getClientRects().length);
+    const i = itens.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); itens[itens.length - 1].focus(); }
+    else if (!e.shiftKey && i === itens.length - 1) { e.preventDefault(); itens[0].focus(); }
+  });
+  mq.addEventListener("change", () => set(false));
+}
+
+// Tabelas largas viram cartões empilhados no celular (o CSS só age em telas estreitas): cada célula ganha o
+// nome da sua coluna em data-label. O conteúdo é o mesmo; nada é escondido nem calculado aqui.
+function rotularTabelas(raiz = document) {
+  $$("table.an-table, table.fresh", raiz).forEach((t) => {
+    if (t.classList.contains("an-stack") && !t.dataset.rotulada) { t.dataset.rotulada = "proprio"; return; }
+    if (t.dataset.rotulada === "proprio" || t.dataset.rotulada === String(t.rows.length)) return;
+    const cab = $$("thead th", t).map((th) => th.textContent.trim());
+    $$("tbody tr", t).forEach((tr) => {
+      [...tr.cells].forEach((c, i) => { if (c.tagName === "TD" && cab[i]) c.dataset.label = cab[i]; });
+    });
+    t.classList.add("an-stack");
+    t.dataset.rotulada = String(t.rows.length);
+  });
+}
+function bindTabelas() {
+  rotularTabelas();
+  let agendado = false;
+  const obs = new MutationObserver(() => {
+    if (agendado) return;
+    agendado = true;
+    setTimeout(() => { agendado = false; rotularTabelas(); }, 60);
+  });
+  ["#analise", "#metodo"].forEach((id) => { const el = $(id); if (el) obs.observe(el, { childList: true, subtree: true }); });
+  const fr = $("#freshness"); if (fr) obs.observe(fr, { childList: true, subtree: true });
 }
 
 function bindScroll() {

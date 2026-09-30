@@ -33,7 +33,7 @@
       <svg class="mast-symbol" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8 A24 24 0 1 1 12 44" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round"/><line x1="12" y1="44" x2="21" y2="50" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>
       <span>Custava quanto<b>?</b></span>
     </a>
-    <nav class="mast-nav" aria-label="Capítulos">
+    <nav class="mast-nav" id="mast-nav" aria-label="Capítulos">
       <ol>
         <li><a href="#indice" data-ch="indice"><i>01</i>Índice</a></li>
         <li><a href="#preco" data-ch="preco"><i>02</i>Preço</a></li>
@@ -52,6 +52,7 @@
       <span class="mp-name" id="mast-product-name">—</span>
       <span class="mp-delta" id="mast-product-delta"></span>
     </a>
+    <button type="button" class="mast-menu" id="mast-menu" aria-expanded="false" aria-controls="mast-nav" aria-label="Abrir menu"><span class="mast-menu-ico" aria-hidden="true"></span><span class="mast-menu-txt">Menu</span></button>
   </div>
   <div class="mast-progress" aria-hidden="true"><span id="progress"></span></div>
 </header>

@@ -113,12 +113,12 @@ function linhaDim(d) {
   if (d.tipo !== "A") return `<span class="an-min-res">descritos, sem direção definida</span><span class="an-min-leit">fora da síntese</span>`;
   if (r.por_serie) {
     const nomes = { DESOCUPACAO: "desocupação, média", SUBUTILIZACAO: "subutilização, média", RENDIMENTO: "rendimento real, variação" };
-    const linhas = r.por_serie.map((l) => `<span class="an-min-line">${nomes[l.id] || esc(l.nome)} ${tag("Bolsonaro")} <b>${fmtValor(l.id, l.Bolsonaro)}</b> · ${tag("Lula")} <b>${fmtValor(l.id, l.Lula)}</b></span>`).join("");
+    const linhas = r.por_serie.map((l) => `<span class="an-min-line"><span class="an-pair">${nomes[l.id] || esc(l.nome)}</span> <span class="an-pair">${tag("Bolsonaro")} <b>${fmtValor(l.id, l.Bolsonaro)}</b></span><span class="an-pair">${tag("Lula")} <b>${fmtValor(l.id, l.Lula)}</b></span></span>`).join("");
     return `<span class="an-min-res an-min-multi">${linhas}</span><span class="an-min-leit">${chipLado(r.leitura)}<small>${r.votos.lula} de ${r.por_serie.length} séries pelo período Lula</small></span>`;
   }
   const pb = r.por_periodo.Bolsonaro, pl = r.por_periodo.Lula;
   const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação mediana do poder de compra", atividade: "crescimento médio anual" }[d.id] || "mediana";
-  return `<span class="an-min-res">${unidade} ${tag("Bolsonaro")} <b>${valDim(r, pb.mediana_valor)}</b> · ${tag("Lula")} <b>${valDim(r, pl.mediana_valor)}</b></span>
+  return `<span class="an-min-res"><span class="an-pair">${unidade}</span> <span class="an-pair">${tag("Bolsonaro")} <b>${valDim(r, pb.mediana_valor)}</b></span><span class="an-pair">${tag("Lula")} <b>${valDim(r, pl.mediana_valor)}</b></span></span>
     <span class="an-min-leit">${chipLado(r.leitura)}</span>`;
 }
 function renderMinuto() {
@@ -338,6 +338,9 @@ function cartaoEvento(e, k, id) {
     </div></li>`;
 }
 
+// No celular só os 3 primeiros eventos de cada dimensão ficam abertos; o botão mostra o resto (no computador o botão some e a lista é inteira).
+const EV_VISIVEIS = 3;
+const evAbertos = new Set();
 function blocoContexto(dimId) {
   const ids = (CTX_SERIES[dimId] || []).filter((id) => ind(id) && !ind(id).excluido);
   if (!ids.length) return "";
@@ -351,7 +354,8 @@ function blocoContexto(dimId) {
     <p class="an-ctx-lead">O que estava acontecendo em torno dos movimentos desta série. Os eventos aparecem pela data em que ocorreram, não por terem causado a mudança.</p>
     ${botoes}
     <figure class="an-ctx-fig">${graficoContexto(sel, evs)}<figcaption class="mono">${esc(meta(sel).nome)} · ${esc(meta(sel).unidade)}${meta(sel).trimestre_movel ? " · trimestre móvel, no mês em que termina" : ""} · fonte: ${esc(meta(sel).fonte)}</figcaption></figure>
-    <ol class="an-ev-list">${evs.map((e, k) => cartaoEvento(e, k, sel)).join("")}</ol>
+    <ol class="an-ev-list${evAbertos.has(dimId) ? " is-open" : ""}" id="an-evl-${dimId}">${evs.map((e, k) => cartaoEvento(e, k, sel)).join("")}</ol>
+    ${evs.length > EV_VISIVEIS ? `<button type="button" class="an-ev-mais" data-dim="${dimId}" aria-expanded="${evAbertos.has(dimId)}" aria-controls="an-evl-${dimId}">${evAbertos.has(dimId) ? "Mostrar menos eventos" : `Mostrar os outros ${evs.length - EV_VISIVEIS} eventos (${EV_VISIVEIS + 1} a ${evs.length})`}</button>` : ""}
   </div>`;
 }
 
@@ -653,6 +657,14 @@ export async function initAnalise() {
   renderAuditoria();
   renderModo();
   $("#an-dims").addEventListener("click", (e) => {
+    const mais = e.target.closest(".an-ev-mais");
+    if (mais) {
+      const dim = mais.dataset.dim;
+      if (evAbertos.has(dim)) evAbertos.delete(dim); else evAbertos.add(dim);
+      $(`#an-ctx-${dim}`).outerHTML = blocoContexto(dim);
+      $(`#an-ctx-${dim} .an-ev-mais`)?.focus();
+      return;
+    }
     const b = e.target.closest(".an-ctx-btn");
     if (!b) return;
     ctxSel[b.dataset.dim] = b.dataset.ind;
