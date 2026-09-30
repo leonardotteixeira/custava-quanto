@@ -2,7 +2,7 @@
 
 Última atualização: 28/09/2026
 Status: **CURRENT** — descreve o que o código calcula hoje. Metodologia da
-Análise: **v1.1** (arquivo congelado em `data/processed/analysis_methodology.json`).
+Análise: **v1.2** (arquivo congelado em `data/processed/analysis_methodology.json`).
 
 Este texto é para quem lê, não para quem programa. Onde há fórmula, ela é a que o
 código usa (arquivo indicado). Fontes, frequências e limitações de cada série
@@ -140,7 +140,7 @@ Compara-se a **mesma posição no mandato**, não o mesmo calendário: os primei
 meses de cada período correspondem a momentos diferentes do ciclo econômico
 mundial.
 
-## Análise: como a leitura é construída (metodologia v1.1)
+## Análise: como a leitura é construída (metodologia v1.2)
 
 A **comparação principal** é a dos períodos inteiros ("período completo disponível":
 Bolsonaro jan/2019–dez/2022; Lula jan/2023–último dado, em curso). A comparação por
@@ -159,6 +159,7 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 | Custo de vida | A | Em qual período os preços tiveram menor pressão real sobre o consumidor? | 11 (5 combustíveis, 6 alimentos) — variação **real** |
 | Inflação | A | Em qual período o IPCA em 12 meses foi, em média, menor? | IPCA |
 | Renda e poder de compra | A | Em qual período o salário mínimo ganhou mais poder de compra? | Salário mínimo real; litros de gasolina por salário mínimo (+ salário nominal, tipo C) |
+| Mercado de trabalho | A | Em qual período o mercado de trabalho mostrou menor desocupação, menor subutilização da força de trabalho e maior rendimento real do trabalho? | Taxa de desocupação; taxa composta de subutilização; rendimento médio real habitual (PNAD Contínua) — cada série na sua unidade |
 | Atividade econômica | A | Em qual período o PIB apresentou maior crescimento? | PIB (média do crescimento real anual) |
 | Mercados | B | Como os indicadores financeiros evoluíram? | Dólar, Selic, Ibovespa |
 
@@ -166,7 +167,7 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 
 - **Tipo A — direção definida.** A metodologia diz de antemão qual sentido é
   o de menor pressão ou de mais atividade: preço real ou inflação **menor**; poder de
-  compra ou crescimento **maior**. 15 séries.
+  compra, rendimento do trabalho ou crescimento **maior**. 18 séries.
 - **Tipo B — depende do contexto.** Só descrito (início, fim, média, mínimo,
   máximo). Nunca recebe leitura de direção nem entra na síntese: Dólar, Selic,
   Ibovespa. Um dólar mais baixo barateia importações e prejudica exportadores; juro
@@ -193,6 +194,21 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 6. **Síntese**: soma dos sentidos ponderada por pesos. O sentido, não a
    magnitude, porque as dimensões têm unidades diferentes.
 
+**Regra da métrica** (fixada antes de calcular a dimensão Mercado de trabalho, vale para
+todas as séries): *taxas* (IPCA, desocupação, subutilização) entram pela **média da janela**,
+que mede a pressão ao longo do período e não a trajetória entre dois pontos; *valores em R$
+ou índices* (salário mínimo real, rendimento médio real, preços reais) entram pela **variação
+percentual do início ao fim da janela**.
+
+**Dimensões de unidades diferentes (agregação "por série").** Mercado de trabalho mistura %, %
+e R$; uma mediana entre elas seria misturar unidades. Cada série é comparada na sua métrica e
+na sua tolerância e **vota** +1 (período Lula), −1 (período Bolsonaro) ou 0 (praticamente
+iguais); a dimensão segue o sinal da soma dos votos. Continua valendo **um único sentido** na
+síntese e um único peso por dimensão, então ter três séries não dá mais peso ao mercado de
+trabalho do que a uma dimensão com uma série só. A página mostra também, só como transparência,
+o que aconteceria com a métrica alternativa (variação do início ao fim para as taxas; média da
+janela para o rendimento): ela não entra na leitura.
+
 ### Nível de evidência
 
 Cada dimensão recebe um rótulo, calculado por regra (não é opinião):
@@ -209,19 +225,20 @@ O rótulo descreve a qualidade da medida, não o desempenho de nenhum governo.
 
 ### Sensibilidade aos pesos
 
-Cinco cenários definidos antes do cálculo, sobre as quatro dimensões Tipo A:
+Seis cenários definidos antes do cálculo, sobre as cinco dimensões Tipo A:
 
-| Cenário | Custo de vida | Inflação | Renda | Atividade |
-|---|---|---|---|---|
-| Pesos iguais (padrão) | 25 | 25 | 25 | 25 |
-| Ênfase em custo de vida | 40 | 20 | 20 | 20 |
-| Ênfase em inflação | 20 | 40 | 20 | 20 |
-| Ênfase em renda e poder de compra | 20 | 20 | 40 | 20 |
-| Ênfase em atividade econômica | 20 | 20 | 20 | 40 |
+| Cenário | Custo de vida | Inflação | Renda | Trabalho | Atividade |
+|---|---|---|---|---|---|
+| Pesos iguais (padrão) | 20 | 20 | 20 | 20 | 20 |
+| Ênfase em custo de vida | 40 | 15 | 15 | 15 | 15 |
+| Ênfase em inflação | 15 | 40 | 15 | 15 | 15 |
+| Ênfase em renda e poder de compra | 15 | 15 | 40 | 15 | 15 |
+| Ênfase em mercado de trabalho | 15 | 15 | 15 | 40 | 15 |
+| Ênfase em atividade econômica | 15 | 15 | 15 | 15 | 40 |
 
 O padrão é igual porque não há razão a priori para privilegiar uma dimensão; qualquer
 outra escolha é juízo de valor. Além dos cenários, o script refaz a síntese para
-**todas as combinações de pesos de 5 em 5 pontos que somam 100** (1.771 combinações)
+**todas as combinações de pesos de 5 em 5 pontos que somam 100** (10.626 combinações com cinco dimensões)
 e informa em quantas a síntese aponta para cada período e em quantas empata. Na
 página, o leitor move uma barra por dimensão ("Como diferentes prioridades mudam a
 leitura?"); a única conta feita no navegador é a soma ponderada dos sentidos já
@@ -238,7 +255,7 @@ melhor.
   (índice de preço encadeado, não R$/kg) têm medianas separadas no gráfico, para que
   o índice não seja lido como preço em reais.
 - **Maiores movimentos**: as maiores altas e quedas reais entre as séries de custo de
-  vida e poder de compra, e a maior diferença entre os períodos. Entram só séries em
+  vida, poder de compra e rendimento do trabalho, e a maior diferença entre os períodos. Entram só séries em
   variação real (mesma unidade de leitura).
 - **PIB**: barras anuais de 2019 ao último ano fechado; os trimestres do ano em curso
   aparecem à parte, com três medidas rotuladas (contra o mesmo trimestre do ano
@@ -252,9 +269,52 @@ conclusão digitada à mão, e o gerador não usa "favorável" nem "melhor".
 
 ### O que a Análise não faz
 
-Não dá nota, não escolhe vencedor, não conclui causa, e não inclui emprego, contas
-públicas, investimento nem desigualdade (não há série no projeto). O período Lula
-está em curso: toda leitura sobre ele é parcial.
+Não dá nota, não escolhe vencedor, não conclui causa, e não inclui contas públicas,
+investimento, desigualdade de renda nem informalidade e qualidade do emprego (não há série no
+projeto). Não avalia "tudo" sobre um governo: só os indicadores e a metodologia implementados.
+O período Lula está em curso: toda leitura sobre ele é parcial.
+
+### Mercado de trabalho (PNAD Contínua)
+
+- **Fonte:** IBGE, PNAD Contínua, pela API do SIDRA. Taxa de desocupação: tabela 6381,
+  variável 4099. Taxa composta de subutilização da força de trabalho: tabela 6441, variável
+  4118. Rendimento médio mensal real habitual, de todos os trabalhos, das pessoas ocupadas com
+  rendimento de trabalho: tabela 6390, variável 5933. Brasil, pessoas de 14 anos ou mais.
+- **Frequência:** trimestre móvel. O IBGE publica um resultado por mês, que é a média dos três
+  meses que terminam nele; cada ponto é identificado pelo mês em que termina (por exemplo,
+  "jun-jul-ago 2026" é o ponto de ago/2026). A frequência oficial é preservada: nada é
+  convertido em mensal, estimado, interpolado nem repetido de um mês para outro.
+- **Janela:** só entram trimestres **inteiros** dentro de um período. Bolsonaro: trimestres
+  terminados de mar/2019 a dez/2022. Lula: terminados a partir de mar/2023 até o último
+  publicado. Os que misturam meses dos dois períodos (terminados em jan e fev de 2019 e de
+  2023) ficam de fora da comparação, mas aparecem no gráfico como dados oficiais. Na comparação
+  por igual duração vale o mesmo, do mês 3 ao mês 44 de cada mandato.
+- **Último dado:** vem da própria fonte (registrado em `pnad_status.json`); o projeto não força
+  o mês mais recente. Em 30/09/2026 as três séries iam até jun-jul-ago 2026.
+- **Rendimento real:** já deflacionado pelo IBGE (IPCA, a preços do mês do meio do trimestre
+  mais recente divulgado). O projeto **não** aplica um segundo deflator. Como o IBGE refaz o
+  deflator a cada divulgação, os valores em reais de toda a série mudam de uma divulgação para
+  a outra; por isso só se usam variações dentro de uma mesma coleta dos dados.
+- **Limitações:** a desocupação só conta quem procurou trabalho na semana; a subutilização é
+  mais ampla e correlacionada com ela (duas das três séries medem quase o mesmo fenômeno; por
+  isso a leitura "sem uma série" também é informada); o rendimento é uma média de quem tem
+  rendimento de trabalho e muda com a composição de quem está ocupado; a coleta presencial foi
+  suspensa em março de 2020 (IBGE); não há informalidade, desigualdade nem recortes regionais.
+- **Descritivo, não causal:** o texto diz que a taxa "variou" ou "foi menor" em um período, nunca
+  que um governo a causou.
+
+### Contexto histórico (notícias e eventos)
+
+Camada de contexto, fora de qualquer cálculo. Marcos de `data/news/marcos.json` (dimensão,
+indicadores, tipo, relevância e resumo curto escrito pelo projeto) são aplicados por
+`scripts/build_news.py` às matérias verificadas e gravados em `noticias.json` no campo `marco`.
+Regras: relevância (marcos com efeito econômico amplo e documentado que se sobrepõem a
+movimentos visíveis); fontes (oficiais, Agência Brasil e veículos reconhecidos, nunca blogs,
+SEO, redes sociais ou agregadores sem fonte); datas (a de publicação na fonte, conferida na
+página); ligação com indicadores (dimensão e indicadores listados por item; o gráfico marca a
+data e a lista mostra o valor da série no mês do evento); resumos curtos, sem cópia de trechos;
+afirmações contestadas atribuídas a quem as fez. **Proximidade no tempo não é evidência de
+causalidade:** o script recusa resumos com "causou", "provocou" ou "foi responsável por".
 
 ## Limitações gerais
 

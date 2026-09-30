@@ -1,6 +1,6 @@
 # Roadmap
 
-Última atualização: 28/09/2026
+Última atualização: 30/09/2026
 Status: **CURRENT** — descreve o estado real do projeto; o plano de design original
 fica preservado, com status, em [../DESIGN_EVOLUTION_PLAN.md](../DESIGN_EVOLUTION_PLAN.md).
 Um item só está em FEITO se existe no repositório e foi verificado funcionando.
@@ -23,20 +23,24 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
   2023–2025).
 
 **Metodologia**
-- Análise entre períodos com metodologia congelada (v1.1), hash, comparação principal
+- Análise entre períodos com metodologia congelada (v1.2), hash, comparação principal
   por períodos inteiros e secundária por igual duração, direção e tipo por indicador,
-  mediana por dimensão, tolerância, nível de evidência, sensibilidade (cinco cenários,
-  1.771 combinações e barras de prioridade), robustez sem uma série, PIB anual e
+  mediana por dimensão, tolerância, nível de evidência, sensibilidade (seis cenários,
+  10.626 combinações e barras de prioridade), robustez sem uma série, PIB anual e
   trimestral separados e testes (`test_analise.py`).
 - Auditoria da análise ([AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md))
   e auditoria de fontes de preço de alimentos
   ([AUDITORIA_PRECOS_ALIMENTOS.md](AUDITORIA_PRECOS_ALIMENTOS.md)).
 
 **Editorial e produto**
-- Notícias verificadas contra a página de origem (111 itens), com foto quando
+- Arquivo reformulado como biblioteca de fontes pesquisável (busca, filtros de ano, indicador, fonte
+  e dimensão, ordenação, ligação com o Contexto), sem apagar nenhuma fonte.
+- Mercado de trabalho (PNAD Contínua) como nova dimensão, com contexto histórico: 63 marcos
+  verificados na fonte na linha do tempo do Contexto e nas seções da Análise.
+- Notícias verificadas contra a página de origem (142 itens), com foto quando
   existe e crédito; regra "contexto, não causa".
 - Site em capítulos: Índice, História, Preço, Bolso, Contexto, Máquina do tempo,
-  Períodos, Arquivo, Análise, Método, Apoie.
+  Períodos, Análise, Arquivo, Método, Apoie.
 - Ponto de partida único (dez/2022) no Índice.
 - Retratos dos presidentes nítidos (`srcset` de 140/210/280 px).
 
@@ -72,15 +76,15 @@ acessibilidade, (7) desempenho, (8) implantação e manutenção.
 
 - Tornar `periodo_do_governo()` seguro para séries que começam antes de 2019 (M3).
 - `requirements.txt` completo (Pillow, numpy) e versão de Python declarada.
-- Indicadores hoje fora do escopo: emprego, contas públicas, investimento,
-  desigualdade — só entram se houver fonte pública confiável e série comparável.
+- Indicadores hoje fora do escopo: contas públicas, investimento, desigualdade,
+  informalidade e qualidade do emprego — só entram se houver fonte pública confiável e série comparável.
 - PIB trimestral na comparação por igual duração da Análise (hoje usa só anos
   fechados: 2019–2021 × 2023–2025; os trimestres de 2026 aparecem à parte).
 - Filtro regional para combustíveis (os dados já têm quebra por região).
 - Mais cobertura de notícias para PIB (2022–2024) e links para as fontes do
   contexto externo da Análise (L4, L5).
 - Retratos maiores em Períodos (hoje 56×70 px).
-- Licença do repositório e configuração de deploy (não existem hoje).
+- Licença do repositório. Deploy: configuração no repositório pronta; falta ligar Pages, DNS e HTTPS (DEPLOY.md).
 - Servir `dashboard_data.json` em partes (hoje ~960 KB de uma vez).
 
 ## EXPERIMENTAL / OPCIONAL

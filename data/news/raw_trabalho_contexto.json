@@ -1,0 +1,390 @@
+[
+ {
+  "titulo": "Congresso promulga a reforma da Previdência",
+  "veiculo": "Agência Brasil",
+  "data": "2019-11-12",
+  "url": "https://agenciabrasil.ebc.com.br/congresso-promulga-reforma-da-previdencia-0",
+  "resumo": "O Congresso Nacional promulgou a reforma da Previdência Social.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Taxa de desemprego cai no país e fecha 2019 em 11,9%",
+  "veiculo": "Agência Brasil",
+  "data": "2020-01-31",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-01/taxa-de-desemprego-no-pais-fecha-2019-em-119",
+  "resumo": "A taxa média de desocupação de 2019 foi de 11,9%, abaixo dos 12,3% de 2018, segundo a PNAD Contínua; o número de empregados sem carteira cresceu 4% na média do ano.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Organização Mundial da Saúde declara pandemia de coronavírus",
+  "veiculo": "Agência Brasil",
+  "data": "2020-03-11",
+  "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2020-03/organizacao-mundial-da-saude-declara-pandemia-de-coronavirus",
+  "resumo": "A Organização Mundial da Saúde elevou o status da contaminação pelo novo coronavírus a pandemia.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "IBGE suspende coleta presencial de índices de preços e Pnad contínua",
+  "veiculo": "Agência Brasil",
+  "data": "2020-03-18",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-03/ibge-suspende-coleta-presencial-de-indices-de-precos-e-pnad-continua",
+  "resumo": "O IBGE suspendeu a coleta presencial de preços e da PNAD Contínua, seguindo orientação do Ministério da Saúde, e passou a estudar alternativas sem visita aos domicílios. É um cuidado para ler as séries de 2020.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "IPCA"
+  ]
+ },
+ {
+  "titulo": "Bolsonaro sanciona lei da renda básica emergencial",
+  "veiculo": "Agência Brasil",
+  "data": "2020-04-01",
+  "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2020-04/bolsonaro-sanciona-lei-da-renda-basica-emergencial",
+  "resumo": "Foi sancionada a lei que criou a renda básica emergencial de R$ 600, por três meses, para trabalhadores informais, autônomos e pessoas sem renda fixa durante a pandemia.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Publicada lei que cria o programa de manutenção do emprego e renda",
+  "veiculo": "Agência Brasil",
+  "data": "2020-07-07",
+  "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2020-07/Publicada-lei-que-cria-o-programa-de-manutencao-do-emprego-e-renda",
+  "resumo": "A Lei 14.020/2020 permitiu suspender contratos por até 60 dias e reduzir salário e jornada por até 90 dias na pandemia; até 26 de junho, segundo a reportagem, 11,6 milhões de acordos haviam sido celebrados.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho"
+  ]
+ },
+ {
+  "titulo": "Pnad: desemprego chega a 13,3% no segundo trimestre",
+  "veiculo": "Agência Brasil",
+  "data": "2020-08-06",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-08/pnad-desemprego-vai-133-no-segundo-trimestre",
+  "resumo": "A taxa de desocupação foi de 13,3% no 2º trimestre de 2020, 1,1 ponto percentual acima do 1º; a população ocupada, de 83,3 milhões, foi a menor da série iniciada em 2012.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Desemprego registrou taxa média de 13,5% em 2020",
+  "veiculo": "Agência Brasil",
+  "data": "2021-03-10",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/desemprego-registrou-taxa-media-de-135-em-2020",
+  "resumo": "A taxa média de desocupação de 2020 foi de 13,5% (11,9% em 2019), a maior da série iniciada em 2012; a população ocupada caiu 7,3 milhões e o nível de ocupação ficou em 49,4%.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Percentual de desocupados supera 14%, diz IBGE",
+  "veiculo": "Agência Brasil",
+  "data": "2021-05-27",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-05/percentual-de-desocupados-supera-14-diz-IBGE",
+  "resumo": "A taxa de desocupação foi de 14,7% no 1º trimestre de 2021, a maior da série iniciada em 2012, com 14,8 milhões de pessoas desocupadas, segundo o IBGE.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Aneel cria nova bandeira tarifária, e conta de luz fica mais cara",
+  "veiculo": "Agência Brasil",
+  "data": "2021-08-31",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-08/aneel-cria-nova-bandeira-tarifaria-e-conta-de-luz-fica-mais-cara",
+  "resumo": "A Aneel criou a bandeira tarifária de escassez hídrica, com cobrança extra de R$ 14,20 a cada 100 kWh a partir de 1º de setembro de 2021.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Congresso promulga primeira parte da PEC dos Precatórios",
+  "veiculo": "Agência Brasil",
+  "data": "2021-12-08",
+  "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2021-12/congresso-promulga-primeira-parte-da-pec-dos-precatorios",
+  "resumo": "O Congresso promulgou a Emenda Constitucional 113/2021, que, segundo a reportagem, abriu espaço fiscal de R$ 64,9 bilhões no Orçamento de 2022, parte usada para o Auxílio Brasil.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Ocupação aumenta no mercado de trabalho, mas rendimento cai, diz IBGE",
+  "veiculo": "Agência Brasil",
+  "data": "2021-12-28",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-12/ocupacao-aumenta-no-mercado-de-trabalho-mas-rendimento-cai-diz-ibge",
+  "resumo": "A população ocupada chegou a 94,0 milhões (+3,6% no trimestre); o rendimento real habitual recuou 4,6% no trimestre e 11,1% em um ano, para R$ 2.449, segundo o IBGE.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "RENDIMENTO"
+  ]
+ },
+ {
+  "titulo": "IBGE: desemprego no país cai para 11,1% no quarto trimestre",
+  "veiculo": "Agência Brasil",
+  "data": "2022-02-24",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-02/ibge-desemprego-no-pais-cai-para-111-no-quarto-trimestre",
+  "resumo": "A taxa de desocupação caiu para 11,1% no 4º trimestre de 2021; a média anual de 2021 foi de 13,2%, com 91,3 milhões de ocupados.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Guerra entre Rússia e Ucrânia pode impactar inflação e PIB no Brasil",
+  "veiculo": "Agência Brasil",
+  "data": "2022-02-27",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-02/guerra-entre-russia-e-ucrania-pode-impactar-inflacao-e-pib-no-brasil",
+  "resumo": "Reportagem de 27/2/2022, três dias após a invasão: o petróleo Brent encerrou a semana a US$ 105, o maior nível desde 2014, e a matéria aponta combustíveis, alimentos e câmbio como os canais de impacto no Brasil.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Presidente sanciona com vetos lei que previa compensações de ICMS",
+  "veiculo": "Agência Brasil",
+  "data": "2022-06-24",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/presidente-sanciona-com-vetos-lei-que-previa-compensacoes-de-icms",
+  "resumo": "Foi sancionada, com vetos, a lei que fixou teto ao ICMS sobre combustíveis, energia elétrica, comunicações e transportes coletivos; um dos vetos barrou a compensação financeira a estados e municípios.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto",
+   "combustiveis"
+  ]
+ },
+ {
+  "titulo": "IBGE: desemprego cai para 9,8%; rendimento fica estável",
+  "veiculo": "Agência Brasil",
+  "data": "2022-06-30",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/ibge-desemprego-cai-para-98-rendimento-fica-estavel",
+  "resumo": "A taxa de desocupação foi de 9,8% no trimestre encerrado em maio de 2022 (1,4 ponto percentual abaixo do trimestre anterior), com 97,5 milhões de ocupados e rendimento real habitual de R$ 2.613, estável.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Congresso promulga PEC que aumenta benefícios sociais até dezembro",
+  "veiculo": "Agência Brasil",
+  "data": "2022-07-14",
+  "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2022-07/congresso-promulga-pec-que-aumenta-beneficios-sociais-ate-dezembro",
+  "resumo": "O Congresso promulgou emenda que previa aumento de R$ 200 no Auxílio Brasil até 31 de dezembro e declarava “estado de emergência” por preços extraordinários do petróleo e derivados, permitindo benefícios em ano eleitoral.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Congresso promulga PEC da Transição",
+  "veiculo": "Agência Brasil",
+  "data": "2022-12-22",
+  "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2022-12/congresso-promulga-pec-da-transicao",
+  "resumo": "O Congresso promulgou a PEC da Transição, que, segundo a reportagem, liberou R$ 145 bilhões fora do teto de gastos (R$ 70 bilhões para o Auxílio Brasil de R$ 600 com R$ 150 por criança até 6 anos), com validade de um ano.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Taxa média de desocupação em 2022 ficou em 9,3%, diz IBGE",
+  "veiculo": "Agência Brasil",
+  "data": "2023-02-28",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-02/taxa-media-de-desocupacao-em-2022-ficou-em-93-diz-ibge",
+  "resumo": "A taxa média de desocupação caiu de 13,2% em 2021 para 9,3% em 2022; a população ocupada média chegou a 98 milhões, 7,4% acima de 2021.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Salário mínimo de R$ 1.320 entra em vigor nesta segunda",
+  "veiculo": "Agência Brasil",
+  "data": "2023-05-01",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-05/salario-minimo-de-r-1320-entra-em-vigor-nesta-segunda",
+  "resumo": "O salário mínimo passou de R$ 1.302 para R$ 1.320 em 1º de maio de 2023, segundo aumento do ano.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Veto a dispositivo do arcabouço facilitará acordos sobre precatórios",
+  "veiculo": "Agência Brasil",
+  "data": "2023-08-31",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-08/veto-dispositivo-do-arcabouco-facilitara-acordos-sobre-precatorios",
+  "resumo": "Ao sancionar a Lei Complementar 200, o novo arcabouço fiscal, o presidente vetou dois dispositivos, entre eles o que proibia a LDO de prever exclusões de gastos ao verificar as metas fiscais.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Congresso promulga emenda constitucional da reforma tributária",
+  "veiculo": "Agência Brasil",
+  "data": "2023-12-20",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-12/congresso-promulga-emenda-constitucional-da-reforma-tributaria",
+  "resumo": "O Congresso promulgou a Emenda Constitucional 132/2023, da reforma tributária sobre o consumo, após cerca de 30 anos de discussão.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Taxa de desemprego fica em 7,9%; índice é o menor em 10 anos",
+  "veiculo": "Agência Brasil",
+  "data": "2024-05-17",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-05/taxa-de-desemprego-fica-em-79-indice-e-o-menor-em-10-anos",
+  "resumo": "A taxa de desocupação foi de 7,9% no 1º trimestre de 2024, 0,9 ponto percentual abaixo do mesmo período de 2023 (8,8%) e a menor para o período em 10 anos.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "RS: organismos internacionais calculam danos de R$ 88,9 bi com chuvas",
+  "veiculo": "Agência Brasil",
+  "data": "2024-11-28",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-11/rs-organismos-internacionais-calculam-danos-de-r-889-bi-com-chuvas",
+  "resumo": "BID, Cepal e Banco Mundial estimaram em R$ 88,9 bilhões os danos das chuvas de abril e maio de 2024 no Rio Grande do Sul, 69% no setor produtivo.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Rendimento mensal do trabalhador bate recorde e chega a R$ 3.378",
+  "veiculo": "Agência Brasil",
+  "data": "2025-03-28",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-03/rendimento-mensal-do-trabalhador-bate-recorde-e-chega-r-3378",
+  "resumo": "O rendimento médio do trabalhador foi de R$ 3.378 no trimestre encerrado em fevereiro de 2025, o mais alto desde 2012; a taxa de desocupação foi de 6,8%.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "RENDIMENTO"
+  ]
+ },
+ {
+  "titulo": "Em carta a Lula, Trump anuncia tarifa de 50% a produtos brasileiros",
+  "veiculo": "Agência Brasil",
+  "data": "2025-07-09",
+  "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2025-07/em-carta-lula-trump-anuncia-tarifa-de-50-produtos-brasileiros",
+  "resumo": "O presidente dos EUA comunicou, em carta a Lula, tarifa de 50% sobre as exportações brasileiras a partir de 1º de agosto de 2025; ele citou como motivo o tratamento dado a Jair Bolsonaro e práticas comerciais que considera injustas (alegações dele, não estabelecidas pela reportagem).",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "Tarifaço sobre parte de exportações brasileiras entra em vigor hoje",
+  "veiculo": "Agência Brasil",
+  "data": "2025-08-06",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-08/tarifaco-sobre-parte-das-exportacoes-brasileiras-entra-em-vigor-hoje",
+  "resumo": "Entraram em vigor as tarifas de 50% sobre parte das exportações brasileiras aos EUA (café, frutas e carnes, entre outros); suco de laranja, combustíveis, minérios, fertilizantes e aeronaves civis ficaram de fora, e o conjunto atinge 35,9% das mercadorias enviadas ao mercado americano, cerca de 4% das exportações totais.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "contexto"
+  ]
+ },
+ {
+  "titulo": "IBGE: taxa de desemprego cai para 5,8%, a menor já registrada",
+  "veiculo": "Agência Brasil",
+  "data": "2025-07-31",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-07/ibge-taxa-de-desemprego-cai-para-5,8%25-a-menor-ja-registrada",
+  "resumo": "A taxa de desocupação foi de 5,8% no 2º trimestre de 2025, a menor da série iniciada em 2012; o rendimento médio chegou a R$ 3.477, recorde, e as pessoas com carteira assinada, a 39 milhões.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Distrito Federal e 15 estados têm rendimento do trabalhador recorde",
+  "veiculo": "Agência Brasil",
+  "data": "2026-05-14",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/distrito-federal-e-15-estados-tem-rendimento-do-trabalhador-recorde",
+  "resumo": "No 1º trimestre de 2026, o Distrito Federal e 15 estados tiveram rendimento médio recorde; a média nacional foi de R$ 3.722 e a taxa de desocupação, de 6,1%, a menor para o período.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "RENDIMENTO"
+  ]
+ },
+ {
+  "titulo": "Desemprego no 2º trimestre é 5,4%, o menor já registrado no período",
+  "veiculo": "Agência Brasil",
+  "data": "2026-07-30",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-07/desemprego-no-2o-trimestre-e-54-o-menor-ja-registrado-no-periodo",
+  "resumo": "A taxa de desocupação foi de 5,4% no 2º trimestre de 2026 (6,1% no 1º e 5,8% um ano antes); 103,1 milhões de pessoas ocupadas, o maior número da série, com rendimento médio de R$ 3.738.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ },
+ {
+  "titulo": "Taxa de desemprego cai para 5,3%, a menor para o trimestre até agosto",
+  "veiculo": "Agência Brasil",
+  "data": "2026-09-29",
+  "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/taxa-de-desemprego-cai-para-53-menor-para-o-trimestre-ate-agosto",
+  "resumo": "A taxa de desocupação foi de 5,3% no trimestre encerrado em agosto de 2026, a menor para o período desde 2012; 103,5 milhões de pessoas ocupadas e 39,5 milhões de empregados do setor privado com carteira assinada.",
+  "imagem": null,
+  "credito_imagem": null,
+  "produtos": [
+   "trabalho",
+   "DESOCUPACAO"
+  ]
+ }
+]

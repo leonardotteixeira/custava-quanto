@@ -861,6 +861,49 @@ def _componentes_pib() -> list[dict]:
     return sorted(saida, key=lambda c: ordem.index(c["codigo"]) if c["codigo"] in ordem else 99)
 
 
+# ------------------------------------------------------------------ mercado de trabalho (PNAD Contínua)
+PNAD_INDICADORES = {
+    "DESOCUPACAO": "taxa_desocupacao",
+    "SUBUTILIZACAO": "taxa_subutilizacao",
+    "RENDIMENTO": "rendimento_medio_real",
+}
+
+
+def _periodo_trimestre_movel(fim: pd.Timestamp) -> str | None:
+    """Período de governo de um trimestre móvel identificado pelo mês em que TERMINA.
+
+    Só recebe período o trimestre INTEIRO dentro de um mandato: Bolsonaro de jan/2019 a dez/2022
+    (trimestres terminados de mar/2019 a dez/2022); Lula a partir de jan/2023 (terminados a
+    partir de mar/2023). Os trimestres que misturam meses dos dois períodos (terminados em
+    jan/fev de 2019 e de 2023) ficam sem período e não entram na comparação: nada é rateado."""
+    inicio = fim - pd.DateOffset(months=2)
+    if inicio >= pd.Timestamp("2019-01-01") and fim <= pd.Timestamp("2022-12-01"):
+        return "Bolsonaro"
+    if inicio >= pd.Timestamp(PERIODO_CORTE):
+        return "Lula"
+    return None
+
+
+def montar_mercado_trabalho() -> dict | None:
+    """Séries oficiais da PNAD Contínua, como o IBGE as publica. Nada é preenchido: um trimestre
+    sem valor publicado não tem linha na série."""
+    caminho = DATA_PROCESSED / "pnad_mercado_trabalho.csv"
+    status = _carregar_json_opcional(DATA_PROCESSED / "pnad_status.json")
+    if not caminho.exists() or not status:
+        logger.warning("pnad_mercado_trabalho.csv ausente: dimensão Mercado de trabalho fica indisponível (rode download_pnad.py)")
+        return None
+    df = pd.read_csv(caminho, parse_dates=["ano_mes"])
+    produtos = {}
+    for cod, campo in PNAD_INDICADORES.items():
+        sub = df.dropna(subset=[campo])
+        serie = [
+            {"ano_mes": _fmt_mes(r.ano_mes), "periodo": _periodo_trimestre_movel(r.ano_mes), "rotulo": r.rotulo, campo: float(getattr(r, campo))}
+            for r in sub.itertuples()
+        ]
+        produtos[cod] = {"campo": campo, "meta": status["series"][campo], "serie_mensal": serie}
+    return {"coletado_em": status["coletado_em"], "nota": status["nota"], "produtos": produtos}
+
+
 def montar_fotografia_mensal(produtos: dict) -> dict:
     """"Como estava o Brasil?" — fotografia cross-indicador por mês, montada
     só a partir de campos que os produtos já calcularam (nenhuma conta
@@ -980,6 +1023,7 @@ def main() -> None:
         "periodo_corte": "2023-01-01",
         "produtos": produtos,
         "fotografia_mensal": montar_fotografia_mensal(produtos),
+        "mercado_trabalho": montar_mercado_trabalho(),
         "presidentes": {
             "Bolsonaro": {
                 "nome": "Jair Bolsonaro",

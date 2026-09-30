@@ -1,6 +1,6 @@
 # Pipeline de dados
 
-Última atualização: 28/09/2026
+Última atualização: 30/09/2026
 Status: **CURRENT** — descreve o que o código faz hoje. Verificado lendo os
 scripts em `scripts/` e os arquivos em `data/processed/`.
 
@@ -43,11 +43,12 @@ dashboard/  (HTML + CSS + módulos JS; lê os 4 JSON acima via fetch)
 | 2 | `download_ibge.py` | sim | não |
 | 3 | `download_mercados.py` | não | **sim** |
 | 4 | `download_salario_minimo.py` | não | não |
-| 5 | `download_brent.py` | não | não |
-| 6 | `build_dataset.py` | sim | **sim** (aborta se falhar) |
-| 7 | `build_dashboard_data.py` | não | **sim** (aborta se falhar) |
-| 8 | `build_news.py` | não | não |
-| 9 | `build_analise.py`, depois `test_analise.py` | não | não |
+| 5 | `download_pnad.py` (mercado de trabalho, IBGE/SIDRA) | não | não |
+| 6 | `download_brent.py` | não | não |
+| 7 | `build_dataset.py` | sim | **sim** (aborta se falhar) |
+| 8 | `build_dashboard_data.py` | não | **sim** (aborta se falhar) |
+| 9 | `build_news.py` | não | não |
+| 10 | `build_analise.py`, depois `test_analise.py` | não | não |
 
 **Rodam só à mão (não estão no `update_data.py`):**
 
@@ -91,6 +92,9 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 | PIB (trimestral) | IBGE | tabela 5932 | trimestral | % | `variacao_interanual`, `variacao_dessazonalizada`, `acumulado_4tri`, `acumulado_ano` | Quatro leituras separadas, nunca misturadas | idem | PROD |
 | PIB nominal e per capita | IBGE — Contas Nacionais Anuais + Trimestrais | tabelas 6784 (anual) e 1846 (trimestral) | anual | R$ | `pib_nominal_bilhoes`, `pib_per_capita_rs` | Anos que a 6784 ainda não fechou usam a **soma dos quatro trimestres** (marcado em `pib_nominal_fonte`) | per capita só vem da 6784 (até 2023) | PROD |
 | Componentes do PIB | IBGE | tabela 5932, setores 90687, 90691, 90696, 93404–93408 (`download_pib_componentes.py`) | anual (resultado do 4º trimestre) | % | `componentes[].serie_anual` | idem PIB | idem | PROD |
+| Taxa de desocupação | IBGE — PNAD Contínua | SIDRA tabela 6381, variável 4099 (`download_pnad.py`) | trimestre móvel (1 resultado por mês, no mês em que termina) | % | `taxa_desocupacao` | Nenhum: valor como o IBGE publica; nada preenchido | Só conta quem procurou trabalho; amostra com margem de erro | PROD |
+| Taxa composta de subutilização | IBGE — PNAD Contínua | SIDRA tabela 6441, variável 4118 | idem | % | `taxa_subutilizacao` | idem | Mais ampla que a desocupação; correlacionada com ela | PROD |
+| Rendimento médio real habitual | IBGE — PNAD Contínua | SIDRA tabela 6390, variável 5933 | idem | R$ mensais (reais do IBGE) | `rendimento_medio_real` | Já deflacionado pelo IBGE (IPCA, preços do mês do meio do trimestre mais recente); o projeto não aplica outro deflator. Só variação dentro da mesma coleta | O IBGE refaz o deflator a cada divulgação; média de quem tem rendimento de trabalho | PROD |
 | Notícias e contexto | Veículos de imprensa e IBGE (curadoria manual) | `data/news/raw_*.json` → `build_news.py` | eventual | — | `noticias.json` | Verificação automática título/data contra a página | Ver "Notícias" abaixo | PROD |
 | Fotos dos presidentes | Wikimedia Commons (CC BY 2.0) | `dashboard/assets/presidents/originais/` | — | — | — | `process_portraits.py` | Crédito no rodapé de Períodos | PROD |
 
@@ -111,7 +115,8 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 | `combustiveis_final.csv`, `cesta_basica_final.csv`, `resumo_periodos_*.csv` | `build_dataset.py` | `build_dashboard_data.py` |
 | `dashboard_data.json` | `build_dashboard_data.py` | `dashboard/js/app.js` |
 | `analysis_methodology.json`, `analysis_results.json` | `build_analise.py` | `dashboard/js/analise.js`, `test_analise.py` |
-| `noticias.json` | `build_news.py` | `dashboard/js/app.js` |
+| `pnad_mercado_trabalho.csv`, `pnad_status.json` | `download_pnad.py` | `montar_mercado_trabalho()` (bloco `mercado_trabalho` do `dashboard_data.json`) |
+| `noticias.json` | `build_news.py` | `dashboard/js/app.js`, `analise.js`, `linhadotempo.js` |
 
 `data/raw/` (cache dos arquivos baixados, ~1 GB da ANP) não é versionado
 (`.gitignore`). Os agregados em `data/processed/` são versionados de propósito.
@@ -142,8 +147,9 @@ projeto começa em jan/2019. O PIB guarda histórico desde 1996, mas anos antes 
 | Salário mínimo | set/2026 (vigente) | `update_data.py` |
 | PIB trimestral | 2º trimestre de 2026 (baixado em 25/09/2026) | **manual**: `download_pib.py` |
 | PIB anual | 2025 (2026 só tem trimestres) | manual |
-| Notícias | verificadas em 25/09/2026 (111 itens) | `build_news.py` |
-| Análise | calculada em 28/09/2026 (metodologia v1.0) | `build_analise.py` |
+| Mercado de trabalho (PNAD) | jun-jul-ago 2026 (baixado em 30/09/2026) | `update_data.py` (e `--rapido`) |
+| Notícias | verificadas em 30/09/2026 (142 itens, 63 marcos) | `build_news.py` |
+| Análise | calculada em 30/09/2026 (metodologia v1.2) | `build_analise.py` |
 
 O build grava `produtos.PIB.frescor` (`desatualizado: true/false`, com o
 trimestre esperado calculado pela data e folga de 100 dias) e escreve um aviso no
@@ -183,8 +189,24 @@ log; **não bloqueia** a publicação.
   script pede `?w=1600` (foto inteira, sem o recorte do servidor). Créditos de
   Reuters, AFP, Getty, "Divulgação" e afins são recusados. Sem foto, o item
   aparece só com texto.
-- **Hoje**: 111 itens, 79 com imagem (29 sem licença de reprodução), 87 sem tema,
-  16 de PIB, 8 do conflito no Irã/Ormuz.
+- **Marcos históricos (contexto)**: `data/news/marcos.json` marca matérias (existentes ou
+  novas) como marcos, com `dimensoes`, `indicadores`, `tipo`, `relevancia`, `resumo` (escrito
+  pelo projeto) e `causalidade: "contexto"`. `build_news.py` valida (vocabulário fechado,
+  resumo de 20 a 420 caracteres, recusa "causou", "provocou", "foi responsável por"), recusa
+  marco sem matéria aprovada e grava o campo `marco` e `verificado_em` no item. A curadoria
+  das matérias novas de contexto está em `data/news/raw_trabalho_contexto.json`.
+  O Agência Brasil desativa algumas páginas por legislação eleitoral (página "EBC - Página
+  temporariamente indisponível", HTTP 200): a verificação por título as reprova, então esses
+  itens não entram.
+- **Hoje**: 142 itens, 97 com imagem (29 sem licença de reprodução), 118 sem tema,
+  16 de PIB, 8 do conflito no Irã/Ormuz; 63 são marcos.
+- **Metadados de filtro (Arquivo):** cada item de `noticias.json` recebe `indicadores` (ids da
+  metodologia, derivados das tags de produto e, nos marcos, também de `marcos.json`) e
+  `dimensoes`. Só se acrescentam campos: nada é removido. `build_news.py --so-metadados`
+  reaplica `marcos.json` e a classificação sem verificar a rede nem mexer nas matérias.
+- **Um só conjunto de dados, duas leituras:** o capítulo Contexto mostra os itens com `marco`
+  em ordem cronológica (`js/linhadotempo.js`); o capítulo Arquivo lista todos os itens, com
+  busca e filtros (`js/arquivo.js`). Não existe um segundo arquivo de fontes.
 - **Regra editorial**: proximidade no tempo é contexto, não prova de causa.
 
 ## Estimativa da lacuna da ANP (set/2020)

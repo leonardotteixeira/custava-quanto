@@ -8,10 +8,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import sys
 from datetime import date
 
-from common import DATA_PROCESSED
+from common import DATA_PROCESSED, DATA_RAW
 
 falhas: list[str] = []
 
@@ -149,8 +150,8 @@ def main() -> None:
             check(sr["sentido"] == (soma > 0) - (soma < 0), f"{modo}/{c['id']}: sentido da síntese não segue o sinal da soma")
         # grade de pesos: todas as combinações de 5 em 5 pontos, com soma consistente
         g = bloco["grade"]
-        n = 100 // g["passo"]
-        check(g["combinacoes"] == (n + 1) * (n + 2) * (n + 3) // 6, f"{modo}: número de combinações da grade errado")
+        n, k = 100 // g["passo"], len(dims_a)
+        check(g["combinacoes"] == math.comb(n + k - 1, k - 1), f"{modo}: número de combinações da grade errado")
         check(g["lula"] + g["bolsonaro"] + g["empate"] == g["combinacoes"], f"{modo}: grade não soma o total de combinações")
         # custo de vida: medianas de combustíveis e alimentos separadas
         cv = next(d for d in bloco["dimensoes"] if d["id"] == "custo_vida")
@@ -193,6 +194,118 @@ def main() -> None:
     diferem = {a["id"] for a, b in zip(res["modos"]["completo"]["dimensoes"], res["modos"]["mesmo_tempo"]["dimensoes"])
                if a.get("leitura") is not None and a["leitura"] != b["leitura"]}
     check({x["id"] for x in (res.get("janela_muda") or {}).get("dimensoes", [])} == diferem, "janela_muda não confere com as leituras dos dois modos")
+
+
+    # ---------------------------------------------------------------- v1.2: mercado de trabalho (PNAD Contínua)
+    check(met["versao"] >= "1.2", "a dimensão Mercado de trabalho exige metodologia v1.2 ou mais nova")
+    ordem_dims = [d["id"] for d in sorted(met["dimensoes"], key=lambda d: d["ordem"])]
+    check(ordem_dims == ["custo_vida", "inflacao", "renda", "trabalho", "atividade", "mercados"], f"ordem das dimensões inesperada: {ordem_dims}")
+    check(not any(x.lower().startswith("emprego") or "desemprego" in x.lower() for x in met["regras"]["fora_do_escopo"]), "emprego/desemprego consta como fora do escopo, mas agora está incluído")
+    trab = {"DESOCUPACAO": ("menor", "media", "taxa_desocupacao", 6381, 4099), "SUBUTILIZACAO": ("menor", "media", "taxa_subutilizacao", 6441, 4118),
+            "RENDIMENTO": ("maior", "variacao_pct", "rendimento_medio_real", 6390, 5933)}
+    for cod, (direcao, metrica, campo, tabela, variavel) in trab.items():
+        m = imeta[cod]
+        check(m["dimensao"] == "trabalho" and m["tipo"] == "A", f"{cod}: dimensão/tipo errados")
+        check(m["direcao"] == direcao and m["metrica"] == metrica and m["campo"] == campo, f"{cod}: direção, métrica ou campo diferem da metodologia")
+        check(f"tabela {tabela}" in m["fonte"] and str(variavel) in m["fonte"], f"{cod}: fonte não cita tabela e variável do SIDRA")
+    check(next(d for d in met["dimensoes"] if d["id"] == "trabalho").get("agregacao") == "por_serie", "trabalho deve agregar por série (unidades diferentes)")
+    # a dimensão vale UM sentido na síntese, qualquer que seja o número de séries
+    for c in met["cenarios"]:
+        check(list(c["pesos"]).count("trabalho") == 1, f"cenário {c['id']}: trabalho deve aparecer uma vez")
+
+    mt = dash.get("mercado_trabalho")
+    check(bool(mt), "dashboard_data.json sem o bloco mercado_trabalho")
+    if mt:
+        hoje_m = hoje[:7]
+        for cod, (direcao, metrica, campo, tabela, variavel) in trab.items():
+            serie = mt["produtos"][cod]["serie_mensal"]
+            meta_s = mt["produtos"][cod]["meta"]
+            datas = [r["ano_mes"] for r in serie]
+            check(datas == sorted(set(datas)), f"{cod}: datas duplicadas ou fora de ordem")
+            check(all(d[:7] <= hoje_m for d in datas), f"{cod}: observação com data no futuro")
+            check(meta_s["ultima_observacao"] == datas[-1][:4] + datas[-1][5:7], f"{cod}: última observação do status difere da série")
+            check(meta_s["tabela_sidra"] == tabela and meta_s["variavel_sidra"] == variavel, f"{cod}: tabela/variável do status diferem")
+            check(all(isinstance(r[campo], (int, float)) for r in serie), f"{cod}: valor não numérico na série")
+            # nenhum mês preenchido: meses consecutivos ou ausentes (nunca repetição criada pelo projeto)
+            for r in serie:
+                d = r["ano_mes"]
+                if d < "2019-03-01" or "2022-12-01" < d < "2023-03-01":
+                    check(r["periodo"] is None, f"{cod}: trimestre que mistura períodos ({d}) recebeu período")
+                elif d <= "2022-12-01":
+                    check(r["periodo"] == "Bolsonaro", f"{cod}: {d} deveria ser Bolsonaro")
+                else:
+                    check(r["periodo"] == "Lula", f"{cod}: {d} deveria ser Lula")
+        # conferência independente com a resposta bruta do IBGE (o cache data/raw/ não é versionado)
+        bruto = DATA_RAW / "pnad"
+        for cod, (direcao, metrica, campo, tabela, variavel) in trab.items():
+            arq = bruto / f"sidra_{tabela}_{variavel}.json"
+            if arq.exists():
+                lin = json.loads(arq.read_text(encoding="utf-8"))[1:]
+                ref = {l["D3C"]: float(l["V"]) for l in lin if l["D3C"] >= "201901" and l["V"] not in ("-", "..", "...", "X")}
+                got = {r["ano_mes"][:4] + r["ano_mes"][5:7]: r[campo] for r in mt["produtos"][cod]["serie_mensal"]}
+                check(got == ref, f"{cod}: série do dashboard difere da resposta bruta do IBGE")
+
+    for modo, bloco in res["modos"].items():
+        d = next(x for x in bloco["dimensoes"] if x["id"] == "trabalho")
+        # votos recalculados aqui, direto dos valores das janelas
+        votos = []
+        for l in d["por_serie"]:
+            i = next(x for x in res["indicadores"] if x["id"] == l["id"])
+            sinal = 1 if imeta[l["id"]]["direcao"] == "maior" else -1
+            fb, fl = i[modo]["Bolsonaro"]["valor"] * sinal, i[modo]["Lula"]["valor"] * sinal
+            tol = met["regras"]["tolerancia"].get(imeta[l["id"]]["metrica"], 1.0)
+            votos.append(0 if abs(fl - fb) < tol else (1 if fl > fb else -1))
+            check(l["leitura"] == votos[-1], f"{modo}/{l['id']}: voto da série não confere")
+        check(d["leitura"] == (sum(votos) > 0) - (sum(votos) < 0), f"{modo}/trabalho: leitura da dimensão não segue a soma dos votos")
+        check(d["por_periodo"] is None, f"{modo}/trabalho: não pode haver mediana entre unidades diferentes")
+        check(d["nivel_evidencia"] == "alta", f"{modo}/trabalho: nível de evidência deveria ser alta")
+        # janelas: só trimestres inteiros dentro do período
+        for cod in trab:
+            i = next(x for x in res["indicadores"] if x["id"] == cod)
+            check(i[modo]["Bolsonaro"]["inicio"] >= "2019-03-01" and i[modo]["Bolsonaro"]["fim"] <= "2022-12-01", f"{modo}/{cod}: janela Bolsonaro fora dos trimestres inteiros")
+            check(i[modo]["Lula"]["inicio"] >= "2023-03-01", f"{modo}/{cod}: janela Lula inclui trimestre que mistura períodos")
+            check(i["fonte_ultima"]["periodo_codigo"] == mt["produtos"][cod]["meta"]["ultima_observacao"], f"{cod}: última observação exposta difere da fonte")
+
+
+    # ---------------------------------------------------------------- v1.2: contexto histórico (marcos de notícias)
+    import re
+    from urllib.parse import urlparse
+    noticias = json.loads((DATA_PROCESSED / "noticias.json").read_text(encoding="utf-8"))["itens"]
+    marcos_json = json.loads((DATA_PROCESSED.parent / "news" / "marcos.json").read_text(encoding="utf-8"))
+    marcos = [n for n in noticias if n.get("marco")]
+    check(len(marcos) == len(marcos_json), f"marcos.json tem {len(marcos_json)} entradas e noticias.json, {len(marcos)}: há marco sem matéria verificada")
+    check(len({n["url"] for n in marcos}) == len(marcos), "marco duplicado em noticias.json")
+    causal = re.compile(r"\b(causou|causaram|provocou|provocaram|respons[aá]vel por|foi respons[aá]vel|explica sozinh[oa]|por causa d[eao]s?)\b", re.I)
+    dominios = {"agenciabrasil.ebc.com.br", "agenciadenoticias.ibge.gov.br", "cnnbrasil.com.br", "poder360.com.br", "infomoney.com.br", "exame.com", "seudinheiro.com",
+                "correiobraziliense.com.br", "www.bcb.gov.br", "bcb.gov.br", "www.gov.br", "www.planalto.gov.br"}
+    for n in marcos:
+        m = n["marco"]
+        rot = n["url"][-60:]
+        check(urlparse(n["url"]).scheme == "https", f"marco {rot}: URL sem https")
+        check(re.sub(r"^www\.", "", urlparse(n["url"]).netloc) in {re.sub(r"^www\.", "", d) for d in dominios}, f"marco {rot}: domínio fora da lista de fontes aceitas ({urlparse(n['url']).netloc})")
+        check("2019-01-01" <= n["data"] <= hoje, f"marco {rot}: data fora de 2019 até hoje ({n['data']})")
+        check(set(m["dimensoes"]) <= dims, f"marco {rot}: dimensão inexistente")
+        check(set(m["indicadores"]) <= set(ids), f"marco {rot}: indicador inexistente na metodologia")
+        check(m["causalidade"] == "contexto", f"marco {rot}: causalidade deve ser 'contexto'")
+        check(m["relevancia"] in ("alta", "media"), f"marco {rot}: relevância inválida")
+        check(not causal.search(m["resumo"]), f"marco {rot}: resumo do projeto com linguagem causal")
+        check(n.get("verificado_em"), f"marco {rot}: sem data de verificação")
+        check(n.get("verificacao") in ("automatica", "manual"), f"marco {rot}: sem tipo de verificação")
+    for d_ in dims:
+        check(sum(1 for n in marcos if d_ in n["marco"]["dimensoes"]) >= 5, f"dimensão {d_}: menos de 5 marcos de contexto")
+    # Arquivo pesquisável: nenhuma fonte curada foi perdida e todo item tem os metadados de filtro
+    news_dir = DATA_PROCESSED.parent / "news"
+    urls_curadas = {i["url"].strip() for f in sorted(news_dir.glob("raw_*.json")) for i in json.loads(f.read_text(encoding="utf-8")) if i.get("url")}
+    urls_publicadas = {n["url"] for n in noticias}
+    check(urls_curadas <= urls_publicadas, f"fonte curada ausente de noticias.json: {sorted(urls_curadas - urls_publicadas)[:3]}")
+    check(len(urls_publicadas) == len(noticias), "URL duplicada em noticias.json")
+    for n in noticias:
+        rot = n["url"][-60:]
+        check(isinstance(n.get("indicadores"), list) and isinstance(n.get("dimensoes"), list), f"item {rot}: sem indicadores/dimensoes (rode build_news.py ou --so-metadados)")
+        check(set(n.get("dimensoes", [])) <= dims, f"item {rot}: dimensão fora do vocabulário")
+        check(bool(n.get("titulo")) and bool(n.get("veiculo")) and bool(n.get("data")), f"item {rot}: título, veículo ou data ausente")
+    check(any(n["data"] < "2020-01-01" for n in marcos), "nenhum marco de 2019")
+    check(any(n["data"] >= "2026-01-01" for n in marcos), "nenhum marco de 2026")
 
     if falhas:
         print(f"{len(falhas)} falha(s):")

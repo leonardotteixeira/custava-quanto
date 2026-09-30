@@ -1,6 +1,6 @@
 # Auditoria da análise entre períodos de governo
 
-Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.1 · 29/09/2026
+Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.2 · 30/09/2026
 
 Este documento registra o que estava errado ou frágil na primeira versão do
 capítulo (commit `9844300`), o que mudou, e as limitações que continuam.
@@ -18,6 +18,44 @@ Qualquer mudança futura na metodologia deve subir a versão em
 | `dashboard/js/analise.js` | Só apresentação: escolhe o modo e formata; não calcula nada econômico |
 
 ## Histórico de versões
+
+### v1.2 · 30/09/2026 — dimensão Mercado de trabalho e contexto histórico
+
+Mudanças (metodologia regravada, novo hash; nenhuma série anterior foi excluída e nenhuma
+direção ou métrica de indicador existente mudou):
+
+1. **Nova dimensão: Mercado de trabalho** (Tipo A, ordem 4), com três séries oficiais da PNAD
+   Contínua (IBGE/SIDRA): taxa de desocupação (tabela 6381, var. 4099), taxa composta de
+   subutilização (6441, var. 4118) e rendimento médio real habitual (6390, var. 5933). Dados
+   baixados por `scripts/download_pnad.py`, gravados em `data/processed/pnad_mercado_trabalho.csv`
+   e `pnad_status.json`, e consolidados em `dashboard_data.json` (bloco `mercado_trabalho`).
+   Escopo: "emprego e desemprego" saiu da lista do que fica de fora.
+2. **Agregação "por série" para dimensões de unidades diferentes.** Cada série vota na sua
+   métrica e tolerância; a dimensão segue o sinal da soma. A dimensão continua valendo um só
+   voto na síntese: o número de séries não dá peso extra.
+3. **Regra da métrica**, escrita antes de calcular a dimensão: taxas pela média da janela,
+   valores em R$ ou índices pela variação do início ao fim. A métrica alternativa é mostrada
+   só como transparência. **Registro honesto:** a métrica alternativa muda a leitura de uma
+   série (na desocupação, a queda do início ao fim, em p.p., foi maior no período Bolsonaro
+   que no Lula, porque o período Bolsonaro começou de um nível mais alto); com ela, a dimensão
+   ficaria "praticamente igual" no período completo. A regra da métrica não foi escolhida
+   olhando esse resultado: segue a convenção que já valia para a Inflação (taxa pela média) e
+   para o salário mínimo real (variação).
+4. **Trimestres móveis inteiros.** Só entram trimestres inteiros dentro de um período (Bolsonaro:
+   terminados de mar/2019 a dez/2022; Lula: a partir de mar/2023), para não misturar meses dos
+   dois períodos; nada é rateado. A frequência oficial é preservada.
+5. **Pesos e cenários:** cinco dimensões com peso igual de 20% (antes, quatro de 25%); seis
+   cenários (uma ênfase por dimensão, 40% e 15% nas demais) e 10.626 combinações de pesos de
+   5 em 5 pontos.
+6. **Contexto histórico.** A lista de cinco marcos externos da metodologia foi retirada (sem
+   link) e substituída por marcos verificados na fonte em `noticias.json` (`marco`), com
+   dimensão, indicadores, tipo, relevância e resumo curto. O contexto não entra em nenhum
+   cálculo. `build_news.py` valida a curadoria e recusa linguagem causal nos resumos.
+7. **Testes:** `test_analise.py` confere as tabelas e variáveis do SIDRA, a série do dashboard
+   contra a resposta bruta do IBGE (quando o cache existe), o período de cada trimestre, os
+   votos recalculados de forma independente, a ordem das dimensões, o peso único da dimensão
+   nos cenários e todos os marcos (fonte aceita, https, data, indicadores existentes,
+   causalidade "contexto", sem linguagem causal).
 
 ### v1.1 · 29/09/2026 — reconstrução editorial e metodológica
 

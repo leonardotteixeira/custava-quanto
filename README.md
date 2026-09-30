@@ -1,6 +1,6 @@
 # CUSTAVA QUANTO?
 
-Última atualização: 28/09/2026 · Status: **CURRENT** (sincronizado com o código)
+Última atualização: 30/09/2026 · Status: **CURRENT** (sincronizado com o código)
 
 ## 1. Visão geral
 
@@ -15,6 +15,8 @@ causa: notícias e eventos aparecem como contexto. Cada número traz fonte,
 frequência e limitação.
 
 Tagline: "Quanto custava. Quanto custa. O que mudou."
+
+**Endereço oficial: <https://custavaquanto.me/>** (GitHub Pages, publicado por GitHub Actions). Como o domínio, o DNS e a publicação foram configurados, e o que ainda falta fazer à mão: [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## 2. O que o projeto faz
 
@@ -36,10 +38,18 @@ juntos, e com que critério?
 
 Site estático em capítulos (`dashboard/index.html`): **Abertura**, **01 Índice**,
 **História** (era → agora), **02 Preço**, **03 Bolso**, **04 Contexto**, **05
-Máquina do tempo**, **06 Períodos**, **07 Arquivo**, **08 Análise**, **09 Método**,
+Máquina do tempo**, **06 Períodos**, **07 Análise**, **08 Arquivo**, **09 Método**,
 **10 Apoie**. A numeração é dinâmica (Bolso some nas histórias sem preço ou índice).
 A história escolhida fica na URL (`?historia=gasolina`). Descrição de cada capítulo,
 dados e limites: [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md).
+
+**Contexto e Arquivo têm papéis diferentes.** **04 Contexto** responde "o que estava acontecendo
+em torno do momento em que os dados mudaram?": uma linha do tempo editorial, em ordem
+cronológica, com os marcos históricos e a ligação de cada um com os indicadores. **08 Arquivo**
+responde "de onde vieram as informações?": uma biblioteca de fontes pesquisável (busca e filtros
+por ano, indicador, fonte e dimensão) com todas as matérias e registros do projeto. Os dois se
+ligam por "Ver no Contexto" e "Ver no Arquivo". Contexto conta a história; Arquivo guarda a
+evidência por trás dela.
 
 ## 5. Indicadores
 
@@ -92,17 +102,19 @@ Tabela completa por indicador (frequência, campo, processamento, limitações):
 O período Lula **não está completo**. As duas janelas existem porque comparar 48
 com 44 meses distorce variações acumuladas.
 
-**Análise (metodologia v1.1):** cinco dimensões (Custo de vida, Inflação, Renda e
-poder de compra, Atividade econômica, Mercados), com nível de evidência (ALTA, MÉDIA,
+**Análise (metodologia v1.2):** seis dimensões (Custo de vida, Inflação, Renda e
+poder de compra, **Mercado de trabalho**, Atividade econômica, Mercados), com nível de evidência (ALTA, MÉDIA,
 INFORMATIVA). A comparação principal é a dos períodos inteiros (Bolsonaro jan/2019–
 dez/2022; Lula jan/2023–último dado, em curso); "igual duração" é um controle
 secundário. Indicadores **Tipo A** têm direção definida antes do cálculo (preço real e
 inflação menores; poder de compra e crescimento maiores); **Tipo B** (Dólar, Selic,
 Ibovespa) só são descritos; **Tipo C** (salário nominal) é informativo. Cada dimensão
-Tipo A vira um sentido pela **mediana** de suas séries, com tolerância de "praticamente
-iguais"; a síntese soma sentidos ponderados, é testada em cinco cenários e em todas as
-combinações de pesos de 5 em 5 pontos, e o leitor pode mover as prioridades. Sem nota,
-sem vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
+Tipo A vira um sentido pela **mediana** de suas séries (no Mercado de trabalho, cujas séries
+têm unidades diferentes, cada série vota uma vez), com tolerância de "praticamente
+iguais"; a síntese soma sentidos ponderados, é testada em seis cenários e em todas as
+combinações de pesos de 5 em 5 pontos, e o leitor pode mover as prioridades. O Mercado de
+trabalho usa três séries da PNAD Contínua (IBGE, tabelas 6381, 6441 e 6390 do SIDRA), em
+trimestres móveis. Sem nota, sem vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
 [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md).
 
 ## 9. Limitações dos dados
@@ -123,8 +135,11 @@ sem vencedor. Ver [docs/METHODOLOGY.md](docs/METHODOLOGY.md) e
 ## 10. Notícias e contexto
 
 Curadoria manual em `data/news/raw_*.json`; `scripts/build_news.py` abre cada URL e
-só publica se a página responde e o título confere (similaridade ≥ 0,80). Hoje: 111
-itens. Fotos: Agência Brasil quando o crédito é da EBC (CC BY 4.0); de outros
+só publica se a página responde e o título confere (similaridade ≥ 0,80). Hoje: 142
+itens, 63 deles **marcos históricos** (`data/news/marcos.json`: dimensão, indicadores, tipo,
+relevância e resumo curto do projeto), mostrados como contexto na linha do tempo do capítulo
+Contexto e nas seções da Análise. Proximidade no tempo não é evidência de causalidade: o
+script recusa resumo com "causou", "provocou" ou "foi responsável por". Fotos: Agência Brasil quando o crédito é da EBC (CC BY 4.0); de outros
 veículos, a imagem de capa da matéria, com crédito e **sem licença de reprodução**
 (decisão editorial, desligável em `build_news.py`). Sem foto, só texto.
 **Proximidade no tempo é contexto, não prova de causa.**

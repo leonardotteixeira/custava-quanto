@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-29T02:23:13+00:00",
+  "gerado_em": "2026-09-30T03:43:08+00:00",
   "periodo_corte": "2023-01-01",
   "produtos": {
     "GASOLINA": {
@@ -30403,6 +30403,1734 @@
       "ipca": 4.22,
       "gasolina": 6.5683,
       "salario_minimo": 1621.0
+    }
+  },
+  "mercado_trabalho": {
+    "coletado_em": "2026-09-30T03:42:41+00:00",
+    "nota": "Cada ponto é um trimestre móvel identificado pelo mês em que termina. O rendimento real vem deflacionado pelo IBGE (IPCA, a preços do mês do meio do trimestre mais recente divulgado) e é refeito a cada divulgação.",
+    "produtos": {
+      "DESOCUPACAO": {
+        "campo": "taxa_desocupacao",
+        "meta": {
+          "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+          "tabela_sidra": 6381,
+          "variavel_sidra": 4099,
+          "nome_oficial": "Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade",
+          "unidade": "%",
+          "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+          "escopo_geografico": "Brasil",
+          "populacao": "pessoas de 14 anos ou mais de idade",
+          "primeira_observacao": "201203",
+          "ultima_observacao": "202608",
+          "ultima_observacao_rotulo": "jun-jul-ago 2026",
+          "ultimo_valor": 5.3,
+          "n_observacoes": 174,
+          "url_tabela": "https://sidra.ibge.gov.br/tabela/6381",
+          "url_api": "https://apisidra.ibge.gov.br/values/t/6381/n1/1/v/4099/p/all"
+        },
+        "serie_mensal": [
+          {
+            "ano_mes": "2019-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2019",
+            "taxa_desocupacao": 12.2
+          },
+          {
+            "ano_mes": "2019-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2019",
+            "taxa_desocupacao": 12.5
+          },
+          {
+            "ano_mes": "2019-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2019",
+            "taxa_desocupacao": 12.8
+          },
+          {
+            "ano_mes": "2019-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2019",
+            "taxa_desocupacao": 12.6
+          },
+          {
+            "ano_mes": "2019-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2019",
+            "taxa_desocupacao": 12.4
+          },
+          {
+            "ano_mes": "2019-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2019",
+            "taxa_desocupacao": 12.1
+          },
+          {
+            "ano_mes": "2019-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2019",
+            "taxa_desocupacao": 11.9
+          },
+          {
+            "ano_mes": "2019-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2019",
+            "taxa_desocupacao": 11.9
+          },
+          {
+            "ano_mes": "2019-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2019",
+            "taxa_desocupacao": 11.9
+          },
+          {
+            "ano_mes": "2019-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2019",
+            "taxa_desocupacao": 11.7
+          },
+          {
+            "ano_mes": "2019-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2019",
+            "taxa_desocupacao": 11.3
+          },
+          {
+            "ano_mes": "2019-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2019",
+            "taxa_desocupacao": 11.1
+          },
+          {
+            "ano_mes": "2020-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2020",
+            "taxa_desocupacao": 11.3
+          },
+          {
+            "ano_mes": "2020-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2020",
+            "taxa_desocupacao": 11.7
+          },
+          {
+            "ano_mes": "2020-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2020",
+            "taxa_desocupacao": 12.4
+          },
+          {
+            "ano_mes": "2020-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2020",
+            "taxa_desocupacao": 12.7
+          },
+          {
+            "ano_mes": "2020-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2020",
+            "taxa_desocupacao": 13.1
+          },
+          {
+            "ano_mes": "2020-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2020",
+            "taxa_desocupacao": 13.6
+          },
+          {
+            "ano_mes": "2020-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2020",
+            "taxa_desocupacao": 14.1
+          },
+          {
+            "ano_mes": "2020-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2020",
+            "taxa_desocupacao": 14.8
+          },
+          {
+            "ano_mes": "2020-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2020",
+            "taxa_desocupacao": 14.9
+          },
+          {
+            "ano_mes": "2020-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2020",
+            "taxa_desocupacao": 14.6
+          },
+          {
+            "ano_mes": "2020-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2020",
+            "taxa_desocupacao": 14.3
+          },
+          {
+            "ano_mes": "2020-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2020",
+            "taxa_desocupacao": 14.2
+          },
+          {
+            "ano_mes": "2021-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2021",
+            "taxa_desocupacao": 14.4
+          },
+          {
+            "ano_mes": "2021-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2021",
+            "taxa_desocupacao": 14.6
+          },
+          {
+            "ano_mes": "2021-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2021",
+            "taxa_desocupacao": 14.9
+          },
+          {
+            "ano_mes": "2021-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2021",
+            "taxa_desocupacao": 14.8
+          },
+          {
+            "ano_mes": "2021-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2021",
+            "taxa_desocupacao": 14.7
+          },
+          {
+            "ano_mes": "2021-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2021",
+            "taxa_desocupacao": 14.2
+          },
+          {
+            "ano_mes": "2021-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2021",
+            "taxa_desocupacao": 13.7
+          },
+          {
+            "ano_mes": "2021-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2021",
+            "taxa_desocupacao": 13.2
+          },
+          {
+            "ano_mes": "2021-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2021",
+            "taxa_desocupacao": 12.7
+          },
+          {
+            "ano_mes": "2021-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2021",
+            "taxa_desocupacao": 12.1
+          },
+          {
+            "ano_mes": "2021-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2021",
+            "taxa_desocupacao": 11.6
+          },
+          {
+            "ano_mes": "2021-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2021",
+            "taxa_desocupacao": 11.1
+          },
+          {
+            "ano_mes": "2022-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2022",
+            "taxa_desocupacao": 11.2
+          },
+          {
+            "ano_mes": "2022-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2022",
+            "taxa_desocupacao": 11.2
+          },
+          {
+            "ano_mes": "2022-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2022",
+            "taxa_desocupacao": 11.1
+          },
+          {
+            "ano_mes": "2022-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2022",
+            "taxa_desocupacao": 10.5
+          },
+          {
+            "ano_mes": "2022-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2022",
+            "taxa_desocupacao": 9.8
+          },
+          {
+            "ano_mes": "2022-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2022",
+            "taxa_desocupacao": 9.3
+          },
+          {
+            "ano_mes": "2022-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2022",
+            "taxa_desocupacao": 9.1
+          },
+          {
+            "ano_mes": "2022-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2022",
+            "taxa_desocupacao": 8.9
+          },
+          {
+            "ano_mes": "2022-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2022",
+            "taxa_desocupacao": 8.7
+          },
+          {
+            "ano_mes": "2022-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2022",
+            "taxa_desocupacao": 8.3
+          },
+          {
+            "ano_mes": "2022-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2022",
+            "taxa_desocupacao": 8.1
+          },
+          {
+            "ano_mes": "2022-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2022",
+            "taxa_desocupacao": 7.9
+          },
+          {
+            "ano_mes": "2023-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2023",
+            "taxa_desocupacao": 8.4
+          },
+          {
+            "ano_mes": "2023-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2023",
+            "taxa_desocupacao": 8.6
+          },
+          {
+            "ano_mes": "2023-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2023",
+            "taxa_desocupacao": 8.8
+          },
+          {
+            "ano_mes": "2023-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2023",
+            "taxa_desocupacao": 8.5
+          },
+          {
+            "ano_mes": "2023-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2023",
+            "taxa_desocupacao": 8.3
+          },
+          {
+            "ano_mes": "2023-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2023",
+            "taxa_desocupacao": 8.0
+          },
+          {
+            "ano_mes": "2023-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2023",
+            "taxa_desocupacao": 7.9
+          },
+          {
+            "ano_mes": "2023-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2023",
+            "taxa_desocupacao": 7.8
+          },
+          {
+            "ano_mes": "2023-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2023",
+            "taxa_desocupacao": 7.7
+          },
+          {
+            "ano_mes": "2023-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2023",
+            "taxa_desocupacao": 7.6
+          },
+          {
+            "ano_mes": "2023-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2023",
+            "taxa_desocupacao": 7.5
+          },
+          {
+            "ano_mes": "2023-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2023",
+            "taxa_desocupacao": 7.4
+          },
+          {
+            "ano_mes": "2024-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2024",
+            "taxa_desocupacao": 7.6
+          },
+          {
+            "ano_mes": "2024-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2024",
+            "taxa_desocupacao": 7.8
+          },
+          {
+            "ano_mes": "2024-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2024",
+            "taxa_desocupacao": 7.9
+          },
+          {
+            "ano_mes": "2024-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2024",
+            "taxa_desocupacao": 7.5
+          },
+          {
+            "ano_mes": "2024-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2024",
+            "taxa_desocupacao": 7.1
+          },
+          {
+            "ano_mes": "2024-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2024",
+            "taxa_desocupacao": 6.9
+          },
+          {
+            "ano_mes": "2024-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2024",
+            "taxa_desocupacao": 6.8
+          },
+          {
+            "ano_mes": "2024-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2024",
+            "taxa_desocupacao": 6.6
+          },
+          {
+            "ano_mes": "2024-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2024",
+            "taxa_desocupacao": 6.4
+          },
+          {
+            "ano_mes": "2024-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2024",
+            "taxa_desocupacao": 6.2
+          },
+          {
+            "ano_mes": "2024-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2024",
+            "taxa_desocupacao": 6.1
+          },
+          {
+            "ano_mes": "2024-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2024",
+            "taxa_desocupacao": 6.2
+          },
+          {
+            "ano_mes": "2025-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2025",
+            "taxa_desocupacao": 6.5
+          },
+          {
+            "ano_mes": "2025-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2025",
+            "taxa_desocupacao": 6.8
+          },
+          {
+            "ano_mes": "2025-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2025",
+            "taxa_desocupacao": 7.0
+          },
+          {
+            "ano_mes": "2025-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2025",
+            "taxa_desocupacao": 6.6
+          },
+          {
+            "ano_mes": "2025-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2025",
+            "taxa_desocupacao": 6.2
+          },
+          {
+            "ano_mes": "2025-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2025",
+            "taxa_desocupacao": 5.8
+          },
+          {
+            "ano_mes": "2025-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2025",
+            "taxa_desocupacao": 5.6
+          },
+          {
+            "ano_mes": "2025-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2025",
+            "taxa_desocupacao": 5.6
+          },
+          {
+            "ano_mes": "2025-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2025",
+            "taxa_desocupacao": 5.6
+          },
+          {
+            "ano_mes": "2025-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2025",
+            "taxa_desocupacao": 5.4
+          },
+          {
+            "ano_mes": "2025-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2025",
+            "taxa_desocupacao": 5.2
+          },
+          {
+            "ano_mes": "2025-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2025",
+            "taxa_desocupacao": 5.1
+          },
+          {
+            "ano_mes": "2026-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2026",
+            "taxa_desocupacao": 5.4
+          },
+          {
+            "ano_mes": "2026-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2026",
+            "taxa_desocupacao": 5.8
+          },
+          {
+            "ano_mes": "2026-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2026",
+            "taxa_desocupacao": 6.1
+          },
+          {
+            "ano_mes": "2026-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2026",
+            "taxa_desocupacao": 5.8
+          },
+          {
+            "ano_mes": "2026-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2026",
+            "taxa_desocupacao": 5.6
+          },
+          {
+            "ano_mes": "2026-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2026",
+            "taxa_desocupacao": 5.4
+          },
+          {
+            "ano_mes": "2026-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2026",
+            "taxa_desocupacao": 5.3
+          },
+          {
+            "ano_mes": "2026-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2026",
+            "taxa_desocupacao": 5.3
+          }
+        ]
+      },
+      "SUBUTILIZACAO": {
+        "campo": "taxa_subutilizacao",
+        "meta": {
+          "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+          "tabela_sidra": 6441,
+          "variavel_sidra": 4118,
+          "nome_oficial": "Taxa composta de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade",
+          "unidade": "%",
+          "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+          "escopo_geografico": "Brasil",
+          "populacao": "pessoas de 14 anos ou mais de idade",
+          "primeira_observacao": "201203",
+          "ultima_observacao": "202608",
+          "ultima_observacao_rotulo": "jun-jul-ago 2026",
+          "ultimo_valor": 13.1,
+          "n_observacoes": 172,
+          "url_tabela": "https://sidra.ibge.gov.br/tabela/6441",
+          "url_api": "https://apisidra.ibge.gov.br/values/t/6441/n1/1/v/4118/p/all"
+        },
+        "serie_mensal": [
+          {
+            "ano_mes": "2019-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2019",
+            "taxa_subutilizacao": 24.3
+          },
+          {
+            "ano_mes": "2019-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2019",
+            "taxa_subutilizacao": 24.6
+          },
+          {
+            "ano_mes": "2019-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2019",
+            "taxa_subutilizacao": 25.0
+          },
+          {
+            "ano_mes": "2019-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2019",
+            "taxa_subutilizacao": 25.0
+          },
+          {
+            "ano_mes": "2019-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2019",
+            "taxa_subutilizacao": 25.0
+          },
+          {
+            "ano_mes": "2019-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2019",
+            "taxa_subutilizacao": 24.8
+          },
+          {
+            "ano_mes": "2019-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2019",
+            "taxa_subutilizacao": 24.6
+          },
+          {
+            "ano_mes": "2019-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2019",
+            "taxa_subutilizacao": 24.4
+          },
+          {
+            "ano_mes": "2019-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2019",
+            "taxa_subutilizacao": 24.1
+          },
+          {
+            "ano_mes": "2019-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2019",
+            "taxa_subutilizacao": 23.8
+          },
+          {
+            "ano_mes": "2019-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2019",
+            "taxa_subutilizacao": 23.4
+          },
+          {
+            "ano_mes": "2019-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2019",
+            "taxa_subutilizacao": 23.0
+          },
+          {
+            "ano_mes": "2020-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2020",
+            "taxa_subutilizacao": 23.2
+          },
+          {
+            "ano_mes": "2020-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2020",
+            "taxa_subutilizacao": 23.6
+          },
+          {
+            "ano_mes": "2020-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2020",
+            "taxa_subutilizacao": 24.5
+          },
+          {
+            "ano_mes": "2020-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2020",
+            "taxa_subutilizacao": 25.8
+          },
+          {
+            "ano_mes": "2020-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2020",
+            "taxa_subutilizacao": 27.6
+          },
+          {
+            "ano_mes": "2020-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2020",
+            "taxa_subutilizacao": 29.3
+          },
+          {
+            "ano_mes": "2020-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2020",
+            "taxa_subutilizacao": 30.3
+          },
+          {
+            "ano_mes": "2020-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2020",
+            "taxa_subutilizacao": 30.7
+          },
+          {
+            "ano_mes": "2020-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2020",
+            "taxa_subutilizacao": 30.4
+          },
+          {
+            "ano_mes": "2020-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2020",
+            "taxa_subutilizacao": 29.6
+          },
+          {
+            "ano_mes": "2020-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2020",
+            "taxa_subutilizacao": 29.1
+          },
+          {
+            "ano_mes": "2020-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2020",
+            "taxa_subutilizacao": 28.8
+          },
+          {
+            "ano_mes": "2021-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2021",
+            "taxa_subutilizacao": 29.0
+          },
+          {
+            "ano_mes": "2021-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2021",
+            "taxa_subutilizacao": 29.2
+          },
+          {
+            "ano_mes": "2021-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2021",
+            "taxa_subutilizacao": 29.6
+          },
+          {
+            "ano_mes": "2021-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2021",
+            "taxa_subutilizacao": 29.6
+          },
+          {
+            "ano_mes": "2021-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2021",
+            "taxa_subutilizacao": 29.3
+          },
+          {
+            "ano_mes": "2021-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2021",
+            "taxa_subutilizacao": 28.5
+          },
+          {
+            "ano_mes": "2021-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2021",
+            "taxa_subutilizacao": 27.9
+          },
+          {
+            "ano_mes": "2021-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2021",
+            "taxa_subutilizacao": 27.2
+          },
+          {
+            "ano_mes": "2021-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2021",
+            "taxa_subutilizacao": 26.6
+          },
+          {
+            "ano_mes": "2021-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2021",
+            "taxa_subutilizacao": 25.8
+          },
+          {
+            "ano_mes": "2021-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2021",
+            "taxa_subutilizacao": 25.0
+          },
+          {
+            "ano_mes": "2021-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2021",
+            "taxa_subutilizacao": 24.3
+          },
+          {
+            "ano_mes": "2022-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2022",
+            "taxa_subutilizacao": 23.9
+          },
+          {
+            "ano_mes": "2022-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2022",
+            "taxa_subutilizacao": 23.6
+          },
+          {
+            "ano_mes": "2022-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2022",
+            "taxa_subutilizacao": 23.2
+          },
+          {
+            "ano_mes": "2022-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2022",
+            "taxa_subutilizacao": 22.5
+          },
+          {
+            "ano_mes": "2022-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2022",
+            "taxa_subutilizacao": 21.9
+          },
+          {
+            "ano_mes": "2022-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2022",
+            "taxa_subutilizacao": 21.3
+          },
+          {
+            "ano_mes": "2022-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2022",
+            "taxa_subutilizacao": 20.9
+          },
+          {
+            "ano_mes": "2022-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2022",
+            "taxa_subutilizacao": 20.5
+          },
+          {
+            "ano_mes": "2022-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2022",
+            "taxa_subutilizacao": 20.1
+          },
+          {
+            "ano_mes": "2022-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2022",
+            "taxa_subutilizacao": 19.5
+          },
+          {
+            "ano_mes": "2022-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2022",
+            "taxa_subutilizacao": 18.9
+          },
+          {
+            "ano_mes": "2022-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2022",
+            "taxa_subutilizacao": 18.5
+          },
+          {
+            "ano_mes": "2023-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2023",
+            "taxa_subutilizacao": 18.7
+          },
+          {
+            "ano_mes": "2023-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2023",
+            "taxa_subutilizacao": 18.9
+          },
+          {
+            "ano_mes": "2023-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2023",
+            "taxa_subutilizacao": 18.9
+          },
+          {
+            "ano_mes": "2023-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2023",
+            "taxa_subutilizacao": 18.4
+          },
+          {
+            "ano_mes": "2023-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2023",
+            "taxa_subutilizacao": 18.2
+          },
+          {
+            "ano_mes": "2023-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2023",
+            "taxa_subutilizacao": 17.8
+          },
+          {
+            "ano_mes": "2023-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2023",
+            "taxa_subutilizacao": 17.8
+          },
+          {
+            "ano_mes": "2023-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2023",
+            "taxa_subutilizacao": 17.7
+          },
+          {
+            "ano_mes": "2023-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2023",
+            "taxa_subutilizacao": 17.6
+          },
+          {
+            "ano_mes": "2023-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2023",
+            "taxa_subutilizacao": 17.5
+          },
+          {
+            "ano_mes": "2023-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2023",
+            "taxa_subutilizacao": 17.4
+          },
+          {
+            "ano_mes": "2023-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2023",
+            "taxa_subutilizacao": 17.3
+          },
+          {
+            "ano_mes": "2024-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2024",
+            "taxa_subutilizacao": 17.6
+          },
+          {
+            "ano_mes": "2024-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2024",
+            "taxa_subutilizacao": 17.9
+          },
+          {
+            "ano_mes": "2024-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2024",
+            "taxa_subutilizacao": 17.9
+          },
+          {
+            "ano_mes": "2024-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2024",
+            "taxa_subutilizacao": 17.4
+          },
+          {
+            "ano_mes": "2024-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2024",
+            "taxa_subutilizacao": 16.8
+          },
+          {
+            "ano_mes": "2024-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2024",
+            "taxa_subutilizacao": 16.4
+          },
+          {
+            "ano_mes": "2024-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2024",
+            "taxa_subutilizacao": 16.2
+          },
+          {
+            "ano_mes": "2024-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2024",
+            "taxa_subutilizacao": 16.0
+          },
+          {
+            "ano_mes": "2024-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2024",
+            "taxa_subutilizacao": 15.7
+          },
+          {
+            "ano_mes": "2024-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2024",
+            "taxa_subutilizacao": 15.4
+          },
+          {
+            "ano_mes": "2024-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2024",
+            "taxa_subutilizacao": 15.3
+          },
+          {
+            "ano_mes": "2024-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2024",
+            "taxa_subutilizacao": 15.2
+          },
+          {
+            "ano_mes": "2025-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2025",
+            "taxa_subutilizacao": 15.5
+          },
+          {
+            "ano_mes": "2025-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2025",
+            "taxa_subutilizacao": 15.7
+          },
+          {
+            "ano_mes": "2025-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2025",
+            "taxa_subutilizacao": 15.9
+          },
+          {
+            "ano_mes": "2025-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2025",
+            "taxa_subutilizacao": 15.4
+          },
+          {
+            "ano_mes": "2025-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2025",
+            "taxa_subutilizacao": 14.9
+          },
+          {
+            "ano_mes": "2025-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2025",
+            "taxa_subutilizacao": 14.4
+          },
+          {
+            "ano_mes": "2025-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2025",
+            "taxa_subutilizacao": 14.1
+          },
+          {
+            "ano_mes": "2025-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2025",
+            "taxa_subutilizacao": 14.1
+          },
+          {
+            "ano_mes": "2025-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2025",
+            "taxa_subutilizacao": 13.9
+          },
+          {
+            "ano_mes": "2025-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2025",
+            "taxa_subutilizacao": 13.9
+          },
+          {
+            "ano_mes": "2025-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2025",
+            "taxa_subutilizacao": 13.5
+          },
+          {
+            "ano_mes": "2025-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2025",
+            "taxa_subutilizacao": 13.4
+          },
+          {
+            "ano_mes": "2026-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2026",
+            "taxa_subutilizacao": 13.8
+          },
+          {
+            "ano_mes": "2026-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2026",
+            "taxa_subutilizacao": 14.1
+          },
+          {
+            "ano_mes": "2026-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2026",
+            "taxa_subutilizacao": 14.3
+          },
+          {
+            "ano_mes": "2026-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2026",
+            "taxa_subutilizacao": 13.8
+          },
+          {
+            "ano_mes": "2026-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2026",
+            "taxa_subutilizacao": 13.3
+          },
+          {
+            "ano_mes": "2026-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2026",
+            "taxa_subutilizacao": 12.9
+          },
+          {
+            "ano_mes": "2026-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2026",
+            "taxa_subutilizacao": 13.0
+          },
+          {
+            "ano_mes": "2026-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2026",
+            "taxa_subutilizacao": 13.1
+          }
+        ]
+      },
+      "RENDIMENTO": {
+        "campo": "rendimento_medio_real",
+        "meta": {
+          "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+          "tabela_sidra": 6390,
+          "variavel_sidra": 5933,
+          "nome_oficial": "Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos",
+          "unidade": "Reais",
+          "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+          "escopo_geografico": "Brasil",
+          "populacao": "pessoas de 14 anos ou mais de idade",
+          "primeira_observacao": "201203",
+          "ultima_observacao": "202608",
+          "ultima_observacao_rotulo": "jun-jul-ago 2026",
+          "ultimo_valor": 3777.0,
+          "n_observacoes": 174,
+          "url_tabela": "https://sidra.ibge.gov.br/tabela/6390",
+          "url_api": "https://apisidra.ibge.gov.br/values/t/6390/n1/1/v/5933/p/all"
+        },
+        "serie_mensal": [
+          {
+            "ano_mes": "2019-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2019",
+            "rendimento_medio_real": 3371.0
+          },
+          {
+            "ano_mes": "2019-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2019",
+            "rendimento_medio_real": 3383.0
+          },
+          {
+            "ano_mes": "2019-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2019",
+            "rendimento_medio_real": 3369.0
+          },
+          {
+            "ano_mes": "2019-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2019",
+            "rendimento_medio_real": 3351.0
+          },
+          {
+            "ano_mes": "2019-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2019",
+            "rendimento_medio_real": 3328.0
+          },
+          {
+            "ano_mes": "2019-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2019",
+            "rendimento_medio_real": 3328.0
+          },
+          {
+            "ano_mes": "2019-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2019",
+            "rendimento_medio_real": 3320.0
+          },
+          {
+            "ano_mes": "2019-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2019",
+            "rendimento_medio_real": 3333.0
+          },
+          {
+            "ano_mes": "2019-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2019",
+            "rendimento_medio_real": 3333.0
+          },
+          {
+            "ano_mes": "2019-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2019",
+            "rendimento_medio_real": 3357.0
+          },
+          {
+            "ano_mes": "2019-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2019",
+            "rendimento_medio_real": 3372.0
+          },
+          {
+            "ano_mes": "2019-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2019",
+            "rendimento_medio_real": 3361.0
+          },
+          {
+            "ano_mes": "2020-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2020",
+            "rendimento_medio_real": 3369.0
+          },
+          {
+            "ano_mes": "2020-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2020",
+            "rendimento_medio_real": 3372.0
+          },
+          {
+            "ano_mes": "2020-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2020",
+            "rendimento_medio_real": 3399.0
+          },
+          {
+            "ano_mes": "2020-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2020",
+            "rendimento_medio_real": 3436.0
+          },
+          {
+            "ano_mes": "2020-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2020",
+            "rendimento_medio_real": 3493.0
+          },
+          {
+            "ano_mes": "2020-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2020",
+            "rendimento_medio_real": 3546.0
+          },
+          {
+            "ano_mes": "2020-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2020",
+            "rendimento_medio_real": 3588.0
+          },
+          {
+            "ano_mes": "2020-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2020",
+            "rendimento_medio_real": 3583.0
+          },
+          {
+            "ano_mes": "2020-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2020",
+            "rendimento_medio_real": 3586.0
+          },
+          {
+            "ano_mes": "2020-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2020",
+            "rendimento_medio_real": 3533.0
+          },
+          {
+            "ano_mes": "2020-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2020",
+            "rendimento_medio_real": 3495.0
+          },
+          {
+            "ano_mes": "2020-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2020",
+            "rendimento_medio_real": 3442.0
+          },
+          {
+            "ano_mes": "2021-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2021",
+            "rendimento_medio_real": 3434.0
+          },
+          {
+            "ano_mes": "2021-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2021",
+            "rendimento_medio_real": 3403.0
+          },
+          {
+            "ano_mes": "2021-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2021",
+            "rendimento_medio_real": 3412.0
+          },
+          {
+            "ano_mes": "2021-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2021",
+            "rendimento_medio_real": 3371.0
+          },
+          {
+            "ano_mes": "2021-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2021",
+            "rendimento_medio_real": 3368.0
+          },
+          {
+            "ano_mes": "2021-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2021",
+            "rendimento_medio_real": 3316.0
+          },
+          {
+            "ano_mes": "2021-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2021",
+            "rendimento_medio_real": 3285.0
+          },
+          {
+            "ano_mes": "2021-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2021",
+            "rendimento_medio_real": 3238.0
+          },
+          {
+            "ano_mes": "2021-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2021",
+            "rendimento_medio_real": 3181.0
+          },
+          {
+            "ano_mes": "2021-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2021",
+            "rendimento_medio_real": 3135.0
+          },
+          {
+            "ano_mes": "2021-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2021",
+            "rendimento_medio_real": 3093.0
+          },
+          {
+            "ano_mes": "2021-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2021",
+            "rendimento_medio_real": 3068.0
+          },
+          {
+            "ano_mes": "2022-01-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "nov-dez-jan 2022",
+            "rendimento_medio_real": 3097.0
+          },
+          {
+            "ano_mes": "2022-02-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "dez-jan-fev 2022",
+            "rendimento_medio_real": 3100.0
+          },
+          {
+            "ano_mes": "2022-03-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jan-fev-mar 2022",
+            "rendimento_medio_real": 3113.0
+          },
+          {
+            "ano_mes": "2022-04-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "fev-mar-abr 2022",
+            "rendimento_medio_real": 3101.0
+          },
+          {
+            "ano_mes": "2022-05-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mar-abr-mai 2022",
+            "rendimento_medio_real": 3121.0
+          },
+          {
+            "ano_mes": "2022-06-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "abr-mai-jun 2022",
+            "rendimento_medio_real": 3144.0
+          },
+          {
+            "ano_mes": "2022-07-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "mai-jun-jul 2022",
+            "rendimento_medio_real": 3188.0
+          },
+          {
+            "ano_mes": "2022-08-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jun-jul-ago 2022",
+            "rendimento_medio_real": 3216.0
+          },
+          {
+            "ano_mes": "2022-09-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "jul-ago-set 2022",
+            "rendimento_medio_real": 3259.0
+          },
+          {
+            "ano_mes": "2022-10-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "ago-set-out 2022",
+            "rendimento_medio_real": 3279.0
+          },
+          {
+            "ano_mes": "2022-11-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "set-out-nov 2022",
+            "rendimento_medio_real": 3310.0
+          },
+          {
+            "ano_mes": "2022-12-01",
+            "periodo": "Bolsonaro",
+            "rotulo": "out-nov-dez 2022",
+            "rendimento_medio_real": 3317.0
+          },
+          {
+            "ano_mes": "2023-01-01",
+            "periodo": null,
+            "rotulo": "nov-dez-jan 2023",
+            "rendimento_medio_real": 3332.0
+          },
+          {
+            "ano_mes": "2023-02-01",
+            "periodo": null,
+            "rotulo": "dez-jan-fev 2023",
+            "rendimento_medio_real": 3330.0
+          },
+          {
+            "ano_mes": "2023-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2023",
+            "rendimento_medio_real": 3338.0
+          },
+          {
+            "ano_mes": "2023-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2023",
+            "rendimento_medio_real": 3328.0
+          },
+          {
+            "ano_mes": "2023-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2023",
+            "rendimento_medio_real": 3322.0
+          },
+          {
+            "ano_mes": "2023-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2023",
+            "rendimento_medio_real": 3337.0
+          },
+          {
+            "ano_mes": "2023-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2023",
+            "rendimento_medio_real": 3349.0
+          },
+          {
+            "ano_mes": "2023-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2023",
+            "rendimento_medio_real": 3359.0
+          },
+          {
+            "ano_mes": "2023-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2023",
+            "rendimento_medio_real": 3391.0
+          },
+          {
+            "ano_mes": "2023-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2023",
+            "rendimento_medio_real": 3403.0
+          },
+          {
+            "ano_mes": "2023-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2023",
+            "rendimento_medio_real": 3432.0
+          },
+          {
+            "ano_mes": "2023-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2023",
+            "rendimento_medio_real": 3418.0
+          },
+          {
+            "ano_mes": "2024-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2024",
+            "rendimento_medio_real": 3456.0
+          },
+          {
+            "ano_mes": "2024-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2024",
+            "rendimento_medio_real": 3471.0
+          },
+          {
+            "ano_mes": "2024-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2024",
+            "rendimento_medio_real": 3468.0
+          },
+          {
+            "ano_mes": "2024-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2024",
+            "rendimento_medio_real": 3484.0
+          },
+          {
+            "ano_mes": "2024-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2024",
+            "rendimento_medio_real": 3505.0
+          },
+          {
+            "ano_mes": "2024-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2024",
+            "rendimento_medio_real": 3528.0
+          },
+          {
+            "ano_mes": "2024-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2024",
+            "rendimento_medio_real": 3507.0
+          },
+          {
+            "ano_mes": "2024-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2024",
+            "rendimento_medio_real": 3526.0
+          },
+          {
+            "ano_mes": "2024-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2024",
+            "rendimento_medio_real": 3514.0
+          },
+          {
+            "ano_mes": "2024-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2024",
+            "rendimento_medio_real": 3533.0
+          },
+          {
+            "ano_mes": "2024-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2024",
+            "rendimento_medio_real": 3549.0
+          },
+          {
+            "ano_mes": "2024-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2024",
+            "rendimento_medio_real": 3563.0
+          },
+          {
+            "ano_mes": "2025-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2025",
+            "rendimento_medio_real": 3580.0
+          },
+          {
+            "ano_mes": "2025-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2025",
+            "rendimento_medio_real": 3594.0
+          },
+          {
+            "ano_mes": "2025-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2025",
+            "rendimento_medio_real": 3605.0
+          },
+          {
+            "ano_mes": "2025-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2025",
+            "rendimento_medio_real": 3593.0
+          },
+          {
+            "ano_mes": "2025-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2025",
+            "rendimento_medio_real": 3609.0
+          },
+          {
+            "ano_mes": "2025-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2025",
+            "rendimento_medio_real": 3643.0
+          },
+          {
+            "ano_mes": "2025-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2025",
+            "rendimento_medio_real": 3641.0
+          },
+          {
+            "ano_mes": "2025-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2025",
+            "rendimento_medio_real": 3641.0
+          },
+          {
+            "ano_mes": "2025-09-01",
+            "periodo": "Lula",
+            "rotulo": "jul-ago-set 2025",
+            "rendimento_medio_real": 3653.0
+          },
+          {
+            "ano_mes": "2025-10-01",
+            "periodo": "Lula",
+            "rotulo": "ago-set-out 2025",
+            "rendimento_medio_real": 3669.0
+          },
+          {
+            "ano_mes": "2025-11-01",
+            "periodo": "Lula",
+            "rotulo": "set-out-nov 2025",
+            "rendimento_medio_real": 3708.0
+          },
+          {
+            "ano_mes": "2025-12-01",
+            "periodo": "Lula",
+            "rotulo": "out-nov-dez 2025",
+            "rendimento_medio_real": 3742.0
+          },
+          {
+            "ano_mes": "2026-01-01",
+            "periodo": "Lula",
+            "rotulo": "nov-dez-jan 2026",
+            "rendimento_medio_real": 3772.0
+          },
+          {
+            "ano_mes": "2026-02-01",
+            "periodo": "Lula",
+            "rotulo": "dez-jan-fev 2026",
+            "rendimento_medio_real": 3783.0
+          },
+          {
+            "ano_mes": "2026-03-01",
+            "periodo": "Lula",
+            "rotulo": "jan-fev-mar 2026",
+            "rendimento_medio_real": 3804.0
+          },
+          {
+            "ano_mes": "2026-04-01",
+            "periodo": "Lula",
+            "rotulo": "fev-mar-abr 2026",
+            "rendimento_medio_real": 3785.0
+          },
+          {
+            "ano_mes": "2026-05-01",
+            "periodo": "Lula",
+            "rotulo": "mar-abr-mai 2026",
+            "rendimento_medio_real": 3752.0
+          },
+          {
+            "ano_mes": "2026-06-01",
+            "periodo": "Lula",
+            "rotulo": "abr-mai-jun 2026",
+            "rendimento_medio_real": 3747.0
+          },
+          {
+            "ano_mes": "2026-07-01",
+            "periodo": "Lula",
+            "rotulo": "mai-jun-jul 2026",
+            "rendimento_medio_real": 3760.0
+          },
+          {
+            "ano_mes": "2026-08-01",
+            "periodo": "Lula",
+            "rotulo": "jun-jul-ago 2026",
+            "rendimento_medio_real": 3777.0
+          }
+        ]
+      }
     }
   },
   "presidentes": {

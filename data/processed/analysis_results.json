@@ -1,8 +1,8 @@
 {
-  "gerado_em": "2026-09-30T03:24+00:00",
-  "dados_gerados_em": "2026-09-29T02:23:13+00:00",
-  "metodologia_versao": "1.1",
-  "metodologia_sha256": "11dfa6a70282e91fdde1b9e8b62cf2bbb9d5c23ebe1d270c7b28ba07383c89e9",
+  "gerado_em": "2026-09-30T04:22+00:00",
+  "dados_gerados_em": "2026-09-30T03:43:08+00:00",
+  "metodologia_versao": "1.2",
+  "metodologia_sha256": "f368c15f486769ca484b65d795ce6333ccf7a816d0bfd1207f1c73c2a8c8fa35",
   "indicadores": [
     {
       "id": "GASOLINA",
@@ -6665,6 +6665,1365 @@
       "_metrica": "variacao_pct"
     },
     {
+      "id": "DESOCUPACAO",
+      "nome": "Taxa de desocupação",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "excluido": false,
+      "k_bolsonaro": [
+        3,
+        48
+      ],
+      "k_lula": [
+        3,
+        44
+      ],
+      "k_comum": [
+        3,
+        44
+      ],
+      "mesmo_tempo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-08-01",
+          "n": 42,
+          "valor_inicio": 12.8,
+          "valor_fim": 8.9,
+          "media": 12.4881,
+          "min": 8.9,
+          "max": 14.9,
+          "diario_nas_pontas": false,
+          "valor": 12.49,
+          "f": -12.49
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 8.8,
+          "valor_fim": 5.3,
+          "media": 6.6357,
+          "min": 5.1,
+          "max": 8.8,
+          "diario_nas_pontas": false,
+          "valor": 6.64,
+          "f": -6.64
+        }
+      },
+      "completo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-12-01",
+          "n": 46,
+          "valor_inicio": 12.8,
+          "valor_fim": 7.9,
+          "media": 12.1196,
+          "min": 7.9,
+          "max": 14.9,
+          "diario_nas_pontas": false,
+          "valor": 12.12,
+          "f": -12.12
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 8.8,
+          "valor_fim": 5.3,
+          "media": 6.6357,
+          "min": 5.1,
+          "max": 8.8,
+          "diario_nas_pontas": false,
+          "valor": 6.64,
+          "f": -6.64
+        }
+      },
+      "serie": [
+        {
+          "iso": "2019-01-01",
+          "v": 12.2
+        },
+        {
+          "iso": "2019-02-01",
+          "v": 12.5
+        },
+        {
+          "iso": "2019-03-01",
+          "v": 12.8
+        },
+        {
+          "iso": "2019-04-01",
+          "v": 12.6
+        },
+        {
+          "iso": "2019-05-01",
+          "v": 12.4
+        },
+        {
+          "iso": "2019-06-01",
+          "v": 12.1
+        },
+        {
+          "iso": "2019-07-01",
+          "v": 11.9
+        },
+        {
+          "iso": "2019-08-01",
+          "v": 11.9
+        },
+        {
+          "iso": "2019-09-01",
+          "v": 11.9
+        },
+        {
+          "iso": "2019-10-01",
+          "v": 11.7
+        },
+        {
+          "iso": "2019-11-01",
+          "v": 11.3
+        },
+        {
+          "iso": "2019-12-01",
+          "v": 11.1
+        },
+        {
+          "iso": "2020-01-01",
+          "v": 11.3
+        },
+        {
+          "iso": "2020-02-01",
+          "v": 11.7
+        },
+        {
+          "iso": "2020-03-01",
+          "v": 12.4
+        },
+        {
+          "iso": "2020-04-01",
+          "v": 12.7
+        },
+        {
+          "iso": "2020-05-01",
+          "v": 13.1
+        },
+        {
+          "iso": "2020-06-01",
+          "v": 13.6
+        },
+        {
+          "iso": "2020-07-01",
+          "v": 14.1
+        },
+        {
+          "iso": "2020-08-01",
+          "v": 14.8
+        },
+        {
+          "iso": "2020-09-01",
+          "v": 14.9
+        },
+        {
+          "iso": "2020-10-01",
+          "v": 14.6
+        },
+        {
+          "iso": "2020-11-01",
+          "v": 14.3
+        },
+        {
+          "iso": "2020-12-01",
+          "v": 14.2
+        },
+        {
+          "iso": "2021-01-01",
+          "v": 14.4
+        },
+        {
+          "iso": "2021-02-01",
+          "v": 14.6
+        },
+        {
+          "iso": "2021-03-01",
+          "v": 14.9
+        },
+        {
+          "iso": "2021-04-01",
+          "v": 14.8
+        },
+        {
+          "iso": "2021-05-01",
+          "v": 14.7
+        },
+        {
+          "iso": "2021-06-01",
+          "v": 14.2
+        },
+        {
+          "iso": "2021-07-01",
+          "v": 13.7
+        },
+        {
+          "iso": "2021-08-01",
+          "v": 13.2
+        },
+        {
+          "iso": "2021-09-01",
+          "v": 12.7
+        },
+        {
+          "iso": "2021-10-01",
+          "v": 12.1
+        },
+        {
+          "iso": "2021-11-01",
+          "v": 11.6
+        },
+        {
+          "iso": "2021-12-01",
+          "v": 11.1
+        },
+        {
+          "iso": "2022-01-01",
+          "v": 11.2
+        },
+        {
+          "iso": "2022-02-01",
+          "v": 11.2
+        },
+        {
+          "iso": "2022-03-01",
+          "v": 11.1
+        },
+        {
+          "iso": "2022-04-01",
+          "v": 10.5
+        },
+        {
+          "iso": "2022-05-01",
+          "v": 9.8
+        },
+        {
+          "iso": "2022-06-01",
+          "v": 9.3
+        },
+        {
+          "iso": "2022-07-01",
+          "v": 9.1
+        },
+        {
+          "iso": "2022-08-01",
+          "v": 8.9
+        },
+        {
+          "iso": "2022-09-01",
+          "v": 8.7
+        },
+        {
+          "iso": "2022-10-01",
+          "v": 8.3
+        },
+        {
+          "iso": "2022-11-01",
+          "v": 8.1
+        },
+        {
+          "iso": "2022-12-01",
+          "v": 7.9
+        },
+        {
+          "iso": "2023-01-01",
+          "v": 8.4
+        },
+        {
+          "iso": "2023-02-01",
+          "v": 8.6
+        },
+        {
+          "iso": "2023-03-01",
+          "v": 8.8
+        },
+        {
+          "iso": "2023-04-01",
+          "v": 8.5
+        },
+        {
+          "iso": "2023-05-01",
+          "v": 8.3
+        },
+        {
+          "iso": "2023-06-01",
+          "v": 8.0
+        },
+        {
+          "iso": "2023-07-01",
+          "v": 7.9
+        },
+        {
+          "iso": "2023-08-01",
+          "v": 7.8
+        },
+        {
+          "iso": "2023-09-01",
+          "v": 7.7
+        },
+        {
+          "iso": "2023-10-01",
+          "v": 7.6
+        },
+        {
+          "iso": "2023-11-01",
+          "v": 7.5
+        },
+        {
+          "iso": "2023-12-01",
+          "v": 7.4
+        },
+        {
+          "iso": "2024-01-01",
+          "v": 7.6
+        },
+        {
+          "iso": "2024-02-01",
+          "v": 7.8
+        },
+        {
+          "iso": "2024-03-01",
+          "v": 7.9
+        },
+        {
+          "iso": "2024-04-01",
+          "v": 7.5
+        },
+        {
+          "iso": "2024-05-01",
+          "v": 7.1
+        },
+        {
+          "iso": "2024-06-01",
+          "v": 6.9
+        },
+        {
+          "iso": "2024-07-01",
+          "v": 6.8
+        },
+        {
+          "iso": "2024-08-01",
+          "v": 6.6
+        },
+        {
+          "iso": "2024-09-01",
+          "v": 6.4
+        },
+        {
+          "iso": "2024-10-01",
+          "v": 6.2
+        },
+        {
+          "iso": "2024-11-01",
+          "v": 6.1
+        },
+        {
+          "iso": "2024-12-01",
+          "v": 6.2
+        },
+        {
+          "iso": "2025-01-01",
+          "v": 6.5
+        },
+        {
+          "iso": "2025-02-01",
+          "v": 6.8
+        },
+        {
+          "iso": "2025-03-01",
+          "v": 7.0
+        },
+        {
+          "iso": "2025-04-01",
+          "v": 6.6
+        },
+        {
+          "iso": "2025-05-01",
+          "v": 6.2
+        },
+        {
+          "iso": "2025-06-01",
+          "v": 5.8
+        },
+        {
+          "iso": "2025-07-01",
+          "v": 5.6
+        },
+        {
+          "iso": "2025-08-01",
+          "v": 5.6
+        },
+        {
+          "iso": "2025-09-01",
+          "v": 5.6
+        },
+        {
+          "iso": "2025-10-01",
+          "v": 5.4
+        },
+        {
+          "iso": "2025-11-01",
+          "v": 5.2
+        },
+        {
+          "iso": "2025-12-01",
+          "v": 5.1
+        },
+        {
+          "iso": "2026-01-01",
+          "v": 5.4
+        },
+        {
+          "iso": "2026-02-01",
+          "v": 5.8
+        },
+        {
+          "iso": "2026-03-01",
+          "v": 6.1
+        },
+        {
+          "iso": "2026-04-01",
+          "v": 5.8
+        },
+        {
+          "iso": "2026-05-01",
+          "v": 5.6
+        },
+        {
+          "iso": "2026-06-01",
+          "v": 5.4
+        },
+        {
+          "iso": "2026-07-01",
+          "v": 5.3
+        },
+        {
+          "iso": "2026-08-01",
+          "v": 5.3
+        }
+      ],
+      "fonte_ultima": {
+        "periodo_codigo": "202608",
+        "rotulo": "jun-jul-ago 2026",
+        "valor": 5.3,
+        "tabela": 6381,
+        "variavel": 4099
+      },
+      "_metrica": "media"
+    },
+    {
+      "id": "SUBUTILIZACAO",
+      "nome": "Taxa composta de subutilização",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "excluido": false,
+      "k_bolsonaro": [
+        3,
+        48
+      ],
+      "k_lula": [
+        3,
+        44
+      ],
+      "k_comum": [
+        3,
+        44
+      ],
+      "mesmo_tempo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-08-01",
+          "n": 42,
+          "valor_inicio": 25.0,
+          "valor_fim": 20.5,
+          "media": 25.8524,
+          "min": 20.5,
+          "max": 30.7,
+          "diario_nas_pontas": false,
+          "valor": 25.85,
+          "f": -25.85
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 18.9,
+          "valor_fim": 13.1,
+          "media": 15.7,
+          "min": 12.9,
+          "max": 18.9,
+          "diario_nas_pontas": false,
+          "valor": 15.7,
+          "f": -15.7
+        }
+      },
+      "completo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-12-01",
+          "n": 46,
+          "valor_inicio": 25.0,
+          "valor_fim": 18.5,
+          "media": 25.2783,
+          "min": 18.5,
+          "max": 30.7,
+          "diario_nas_pontas": false,
+          "valor": 25.28,
+          "f": -25.28
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 18.9,
+          "valor_fim": 13.1,
+          "media": 15.7,
+          "min": 12.9,
+          "max": 18.9,
+          "diario_nas_pontas": false,
+          "valor": 15.7,
+          "f": -15.7
+        }
+      },
+      "serie": [
+        {
+          "iso": "2019-01-01",
+          "v": 24.3
+        },
+        {
+          "iso": "2019-02-01",
+          "v": 24.6
+        },
+        {
+          "iso": "2019-03-01",
+          "v": 25.0
+        },
+        {
+          "iso": "2019-04-01",
+          "v": 25.0
+        },
+        {
+          "iso": "2019-05-01",
+          "v": 25.0
+        },
+        {
+          "iso": "2019-06-01",
+          "v": 24.8
+        },
+        {
+          "iso": "2019-07-01",
+          "v": 24.6
+        },
+        {
+          "iso": "2019-08-01",
+          "v": 24.4
+        },
+        {
+          "iso": "2019-09-01",
+          "v": 24.1
+        },
+        {
+          "iso": "2019-10-01",
+          "v": 23.8
+        },
+        {
+          "iso": "2019-11-01",
+          "v": 23.4
+        },
+        {
+          "iso": "2019-12-01",
+          "v": 23.0
+        },
+        {
+          "iso": "2020-01-01",
+          "v": 23.2
+        },
+        {
+          "iso": "2020-02-01",
+          "v": 23.6
+        },
+        {
+          "iso": "2020-03-01",
+          "v": 24.5
+        },
+        {
+          "iso": "2020-04-01",
+          "v": 25.8
+        },
+        {
+          "iso": "2020-05-01",
+          "v": 27.6
+        },
+        {
+          "iso": "2020-06-01",
+          "v": 29.3
+        },
+        {
+          "iso": "2020-07-01",
+          "v": 30.3
+        },
+        {
+          "iso": "2020-08-01",
+          "v": 30.7
+        },
+        {
+          "iso": "2020-09-01",
+          "v": 30.4
+        },
+        {
+          "iso": "2020-10-01",
+          "v": 29.6
+        },
+        {
+          "iso": "2020-11-01",
+          "v": 29.1
+        },
+        {
+          "iso": "2020-12-01",
+          "v": 28.8
+        },
+        {
+          "iso": "2021-01-01",
+          "v": 29.0
+        },
+        {
+          "iso": "2021-02-01",
+          "v": 29.2
+        },
+        {
+          "iso": "2021-03-01",
+          "v": 29.6
+        },
+        {
+          "iso": "2021-04-01",
+          "v": 29.6
+        },
+        {
+          "iso": "2021-05-01",
+          "v": 29.3
+        },
+        {
+          "iso": "2021-06-01",
+          "v": 28.5
+        },
+        {
+          "iso": "2021-07-01",
+          "v": 27.9
+        },
+        {
+          "iso": "2021-08-01",
+          "v": 27.2
+        },
+        {
+          "iso": "2021-09-01",
+          "v": 26.6
+        },
+        {
+          "iso": "2021-10-01",
+          "v": 25.8
+        },
+        {
+          "iso": "2021-11-01",
+          "v": 25.0
+        },
+        {
+          "iso": "2021-12-01",
+          "v": 24.3
+        },
+        {
+          "iso": "2022-01-01",
+          "v": 23.9
+        },
+        {
+          "iso": "2022-02-01",
+          "v": 23.6
+        },
+        {
+          "iso": "2022-03-01",
+          "v": 23.2
+        },
+        {
+          "iso": "2022-04-01",
+          "v": 22.5
+        },
+        {
+          "iso": "2022-05-01",
+          "v": 21.9
+        },
+        {
+          "iso": "2022-06-01",
+          "v": 21.3
+        },
+        {
+          "iso": "2022-07-01",
+          "v": 20.9
+        },
+        {
+          "iso": "2022-08-01",
+          "v": 20.5
+        },
+        {
+          "iso": "2022-09-01",
+          "v": 20.1
+        },
+        {
+          "iso": "2022-10-01",
+          "v": 19.5
+        },
+        {
+          "iso": "2022-11-01",
+          "v": 18.9
+        },
+        {
+          "iso": "2022-12-01",
+          "v": 18.5
+        },
+        {
+          "iso": "2023-01-01",
+          "v": 18.7
+        },
+        {
+          "iso": "2023-02-01",
+          "v": 18.9
+        },
+        {
+          "iso": "2023-03-01",
+          "v": 18.9
+        },
+        {
+          "iso": "2023-04-01",
+          "v": 18.4
+        },
+        {
+          "iso": "2023-05-01",
+          "v": 18.2
+        },
+        {
+          "iso": "2023-06-01",
+          "v": 17.8
+        },
+        {
+          "iso": "2023-07-01",
+          "v": 17.8
+        },
+        {
+          "iso": "2023-08-01",
+          "v": 17.7
+        },
+        {
+          "iso": "2023-09-01",
+          "v": 17.6
+        },
+        {
+          "iso": "2023-10-01",
+          "v": 17.5
+        },
+        {
+          "iso": "2023-11-01",
+          "v": 17.4
+        },
+        {
+          "iso": "2023-12-01",
+          "v": 17.3
+        },
+        {
+          "iso": "2024-01-01",
+          "v": 17.6
+        },
+        {
+          "iso": "2024-02-01",
+          "v": 17.9
+        },
+        {
+          "iso": "2024-03-01",
+          "v": 17.9
+        },
+        {
+          "iso": "2024-04-01",
+          "v": 17.4
+        },
+        {
+          "iso": "2024-05-01",
+          "v": 16.8
+        },
+        {
+          "iso": "2024-06-01",
+          "v": 16.4
+        },
+        {
+          "iso": "2024-07-01",
+          "v": 16.2
+        },
+        {
+          "iso": "2024-08-01",
+          "v": 16.0
+        },
+        {
+          "iso": "2024-09-01",
+          "v": 15.7
+        },
+        {
+          "iso": "2024-10-01",
+          "v": 15.4
+        },
+        {
+          "iso": "2024-11-01",
+          "v": 15.3
+        },
+        {
+          "iso": "2024-12-01",
+          "v": 15.2
+        },
+        {
+          "iso": "2025-01-01",
+          "v": 15.5
+        },
+        {
+          "iso": "2025-02-01",
+          "v": 15.7
+        },
+        {
+          "iso": "2025-03-01",
+          "v": 15.9
+        },
+        {
+          "iso": "2025-04-01",
+          "v": 15.4
+        },
+        {
+          "iso": "2025-05-01",
+          "v": 14.9
+        },
+        {
+          "iso": "2025-06-01",
+          "v": 14.4
+        },
+        {
+          "iso": "2025-07-01",
+          "v": 14.1
+        },
+        {
+          "iso": "2025-08-01",
+          "v": 14.1
+        },
+        {
+          "iso": "2025-09-01",
+          "v": 13.9
+        },
+        {
+          "iso": "2025-10-01",
+          "v": 13.9
+        },
+        {
+          "iso": "2025-11-01",
+          "v": 13.5
+        },
+        {
+          "iso": "2025-12-01",
+          "v": 13.4
+        },
+        {
+          "iso": "2026-01-01",
+          "v": 13.8
+        },
+        {
+          "iso": "2026-02-01",
+          "v": 14.1
+        },
+        {
+          "iso": "2026-03-01",
+          "v": 14.3
+        },
+        {
+          "iso": "2026-04-01",
+          "v": 13.8
+        },
+        {
+          "iso": "2026-05-01",
+          "v": 13.3
+        },
+        {
+          "iso": "2026-06-01",
+          "v": 12.9
+        },
+        {
+          "iso": "2026-07-01",
+          "v": 13.0
+        },
+        {
+          "iso": "2026-08-01",
+          "v": 13.1
+        }
+      ],
+      "fonte_ultima": {
+        "periodo_codigo": "202608",
+        "rotulo": "jun-jul-ago 2026",
+        "valor": 13.1,
+        "tabela": 6441,
+        "variavel": 4118
+      },
+      "_metrica": "media"
+    },
+    {
+      "id": "RENDIMENTO",
+      "nome": "Rendimento médio real habitual",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "excluido": false,
+      "k_bolsonaro": [
+        3,
+        48
+      ],
+      "k_lula": [
+        3,
+        44
+      ],
+      "k_comum": [
+        3,
+        44
+      ],
+      "mesmo_tempo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-08-01",
+          "n": 42,
+          "valor_inicio": 3369.0,
+          "valor_fim": 3216.0,
+          "media": 3325.6667,
+          "min": 3068.0,
+          "max": 3588.0,
+          "diario_nas_pontas": false,
+          "valor": -4.54,
+          "f": -4.54
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 3338.0,
+          "valor_fim": 3777.0,
+          "media": 3562.8333,
+          "min": 3322.0,
+          "max": 3804.0,
+          "diario_nas_pontas": false,
+          "valor": 13.15,
+          "f": 13.15
+        }
+      },
+      "completo": {
+        "Bolsonaro": {
+          "inicio": "2019-03-01",
+          "fim": "2022-12-01",
+          "n": 46,
+          "valor_inicio": 3369.0,
+          "valor_fim": 3317.0,
+          "media": 3322.6739,
+          "min": 3068.0,
+          "max": 3588.0,
+          "diario_nas_pontas": false,
+          "valor": -1.54,
+          "f": -1.54
+        },
+        "Lula": {
+          "inicio": "2023-03-01",
+          "fim": "2026-08-01",
+          "n": 42,
+          "valor_inicio": 3338.0,
+          "valor_fim": 3777.0,
+          "media": 3562.8333,
+          "min": 3322.0,
+          "max": 3804.0,
+          "diario_nas_pontas": false,
+          "valor": 13.15,
+          "f": 13.15
+        }
+      },
+      "serie": [
+        {
+          "iso": "2019-01-01",
+          "v": 3371.0
+        },
+        {
+          "iso": "2019-02-01",
+          "v": 3383.0
+        },
+        {
+          "iso": "2019-03-01",
+          "v": 3369.0
+        },
+        {
+          "iso": "2019-04-01",
+          "v": 3351.0
+        },
+        {
+          "iso": "2019-05-01",
+          "v": 3328.0
+        },
+        {
+          "iso": "2019-06-01",
+          "v": 3328.0
+        },
+        {
+          "iso": "2019-07-01",
+          "v": 3320.0
+        },
+        {
+          "iso": "2019-08-01",
+          "v": 3333.0
+        },
+        {
+          "iso": "2019-09-01",
+          "v": 3333.0
+        },
+        {
+          "iso": "2019-10-01",
+          "v": 3357.0
+        },
+        {
+          "iso": "2019-11-01",
+          "v": 3372.0
+        },
+        {
+          "iso": "2019-12-01",
+          "v": 3361.0
+        },
+        {
+          "iso": "2020-01-01",
+          "v": 3369.0
+        },
+        {
+          "iso": "2020-02-01",
+          "v": 3372.0
+        },
+        {
+          "iso": "2020-03-01",
+          "v": 3399.0
+        },
+        {
+          "iso": "2020-04-01",
+          "v": 3436.0
+        },
+        {
+          "iso": "2020-05-01",
+          "v": 3493.0
+        },
+        {
+          "iso": "2020-06-01",
+          "v": 3546.0
+        },
+        {
+          "iso": "2020-07-01",
+          "v": 3588.0
+        },
+        {
+          "iso": "2020-08-01",
+          "v": 3583.0
+        },
+        {
+          "iso": "2020-09-01",
+          "v": 3586.0
+        },
+        {
+          "iso": "2020-10-01",
+          "v": 3533.0
+        },
+        {
+          "iso": "2020-11-01",
+          "v": 3495.0
+        },
+        {
+          "iso": "2020-12-01",
+          "v": 3442.0
+        },
+        {
+          "iso": "2021-01-01",
+          "v": 3434.0
+        },
+        {
+          "iso": "2021-02-01",
+          "v": 3403.0
+        },
+        {
+          "iso": "2021-03-01",
+          "v": 3412.0
+        },
+        {
+          "iso": "2021-04-01",
+          "v": 3371.0
+        },
+        {
+          "iso": "2021-05-01",
+          "v": 3368.0
+        },
+        {
+          "iso": "2021-06-01",
+          "v": 3316.0
+        },
+        {
+          "iso": "2021-07-01",
+          "v": 3285.0
+        },
+        {
+          "iso": "2021-08-01",
+          "v": 3238.0
+        },
+        {
+          "iso": "2021-09-01",
+          "v": 3181.0
+        },
+        {
+          "iso": "2021-10-01",
+          "v": 3135.0
+        },
+        {
+          "iso": "2021-11-01",
+          "v": 3093.0
+        },
+        {
+          "iso": "2021-12-01",
+          "v": 3068.0
+        },
+        {
+          "iso": "2022-01-01",
+          "v": 3097.0
+        },
+        {
+          "iso": "2022-02-01",
+          "v": 3100.0
+        },
+        {
+          "iso": "2022-03-01",
+          "v": 3113.0
+        },
+        {
+          "iso": "2022-04-01",
+          "v": 3101.0
+        },
+        {
+          "iso": "2022-05-01",
+          "v": 3121.0
+        },
+        {
+          "iso": "2022-06-01",
+          "v": 3144.0
+        },
+        {
+          "iso": "2022-07-01",
+          "v": 3188.0
+        },
+        {
+          "iso": "2022-08-01",
+          "v": 3216.0
+        },
+        {
+          "iso": "2022-09-01",
+          "v": 3259.0
+        },
+        {
+          "iso": "2022-10-01",
+          "v": 3279.0
+        },
+        {
+          "iso": "2022-11-01",
+          "v": 3310.0
+        },
+        {
+          "iso": "2022-12-01",
+          "v": 3317.0
+        },
+        {
+          "iso": "2023-01-01",
+          "v": 3332.0
+        },
+        {
+          "iso": "2023-02-01",
+          "v": 3330.0
+        },
+        {
+          "iso": "2023-03-01",
+          "v": 3338.0
+        },
+        {
+          "iso": "2023-04-01",
+          "v": 3328.0
+        },
+        {
+          "iso": "2023-05-01",
+          "v": 3322.0
+        },
+        {
+          "iso": "2023-06-01",
+          "v": 3337.0
+        },
+        {
+          "iso": "2023-07-01",
+          "v": 3349.0
+        },
+        {
+          "iso": "2023-08-01",
+          "v": 3359.0
+        },
+        {
+          "iso": "2023-09-01",
+          "v": 3391.0
+        },
+        {
+          "iso": "2023-10-01",
+          "v": 3403.0
+        },
+        {
+          "iso": "2023-11-01",
+          "v": 3432.0
+        },
+        {
+          "iso": "2023-12-01",
+          "v": 3418.0
+        },
+        {
+          "iso": "2024-01-01",
+          "v": 3456.0
+        },
+        {
+          "iso": "2024-02-01",
+          "v": 3471.0
+        },
+        {
+          "iso": "2024-03-01",
+          "v": 3468.0
+        },
+        {
+          "iso": "2024-04-01",
+          "v": 3484.0
+        },
+        {
+          "iso": "2024-05-01",
+          "v": 3505.0
+        },
+        {
+          "iso": "2024-06-01",
+          "v": 3528.0
+        },
+        {
+          "iso": "2024-07-01",
+          "v": 3507.0
+        },
+        {
+          "iso": "2024-08-01",
+          "v": 3526.0
+        },
+        {
+          "iso": "2024-09-01",
+          "v": 3514.0
+        },
+        {
+          "iso": "2024-10-01",
+          "v": 3533.0
+        },
+        {
+          "iso": "2024-11-01",
+          "v": 3549.0
+        },
+        {
+          "iso": "2024-12-01",
+          "v": 3563.0
+        },
+        {
+          "iso": "2025-01-01",
+          "v": 3580.0
+        },
+        {
+          "iso": "2025-02-01",
+          "v": 3594.0
+        },
+        {
+          "iso": "2025-03-01",
+          "v": 3605.0
+        },
+        {
+          "iso": "2025-04-01",
+          "v": 3593.0
+        },
+        {
+          "iso": "2025-05-01",
+          "v": 3609.0
+        },
+        {
+          "iso": "2025-06-01",
+          "v": 3643.0
+        },
+        {
+          "iso": "2025-07-01",
+          "v": 3641.0
+        },
+        {
+          "iso": "2025-08-01",
+          "v": 3641.0
+        },
+        {
+          "iso": "2025-09-01",
+          "v": 3653.0
+        },
+        {
+          "iso": "2025-10-01",
+          "v": 3669.0
+        },
+        {
+          "iso": "2025-11-01",
+          "v": 3708.0
+        },
+        {
+          "iso": "2025-12-01",
+          "v": 3742.0
+        },
+        {
+          "iso": "2026-01-01",
+          "v": 3772.0
+        },
+        {
+          "iso": "2026-02-01",
+          "v": 3783.0
+        },
+        {
+          "iso": "2026-03-01",
+          "v": 3804.0
+        },
+        {
+          "iso": "2026-04-01",
+          "v": 3785.0
+        },
+        {
+          "iso": "2026-05-01",
+          "v": 3752.0
+        },
+        {
+          "iso": "2026-06-01",
+          "v": 3747.0
+        },
+        {
+          "iso": "2026-07-01",
+          "v": 3760.0
+        },
+        {
+          "iso": "2026-08-01",
+          "v": 3777.0
+        }
+      ],
+      "fonte_ultima": {
+        "periodo_codigo": "202608",
+        "rotulo": "jun-jul-ago 2026",
+        "valor": 3777.0,
+        "tabela": 6390,
+        "variavel": 5933
+      },
+      "_metrica": "variacao_pct"
+    },
+    {
       "id": "PIB",
       "nome": "PIB (crescimento real anual)",
       "dimensao": "atividade",
@@ -8357,6 +9716,147 @@
           "sem_uma_serie": null
         },
         {
+          "id": "trabalho",
+          "n_series": 3,
+          "modo": "completo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 3
+          },
+          "grupos": null,
+          "por_periodo": null,
+          "por_serie": [
+            {
+              "id": "DESOCUPACAO",
+              "nome": "Taxa de desocupação",
+              "metrica": "media",
+              "unidade": "% da força de trabalho",
+              "tolerancia": 0.1,
+              "Bolsonaro": 12.12,
+              "Lula": 6.64,
+              "valor_inicio": {
+                "Bolsonaro": 12.8,
+                "Lula": 8.8
+              },
+              "valor_fim": {
+                "Bolsonaro": 7.9,
+                "Lula": 5.3
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-12-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "variação do início ao fim da janela (p.p.)",
+                "Bolsonaro": -4.9,
+                "Lula": -3.5,
+                "leitura": -1
+              }
+            },
+            {
+              "id": "SUBUTILIZACAO",
+              "nome": "Taxa composta de subutilização",
+              "metrica": "media",
+              "unidade": "% da força de trabalho ampliada",
+              "tolerancia": 0.1,
+              "Bolsonaro": 25.28,
+              "Lula": 15.7,
+              "valor_inicio": {
+                "Bolsonaro": 25.0,
+                "Lula": 18.9
+              },
+              "valor_fim": {
+                "Bolsonaro": 18.5,
+                "Lula": 13.1
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-12-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "variação do início ao fim da janela (p.p.)",
+                "Bolsonaro": -6.5,
+                "Lula": -5.8,
+                "leitura": 0
+              }
+            },
+            {
+              "id": "RENDIMENTO",
+              "nome": "Rendimento médio real habitual",
+              "metrica": "variacao_pct",
+              "unidade": "R$ mensais, valores reais do IBGE",
+              "tolerancia": 1.0,
+              "Bolsonaro": -1.54,
+              "Lula": 13.15,
+              "valor_inicio": {
+                "Bolsonaro": 3369.0,
+                "Lula": 3338.0
+              },
+              "valor_fim": {
+                "Bolsonaro": 3317.0,
+                "Lula": 3777.0
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-12-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "média da janela (diferença relativa entre os períodos, %)",
+                "Bolsonaro": 3322.67,
+                "Lula": 3562.83,
+                "diferenca_relativa_pct": 7.23,
+                "leitura": 1
+              }
+            }
+          ],
+          "leitura": 1,
+          "tolerancia": null,
+          "metrica": "misto",
+          "votos": {
+            "lula": 3,
+            "bolsonaro": 0,
+            "iguais": 0
+          },
+          "leitura_alternativa": 0,
+          "maior_favoravel": null,
+          "maior_desfavoravel": null,
+          "maior_divergencia": null,
+          "outliers": [],
+          "sem_uma_serie": {
+            "n": 3,
+            "iguais": 3,
+            "casos": [
+              {
+                "removido": "DESOCUPACAO",
+                "leitura": 1
+              },
+              {
+                "removido": "SUBUTILIZACAO",
+                "leitura": 1
+              },
+              {
+                "removido": "RENDIMENTO",
+                "leitura": 1
+              }
+            ]
+          }
+        },
+        {
           "id": "atividade",
           "n_series": 1,
           "modo": "completo",
@@ -8417,31 +9917,35 @@
       "sintese": [
         {
           "id": "iguais",
-          "soma": 75,
+          "soma": 80,
           "total_pesos": 100,
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             },
             "renda": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 0
             },
+            "trabalho": {
+              "peso": 20,
+              "leitura": 1
+            },
             "atividade": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             }
           }
         },
         {
           "id": "custo_vida",
-          "soma": 80,
+          "soma": 85,
           "total_pesos": 100,
           "sentido": 1,
           "contribuicoes": {
@@ -8450,27 +9954,31 @@
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 0
             },
+            "trabalho": {
+              "peso": 15,
+              "leitura": 1
+            },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             }
           }
         },
         {
           "id": "inflacao",
-          "soma": 80,
+          "soma": 85,
           "total_pesos": 100,
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
@@ -8478,11 +9986,15 @@
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 0
             },
+            "trabalho": {
+              "peso": 15,
+              "leitura": 1
+            },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             }
           }
@@ -8494,40 +10006,76 @@
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
               "peso": 40,
               "leitura": 0
             },
+            "trabalho": {
+              "peso": 15,
+              "leitura": 1
+            },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "trabalho",
+          "soma": 85,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 15,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 15,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 15,
+              "leitura": 0
+            },
+            "trabalho": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 15,
               "leitura": 1
             }
           }
         },
         {
           "id": "atividade",
-          "soma": 80,
+          "soma": 85,
           "total_pesos": 100,
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 0
+            },
+            "trabalho": {
+              "peso": 15,
+              "leitura": 1
             },
             "atividade": {
               "peso": 40,
@@ -8537,8 +10085,8 @@
         }
       ],
       "grade": {
-        "combinacoes": 1771,
-        "lula": 1770,
+        "combinacoes": 10626,
+        "lula": 10625,
         "bolsonaro": 0,
         "empate": 1,
         "passo": 5,
@@ -8618,11 +10166,12 @@
           "custo_vida": "Neste critério (variação real mediana das 11 séries; menor variação real = menor pressão sobre o consumidor), o valor foi menor no período Lula (−9,8%) do que no período Bolsonaro (+34,8%).",
           "inflacao": "Neste critério (média do IPCA em 12 meses; média menor = menor pressão inflacionária no período), o valor foi menor no período Lula (4,6%) do que no período Bolsonaro (7,0%).",
           "renda": "Neste critério (variação mediana do poder de compra das 2 séries), os dois períodos ficaram praticamente iguais: +0,8% no período Bolsonaro e +0,9% no período Lula (diferença abaixo da tolerância de 1,0 ponto).",
+          "trabalho": "Taxa de desocupação: média de 12,1% no período Bolsonaro e 6,6% no período Lula (aponta para o período Lula); Taxa composta de subutilização: média de 25,3% no período Bolsonaro e 15,7% no período Lula (aponta para o período Lula); Rendimento médio real habitual: variação de −1,5% no período Bolsonaro e +13,2% no período Lula (aponta para o período Lula). Cada série vota uma vez: 3 pelo período Lula, 0 pelo período Bolsonaro e 0 praticamente iguais. Somando os votos, a dimensão aponta para o período Lula.",
           "atividade": "Neste critério (crescimento médio anual do PIB; média maior = a produção cresceu mais por ano), o valor foi maior no período Lula (3,0%) do que no período Bolsonaro (1,4%).",
           "mercados": "Dólar: +35,2% no período Bolsonaro e −4,3% no período Lula; Selic: +7,25 p.p. no período Bolsonaro e 0,00 p.p. no período Lula; Ibovespa: +20,6% no período Bolsonaro e +76,2% no período Lula. Sem direção definida."
         },
-        "geral": "Nas 4 dimensões com critério definido, 3 apontam para o período Lula, 0 para o período Bolsonaro e 1 fica praticamente igual (janela: período completo disponível).",
-        "robustez": "Nenhuma das 1.771 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 1.770 (99,9%) e fica empatada em 1 (quando todo o peso cai em dimensões que ficam praticamente iguais). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
+        "geral": "Nas 5 dimensões com critério definido, 4 apontam para o período Lula, 0 para o período Bolsonaro e 1 fica praticamente igual (janela: período completo disponível).",
+        "robustez": "Nenhuma das 10.626 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 10.625 (mais de 99,9%) e fica empatada em 1 (quando todo o peso cai em dimensões que ficam praticamente iguais). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
       }
     },
     "mesmo_tempo": {
@@ -8852,6 +10401,147 @@
           "sem_uma_serie": null
         },
         {
+          "id": "trabalho",
+          "n_series": 3,
+          "modo": "mesmo_tempo",
+          "nivel_evidencia": "alta",
+          "evidencia_contagem": {
+            "alta": 3
+          },
+          "grupos": null,
+          "por_periodo": null,
+          "por_serie": [
+            {
+              "id": "DESOCUPACAO",
+              "nome": "Taxa de desocupação",
+              "metrica": "media",
+              "unidade": "% da força de trabalho",
+              "tolerancia": 0.1,
+              "Bolsonaro": 12.49,
+              "Lula": 6.64,
+              "valor_inicio": {
+                "Bolsonaro": 12.8,
+                "Lula": 8.8
+              },
+              "valor_fim": {
+                "Bolsonaro": 8.9,
+                "Lula": 5.3
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-08-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "variação do início ao fim da janela (p.p.)",
+                "Bolsonaro": -3.9,
+                "Lula": -3.5,
+                "leitura": 0
+              }
+            },
+            {
+              "id": "SUBUTILIZACAO",
+              "nome": "Taxa composta de subutilização",
+              "metrica": "media",
+              "unidade": "% da força de trabalho ampliada",
+              "tolerancia": 0.1,
+              "Bolsonaro": 25.85,
+              "Lula": 15.7,
+              "valor_inicio": {
+                "Bolsonaro": 25.0,
+                "Lula": 18.9
+              },
+              "valor_fim": {
+                "Bolsonaro": 20.5,
+                "Lula": 13.1
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-08-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "variação do início ao fim da janela (p.p.)",
+                "Bolsonaro": -4.5,
+                "Lula": -5.8,
+                "leitura": 1
+              }
+            },
+            {
+              "id": "RENDIMENTO",
+              "nome": "Rendimento médio real habitual",
+              "metrica": "variacao_pct",
+              "unidade": "R$ mensais, valores reais do IBGE",
+              "tolerancia": 1.0,
+              "Bolsonaro": -4.54,
+              "Lula": 13.15,
+              "valor_inicio": {
+                "Bolsonaro": 3369.0,
+                "Lula": 3338.0
+              },
+              "valor_fim": {
+                "Bolsonaro": 3216.0,
+                "Lula": 3777.0
+              },
+              "inicio": {
+                "Bolsonaro": "2019-03-01",
+                "Lula": "2023-03-01"
+              },
+              "fim": {
+                "Bolsonaro": "2022-08-01",
+                "Lula": "2026-08-01"
+              },
+              "leitura": 1,
+              "alternativa": {
+                "metrica": "média da janela (diferença relativa entre os períodos, %)",
+                "Bolsonaro": 3325.67,
+                "Lula": 3562.83,
+                "diferenca_relativa_pct": 7.13,
+                "leitura": 1
+              }
+            }
+          ],
+          "leitura": 1,
+          "tolerancia": null,
+          "metrica": "misto",
+          "votos": {
+            "lula": 3,
+            "bolsonaro": 0,
+            "iguais": 0
+          },
+          "leitura_alternativa": 1,
+          "maior_favoravel": null,
+          "maior_desfavoravel": null,
+          "maior_divergencia": null,
+          "outliers": [],
+          "sem_uma_serie": {
+            "n": 3,
+            "iguais": 3,
+            "casos": [
+              {
+                "removido": "DESOCUPACAO",
+                "leitura": 1
+              },
+              {
+                "removido": "SUBUTILIZACAO",
+                "leitura": 1
+              },
+              {
+                "removido": "RENDIMENTO",
+                "leitura": 1
+              }
+            ]
+          }
+        },
+        {
           "id": "atividade",
           "n_series": 1,
           "modo": "mesmo_tempo",
@@ -8917,19 +10607,23 @@
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             },
             "renda": {
-              "peso": 25,
+              "peso": 20,
+              "leitura": 1
+            },
+            "trabalho": {
+              "peso": 20,
               "leitura": 1
             },
             "atividade": {
-              "peso": 25,
+              "peso": 20,
               "leitura": 1
             }
           }
@@ -8945,15 +10639,19 @@
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
+              "leitura": 1
+            },
+            "trabalho": {
+              "peso": 15,
               "leitura": 1
             },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             }
           }
@@ -8965,7 +10663,7 @@
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
@@ -8973,11 +10671,15 @@
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
+              "leitura": 1
+            },
+            "trabalho": {
+              "peso": 15,
               "leitura": 1
             },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             }
           }
@@ -8989,19 +10691,51 @@
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
               "peso": 40,
               "leitura": 1
             },
+            "trabalho": {
+              "peso": 15,
+              "leitura": 1
+            },
             "atividade": {
-              "peso": 20,
+              "peso": 15,
+              "leitura": 1
+            }
+          }
+        },
+        {
+          "id": "trabalho",
+          "soma": 100,
+          "total_pesos": 100,
+          "sentido": 1,
+          "contribuicoes": {
+            "custo_vida": {
+              "peso": 15,
+              "leitura": 1
+            },
+            "inflacao": {
+              "peso": 15,
+              "leitura": 1
+            },
+            "renda": {
+              "peso": 15,
+              "leitura": 1
+            },
+            "trabalho": {
+              "peso": 40,
+              "leitura": 1
+            },
+            "atividade": {
+              "peso": 15,
               "leitura": 1
             }
           }
@@ -9013,15 +10747,19 @@
           "sentido": 1,
           "contribuicoes": {
             "custo_vida": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "inflacao": {
-              "peso": 20,
+              "peso": 15,
               "leitura": 1
             },
             "renda": {
-              "peso": 20,
+              "peso": 15,
+              "leitura": 1
+            },
+            "trabalho": {
+              "peso": 15,
               "leitura": 1
             },
             "atividade": {
@@ -9032,8 +10770,8 @@
         }
       ],
       "grade": {
-        "combinacoes": 1771,
-        "lula": 1771,
+        "combinacoes": 10626,
+        "lula": 10626,
         "bolsonaro": 0,
         "empate": 0,
         "passo": 5,
@@ -9113,11 +10851,12 @@
           "custo_vida": "Neste critério (variação real mediana das 11 séries; menor variação real = menor pressão sobre o consumidor), o valor foi menor no período Lula (−9,8%) do que no período Bolsonaro (+39,4%).",
           "inflacao": "Neste critério (média do IPCA em 12 meses; média menor = menor pressão inflacionária no período), o valor foi menor no período Lula (4,6%) do que no período Bolsonaro (7,0%).",
           "renda": "Neste critério (variação mediana do poder de compra das 2 séries; variação maior = o piso rende mais), o valor foi maior no período Lula (+0,9%) do que no período Bolsonaro (−3,0%).",
+          "trabalho": "Taxa de desocupação: média de 12,5% no período Bolsonaro e 6,6% no período Lula (aponta para o período Lula); Taxa composta de subutilização: média de 25,9% no período Bolsonaro e 15,7% no período Lula (aponta para o período Lula); Rendimento médio real habitual: variação de −4,5% no período Bolsonaro e +13,2% no período Lula (aponta para o período Lula). Cada série vota uma vez: 3 pelo período Lula, 0 pelo período Bolsonaro e 0 praticamente iguais. Somando os votos, a dimensão aponta para o período Lula.",
           "atividade": "Neste critério (crescimento médio anual do PIB; média maior = a produção cresceu mais por ano), o valor foi maior no período Lula (3,0%) do que no período Bolsonaro (0,9%).",
           "mercados": "Dólar: +37,5% no período Bolsonaro e −0,9% no período Lula; Selic: +7,20 p.p. no período Bolsonaro e +0,29 p.p. no período Lula; Ibovespa: +12,4% no período Bolsonaro e +56,4% no período Lula. Sem direção definida."
         },
-        "geral": "Nas 4 dimensões com critério definido, 4 apontam para o período Lula, 0 para o período Bolsonaro e 0 ficam praticamente iguais (janela: comparação por igual duração).",
-        "robustez": "Nenhuma das 1.771 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 1.771 (100,0%). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
+        "geral": "Nas 5 dimensões com critério definido, 5 apontam para o período Lula, 0 para o período Bolsonaro e 0 ficam praticamente iguais (janela: comparação por igual duração).",
+        "robustez": "Nenhuma das 10.626 combinações de pesos testadas leva a síntese ao período Bolsonaro: ela aponta para o período Lula em 10.626 (100,0%). Isso ocorre porque nenhuma dimensão aponta para o período Bolsonaro; os pesos mudam o tamanho da diferença, não o lado."
       }
     }
   },
@@ -9125,6 +10864,54 @@
     "mesmo_tempo_meses": 44,
     "lula_meses_disponiveis": 44,
     "bolsonaro_meses": 48
+  },
+  "mercado_trabalho": {
+    "coletado_em": "2026-09-30T03:42:41+00:00",
+    "nota": "Cada ponto é um trimestre móvel identificado pelo mês em que termina. O rendimento real vem deflacionado pelo IBGE (IPCA, a preços do mês do meio do trimestre mais recente divulgado) e é refeito a cada divulgação.",
+    "series": {
+      "DESOCUPACAO": {
+        "nome_oficial": "Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade",
+        "tabela_sidra": 6381,
+        "variavel_sidra": 4099,
+        "unidade": "%",
+        "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+        "escopo_geografico": "Brasil",
+        "populacao": "pessoas de 14 anos ou mais de idade",
+        "ultima_observacao": "202608",
+        "ultima_observacao_rotulo": "jun-jul-ago 2026",
+        "ultimo_valor": 5.3,
+        "url_tabela": "https://sidra.ibge.gov.br/tabela/6381",
+        "url_api": "https://apisidra.ibge.gov.br/values/t/6381/n1/1/v/4099/p/all"
+      },
+      "SUBUTILIZACAO": {
+        "nome_oficial": "Taxa composta de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade",
+        "tabela_sidra": 6441,
+        "variavel_sidra": 4118,
+        "unidade": "%",
+        "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+        "escopo_geografico": "Brasil",
+        "populacao": "pessoas de 14 anos ou mais de idade",
+        "ultima_observacao": "202608",
+        "ultima_observacao_rotulo": "jun-jul-ago 2026",
+        "ultimo_valor": 13.1,
+        "url_tabela": "https://sidra.ibge.gov.br/tabela/6441",
+        "url_api": "https://apisidra.ibge.gov.br/values/t/6441/n1/1/v/4118/p/all"
+      },
+      "RENDIMENTO": {
+        "nome_oficial": "Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos",
+        "tabela_sidra": 6390,
+        "variavel_sidra": 5933,
+        "unidade": "Reais",
+        "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+        "escopo_geografico": "Brasil",
+        "populacao": "pessoas de 14 anos ou mais de idade",
+        "ultima_observacao": "202608",
+        "ultima_observacao_rotulo": "jun-jul-ago 2026",
+        "ultimo_valor": 3777.0,
+        "url_tabela": "https://sidra.ibge.gov.br/tabela/6390",
+        "url_api": "https://apisidra.ibge.gov.br/values/t/6390/n1/1/v/5933/p/all"
+      }
+    }
   },
   "pib_ultimo_trimestre": {
     "trimestre": "2026-T2",

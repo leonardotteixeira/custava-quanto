@@ -11,7 +11,7 @@ para na primeira falha de uma etapa crítica (o build final).
 
 --rapido pula ANP e IBGE (arquivos grandes, demoram minutos) e atualiza só o
 que muda todo dia: câmbio/Selic/Ibovespa (via download_mercados.py com dados
-diários desde 2019), salário mínimo, Brent, e então a consolidação/notícias.
+diários desde 2019), salário mínimo, PNAD Contínua (mercado de trabalho), Brent, e então a consolidação/notícias.
 Use isso para "atualizar os indicadores de mercado agora" sem esperar a ANP
 inteira baixar de novo.
 """
@@ -47,6 +47,7 @@ def main() -> None:
     etapas_download = [
         ("download_mercados.py", True),  # Dólar, Selic, Ibovespa (diários desde 2019)
         ("download_salario_minimo.py", False),
+        ("download_pnad.py", False),  # mercado de trabalho (IBGE, PNAD Contínua, via SIDRA)
         ("download_brent.py", False),
     ]
     if not args.rapido:

@@ -1,6 +1,6 @@
 {
-  "versao": "1.1",
-  "data": "2026-09-29",
+  "versao": "1.2",
+  "data": "2026-09-30",
   "dimensoes": [
     {
       "id": "custo_vida",
@@ -48,8 +48,24 @@
       }
     },
     {
-      "id": "atividade",
+      "id": "trabalho",
       "ordem": 4,
+      "titulo": "Mercado de trabalho",
+      "tipo": "A",
+      "agregacao": "por_serie",
+      "pergunta": "Em qual período o mercado de trabalho mostrou menor desocupação, menor subutilização da força de trabalho e maior rendimento real do trabalho?",
+      "explicacao": "Três séries oficiais da PNAD Contínua (IBGE), em trimestres móveis: a taxa de desocupação, a taxa composta de subutilização da força de trabalho e o rendimento médio real habitual. As unidades são diferentes (%, % e R$); por isso cada série é lida na sua unidade e vota uma vez, em vez de misturar unidades numa mediana.",
+      "mede": "quantas pessoas procuram trabalho e não encontram, quantas estão sem trabalho suficiente ou disponível, e quanto ganham, em média e já descontada a inflação, as pessoas ocupadas com rendimento de trabalho",
+      "nao_mede": "informalidade, qualidade do emprego, desigualdade de renda nem diferenças entre regiões e grupos",
+      "criterio": {
+        "metrica": "voto de cada série: taxas pela média da janela (média menor = menos desocupação ou subutilização); rendimento real pela variação do início ao fim da janela (variação maior = mais rendimento)",
+        "sentido": "misto",
+        "explica": "cada série vota +1, 0 ou -1 e a dimensão segue o sinal da soma dos votos"
+      }
+    },
+    {
+      "id": "atividade",
+      "ordem": 5,
       "titulo": "Atividade econômica",
       "tipo": "A",
       "pergunta": "Em qual período a atividade econômica medida pelo PIB apresentou maior crescimento?",
@@ -64,7 +80,7 @@
     },
     {
       "id": "mercados",
-      "ordem": 5,
+      "ordem": 6,
       "titulo": "Mercados e condições financeiras",
       "tipo": "B",
       "pergunta": "Como os principais indicadores financeiros evoluíram em cada período?",
@@ -352,6 +368,66 @@
       "confianca": "alta"
     },
     {
+      "id": "DESOCUPACAO",
+      "bloco": "mercado_trabalho",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "campo": "taxa_desocupacao",
+      "metrica": "media",
+      "direcao": "menor",
+      "trimestre_movel": true,
+      "unidade": "% da força de trabalho",
+      "fonte": "IBGE — PNAD Contínua, tabela 6381 (variável 4099)",
+      "frequencia": "trimestre móvel (resultado mensal)",
+      "nome": "Taxa de desocupação",
+      "interpretacao": "Taxa menor significa menos pessoas procurando trabalho sem encontrar, em proporção da força de trabalho.",
+      "limitacoes": [
+        "Só conta quem procurou trabalho na semana de referência: quem desistiu de procurar não entra (aparece na subutilização).",
+        "Cada ponto é a média de três meses; a amostra tem margem de erro (coeficiente de variação publicado pelo IBGE)."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "SUBUTILIZACAO",
+      "bloco": "mercado_trabalho",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "campo": "taxa_subutilizacao",
+      "metrica": "media",
+      "direcao": "menor",
+      "trimestre_movel": true,
+      "unidade": "% da força de trabalho ampliada",
+      "fonte": "IBGE — PNAD Contínua, tabela 6441 (variável 4118)",
+      "frequencia": "trimestre móvel (resultado mensal)",
+      "nome": "Taxa composta de subutilização",
+      "interpretacao": "Taxa menor significa menos pessoas desocupadas, com trabalho insuficiente em horas ou disponíveis para trabalhar sem procurar, em proporção da força de trabalho ampliada.",
+      "limitacoes": [
+        "Inclui desocupados, subocupados por insuficiência de horas e força de trabalho potencial: é mais ampla que a desocupação e correlacionada com ela.",
+        "Cada ponto é a média de três meses; a amostra tem margem de erro."
+      ],
+      "confianca": "alta"
+    },
+    {
+      "id": "RENDIMENTO",
+      "bloco": "mercado_trabalho",
+      "dimensao": "trabalho",
+      "tipo": "A",
+      "campo": "rendimento_medio_real",
+      "metrica": "variacao_pct",
+      "direcao": "maior",
+      "trimestre_movel": true,
+      "unidade": "R$ mensais, valores reais do IBGE",
+      "fonte": "IBGE — PNAD Contínua, tabela 6390 (variável 5933)",
+      "frequencia": "trimestre móvel (resultado mensal)",
+      "nome": "Rendimento médio real habitual",
+      "interpretacao": "Variação maior representa mais rendimento real médio de quem está ocupado e tem rendimento de trabalho.",
+      "limitacoes": [
+        "Média de quem tem rendimento de trabalho: mudanças em quem está ocupado (por exemplo, saída de trabalhadores de menor renda) também mexem na média.",
+        "O IBGE deflaciona pelo IPCA a preços do mês do meio do trimestre mais recente e refaz o deflator a cada divulgação: comparamos variações da mesma divulgação, nunca valores de divulgações diferentes."
+      ],
+      "confianca": "alta"
+    },
+    {
       "id": "PIB",
       "dimensao": "atividade",
       "tipo": "A",
@@ -431,10 +507,11 @@
       "id": "iguais",
       "nome": "Pesos iguais",
       "pesos": {
-        "custo_vida": 25,
-        "inflacao": 25,
-        "renda": 25,
-        "atividade": 25
+        "custo_vida": 20,
+        "inflacao": 20,
+        "renda": 20,
+        "trabalho": 20,
+        "atividade": 20
       },
       "justificativa": "Nenhuma dimensão privilegiada."
     },
@@ -443,9 +520,10 @@
       "nome": "Ênfase em custo de vida",
       "pesos": {
         "custo_vida": 40,
-        "inflacao": 20,
-        "renda": 20,
-        "atividade": 20
+        "inflacao": 15,
+        "renda": 15,
+        "trabalho": 15,
+        "atividade": 15
       },
       "justificativa": "Para quem prioriza o que chega ao bolso no dia a dia."
     },
@@ -453,10 +531,11 @@
       "id": "inflacao",
       "nome": "Ênfase em inflação",
       "pesos": {
-        "custo_vida": 20,
+        "custo_vida": 15,
         "inflacao": 40,
-        "renda": 20,
-        "atividade": 20
+        "renda": 15,
+        "trabalho": 15,
+        "atividade": 15
       },
       "justificativa": "Para quem prioriza a estabilidade de preços."
     },
@@ -464,20 +543,34 @@
       "id": "renda",
       "nome": "Ênfase em renda e poder de compra",
       "pesos": {
-        "custo_vida": 20,
-        "inflacao": 20,
+        "custo_vida": 15,
+        "inflacao": 15,
         "renda": 40,
-        "atividade": 20
+        "trabalho": 15,
+        "atividade": 15
       },
       "justificativa": "Para quem prioriza o que o salário compra."
+    },
+    {
+      "id": "trabalho",
+      "nome": "Ênfase em mercado de trabalho",
+      "pesos": {
+        "custo_vida": 15,
+        "inflacao": 15,
+        "renda": 15,
+        "trabalho": 40,
+        "atividade": 15
+      },
+      "justificativa": "Para quem prioriza emprego e rendimento do trabalho."
     },
     {
       "id": "atividade",
       "nome": "Ênfase em atividade econômica",
       "pesos": {
-        "custo_vida": 20,
-        "inflacao": 20,
-        "renda": 20,
+        "custo_vida": 15,
+        "inflacao": 15,
+        "renda": 15,
+        "trabalho": 15,
         "atividade": 40
       },
       "justificativa": "Para quem prioriza o crescimento da economia."
@@ -486,8 +579,8 @@
   "cenario_padrao": "iguais",
   "regras": {
     "modos": {
-      "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas.",
-      "mesmo_tempo": "Os primeiros N meses de cada período (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada período, só anos fechados."
+      "completo": "Todos os meses com dado de cada período: Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado (em curso). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário nas pontas. Mercado de trabalho: só trimestres móveis inteiros dentro do período (Bolsonaro: terminados de mar/2019 a dez/2022; Lula: terminados a partir de mar/2023).",
+      "mesmo_tempo": "Os primeiros N meses de cada período (Bolsonaro: jan/2019 + k-1; Lula: jan/2023 + k-1). Entram só os k em que os dois períodos têm dado. PIB: ano k de cada período, só anos fechados. Mercado de trabalho: trimestre móvel terminado no mês k de cada mandato, só trimestres inteiros dentro do período."
     },
     "modos_nomes": {
       "completo": "Período completo disponível",
@@ -497,7 +590,7 @@
     "modo_principal_nota": "A comparação principal é a dos períodos inteiros, como o projeto os define (Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado). A comparação por igual duração é um controle secundário, para quando os tamanhos diferentes dos períodos importam. As duas nunca se misturam num mesmo número.",
     "sensibilidade": {
       "passo_pesos": 5,
-      "descricao": "Todas as combinações de pesos das quatro dimensões com critério definido, de 5 em 5 pontos, somando 100 (1.771 combinações)."
+      "descricao": "Todas as combinações de pesos das cinco dimensões com critério definido, de 5 em 5 pontos, somando 100 (10.626 combinações)."
     },
     "nivel_evidencia": {
       "regra": "Dimensão de tipo B: informativa. Dimensão de tipo A: o menor nível de confiança entre as séries com direção definida (alta > média). O nível de cada série está em 'confianca' e resume fonte, consistência de medida e comparabilidade entre os períodos. Não é uma nota para o desempenho de nenhum governo.",
@@ -507,7 +600,10 @@
     },
     "formulas": {
       "variacao_pct": "(valor no fim da janela / valor no início da janela - 1) x 100",
-      "media": "média simples dos valores mensais (ou anuais, no PIB) da janela",
+      "media": "média simples dos valores mensais (ou anuais, no PIB) da janela; em séries de trimestre móvel, dos trimestres móveis inteiros da janela",
+      "regra_da_metrica": "Taxas (IPCA, desocupação, subutilização): média da janela, que mede a pressão ao longo do período e não a trajetória entre dois pontos. Valores em R$ ou índices (salário mínimo real, rendimento médio real, preços reais): variação percentual do início ao fim da janela. A regra foi fixada antes de calcular a dimensão Mercado de trabalho e vale para todas as séries.",
+      "trimestre_movel": "A PNAD Contínua divulga um resultado por mês, média dos três meses que terminam nele. Cada ponto é identificado pelo mês em que termina. Só entram trimestres inteiros dentro de um mandato: os que misturam meses dos dois períodos (terminados em jan e fev de 2019 e de 2023) ficam de fora e nada é rateado.",
+      "por_serie": "Dimensão com séries de unidades diferentes (Mercado de trabalho): cada série é comparada na sua métrica e na sua tolerância e vota +1 (período Lula), -1 (período Bolsonaro) ou 0 (praticamente iguais); a dimensão segue o sinal da soma dos votos. Uma dimensão continua valendo um único sentido na síntese, qualquer que seja o número de séries. Também se informa o que aconteceria com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), só como transparência.",
       "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
       "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
       "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
@@ -522,50 +618,23 @@
     },
     "exclusoes": [],
     "fora_do_escopo": [
-      "Emprego e desemprego",
       "Contas públicas e dívida",
       "Investimento",
-      "Desigualdade de renda"
+      "Desigualdade de renda",
+      "Informalidade e qualidade do emprego"
     ],
-    "fora_do_escopo_nota": "Esta análise cobre estas dimensões porque são as séries atualmente disponíveis no projeto. Emprego, contas públicas e investimento ficam de fora por falta de série no projeto, não por escolha de resultado."
-  },
-  "contexto_externo": [
-    {
-      "iso": "2020-03-01",
-      "texto": "OMS declara pandemia de covid-19",
-      "categoria": "Choque externo",
-      "fonte": "Organização Mundial da Saúde, 11/03/2020",
-      "relacao": "coincide no tempo com a queda do PIB de 2020 e a alta de alimentos"
-    },
-    {
-      "iso": "2022-02-01",
-      "texto": "Rússia invade a Ucrânia",
-      "categoria": "Choque externo",
-      "fonte": "Fato amplamente documentado, 24/02/2022",
-      "relacao": "coincide no tempo com a alta internacional do petróleo e de grãos"
-    },
-    {
-      "iso": "2022-06-01",
-      "texto": "Lei Complementar 194 limita o ICMS sobre combustíveis",
-      "categoria": "Alteração regulatória",
-      "fonte": "Lei Complementar 194/2022",
-      "relacao": "coincide no tempo com a queda do preço dos combustíveis no 2º semestre de 2022"
-    },
-    {
-      "iso": "2023-03-01",
-      "texto": "Volta parcial da cobrança de PIS/Cofins sobre a gasolina",
-      "categoria": "Política econômica",
-      "fonte": "Governo federal, reoneração dos combustíveis, 2023",
-      "relacao": "coincide no tempo com a alta da gasolina no início de 2023"
-    },
-    {
-      "iso": "2026-02-01",
-      "texto": "EUA e Israel iniciam ofensiva contra o Irã (28/fev)",
-      "categoria": "Contexto internacional",
-      "fonte": "Cobertura internacional, fevereiro de 2026",
-      "relacao": "coincide no tempo com a alta do petróleo e dos combustíveis em 2026"
+    "fora_do_escopo_nota": "Esta análise cobre as dimensões abaixo porque são as séries atualmente disponíveis no projeto (o mercado de trabalho entra pelas três séries oficiais da PNAD Contínua listadas). O que não está aqui fica de fora por falta de série no projeto, não por escolha de resultado, e a análise não avalia \"tudo\" sobre um governo.",
+    "contexto_historico": {
+      "papel": "Contexto histórico: mostra o que estava acontecendo no período em que um indicador se moveu. Não entra em nenhum cálculo desta análise e não atribui causa.",
+      "arquivo": "data/processed/noticias.json (itens com marco: true), gerado por scripts/build_news.py a partir da curadoria em data/news/raw_*.json",
+      "o_que_entra": "Marcos com efeito econômico amplo e documentado que se sobrepõem a movimentos visíveis nas séries do projeto: choques externos, decisões de política monetária, fiscal e tributária, mudanças regulatórias, e publicações oficiais de dados. Não se busca uma notícia por mês.",
+      "fontes": "Fontes oficiais (IBGE, Banco Central, ANP, legislação, governo federal), Agência Brasil e veículos jornalísticos reconhecidos. Blogs, páginas de SEO, redes sociais e agregadores sem fonte não são usados. Cada item é aberto na fonte original: título e data são conferidos com a página.",
+      "datas": "A data é a de publicação da matéria na fonte (ou a do ato oficial, quando a fonte é um ato). Conferida na página; diferença de um dia por fuso horário é resolvida a favor da data exibida na matéria.",
+      "ligacao_com_indicadores": "Cada item traz os indicadores e a dimensão a que se relaciona. A ligação é de época: o evento ocorreu no período em que o indicador se moveu.",
+      "causalidade": "Proximidade no tempo não é evidência de causalidade. O texto do site diz \"contexto do período\", \"evento próximo no tempo\" ou \"coincide com o período\", nunca \"causou\", \"provocou\" ou \"foi responsável por\". Afirmações contestadas são atribuídas à fonte.",
+      "resumos": "Resumos curtos, escritos pelo projeto, com o link para a fonte original. Nenhum trecho longo é copiado."
     }
-  ],
+  },
   "tipos": {
     "A": "Direção interpretável definida antes do cálculo.",
     "B": "Depende do contexto: descrito, nunca pontuado.",

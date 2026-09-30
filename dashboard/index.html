@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#101A1D" />
 <title>CUSTAVA QUANTO? — quanto custava, quanto custa, o que mudou</title>
 <meta name="description" content="Uma investigação em dados sobre preços, poder de compra e indicadores econômicos no Brasil, de janeiro de 2019 ao último dado disponível — com as notícias de cada momento." />
+<link rel="canonical" href="https://custavaquanto.me/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://custavaquanto.me/" />
+<meta property="og:site_name" content="CUSTAVA QUANTO?" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:title" content="CUSTAVA QUANTO? — quanto custava, quanto custa, o que mudou" />
+<meta property="og:description" content="Uma investigação em dados sobre preços, poder de compra e indicadores econômicos no Brasil, de janeiro de 2019 ao último dado disponível — com as notícias de cada momento." />
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,8 +41,8 @@
         <li><a href="#contexto" data-ch="contexto"><i>04</i>Contexto</a></li>
         <li><a href="#maquina" data-ch="maquina"><i>05</i>Máquina do tempo</a></li>
         <li><a href="#periodos" data-ch="periodos"><i>06</i>Períodos</a></li>
-        <li><a href="#arquivo" data-ch="arquivo"><i>07</i>Arquivo</a></li>
-        <li><a href="#analise" data-ch="analise"><i>08</i>Análise</a></li>
+        <li><a href="#analise" data-ch="analise"><i>07</i>Análise</a></li>
+        <li><a href="#arquivo" data-ch="arquivo"><i>08</i>Arquivo</a></li>
         <li><a href="#metodo" data-ch="metodo"><i>09</i>Método</a></li>
         <li class="nav-apoie"><a href="#apoie" data-ch="apoie"><i>10</i>Apoie</a></li>
       </ol>
@@ -274,6 +281,7 @@
       </header>
       <div class="multiples" id="multiples"></div>
       <p class="source mono" id="context-source"></p>
+      <section class="ctx-tl" id="ctx-tl" aria-label="Linha do tempo do período"></section>
     </div>
   </section>
 
@@ -343,27 +351,6 @@
   </section>
 
   <!-- =====================================================================
-       07 · ARQUIVO — o noticiário, ano a ano
-       ===================================================================== -->
-  <section class="chapter archive-sec" id="arquivo" aria-labelledby="arquivo-title" data-chapter="arquivo">
-    <div class="shell">
-      <header class="ch-head ch-head--flag">
-        <p class="ch-kicker mono"><span>07</span>Arquivo</p>
-        <h2 class="ch-title" id="arquivo-title">O noticiário, ano a ano</h2>
-        <div class="ch-aside">
-          <p class="ch-deck" id="archive-deck">—</p>
-          <div class="seg seg--compact" id="archive-filter" role="group" aria-label="Quais matérias mostrar">
-            <button type="button" data-filter="produto" aria-pressed="true" id="archive-filter-produto">Sobre esta história</button>
-            <button type="button" data-filter="todas" aria-pressed="false" id="archive-filter-todas">Todas</button>
-          </div>
-          <p class="caveat archive-caveat"><strong>Contexto, não causa.</strong> Matérias reais, conferidas na página original (título, veículo e data). Contam o que se noticiava em cada momento; a medida do que aconteceu com o preço continua sendo o número.</p>
-        </div>
-      </header>
-      <div class="archive" id="archive"></div>
-    </div>
-  </section>
-
-  <!-- =====================================================================
        ANÁLISE — comparação entre períodos de governo.
        Metodologia congelada em data/processed/analysis_methodology.json e
        resultados em analysis_results.json (scripts/build_analise.py). Este
@@ -373,7 +360,7 @@
     <div class="shell">
       <header class="an-hero">
         <div class="an-hero-text">
-          <p class="ch-kicker mono"><span>08</span>Análise</p>
+          <p class="ch-kicker mono"><span>07</span>Análise</p>
           <h2 class="an-hero-title" id="analise-title">Dois governos.<br> Os mesmos dados.</h2>
           <p class="an-hero-deck">Uma comparação entre os períodos Bolsonaro e Lula nos indicadores que este projeto acompanha, com a pergunta, a régua e o critério definidos antes de olhar os resultados. Esta página não diz em quem votar: mostra o que os números permitem afirmar, e o que não permitem.</p>
           <p class="an-version mono" id="an-version"></p>
@@ -443,7 +430,7 @@
 
         <!-- PARTE 9 — o que mais pesou -->
         <section class="an-part" aria-labelledby="an-p9-title">
-          <p class="an-part-n mono">Parte 8</p>
+          <p class="an-part-n mono">Parte 9</p>
           <h3 class="an-part-title" id="an-p9-title">O que mais pesou?</h3>
           <p class="an-part-lead">Os maiores movimentos entre as séries em variação real, do custo de vida e do poder de compra. Um item extremo não decide a leitura sozinho, porque cada dimensão é lida pela mediana.</p>
           <div id="an-pesou"></div>
@@ -451,7 +438,7 @@
 
         <!-- PARTE 10 — sensibilidade -->
         <section class="an-part" aria-labelledby="an-p10-title">
-          <p class="an-part-n mono">Parte 9</p>
+          <p class="an-part-n mono">Parte 10</p>
           <h3 class="an-part-title" id="an-p10-title">Como diferentes prioridades mudam a leitura?</h3>
           <p class="an-part-lead">Nenhuma dimensão representa sozinha a situação econômica. Aqui você pode alterar quanto cada dimensão pesa na leitura agregada e observar como a síntese muda.</p>
           <div class="an-prio">
@@ -472,7 +459,7 @@
 
         <!-- PARTE 11 — em resumo -->
         <section class="an-part" aria-labelledby="an-p11-title">
-          <p class="an-part-n mono">Parte 10</p>
+          <p class="an-part-n mono">Parte 11</p>
           <h3 class="an-part-title" id="an-p11-title">Em resumo</h3>
           <div id="an-resumo"></div>
           <div class="an-geral" id="an-geral"></div>
@@ -480,10 +467,11 @@
 
         <!-- PARTE 12 — contexto -->
         <section class="an-part" aria-labelledby="an-p12-title">
-          <p class="an-part-n mono">Parte 11</p>
+          <p class="an-part-n mono">Parte 12</p>
           <h3 class="an-part-title" id="an-p12-title">Contexto importa.</h3>
-          <p class="an-part-lead">Marcos que se sobrepõem aos períodos. A relação com os indicadores é só de tempo: coincidem, não se explicam.</p>
+          <p class="an-part-lead">Marcos que se sobrepõem aos períodos, cada um com a fonte original. A relação com os indicadores é só de data: proximidade no tempo não é evidência de causalidade.</p>
           <ul class="an-timeline" id="an-timeline"></ul>
+          <p class="an-ctx-todos"><span id="an-ctx-todos"></span> <a href="#contexto">Ver a linha do tempo completa</a>.</p>
         </section>
 
         <!-- limites -->
@@ -498,7 +486,7 @@
                 <article><b class="mono">Outros poderes</b><p>A Selic é decidida pelo Copom, do Banco Central, com mandato próprio; gastos e impostos passam pelo Congresso.</p></article>
                 <article><b class="mono">Estados e municípios</b><p>ICMS e outras decisões locais afetam os preços de combustíveis e alimentos.</p></article>
                 <article><b class="mono">Composição dos indicadores</b><p>Dar o mesmo peso à gasolina e ao PIB não os torna equivalentes: cada indicador mede uma coisa diferente.</p></article>
-                <article><b class="mono">Dados ausentes</b><p>Emprego, desigualdade, contas públicas e investimento não fazem parte desta versão.</p></article>
+                <article><b class="mono">Dados ausentes</b><p>Contas públicas, investimento, desigualdade de renda e informalidade não fazem parte desta versão. Nada aqui avalia “tudo” sobre um governo.</p></article>
                 <article><b class="mono">Período em curso</b><p>O período Lula ainda não terminou: qualquer leitura sobre ele é parcial.</p></article>
               </div>
             </div>
@@ -514,6 +502,24 @@
           <p>Se você identificar uma fonte incorreta, um cálculo inconsistente ou uma escolha metodológica questionável, confira a metodologia e os arquivos em <a href="#audite-analise">Método › Audite a análise</a> e registre no <a href="https://github.com/leonardotteixeira/custava-quanto/issues" target="_blank" rel="noopener">repositório público do projeto</a>. Mudanças na metodologia ganham nova versão e ficam registradas.</p>
         </section>
       </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       08 · ARQUIVO — as fontes por trás dos números (biblioteca pesquisável).
+       A história em ordem cronológica fica em 04 · Contexto; aqui está a evidência.
+       ===================================================================== -->
+  <section class="chapter archive-sec" id="arquivo" aria-labelledby="arquivo-title" data-chapter="arquivo">
+    <div class="shell">
+      <header class="ch-head ch-head--flag">
+        <p class="ch-kicker mono"><span>08</span>Arquivo</p>
+        <h2 class="ch-title" id="arquivo-title">As fontes por trás dos números.</h2>
+        <div class="ch-aside">
+          <p class="ch-deck">Matérias, documentos e registros usados para contextualizar os dados do CUSTAVA QUANTO?.</p>
+          <p class="caveat archive-caveat">Cada item abre a página original; título, veículo e data foram conferidos nela. Para ver o que estava acontecendo, em ordem cronológica, vá ao <a href="#ctx-tl">Contexto</a>.</p>
+        </div>
+      </header>
+      <div class="archive" id="archive"></div>
     </div>
   </section>
 
@@ -548,6 +554,8 @@
               <dd><a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">Brent</a>, dólares por barril, convertido para reais pelo câmbio médio do mês.</dd>
               <dt>Preço observado de arroz e feijão — CONAB</dt>
               <dd>Sistema de Informações de Mercado, dataset "Preços Agropecuários", nível <strong>Varejo</strong> — Arroz Tipo 1 e Feijão Cores Tipo 1, R$/kg, por UF. Somado ao índice IBGE (que continua existindo para os dois), nunca no lugar dele. Auditoria completa das fontes avaliadas para preço de alimento, incluindo por que carne, leite, óleo de soja e café continuam só com índice, em <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_PRECOS_ALIMENTOS.md" target="_blank" rel="noopener">docs/AUDITORIA_PRECOS_ALIMENTOS.md</a>.</dd>
+              <dt>Mercado de trabalho — IBGE, PNAD Contínua (SIDRA)</dt>
+              <dd>Taxa de desocupação (<a href="https://sidra.ibge.gov.br/tabela/6381" target="_blank" rel="noopener">tabela 6381</a>, variável 4099), taxa composta de subutilização da força de trabalho (<a href="https://sidra.ibge.gov.br/tabela/6441" target="_blank" rel="noopener">tabela 6441</a>, variável 4118) e rendimento médio mensal real habitual (<a href="https://sidra.ibge.gov.br/tabela/6390" target="_blank" rel="noopener">tabela 6390</a>, variável 5933). Brasil, pessoas de 14 anos ou mais. O IBGE divulga um resultado por mês, em <strong>trimestre móvel</strong> (média dos três meses que terminam naquele mês); cada ponto é identificado pelo mês em que termina. O rendimento real já vem deflacionado pelo IBGE (IPCA, a preços do mês do meio do trimestre mais recente divulgado); o projeto não aplica um segundo deflator. Entram na comparação só os trimestres inteiros dentro de cada período. O IBGE suspendeu a coleta presencial da PNAD Contínua em março de 2020, o que pede cuidado ao ler as séries daquele ano.</dd>
               <dt>PIB — IBGE, Sistema de Contas Nacionais</dt>
               <dd><a href="https://sidra.ibge.gov.br/tabela/5932" target="_blank" rel="noopener">Tabela 5932</a> (Contas Nacionais Trimestrais: taxa de variação trimestral) e <a href="https://sidra.ibge.gov.br/tabela/6784" target="_blank" rel="noopener">Tabela 6784</a> (Contas Nacionais Anuais: PIB a preços correntes, PIB per capita, população). O crescimento real do PIB mostrado aqui é a "taxa acumulada ao longo do ano" apurada no 4º trimestre — o mesmo número que o IBGE e a imprensa chamam de "o PIB cresceu X% no ano". O IBGE pode revisar dados já publicados em divulgações seguintes; este projeto reflete a última revisão disponível no momento em que os dados foram baixados, não um arquivo histórico congelado.</dd>
             </dl>
@@ -658,10 +666,23 @@
         </details>
 
         <details class="nb" id="marcos">
-          <summary><span class="mono">E</span>Marcos de contexto e notícias</summary>
+          <summary><span class="mono">E</span>Contexto histórico: notícias e eventos</summary>
           <div class="nb-body">
-            <p>Os gráficos marcam poucas datas públicas e amplamente documentadas (letras A, B, C…) só como referência de calendário. Estar perto de um marco não significa ter sido causado por ele.</p>
-            <p>As notícias são matérias reais de veículos jornalísticos, cada uma com link para o original. Título, veículo e data foram conferidos por script na página de origem (<code>scripts/build_news.py</code>). As fotos vêm da própria matéria original: as da Agência Brasil têm o crédito impresso na página e licença CC BY 4.0; as dos demais veículos são a imagem de capa da matéria, mostrada só como referência visual da reportagem, com o veículo como fonte e o link para o original, sem licença de reprodução própria. Quando a matéria não tem foto própria, o cartão fica sem imagem.</p>
+            <p><strong>Proximidade no tempo não é evidência de causalidade.</strong> O contexto histórico existe para mostrar o que estava acontecendo em torno de um período, não para atribuir responsabilidade automática. O texto do site diz “contexto do período”, “evento próximo no tempo” ou “ocorreu no período”; nunca “causou” ou “provocou”. Afirmações contestadas são atribuídas a quem as fez.</p>
+            <dl class="nb-list">
+              <dt>O que entra</dt>
+              <dd>Marcos com efeito econômico amplo e documentado que se sobrepõem a movimentos visíveis nas séries: choques externos, decisões de política monetária, fiscal e tributária, mudanças regulatórias e publicações oficiais de dados. Não se busca uma notícia por mês: a densidade acompanha a relevância de cada época.</dd>
+              <dt>De onde vêm</dt>
+              <dd>Fontes oficiais (IBGE, Banco Central, ANP, legislação), Agência Brasil e veículos jornalísticos reconhecidos. Blogs, páginas de SEO, redes sociais e agregadores sem fonte não são usados. Cada item tem o link da matéria original.</dd>
+              <dt>Como são verificados</dt>
+              <dd>Um script (<code>scripts/build_news.py</code>) abre a página de origem e só publica o item se ela responde e o título confere com o da página. A data é a de publicação na fonte. Quando a página de um veículo bloqueia o acesso automático, o item só entra depois de conferência manual e sai marcado assim.</dd>
+              <dt>Como se ligam aos indicadores</dt>
+              <dd>Cada marco traz a dimensão e os indicadores a que se relaciona, o tipo de evento, a relevância e um resumo curto escrito pelo projeto (a curadoria está em <code>data/news/marcos.json</code>). A ligação é de época: o gráfico marca a data do evento e a lista mostra o valor da série no mês em que ele ocorreu.</dd>
+              <dt>Fotos</dt>
+              <dd>Quando a matéria tem foto própria, ela é usada com o crédito da página: as da Agência Brasil têm licença CC BY 4.0; as dos demais veículos são a imagem de capa da matéria, só como referência visual, sem licença de reprodução própria. Sem foto, o cartão fica sem imagem; nenhuma foto é criada.</dd>
+            </dl>
+            <p>O capítulo <a href="#arquivo">Arquivo</a> reúne todas as fontes do projeto, com busca e filtros; o <a href="#contexto">Contexto</a> mostra, em ordem cronológica, os marcos que ajudam a entender o momento. Os dois se ligam por “Ver no Arquivo” e “Ver no Contexto”.</p>
+            <p>Os gráficos da Máquina do tempo e do Preço também marcam poucas datas públicas (letras A, B, C…) só como referência de calendário. Estar perto de uma delas não significa ter sido causado por ela.</p>
           </div>
         </details>
 

@@ -6,7 +6,7 @@
 // ponderada dos SENTIDOS já calculados (+1, 0, -1) quando o leitor mexe nas
 // prioridades — a mesma fórmula escrita na metodologia. Nenhum número econômico
 // é calculado aqui.
-import { esc, fmtNum, mesAno, dataCurta, monthIdx } from "./util.js";
+import { esc, fmtNum, mesAno, dataCurta, dataNoticia, monthIdx } from "./util.js";
 import { spark } from "./charts.js";
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -16,6 +16,8 @@ let M = null; // metodologia
 let R = null; // resultados
 let modo = "completo"; // janela principal; "mesmo_tempo" é a visão secundária
 let pesos = null; // prioridades do leitor (dimensão -> 0..100)
+let MARCOS = []; // marcos históricos (noticias.json, itens com "marco"): contexto, nunca causa
+const ctxSel = {}; // dimensão -> indicador escolhido no gráfico de contexto
 
 async function getJSON(url) {
   try { const r = await fetch(url, { cache: "no-cache" }); return r.ok ? await r.json() : null; } catch { return null; }
@@ -97,6 +99,10 @@ function renderRegua() {
       ? `Os primeiros <b>${g.nb} meses</b> de cada mandato. Séries mais curtas usam só os meses em que os dois lados têm dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)} (${ipca.nb} meses); PIB, ${pib.nb} anos fechados de cada período (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam a média mensal.`
       : `Séries mais curtas usam só os meses com dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)}; PIB, anos fechados (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário: ${dataCurta(dol.Bolsonaro.inicio)} a ${dataCurta(dol.Bolsonaro.fim)} e ${dataCurta(dol.Lula.inicio)} a ${dataCurta(dol.Lula.fim)}.`}
       ${ultimos}</p>`;
+  const jt = janela("DESOCUPACAO");
+  if (jt) {
+    $("#an-ruler").insertAdjacentHTML("beforeend", `<p class="an-ruler-note">Mercado de trabalho (PNAD Contínua): cada ponto é um trimestre móvel, identificado pelo mês em que termina, e só entram os trimestres inteiros dentro de cada período: de ${quando(jt.b.inicio)} a ${quando(jt.b.fim)} e de ${quando(jt.l.inicio)} a ${quando(jt.l.fim)}. Último resultado publicado: ${esc(R.mercado_trabalho.series.DESOCUPACAO.ultima_observacao_rotulo)}.</p>`);
+  }
   const jm = R.janela_muda;
   $("#an-control-note").textContent = jm?.dimensoes?.length ? jm.texto : "A leitura de cada dimensão é a mesma nas duas janelas.";
 }
@@ -105,6 +111,11 @@ function renderRegua() {
 function linhaDim(d) {
   const r = dimRes(d.id);
   if (d.tipo !== "A") return `<span class="an-min-res">descritos, sem direção definida</span><span class="an-min-leit">fora da síntese</span>`;
+  if (r.por_serie) {
+    const nomes = { DESOCUPACAO: "desocupação, média", SUBUTILIZACAO: "subutilização, média", RENDIMENTO: "rendimento real, variação" };
+    const linhas = r.por_serie.map((l) => `<span class="an-min-line">${nomes[l.id] || esc(l.nome)} ${tag("Bolsonaro")} <b>${fmtValor(l.id, l.Bolsonaro)}</b> · ${tag("Lula")} <b>${fmtValor(l.id, l.Lula)}</b></span>`).join("");
+    return `<span class="an-min-res an-min-multi">${linhas}</span><span class="an-min-leit">${chipLado(r.leitura)}<small>${r.votos.lula} de ${r.por_serie.length} séries pelo período Lula</small></span>`;
+  }
   const pb = r.por_periodo.Bolsonaro, pl = r.por_periodo.Lula;
   const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação mediana do poder de compra", atividade: "crescimento médio anual" }[d.id] || "mediana";
   return `<span class="an-min-res">${unidade} ${tag("Bolsonaro")} <b>${valDim(r, pb.mediana_valor)}</b> · ${tag("Lula")} <b>${valDim(r, pl.mediana_valor)}</b></span>
@@ -131,6 +142,7 @@ const TITULOS = {
   custo_vida: "Começamos pelo que chega ao bolso.",
   inflacao: "Depois, olhamos para a inflação.",
   renda: "Renda e poder de compra.",
+  trabalho: "E o mercado de trabalho?",
   atividade: "A economia cresceu quanto?",
   mercados: "E os mercados?",
 };
@@ -235,12 +247,147 @@ function robustezDim(r) {
     <p>Refazendo o cálculo sem uma série de cada vez (${s.n} testes), a leitura se mantém em <b>${s.iguais} de ${s.n}</b>${s.iguais === s.n ? ": nenhuma série sozinha muda o resultado." : "; nos demais, muda."}</p></div>`;
 }
 
+// ------------------------------------------------------------ contexto histórico (marcos)
+const TIPO_ROTULO = {
+  choque_global: "Choque global", choque_externo: "Choque externo", choque_fiscal: "Reação a anúncio fiscal", politica_monetaria: "Política monetária",
+  politica_fiscal: "Política fiscal", politica_tributaria: "Política tributária", politica_trabalhista: "Política trabalhista", politica_salarial: "Salário mínimo",
+  politica_energetica: "Preço dos combustíveis", protecao_social: "Proteção social", regulatoria: "Regulação", comercio_exterior: "Comércio exterior",
+  calamidade: "Calamidade", mercado: "Mercado", dado_oficial: "Dado oficial",
+};
+const CTX_SERIES = {
+  custo_vida: ["GASOLINA", "DIESEL", "Arroz"], inflacao: ["IPCA"], renda: ["SALARIO_REAL", "SM_GASOLINA"],
+  trabalho: ["DESOCUPACAO", "SUBUTILIZACAO", "RENDIMENTO"], atividade: ["PIB"], mercados: ["DOLAR", "SELIC", "IBOVESPA"],
+};
+const periodoDe = (iso) => (iso < "2023-01-01" ? "Bolsonaro" : "Lula");
+
+function fmtSerie(id, v) {
+  if (v == null) return "—";
+  if (["DESOCUPACAO", "SUBUTILIZACAO", "IPCA", "PIB"].includes(id)) return `${fmtNum(v, 1)}%`;
+  if (id === "SELIC") return `${fmtNum(v, 2)}%`;
+  if (id === "RENDIMENTO" || id === "SALARIO_REAL") return `R$ ${fmtNum(v, 0)}`;
+  if (["DOLAR", "GASOLINA", "DIESEL"].includes(id)) return `R$ ${fmtNum(v, 2)}`;
+  if (id === "IBOVESPA") return `${fmtNum(v / 1000, 1)} mil`;
+  if (id === "SM_GASOLINA") return `${fmtNum(v, 0)} litros`;
+  return fmtNum(v, 0);
+}
+
+// Marcos de uma dimensão: os de maior relevância primeiro, espalhados pelos anos (no máximo n).
+function marcosDim(dimId, n = 7) {
+  const cand = MARCOS.filter((m) => m.marco.dimensoes.includes(dimId));
+  // relevância alta primeiro; entre elas, os eventos (choques, decisões) antes das divulgações de dado, que já aparecem nos números da própria dimensão
+  const chave = (m) => (m.marco.relevancia === "alta" ? 0 : 2) + (m.marco.tipo === "dado_oficial" ? 1 : 0);
+  const rank = [...cand].sort((a, b) => chave(a) - chave(b) || a.data.localeCompare(b.data));
+  const esc_ = new Set(), anos = new Map();
+  rank.forEach((m) => { const y = m.data.slice(0, 4); if (esc_.size < n && (anos.get(y) || 0) < 1) { esc_.add(m); anos.set(y, 1); } });
+  rank.forEach((m) => { const y = m.data.slice(0, 4); if (esc_.size < n && (anos.get(y) || 0) < 2) { esc_.add(m); anos.set(y, (anos.get(y) || 0) + 1); } });
+  return [...esc_].sort((a, b) => a.data.localeCompare(b.data));
+}
+
+function valorNoMes(id, iso) {
+  const m = meta(id), rows = ind(id).serie;
+  const r = m.anual ? rows.find((x) => x.iso.slice(0, 4) === iso.slice(0, 4)) : rows.find((x) => x.iso.slice(0, 7) === iso.slice(0, 7));
+  return r ? r.v : null;
+}
+
+function graficoContexto(id, evs) {
+  const m = meta(id), rows = ind(id).serie.filter((r) => r.iso >= "2019-01-01");
+  const compacto = innerWidth <= 760; // no celular o desenho é feito na largura real, para o texto do gráfico não encolher
+  const W = compacto ? 360 : 1000, H = compacto ? 330 : 350, Lm = compacto ? 54 : 64, Rm = compacto ? 12 : 18, Tm = 34, Bm = 100;
+  const t0 = monthIdx("2019-01-01"), t1 = monthIdx(rows[rows.length - 1].iso);
+  const X = (iso) => Lm + ((Math.min(Math.max(monthIdx(iso), t0), t1) - t0) / (t1 - t0)) * (W - Lm - Rm);
+  const vals = rows.map((r) => r.v);
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  const pad = (hi - lo) * 0.12 || 1; lo -= pad; hi += pad;
+  const Y = (v) => Tm + (1 - (v - lo) / (hi - lo)) * (H - Tm - Bm);
+  const path = (rs) => rs.map((r, k) => `${k ? "L" : "M"}${X(r.iso).toFixed(1)},${Y(r.v).toFixed(1)}`).join("");
+  const antes = rows.filter((r) => r.iso < "2023-01-01"), depois = rows.filter((r) => r.iso >= "2023-01-01");
+  const ponte = antes.length && depois.length ? [antes[antes.length - 1], ...depois] : depois;
+  const yt = [0, 1, 2, 3].map((k) => lo + ((hi - lo) * k) / 3);
+  const anos = [];
+  for (let a = 2019; a <= Number(rows[rows.length - 1].iso.slice(0, 4)); a++) anos.push(a);
+  const xc = X("2023-01-01");
+  const fila = [-99, -99];
+  const marcas = evs.map((e, k) => {
+    const x = X(e.data), lin = x - fila[0] >= 24 ? 0 : x - fila[1] >= 24 ? 1 : 0;
+    fila[lin] = x;
+    const v = valorNoMes(id, e.data), yy = v == null ? Tm : Y(v), yb = H - Bm + 44 + lin * 28;
+    return `<g class="ctx-ev"><line x1="${x}" y1="${yy}" x2="${x}" y2="${yb - 10}" /><circle cx="${x}" cy="${yb}" r="10" /><text x="${x}" y="${yb + 4}" text-anchor="middle">${k + 1}</text></g>`;
+  }).join("");
+  const ptsAnual = m.anual ? rows.map((r) => `<circle class="ctx-pt" cx="${X(r.iso)}" cy="${Y(r.v)}" r="3.5" />`).join("") : "";
+  return `<svg class="ctx-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.nome)} de ${mesAno(rows[0].iso)} a ${mesAno(rows[rows.length - 1].iso)}, com ${evs.length} eventos marcados; a lista logo abaixo descreve cada evento.">
+    ${yt.map((v) => `<g class="ctx-grid"><line x1="${Lm}" x2="${W - Rm}" y1="${Y(v)}" y2="${Y(v)}" /><text x="${Lm - 8}" y="${Y(v) + 4}" text-anchor="end">${fmtSerie(id, v)}</text></g>`).join("")}
+    ${anos.map((a) => `<text class="ctx-x" x="${X(`${a}-01-01`)}" y="${H - Bm + 16}" text-anchor="middle">${a}</text>`).join("")}
+    <line class="ctx-cut" x1="${xc}" x2="${xc}" y1="${Tm - 8}" y2="${H - Bm}" />
+    <text class="ctx-per" x="${xc - 8}" y="${Tm - 14}" text-anchor="end">${compacto ? "Bolsonaro" : "Período Bolsonaro"}</text>
+    <text class="ctx-per" x="${xc + 8}" y="${Tm - 14}">${compacto ? "Lula" : "Período Lula · em curso"}</text>
+    <path class="ctx-line ctx-line--b" d="${path(antes)}" /><path class="ctx-line ctx-line--l" d="${path(ponte)}" />
+    ${ptsAnual}
+    ${marcas}
+  </svg>`;
+}
+
+function cartaoEvento(e, k, id) {
+  const m = e.marco, v = valorNoMes(id, e.data), sm = meta(id);
+  const mes = sm.trimestre_movel ? `trimestre encerrado em ${mesAno(e.data)}` : mesAno(e.data);
+  return `<li class="an-ev"><span class="an-ev-n mono" aria-hidden="true">${k + 1}</span>
+    <div class="an-ev-body">
+      <p class="an-ev-meta mono"><time datetime="${e.data}">${dataNoticia(e.data)}</time> · ${esc(TIPO_ROTULO[m.tipo] || m.tipo)} · ocorreu no período ${periodoDe(e.data)}</p>
+      <p class="an-ev-t"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.titulo)}</a> <span class="an-ev-src">${esc(e.veiculo)}</span></p>
+      <p class="an-ev-s">${esc(m.resumo)}</p>
+      ${v != null ? `<p class="an-ev-v mono">${esc(sm.nome)} no mês do evento: <b>${fmtSerie(id, v)}</b>${sm.trimestre_movel ? ` (${mes})` : ""}</p>` : ""}
+    </div></li>`;
+}
+
+function blocoContexto(dimId) {
+  const ids = (CTX_SERIES[dimId] || []).filter((id) => ind(id) && !ind(id).excluido);
+  if (!ids.length) return "";
+  const sel = ids.includes(ctxSel[dimId]) ? ctxSel[dimId] : ids[0];
+  ctxSel[dimId] = sel;
+  const evs = marcosDim(dimId);
+  if (!evs.length) return "";
+  const botoes = ids.length > 1 ? `<div class="an-ctx-btns" role="group" aria-label="Série exibida no gráfico">${ids.map((id) => `<button type="button" class="an-ctx-btn" data-dim="${dimId}" data-ind="${esc(id)}" aria-pressed="${id === sel}">${esc(meta(id).nome)}</button>`).join("")}</div>` : "";
+  return `<div class="an-ctx-block" id="an-ctx-${dimId}">
+    <h4 class="an-kick mono">Contexto do período</h4>
+    <p class="an-ctx-lead">O que estava acontecendo em torno dos movimentos desta série. Os eventos aparecem pela data em que ocorreram, não por terem causado a mudança.</p>
+    ${botoes}
+    <figure class="an-ctx-fig">${graficoContexto(sel, evs)}<figcaption class="mono">${esc(meta(sel).nome)} · ${esc(meta(sel).unidade)}${meta(sel).trimestre_movel ? " · trimestre móvel, no mês em que termina" : ""} · fonte: ${esc(meta(sel).fonte)}</figcaption></figure>
+    <ol class="an-ev-list">${evs.map((e, k) => cartaoEvento(e, k, sel)).join("")}</ol>
+  </div>`;
+}
+
+// Mercado de trabalho: cada série na sua unidade, com o seu voto.
+function trabalhoBlock(d, r) {
+  const rot = { DESOCUPACAO: "média da taxa no período", SUBUTILIZACAO: "média da taxa no período", RENDIMENTO: "variação do início ao fim" };
+  const cards = r.por_serie.map((l) => {
+    const m = meta(l.id), i = ind(l.id), f = i.fonte_ultima;
+    const ini = (p) => l.metrica === "media" ? `${fmtSerie(l.id, l.valor_inicio[p])} → ${fmtSerie(l.id, l.valor_fim[p])}` : `${fmtSerie(l.id, l.valor_inicio[p])} → ${fmtSerie(l.id, l.valor_fim[p])}`;
+    const alt = l.alternativa;
+    const altTxt = l.metrica === "media"
+      ? `Do início ao fim da janela, a taxa variou ${pp(alt.Bolsonaro, 1)} no período Bolsonaro e ${pp(alt.Lula, 1)} no período Lula.`
+      : `Média do rendimento real na janela: ${fmtSerie(l.id, alt.Bolsonaro)} no período Bolsonaro e ${fmtSerie(l.id, alt.Lula)} no período Lula.`;
+    return `<article class="an-tb">
+      <h4>${esc(m.nome)}</h4>
+      <p class="an-tb-rot mono">${rot[l.id]} · ${esc(m.unidade)}</p>
+      <div class="an-tb-vals">
+        <div data-gov="b"><span class="an-big-v">${fmtValor(l.id, l.Bolsonaro)}</span>${tag("Bolsonaro")}<small>${ini("Bolsonaro")}</small></div>
+        <div data-gov="l"><span class="an-big-v">${fmtValor(l.id, l.Lula)}</span>${tag("Lula")}<small>${ini("Lula")}</small></div>
+      </div>
+      <p class="an-tb-voto">${chipLado(l.leitura)}</p>
+      <p class="an-tb-alt">${altTxt}</p>
+      <p class="an-tb-src mono">${esc(m.fonte)} · ${esc(m.frequencia)} · último resultado: ${esc(f.rotulo)}</p>
+    </article>`;
+  }).join("");
+  return `<div class="an-trab">${cards}</div>`;
+}
+
 function evidencia(d) {
   const r = dimRes(d.id);
   const ids = M.indicadores.filter((i) => i.dimensao === d.id).map((i) => i.id);
   const idsA = ids.filter((id) => meta(id).tipo === "A");
   let visual = "", numero = "";
-  if (d.tipo === "A") {
+  if (d.tipo === "A" && r.por_serie) {
+    visual = trabalhoBlock(d, r);
+  } else if (d.tipo === "A") {
     const pb = r.por_periodo.Bolsonaro, pl = r.por_periodo.Lula;
     const rot = r.metrica === "media" ? (d.id === "atividade" ? "crescimento médio anual do PIB" : "inflação média em 12 meses") : `${idsA.length > 1 ? "mediana da " : ""}variação real${idsA.length > 1 ? ` de ${idsA.length} séries` : ""}`;
     numero = `<div class="an-big">
@@ -286,15 +433,16 @@ function evidencia(d) {
     return `<p class="an-info"><b>${esc(meta(id).nome)}</b> (informativo, fora da leitura): ${fmtValor(id, s.Bolsonaro.valor)} no período Bolsonaro e ${fmtValor(id, s.Lula.valor)} no Lula. ${esc(meta(id).interpretacao)}</p>`;
   }).join("");
   const n = d.tipo === "A" ? `${idsA.length} série${idsA.length > 1 ? "s" : ""} · entra na síntese` : `${ids.length} séries · só descrição`;
-  const leitura = d.tipo === "A" ? `<p>${esc(res().textos.por_dimensao[d.id])}</p><p class="an-read-lado">${chipLado(r.leitura)}</p>` : `<p>${esc(res().textos.por_dimensao[d.id])}</p>`;
+  const leitura = d.tipo === "A" ? `<p>${esc(res().textos.por_dimensao[d.id])}</p><p class="an-read-lado">${chipLado(r.leitura)}</p>${r.por_serie ? `<p class="an-read-alt">Com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), a dimensão ${r.leitura_alternativa === 0 ? "ficaria praticamente igual entre os períodos" : `apontaria para o período ${r.leitura_alternativa > 0 ? "Lula" : "Bolsonaro"}`}. A métrica principal foi fixada antes do cálculo (regra da métrica na metodologia).</p>` : ""}` : `<p>${esc(res().textos.por_dimensao[d.id])}</p>`;
   return `<section class="an-part an-dim" id="an-dim-${d.id}" aria-labelledby="an-dt-${d.id}">
     <p class="an-part-n mono">Parte ${d.ordem + 2} · ${esc(d.titulo)}</p>
     <h3 class="an-part-title" id="an-dt-${d.id}">${TITULOS[d.id] || esc(d.titulo)}</h3>
     <div class="an-q"><span class="mono">A pergunta</span><p>${esc(d.pergunta)}</p><span class="an-dim-type">${badgeEvid(r.nivel_evidencia)}<span class="mono">${n}</span></span></div>
     <p class="an-part-lead">${esc(d.explicacao)}</p>
     <dl class="an-scope"><div><dt class="mono">Mede</dt><dd>${esc(fim(d.mede))}</dd></div><div><dt class="mono">Não mede</dt><dd>${esc(fim(d.nao_mede))}</dd></div></dl>
-    <div class="an-evid">${numero}${visual}</div>
+    <div class="an-evid${r.por_serie ? " an-evid--serie" : ""}">${numero}${visual}</div>
     ${ctx}
+    ${blocoContexto(d.id)}
     <div class="an-read"><h4 class="an-kick mono">Leitura dos dados</h4><div>${leitura}</div></div>
     ${infos}
     ${robustezDim(r)}
@@ -314,7 +462,7 @@ function renderPesou() {
       <div><h4 class="an-kick mono">Maiores quedas reais</h4><ol class="an-mv-list">${mm.top_queda.map(item).join("")}</ol></div>
     </div>
     ${dif ? `<p class="an-mv-dif"><span class="mono">Maior diferença entre os períodos</span><b>${esc(dif.nome)}</b>${dif.indice ? " (índice de preço)" : ""}: ${pct(dif.bolsonaro)} no período Bolsonaro e ${pct(dif.lula)} no período Lula.</p>` : ""}
-    <p class="an-mv-nota">Entram só séries em variação real (custo de vida e poder de compra). ${dimRes("custo_vida").sem_uma_serie ? `Tirando uma série de cada vez, a leitura de Custo de vida se mantém em ${dimRes("custo_vida").sem_uma_serie.iguais} de ${dimRes("custo_vida").sem_uma_serie.n} testes.` : ""}</p>`;
+    <p class="an-mv-nota">Entram só séries em variação real (custo de vida, poder de compra do salário mínimo e rendimento do trabalho). ${dimRes("custo_vida").sem_uma_serie ? `Tirando uma série de cada vez, a leitura de Custo de vida se mantém em ${dimRes("custo_vida").sem_uma_serie.iguais} de ${dimRes("custo_vida").sem_uma_serie.n} testes.` : ""}</p>`;
 }
 
 // ------------------------------------------------------------ Parte 9 — prioridades
@@ -405,6 +553,7 @@ function renderResumo() {
     <tbody>${M.dimensoes.map((d) => {
       const r = dimRes(d.id);
       if (d.tipo !== "A") return `<tr><th scope="row">${esc(d.titulo)}</th><td data-label="Evidência">${badgeEvid(r.nivel_evidencia)}</td><td class="num" colspan="2" data-label="Valores">descritivo, sem direção</td><td data-label="Leitura">fora da síntese</td></tr>`;
+      if (r.por_serie) return `<tr><th scope="row">${esc(d.titulo)}</th><td data-label="Evidência">${badgeEvid(r.nivel_evidencia)}</td><td class="num" colspan="2" data-label="Valores">${r.por_serie.length} séries, cada uma na sua unidade: ${r.votos.lula} pelo período Lula, ${r.votos.bolsonaro} pelo Bolsonaro, ${r.votos.iguais} iguais</td><td data-label="Leitura">${chipLado(r.leitura)}</td></tr>`;
       return `<tr><th scope="row">${esc(d.titulo)}</th><td data-label="Evidência">${badgeEvid(r.nivel_evidencia)}</td><td class="num" data-label="Período Bolsonaro">${valDim(r, r.por_periodo.Bolsonaro.mediana_valor)}</td><td class="num" data-label="Período Lula">${valDim(r, r.por_periodo.Lula.mediana_valor)}</td><td data-label="Leitura">${chipLado(r.leitura)}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   const t = res().textos;
@@ -414,7 +563,15 @@ function renderResumo() {
 
 // ------------------------------------------------------------ contexto e auditoria
 function renderContexto() {
-  $("#an-timeline").innerHTML = M.contexto_externo.map((e) => `<li><time datetime="${e.iso}">${mesAno(e.iso)}</time><span class="an-tl-cat mono">${esc(e.categoria)}</span><span class="an-tl-txt">${esc(e.texto)}</span><span class="an-tl-rel">Coincide no tempo com ${esc(e.relacao.replace(/^coincide no tempo com /, ""))}.</span><span class="an-tl-src">Fonte: ${esc(e.fonte)}</span></li>`).join("");
+  const alta = MARCOS.filter((m) => m.marco.relevancia === "alta");
+  // no máximo dois por ano, para a lista não virar um noticiário
+  const porAno = new Map();
+  const escolhidos = alta.filter((m) => { const y = m.data.slice(0, 4), n = porAno.get(y) || 0; porAno.set(y, n + 1); return n < 2; });
+  $("#an-timeline").innerHTML = escolhidos.length
+    ? escolhidos.map((e) => `<li><time datetime="${e.data}">${mesAno(e.data)}</time><span class="an-tl-cat mono">${esc(TIPO_ROTULO[e.marco.tipo] || e.marco.tipo)}</span><span class="an-tl-txt"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.titulo)}</a> <span class="an-ev-src">${esc(e.veiculo)}</span></span><span class="an-tl-rel">${esc(e.marco.resumo)}</span></li>`).join("")
+    : `<li><span class="an-tl-txt">Sem marcos de contexto carregados (data/processed/noticias.json).</span></li>`;
+  const todos = $("#an-ctx-todos");
+  if (todos) todos.textContent = `${MARCOS.length} marcos verificados na fonte, de ${new Set(MARCOS.map((m) => m.data.slice(0, 4))).size} anos. Linha do tempo completa em Contexto.`;
 }
 
 function renderAuditoria() {
@@ -435,6 +592,11 @@ function renderAuditoria() {
     </div>
     <h3 class="an-kick mono">Indicadores, direção e fonte</h3>
     <div class="table-scroll"><table class="an-table"><thead><tr><th scope="col">Série</th><th scope="col">Dimensão</th><th scope="col">Tipo</th><th scope="col">Direção</th><th scope="col">Métrica · campo</th><th scope="col">Fonte</th><th scope="col">Frequência</th><th scope="col">Confiança</th></tr></thead><tbody>${linhas}</tbody></table></div>
+    <h3 class="an-kick mono">Mercado de trabalho: séries do IBGE</h3>
+    <div class="table-scroll"><table class="an-table"><thead><tr><th scope="col">Série</th><th scope="col">Tabela e variável (SIDRA)</th><th scope="col">Unidade</th><th scope="col">Escopo</th><th scope="col">Último resultado</th><th scope="col">Endereço da tabela</th></tr></thead><tbody>${Object.values(R.mercado_trabalho.series).map((x) => `<tr><th scope="row">${esc(x.nome_oficial)}</th><td>tabela ${x.tabela_sidra}, variável ${x.variavel_sidra}</td><td>${esc(x.unidade)}</td><td>${esc(x.escopo_geografico)}; ${esc(x.populacao)}</td><td>${esc(x.ultima_observacao_rotulo)}: ${fmtNum(x.ultimo_valor, x.unidade === "%" ? 1 : 0)}</td><td><a href="${esc(x.url_tabela)}" target="_blank" rel="noopener">${esc(x.url_tabela.replace("https://", ""))}</a></td></tr>`).join("")}</tbody></table></div>
+    <p class="an-files">${esc(R.mercado_trabalho.nota)} Dados coletados em ${dataCurta(R.mercado_trabalho.coletado_em.slice(0, 10))}.</p>
+    <h3 class="an-kick mono">Contexto histórico (notícias e eventos)</h3>
+    <dl class="an-dl an-dl--wide">${Object.entries(M.regras.contexto_historico).map(([k, v]) => `<dt>${esc({ papel: "Papel", arquivo: "Arquivo", o_que_entra: "O que entra", fontes: "Fontes", datas: "Datas", ligacao_com_indicadores: "Ligação com os indicadores", causalidade: "Causalidade", resumos: "Resumos" }[k] || k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
     <h3 class="an-kick mono">Fórmulas</h3><dl class="an-dl an-dl--wide">${form}</dl>
     <h3 class="an-kick mono">Arquivos para conferir</h3>
     <p class="an-files"><a href="../data/processed/analysis_methodology.json" download>analysis_methodology.json</a> (metodologia) · <a href="../data/processed/analysis_results.json" download>analysis_results.json</a> (resultados) · <a href="../data/processed/dashboard_data.json" download>dashboard_data.json</a> (séries de origem) · <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/scripts/build_analise.py" target="_blank" rel="noopener">build_analise.py</a> (cálculo) · <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_ANALISE_GOVERNOS.md" target="_blank" rel="noopener">auditoria</a></p>
@@ -477,7 +639,9 @@ function initHeroVideo() {
 export async function initAnalise() {
   if (!$("#analise")) return;
   initHeroVideo();
-  [M, R] = await Promise.all([getJSON("../data/processed/analysis_methodology.json"), getJSON("../data/processed/analysis_results.json")]);
+  const [nj, mj, rj] = await Promise.all([getJSON("../data/processed/noticias.json"), getJSON("../data/processed/analysis_methodology.json"), getJSON("../data/processed/analysis_results.json")]);
+  [M, R] = [mj, rj];
+  MARCOS = (nj?.itens || []).filter((n) => n.marco && /^https:\/\//.test(n.url)).sort((a, b) => a.data.localeCompare(b.data));
   if (!M || !R) {
     $("#an-body").innerHTML = `<p class="an-part-lead">Não foi possível carregar a análise (<code>data/processed/analysis_methodology.json</code> e <code>analysis_results.json</code>). Rode <code>scripts/build_analise.py</code>.</p>`;
     return;
@@ -488,6 +652,17 @@ export async function initAnalise() {
   renderContexto();
   renderAuditoria();
   renderModo();
+  $("#an-dims").addEventListener("click", (e) => {
+    const b = e.target.closest(".an-ctx-btn");
+    if (!b) return;
+    ctxSel[b.dataset.dim] = b.dataset.ind;
+    const bloco = $(`#an-ctx-${b.dataset.dim}`);
+    bloco.outerHTML = blocoContexto(b.dataset.dim);
+    $(`#an-ctx-${b.dataset.dim} .an-ctx-btn[aria-pressed="true"]`)?.focus();
+  });
+  matchMedia("(max-width: 760px)").addEventListener("change", () => renderModo());
+  // links diretos (#an-dim-trabalho etc.): as seções nascem depois do carregamento, então o salto do navegador falha
+  if (/^#an-/.test(location.hash)) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   $("#an-igual").addEventListener("change", (e) => {
     modo = e.target.checked ? "mesmo_tempo" : M.regras.modo_principal;
     renderModo();

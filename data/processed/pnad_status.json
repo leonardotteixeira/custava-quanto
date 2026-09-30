@@ -1,0 +1,57 @@
+{
+  "coletado_em": "2026-09-30T03:42:41+00:00",
+  "nota": "Cada ponto é um trimestre móvel identificado pelo mês em que termina. O rendimento real vem deflacionado pelo IBGE (IPCA, a preços do mês do meio do trimestre mais recente divulgado) e é refeito a cada divulgação.",
+  "series": {
+    "taxa_desocupacao": {
+      "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+      "tabela_sidra": 6381,
+      "variavel_sidra": 4099,
+      "nome_oficial": "Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade",
+      "unidade": "%",
+      "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+      "escopo_geografico": "Brasil",
+      "populacao": "pessoas de 14 anos ou mais de idade",
+      "primeira_observacao": "201203",
+      "ultima_observacao": "202608",
+      "ultima_observacao_rotulo": "jun-jul-ago 2026",
+      "ultimo_valor": 5.3,
+      "n_observacoes": 174,
+      "url_tabela": "https://sidra.ibge.gov.br/tabela/6381",
+      "url_api": "https://apisidra.ibge.gov.br/values/t/6381/n1/1/v/4099/p/all"
+    },
+    "taxa_subutilizacao": {
+      "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+      "tabela_sidra": 6441,
+      "variavel_sidra": 4118,
+      "nome_oficial": "Taxa composta de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade",
+      "unidade": "%",
+      "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+      "escopo_geografico": "Brasil",
+      "populacao": "pessoas de 14 anos ou mais de idade",
+      "primeira_observacao": "201203",
+      "ultima_observacao": "202608",
+      "ultima_observacao_rotulo": "jun-jul-ago 2026",
+      "ultimo_valor": 13.1,
+      "n_observacoes": 172,
+      "url_tabela": "https://sidra.ibge.gov.br/tabela/6441",
+      "url_api": "https://apisidra.ibge.gov.br/values/t/6441/n1/1/v/4118/p/all"
+    },
+    "rendimento_medio_real": {
+      "fonte": "IBGE — Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD Contínua), divulgação mensal",
+      "tabela_sidra": 6390,
+      "variavel_sidra": 5933,
+      "nome_oficial": "Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos",
+      "unidade": "Reais",
+      "frequencia": "trimestre móvel (um resultado por mês, terminado no mês indicado)",
+      "escopo_geografico": "Brasil",
+      "populacao": "pessoas de 14 anos ou mais de idade",
+      "primeira_observacao": "201203",
+      "ultima_observacao": "202608",
+      "ultima_observacao_rotulo": "jun-jul-ago 2026",
+      "ultimo_valor": 3777.0,
+      "n_observacoes": 174,
+      "url_tabela": "https://sidra.ibge.gov.br/tabela/6390",
+      "url_api": "https://apisidra.ibge.gov.br/values/t/6390/n1/1/v/5933/p/all"
+    }
+  }
+}

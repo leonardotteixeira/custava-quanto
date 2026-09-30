@@ -44,10 +44,18 @@ Verifica:
   governo", "campeão", "perdeu";
 - os cenários da síntese batem com a metodologia; Mercados nunca recebem leitura;
 - o fim do período Lula na Gasolina é o último mês disponível;
+- **Arquivo:** toda URL curada em `data/news/raw_*.json` está em `noticias.json`; sem URL duplicada;
+  todo item tem título, veículo, data, `indicadores` e `dimensoes` (vocabulário fechado).
+- **v1.2**: Mercado de trabalho (tabela e variável do SIDRA, direção, métrica, série do dashboard
+  contra a resposta bruta do IBGE quando o cache existe, período de cada trimestre móvel, votos
+  recalculados, um só peso por dimensão nos cenários, ordem das dimensões) e marcos de contexto
+  (`noticias.json` × `marcos.json`, fonte aceita, https, data de 2019 até hoje, indicadores
+  existentes, `causalidade: "contexto"`, sem linguagem causal, verificação registrada,
+  mínimo de 5 marcos por dimensão).
 - **v1.1**: modo principal "completo" e nomes dos modos; regras de nível de evidência;
   "mede/não mede/critério" em cada dimensão; nível de evidência recalculado por
   regra; **soma da síntese recalculada** de forma independente (peso × sentido) para
-  cada cenário; total e soma da **grade** de 1.771 combinações; grupos de custo de
+  cada cenário; total e soma da **grade** de combinações (C(n+k−1, k−1); 10.626 na v1.2); grupos de custo de
   vida cobrindo todas as séries; maiores altas e quedas conferidas com as séries;
   variação % recalculada de valor inicial e final; PIB anual só de 2019 em diante,
   só anos fechados, período certo por ano, trimestres só de ano ainda não fechado;

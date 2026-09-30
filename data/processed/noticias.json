@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T18:05:44+00:00",
+  "gerado_em": "2026-09-30T04:22:09+00:00",
   "nota": "Notícias reais, conferidas na fonte original. Mostram o que estava sendo noticiado na época — não são prova de causa.",
   "itens": [
     {
@@ -15,7 +15,14 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n001"
+      "verificado_em": "2026-09-30",
+      "id": "n001",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "IBGE: PIB fecha 2015 com queda de 3,8%",
@@ -31,7 +38,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n002"
+      "verificado_em": "2026-09-30",
+      "id": "n002",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Tomate, feijão e gasolina levam IPCA de março ao maior nível desde 2015",
@@ -47,7 +61,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n003"
+      "verificado_em": "2026-09-30",
+      "id": "n003",
+      "indicadores": [
+        "Feijão carioca"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Inflação oficial sobe para 0,75% em março, diz IBGE",
@@ -62,7 +83,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n004"
+      "verificado_em": "2026-09-30",
+      "id": "n004",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Petrobras reajusta gás de cozinha em 3,43% a partir de domingo",
@@ -77,7 +105,14 @@
       "credito_imagem": "Marcello Casal/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n005"
+      "verificado_em": "2026-09-30",
+      "id": "n005",
+      "indicadores": [
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Cesta básica em 18 capitais teve alta em abril, aponta Dieese",
@@ -92,7 +127,12 @@
       "credito_imagem": "Tânia Rêgo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n006"
+      "verificado_em": "2026-09-30",
+      "id": "n006",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Bolsa fecha pela primeira vez acima dos 100 mil pontos",
@@ -107,7 +147,28 @@
       "credito_imagem": "Arquivo/ Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n007"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "IBOVESPA",
+          "DOLAR"
+        ],
+        "tipo": "mercado",
+        "relevancia": "media",
+        "resumo": "O Ibovespa fechou pela primeira vez acima dos 100 mil pontos; o dólar caiu para R$ 3,85, o menor valor em dois meses, segundo a reportagem.",
+        "causalidade": "contexto"
+      },
+      "id": "n007",
+      "indicadores": [
+        "IBOVESPA",
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Petrobras eleva preço da gasolina em 3,5% e do diesel em 4,2%",
@@ -123,7 +184,15 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n008"
+      "verificado_em": "2026-09-30",
+      "id": "n008",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Copom reduz juros básicos para 5% ao ano, o menor nível da história",
@@ -138,7 +207,64 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n009"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "SELIC"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "media",
+        "resumo": "O Copom reduziu a Selic em 0,5 ponto percentual, para 5% ao ano, na terceira redução seguida; era o menor nível da série.",
+        "causalidade": "contexto"
+      },
+      "id": "n009",
+      "indicadores": [
+        "SELIC"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Congresso promulga a reforma da Previdência",
+      "veiculo": "Agência Brasil",
+      "data": "2019-11-12",
+      "url": "https://agenciabrasil.ebc.com.br/congresso-promulga-reforma-da-previdencia-0",
+      "resumo": "Os presidentes da Câmara, Rodrigo Maia, e do senado, Davi Alcolumbre, durante sessão do Congresso Nacional para promulgação da emenda constitucional (103/2019) da reforma da Previdência.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade",
+          "mercados"
+        ],
+        "indicadores": [
+          "PIB",
+          "SELIC"
+        ],
+        "tipo": "politica_fiscal",
+        "relevancia": "alta",
+        "resumo": "O Congresso Nacional promulgou a reforma da Previdência Social.",
+        "causalidade": "contexto"
+      },
+      "id": "n010",
+      "indicadores": [
+        "PIB",
+        "SELIC"
+      ],
+      "dimensoes": [
+        "atividade",
+        "mercados"
+      ]
     },
     {
       "titulo": "Dólar ultrapassa R$ 4,20 e fecha no maior valor desde criação do real",
@@ -153,7 +279,26 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n010"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "DOLAR"
+        ],
+        "tipo": "mercado",
+        "relevancia": "media",
+        "resumo": "O dólar ultrapassou R$ 4,20 e fechou no maior valor desde a criação do real, segundo a reportagem.",
+        "causalidade": "contexto"
+      },
+      "id": "n011",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Preço da carne atinge maior nível dos últimos 30 anos — até quando?",
@@ -169,7 +314,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n011"
+      "verificado_em": "2026-09-30",
+      "id": "n012",
+      "indicadores": [
+        "Carne bovina (patinho)"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Exportações de carne podem fechar 2019 com resultado recorde",
@@ -184,7 +336,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n012"
+      "verificado_em": "2026-09-30",
+      "id": "n013",
+      "indicadores": [
+        "Carne bovina (patinho)"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Produção de etanol na safra 2019/2020 deve aumentar 7,1%, diz Unica",
@@ -199,7 +358,49 @@
       "credito_imagem": "Elza Fiuza/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n013"
+      "verificado_em": "2026-09-30",
+      "id": "n014",
+      "indicadores": [
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Taxa de desemprego cai no país e fecha 2019 em 11,9%",
+      "veiculo": "Agência Brasil",
+      "data": "2020-01-31",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-01/taxa-de-desemprego-no-pais-fecha-2019-em-119",
+      "resumo": "Os dados são da Pesquisa Nacional por Amostra de Domicílios – Contínua (Pnad-C), divulgada hoje (31) pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/WbTS56BdhUCWiB3M_09wXuk4vjE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/agenciabrasil161112wdo_7717.jpg?itok=YNvvtGwQ",
+      "credito_imagem": "Wilson Dias/Arquivo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa média de desocupação de 2019 foi de 11,9%, abaixo dos 12,3% de 2018, segundo a PNAD Contínua; o número de empregados sem carteira cresceu 4% na média do ano.",
+        "causalidade": "contexto"
+      },
+      "id": "n015",
+      "indicadores": [
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "PIB fecha 2019 com crescimento de 1,1% em relação a 2018",
@@ -215,7 +416,64 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n014"
+      "verificado_em": "2026-09-30",
+      "id": "n016",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
+    },
+    {
+      "titulo": "Organização Mundial da Saúde declara pandemia de coronavírus",
+      "veiculo": "Agência Brasil",
+      "data": "2020-03-11",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2020-03/organizacao-mundial-da-saude-declara-pandemia-de-coronavirus",
+      "resumo": "A mudança de classificação não se deve à gravidade da doença, e sim à disseminação geográfica rápida que o Covid-19 tem apresentado. Atualmente, 115 países têm casos da doença.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho",
+          "atividade",
+          "custo_vida",
+          "mercados"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "SUBUTILIZACAO",
+          "RENDIMENTO",
+          "PIB",
+          "IBOVESPA",
+          "DOLAR"
+        ],
+        "tipo": "choque_global",
+        "relevancia": "alta",
+        "resumo": "A Organização Mundial da Saúde elevou o status da contaminação pelo novo coronavírus a pandemia.",
+        "causalidade": "contexto"
+      },
+      "id": "n017",
+      "indicadores": [
+        "DESOCUPACAO",
+        "SUBUTILIZACAO",
+        "RENDIMENTO",
+        "PIB",
+        "IBOVESPA",
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "trabalho",
+        "atividade",
+        "mercados"
+      ]
     },
     {
       "titulo": "Circuit breaker é acionado pela sexta vez em março, igualando a marca da crise de 2008",
@@ -231,7 +489,107 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n015"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "IBOVESPA"
+        ],
+        "tipo": "choque_global",
+        "relevancia": "alta",
+        "resumo": "O Ibovespa acionou o circuit breaker pela sexta vez em março de 2020, igualando a marca de 2008, em meio ao receio com o surto de coronavírus.",
+        "causalidade": "contexto"
+      },
+      "id": "n018",
+      "indicadores": [
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "IBGE suspende coleta presencial de índices de preços e Pnad contínua",
+      "veiculo": "Agência Brasil",
+      "data": "2020-03-18",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-03/ibge-suspende-coleta-presencial-de-indices-de-precos-e-pnad-continua",
+      "resumo": "As medidas preventivas requerem o menor contato possível entre as pessoas para evitar a propagação do vírus. Censo Demográfico, previsto para este ano, foi adiado.",
+      "produtos": [
+        "trabalho",
+        "IPCA"
+      ],
+      "imagem": "https://imagens.ebc.com.br/hwIifQR5NL6JRjruSp_Pw6f3vcQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1070064-1%20-%20rvrs_abr_21.03.2017_0769.jpg?itok=HbffSKCo",
+      "credito_imagem": "Rovena Rosa/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho",
+          "inflacao"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "SUBUTILIZACAO",
+          "RENDIMENTO",
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O IBGE suspendeu a coleta presencial de preços e da PNAD Contínua, seguindo orientação do Ministério da Saúde, e passou a estudar alternativas sem visita aos domicílios.",
+        "causalidade": "contexto"
+      },
+      "id": "n019",
+      "indicadores": [
+        "IPCA",
+        "DESOCUPACAO",
+        "SUBUTILIZACAO",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "inflacao",
+        "trabalho"
+      ]
+    },
+    {
+      "titulo": "Bolsonaro sanciona lei da renda básica emergencial",
+      "veiculo": "Agência Brasil",
+      "data": "2020-04-01",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2020-04/bolsonaro-sanciona-lei-da-renda-basica-emergencial",
+      "resumo": "O líder do governo no Senado, Fernando Bezerra Coelho, informou que o texto sancionado contém três vetos, que ainda não foram divulgados pela Presidência.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": "https://imagens.ebc.com.br/f5yNcF_xU762l5nNsUNLhg4dtgE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_pr_jair_bolsonaro_coletiva0104201368_0.jpg?itok=M9Da51I8",
+      "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "renda",
+          "trabalho"
+        ],
+        "indicadores": [
+          "SALARIO_REAL",
+          "RENDIMENTO"
+        ],
+        "tipo": "protecao_social",
+        "relevancia": "alta",
+        "resumo": "Foi sancionada a lei que criou a renda básica emergencial de R$ 600, por três meses, para trabalhadores informais, autônomos e pessoas sem renda fixa durante a pandemia.",
+        "causalidade": "contexto"
+      },
+      "id": "n020",
+      "indicadores": [
+        "SALARIO_REAL",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "renda",
+        "trabalho"
+      ]
     },
     {
       "titulo": "Dólar fecha acima de R$ 5,90 pela primeira vez na história",
@@ -246,7 +604,26 @@
       "credito_imagem": "Marcello Casal Jr./Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n016"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "DOLAR"
+        ],
+        "tipo": "mercado",
+        "relevancia": "media",
+        "resumo": "O dólar comercial fechou a R$ 5,901, o maior valor nominal desde a criação do real.",
+        "causalidade": "contexto"
+      },
+      "id": "n021",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "ANP: preço médio de revenda da gasolina acumula queda de 17,11%",
@@ -265,7 +642,53 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n017"
+      "verificado_em": "2026-09-30",
+      "id": "n022",
+      "indicadores": [
+        "GASOLINA",
+        "ETANOL",
+        "DIESEL",
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Publicada lei que cria o programa de manutenção do emprego e renda",
+      "veiculo": "Agência Brasil",
+      "data": "2020-07-07",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2020-07/Publicada-lei-que-cria-o-programa-de-manutencao-do-emprego-e-renda",
+      "resumo": "A lei permite a suspensão temporária do contrato de trabalho por até 60 dias e a redução proporcional de salários e da jornada dos trabalhadores pelo período de até 90 dias.",
+      "produtos": [
+        "trabalho"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "SUBUTILIZACAO"
+        ],
+        "tipo": "politica_trabalhista",
+        "relevancia": "media",
+        "resumo": "A Lei 14.020/2020 permitiu suspender contratos por até 60 dias e reduzir salário e jornada por até 90 dias na pandemia; até 26 de junho, segundo a reportagem, 11,6 milhões de acordos haviam sido celebrados.",
+        "causalidade": "contexto"
+      },
+      "id": "n023",
+      "indicadores": [
+        "DESOCUPACAO",
+        "SUBUTILIZACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Copom reduz juros básicos da economia para 2% ao ano",
@@ -280,7 +703,63 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n018"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "SELIC"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "media",
+        "resumo": "Um corte de 0,25 ponto percentual levou a Selic a 2% ao ano, a nona redução seguida e o menor nível da série.",
+        "causalidade": "contexto"
+      },
+      "id": "n024",
+      "indicadores": [
+        "SELIC"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Pnad: desemprego chega a 13,3% no segundo trimestre",
+      "veiculo": "Agência Brasil",
+      "data": "2020-08-06",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2020-08/pnad-desemprego-vai-133-no-segundo-trimestre",
+      "resumo": "População ocupada ficou em 83,3 milhões, menor nível da série histórica, iniciada em 2012. Na comparação com o mesmo período de 2019, a queda foi de 10,7%.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/p7j7E_Ua2_D-FYsKUEXHYJD3DAY=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mascaras_rj_uso_obrigatorio_0424202567.jpg?itok=3zoCXG25",
+      "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "SUBUTILIZACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa de desocupação foi de 13,3% no 2º trimestre de 2020, 1,1 ponto percentual acima do 1º; a população ocupada, de 83,3 milhões, foi a menor da série iniciada em 2012.",
+        "causalidade": "contexto"
+      },
+      "id": "n025",
+      "indicadores": [
+        "DESOCUPACAO",
+        "SUBUTILIZACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "PIB recua 9,7% no segundo trimestre",
@@ -296,7 +775,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n019"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O PIB recuou 9,7% no 2º trimestre de 2020; no primeiro semestre, a queda foi de 5,9% sobre igual período de 2019.",
+        "causalidade": "contexto"
+      },
+      "id": "n026",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Governo zera imposto de importação do arroz até o final do ano",
@@ -311,7 +809,14 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n020"
+      "verificado_em": "2026-09-30",
+      "id": "n027",
+      "indicadores": [
+        "Arroz"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Inflação oficial fica em 0,24% em agosto, diz IBGE",
@@ -326,7 +831,14 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n021"
+      "verificado_em": "2026-09-30",
+      "id": "n028",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Arroz chega a custar R$ 35 em supermercados de São Paulo",
@@ -342,7 +854,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n022"
+      "verificado_em": "2026-09-30",
+      "id": "n029",
+      "indicadores": [
+        "Arroz"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Gasolina sobe 4% nas refinarias, anuncia Petrobras",
@@ -358,7 +877,14 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n023"
+      "verificado_em": "2026-09-30",
+      "id": "n030",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Alimentos puxam alta de preços em setembro, aponta o IBGE",
@@ -373,7 +899,12 @@
       "credito_imagem": "Antonio Cruz/ABr · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n024"
+      "verificado_em": "2026-09-30",
+      "id": "n031",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "PIB cresce 7,7% do segundo para o terceiro trimestre, diz IBGE",
@@ -389,7 +920,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n025"
+      "verificado_em": "2026-09-30",
+      "id": "n032",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Óleo de soja mais que dobra de preço e arroz sobe 76% no acumulado de 2020",
@@ -406,7 +944,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n026"
+      "verificado_em": "2026-09-30",
+      "id": "n033",
+      "indicadores": [
+        "Óleo de soja",
+        "Arroz"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras anuncia nova alta nos preços da gasolina, diesel e gás",
@@ -423,7 +969,16 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n027"
+      "verificado_em": "2026-09-30",
+      "id": "n034",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL",
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "PIB de 2020 fecha com queda de 4,1%, revela pesquisa do IBGE",
@@ -439,7 +994,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n028"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O PIB de 2020 fechou com queda de 4,1%; segundo a coordenadora de Contas Nacionais do IBGE, o resultado reflete a pandemia, que paralisou diversas atividades.",
+        "causalidade": "contexto"
+      },
+      "id": "n035",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Aumento da gasolina também causa impacto no preço do etanol",
@@ -454,7 +1028,14 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n029"
+      "verificado_em": "2026-09-30",
+      "id": "n036",
+      "indicadores": [
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Dólar encosta em R$ 5,80 e fecha no maior valor em 10 meses",
@@ -469,7 +1050,49 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n030"
+      "verificado_em": "2026-09-30",
+      "id": "n037",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Desemprego registrou taxa média de 13,5% em 2020",
+      "veiculo": "Agência Brasil",
+      "data": "2021-03-10",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-03/desemprego-registrou-taxa-media-de-135-em-2020",
+      "resumo": "De acordo com a Pnad Contínua, pela primeira vez, menos da metade da população em idade para trabalhar estava ocupada no país. Em 2020, o nível de ocupação ficou em 49,4%.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa média de desocupação de 2020 foi de 13,5% (11,9% em 2019), a maior da série iniciada em 2012; a população ocupada caiu 7,3 milhões e o nível de ocupação ficou em 49,4%.",
+        "causalidade": "contexto"
+      },
+      "id": "n038",
+      "indicadores": [
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Copom eleva juros básicos da economia pela primeira vez em seis anos",
@@ -484,7 +1107,67 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n031"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados",
+          "inflacao"
+        ],
+        "indicadores": [
+          "SELIC",
+          "IPCA"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "media",
+        "resumo": "O Banco Central elevou a Selic de 2% para 2,75% ao ano, a primeira alta em seis anos, com a inflação de alimentos em alta.",
+        "causalidade": "contexto"
+      },
+      "id": "n039",
+      "indicadores": [
+        "SELIC",
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao",
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Percentual de desocupados supera 14%, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2021-05-27",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-05/percentual-de-desocupados-supera-14-diz-IBGE",
+      "resumo": "Segundo IBGE, a taxa recorde contém um componente sazonal esperado, já que o índice costuma aumentar no início de cada ano, com a dispensa de contratados no final do ano anterior.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "SUBUTILIZACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa de desocupação foi de 14,7% no 1º trimestre de 2021, a maior da série iniciada em 2012, com 14,8 milhões de pessoas desocupadas, segundo o IBGE.",
+        "causalidade": "contexto"
+      },
+      "id": "n040",
+      "indicadores": [
+        "DESOCUPACAO",
+        "SUBUTILIZACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Ibovespa supera 130 mil pontos pela primeira vez na história",
@@ -500,7 +1183,50 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n032"
+      "verificado_em": "2026-09-30",
+      "id": "n041",
+      "indicadores": [
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Aneel cria nova bandeira tarifária, e conta de luz fica mais cara",
+      "veiculo": "Agência Brasil",
+      "data": "2021-08-31",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-08/aneel-cria-nova-bandeira-tarifaria-e-conta-de-luz-fica-mais-cara",
+      "resumo": "Bandeira de escassez hídrica cria taxa extra de R$ 14,20 para cada 100 kilowatt-hora (KWh) consumidos e entra em vigor a partir desta quarta-feira (1º).",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "inflacao"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "regulatoria",
+        "relevancia": "media",
+        "resumo": "A Aneel criou a bandeira tarifária de escassez hídrica, com cobrança extra de R$ 14,20 a cada 100 kWh a partir de 1º de setembro de 2021.",
+        "causalidade": "contexto"
+      },
+      "id": "n042",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
     },
     {
       "titulo": "Cesta básica tem alta em 11 capitais, diz Dieese",
@@ -511,11 +1237,16 @@
       "produtos": [
         "alimentos"
       ],
-      "imagem": null,
-      "credito_imagem": null,
+      "imagem": "https://imagens.ebc.com.br/bvtvZQvb2wWFy6wiezFFEwh0dk8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/supermercados_dia_8.jpg?itok=pG5_k7OS",
+      "credito_imagem": "Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n033"
+      "verificado_em": "2026-09-30",
+      "id": "n043",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Inflação oficial fica em 1,16% em setembro, diz IBGE",
@@ -530,7 +1261,26 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n034"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O IPCA de setembro de 2021 foi de 1,16%; a energia elétrica (+6,47%) e os combustíveis (+2,43%) pesaram em habitação e transportes.",
+        "causalidade": "contexto"
+      },
+      "id": "n044",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Petrobras reajusta hoje preços do gás de cozinha e da gasolina",
@@ -546,7 +1296,169 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n035"
+      "verificado_em": "2026-09-30",
+      "id": "n045",
+      "indicadores": [
+        "GASOLINA",
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Congresso promulga primeira parte da PEC dos Precatórios",
+      "veiculo": "Agência Brasil",
+      "data": "2021-12-08",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2021-12/congresso-promulga-primeira-parte-da-pec-dos-precatorios",
+      "resumo": "A agora Emenda Constitucional 113/21 é essencial para viabilizar o pagamento do Auxílio Brasil, criado para substituir o programa Bolsa Família.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "renda",
+          "atividade"
+        ],
+        "indicadores": [
+          "SALARIO_REAL",
+          "PIB"
+        ],
+        "tipo": "politica_fiscal",
+        "relevancia": "media",
+        "resumo": "O Congresso promulgou a Emenda Constitucional 113/2021, que, segundo a reportagem, abriu espaço fiscal de R$ 64,9 bilhões no Orçamento de 2022, parte usada para o Auxílio Brasil.",
+        "causalidade": "contexto"
+      },
+      "id": "n046",
+      "indicadores": [
+        "SALARIO_REAL",
+        "PIB"
+      ],
+      "dimensoes": [
+        "renda",
+        "atividade"
+      ]
+    },
+    {
+      "titulo": "Ocupação aumenta no mercado de trabalho, mas rendimento cai, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2021-12-28",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2021-12/ocupacao-aumenta-no-mercado-de-trabalho-mas-rendimento-cai-diz-ibge",
+      "resumo": "A queda no rendimento real habitual é 4,6% frente ao trimestre anterior passando para R$ 2.449, mas em relação a igual trimestre de 2020, o recuo ficou em 11,1%.",
+      "produtos": [
+        "trabalho",
+        "RENDIMENTO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/pBYLpSdDEDKftVPbSbHpZ9WDX4o=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/carteira-de-trabalho-digital_mcamgo_abr_240620211818-7.jpg?itok=mcJZ2kK9",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "RENDIMENTO",
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A população ocupada chegou a 94,0 milhões (+3,6% no trimestre); o rendimento real habitual recuou 4,6% no trimestre e 11,1% em um ano, para R$ 2.449, segundo o IBGE.",
+        "causalidade": "contexto"
+      },
+      "id": "n047",
+      "indicadores": [
+        "RENDIMENTO",
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
+    },
+    {
+      "titulo": "IBGE: desemprego no país cai para 11,1% no quarto trimestre",
+      "veiculo": "Agência Brasil",
+      "data": "2022-02-24",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-02/ibge-desemprego-no-pais-cai-para-111-no-quarto-trimestre",
+      "resumo": "Alta na ocupação foi disseminada por várias atividades econômicas. Maior crescimento percentual veio da construção (13,8%), que empregou 845 mil pessoas a mais, disse o IBGE.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "A taxa de desocupação caiu para 11,1% no 4º trimestre de 2021; a média anual de 2021 foi de 13,2%, com 91,3 milhões de ocupados.",
+        "causalidade": "contexto"
+      },
+      "id": "n048",
+      "indicadores": [
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
+    },
+    {
+      "titulo": "Guerra entre Rússia e Ucrânia pode impactar inflação e PIB no Brasil",
+      "veiculo": "Agência Brasil",
+      "data": "2022-02-27",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-02/guerra-entre-russia-e-ucrania-pode-impactar-inflacao-e-pib-no-brasil",
+      "resumo": "Segundo a pesquisa Sondagem da América Latina, da FGV, as turbulências na Ucrânia devem agravar as incertezas que pairam sobre a economia global nos últimos meses.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "inflacao",
+          "mercados"
+        ],
+        "indicadores": [
+          "GASOLINA",
+          "DIESEL",
+          "IPCA",
+          "DOLAR"
+        ],
+        "tipo": "choque_externo",
+        "relevancia": "alta",
+        "resumo": "Reportagem de 27/2/2022, três dias após a invasão: o petróleo Brent encerrou a semana a US$ 105, o maior nível desde 2014, e a matéria aponta combustíveis, alimentos e câmbio como os canais de impacto no Brasil.",
+        "causalidade": "contexto"
+      },
+      "id": "n049",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL",
+        "IPCA",
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao",
+        "mercados"
+      ]
     },
     {
       "titulo": "PIB cresce 4,6% em 2021 e supera perdas da pandemia",
@@ -562,7 +1474,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n036"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O PIB cresceu 4,6% em 2021, com alta de 4,7% nos serviços e de 4,5% na indústria, segundo o IBGE.",
+        "causalidade": "contexto"
+      },
+      "id": "n050",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Petrobras reajusta preços da gasolina e diesel para as distribuidoras",
@@ -578,7 +1509,30 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n037"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "inflacao"
+        ],
+        "indicadores": [
+          "GASOLINA",
+          "DIESEL"
+        ],
+        "tipo": "choque_externo",
+        "relevancia": "alta",
+        "resumo": "A Petrobras elevou o preço médio da gasolina para distribuidoras de R$ 3,25 para R$ 3,86 o litro e o do diesel de R$ 3,61 para R$ 4,51.",
+        "causalidade": "contexto"
+      },
+      "id": "n051",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
     },
     {
       "titulo": "Preço de gás de cozinha dispara e botijão já é vendido a R$ 160",
@@ -594,7 +1548,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n038"
+      "verificado_em": "2026-09-30",
+      "id": "n052",
+      "indicadores": [
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Troca de gasolina por etanol pode não ser vantajosa para o consumidor",
@@ -609,7 +1570,14 @@
       "credito_imagem": "Rovena Rosa/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n039"
+      "verificado_em": "2026-09-30",
+      "id": "n053",
+      "indicadores": [
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preço da gasolina chega a R$ 7,27 e é o mais alto registrado pela ANP",
@@ -624,7 +1592,26 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n040"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida"
+        ],
+        "indicadores": [
+          "GASOLINA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O preço médio da gasolina comum chegou a R$ 7,27 o litro, o mais alto já registrado pela ANP, na segunda semana seguida de alta.",
+        "causalidade": "contexto"
+      },
+      "id": "n054",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preço médio da gasolina chega a R$ 7,29 e bate recorde histórico, aponta ANP",
@@ -641,7 +1628,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n041"
+      "verificado_em": "2026-09-30",
+      "id": "n055",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preço médio da gasolina bate recorde e litro vai a R$ 7,29",
@@ -658,7 +1652,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n042"
+      "verificado_em": "2026-09-30",
+      "id": "n056",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Inflação oficial fica em 1,06% em abril, diz IBGE",
@@ -675,7 +1676,30 @@
       "credito_imagem": "Tânia Rêgo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n043"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao",
+          "custo_vida"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O IPCA de abril de 2022 foi de 1,06% e a inflação em 12 meses chegou a 12,13%, a maior desde outubro de 2003.",
+        "causalidade": "contexto"
+      },
+      "id": "n057",
+      "indicadores": [
+        "IPCA",
+        "SELIC"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao",
+        "mercados"
+      ]
     },
     {
       "titulo": "Inflação de abril é de 1,06% no IPCA, a maior para o mês desde 1996",
@@ -692,7 +1716,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n044"
+      "verificado_em": "2026-09-30",
+      "id": "n058",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
     },
     {
       "titulo": "Trigo, café e óleo de soja continuam subindo no Brasil com guerra, diz Abia",
@@ -708,7 +1740,15 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n045"
+      "verificado_em": "2026-09-30",
+      "id": "n059",
+      "indicadores": [
+        "Óleo de soja",
+        "Café moído"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preço da cesta básica paulistana aumenta 1,36%, diz Procon-SP",
@@ -723,7 +1763,94 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n046"
+      "verificado_em": "2026-09-30",
+      "id": "n060",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Presidente sanciona com vetos lei que previa compensações de ICMS",
+      "veiculo": "Agência Brasil",
+      "data": "2022-06-24",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/presidente-sanciona-com-vetos-lei-que-previa-compensacoes-de-icms",
+      "resumo": "Entre os vetos, está o artigo que assegurava a disponibilidade financeira para “os mínimos constitucionais em saúde e em educação”.",
+      "produtos": [
+        "contexto",
+        "combustiveis"
+      ],
+      "imagem": "https://imagens.ebc.com.br/JL3gRj2WIBKGdKmzXXfL8mubmrs=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/wdo_2107_0.jpg?itok=VQmmq7oz",
+      "credito_imagem": "Wilson Dias/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "inflacao"
+        ],
+        "indicadores": [
+          "GASOLINA",
+          "ETANOL",
+          "DIESEL",
+          "DIESEL S10",
+          "IPCA"
+        ],
+        "tipo": "regulatoria",
+        "relevancia": "alta",
+        "resumo": "Foi sancionada, com vetos, a lei que fixou teto ao ICMS sobre combustíveis, energia elétrica, comunicações e transportes coletivos; um dos vetos barrou a compensação financeira a estados e municípios.",
+        "causalidade": "contexto"
+      },
+      "id": "n061",
+      "indicadores": [
+        "GASOLINA",
+        "ETANOL",
+        "DIESEL",
+        "DIESEL S10",
+        "IPCA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
+    },
+    {
+      "titulo": "IBGE: desemprego cai para 9,8%; rendimento fica estável",
+      "veiculo": "Agência Brasil",
+      "data": "2022-06-30",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2022-06/ibge-desemprego-cai-para-98-rendimento-fica-estavel",
+      "resumo": "Em números, o Brasil tem hoje 10,6 milhões de pessoas desocupadas. São 1,4 milhão de pessoas a menos frente ao trimestre anterior, o que representa um recuo de 11,5%.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/pBYLpSdDEDKftVPbSbHpZ9WDX4o=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/carteira-de-trabalho-digital_mcamgo_abr_240620211818-7.jpg?itok=mcJZ2kK9",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "RENDIMENTO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "A taxa de desocupação foi de 9,8% no trimestre encerrado em maio de 2022 (1,4 ponto percentual abaixo do trimestre anterior), com 97,5 milhões de ocupados e rendimento real habitual de R$ 2.613, estável.",
+        "causalidade": "contexto"
+      },
+      "id": "n062",
+      "indicadores": [
+        "DESOCUPACAO",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Preço médio da gasolina cai R$ 0,90 no país em três semanas",
@@ -738,7 +1865,48 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n047"
+      "verificado_em": "2026-09-30",
+      "id": "n063",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Congresso promulga PEC que aumenta benefícios sociais até dezembro",
+      "veiculo": "Agência Brasil",
+      "data": "2022-07-14",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2022-07/congresso-promulga-pec-que-aumenta-beneficios-sociais-ate-dezembro",
+      "resumo": "Entre medidas estão auxílio para caminhoneiros, vale-gás de cozinha, reforço ao Alimenta Brasil, parcelas para taxistas, gratuidade no transporte de idosos e compensação a estados.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "renda"
+        ],
+        "indicadores": [
+          "SALARIO_REAL"
+        ],
+        "tipo": "protecao_social",
+        "relevancia": "media",
+        "resumo": "O Congresso promulgou emenda que previa aumento de R$ 200 no Auxílio Brasil até 31 de dezembro e declarava “estado de emergência” por preços extraordinários do petróleo e derivados, permitindo benefícios em ano eleitoral.",
+        "causalidade": "contexto"
+      },
+      "id": "n064",
+      "indicadores": [
+        "SALARIO_REAL"
+      ],
+      "dimensoes": [
+        "renda"
+      ]
     },
     {
       "titulo": "Copom eleva juros básicos da economia para 13,75% ao ano",
@@ -753,7 +1921,30 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n048"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados",
+          "inflacao"
+        ],
+        "indicadores": [
+          "SELIC",
+          "IPCA"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "alta",
+        "resumo": "O Copom elevou a Selic para 13,75% ao ano.",
+        "causalidade": "contexto"
+      },
+      "id": "n065",
+      "indicadores": [
+        "SELIC",
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao",
+        "mercados"
+      ]
     },
     {
       "titulo": "IPCA: deflação foi puxada por combustíveis; preços de alimentos sobem",
@@ -768,7 +1959,14 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n049"
+      "verificado_em": "2026-09-30",
+      "id": "n066",
+      "indicadores": [
+        "Leite longa vida"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "IPCA tem deflação de 0,68% em julho, menor taxa da série histórica",
@@ -783,7 +1981,28 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n050"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao",
+          "custo_vida"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O IPCA de julho de 2022 teve deflação de 0,68%, a menor taxa da série; em 12 meses ficou em 10,07%.",
+        "causalidade": "contexto"
+      },
+      "id": "n067",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
     },
     {
       "titulo": "Preço médio diesel S10 em bombas sobe após 16 semanas de queda, diz ANP",
@@ -799,7 +2018,54 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n051"
+      "verificado_em": "2026-09-30",
+      "id": "n068",
+      "indicadores": [
+        "DIESEL S10"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Congresso promulga PEC da Transição",
+      "veiculo": "Agência Brasil",
+      "data": "2022-12-22",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2022-12/congresso-promulga-pec-da-transicao",
+      "resumo": "Sessão solene do Congresso foi realizada na noite desta quarta. Presidente do Congresso, senador Rodrigo Pacheco, agradeceu empenho dos parlamentares.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": "https://imagens.ebc.com.br/HR269ecIQikL38M9VV9bC1Fwqi0=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/monumentos_brasilia_cupula_plenario_da_camara_dos_deputados3103201338.jpg?itok=6u2HIdWI",
+      "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "renda",
+          "mercados"
+        ],
+        "indicadores": [
+          "SALARIO_REAL",
+          "DOLAR",
+          "IBOVESPA"
+        ],
+        "tipo": "politica_fiscal",
+        "relevancia": "media",
+        "resumo": "O Congresso promulgou a PEC da Transição, que, segundo a reportagem, liberou R$ 145 bilhões fora do teto de gastos (R$ 70 bilhões para o Auxílio Brasil de R$ 600 com R$ 150 por criança até 6 anos), com validade de um ano.",
+        "causalidade": "contexto"
+      },
+      "id": "n069",
+      "indicadores": [
+        "SALARIO_REAL",
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "renda",
+        "mercados"
+      ]
     },
     {
       "titulo": "Ibovespa fecha ano com alta de 4,69% e dólar com queda de 5,3%",
@@ -815,7 +2081,15 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n052"
+      "verificado_em": "2026-09-30",
+      "id": "n070",
+      "indicadores": [
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Governo Lula cobrará R$ 0,47 de imposto sobre o litro da gasolina",
@@ -832,7 +2106,63 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n053"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida"
+        ],
+        "indicadores": [
+          "GASOLINA",
+          "ETANOL"
+        ],
+        "tipo": "politica_tributaria",
+        "relevancia": "alta",
+        "resumo": "Segundo o Poder360, a partir de 1º de março de 2023 o governo passou a cobrar R$ 0,47 de imposto sobre o litro da gasolina e R$ 0,02 sobre o do etanol.",
+        "causalidade": "contexto"
+      },
+      "id": "n071",
+      "indicadores": [
+        "GASOLINA",
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Taxa média de desocupação em 2022 ficou em 9,3%, diz IBGE",
+      "veiculo": "Agência Brasil",
+      "data": "2023-02-28",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-02/taxa-media-de-desocupacao-em-2022-ficou-em-93-diz-ibge",
+      "resumo": "Segundo dados divulgados hoje pelo IBGE, o resultado é a menor taxa desde 2015 (8,6%). Na série histórica, iniciada em 2012, o menor patamar foi registrado em 2014 (6,9%).",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/7nbvgAWoJpzF3pAXFEL0rq9SInQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/rodoviaria_do_plano_piloto_fcpzzb_abr_20220414_0509.jpg?itok=nDKrGwjK",
+      "credito_imagem": "Fabio Rodrigues-Pozzebom/ Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "A taxa média de desocupação caiu de 13,2% em 2021 para 9,3% em 2022; a população ocupada média chegou a 98 milhões, 7,4% acima de 2021.",
+        "causalidade": "contexto"
+      },
+      "id": "n072",
+      "indicadores": [
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "PIB cresce 2,9% em 2022 e fecha o ano em R$ 9,9 trilhões",
@@ -848,7 +2178,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n054"
+      "verificado_em": "2026-09-30",
+      "id": "n073",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em dez meses",
@@ -863,7 +2200,50 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n055"
+      "verificado_em": "2026-09-30",
+      "id": "n074",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Salário mínimo de R$ 1.320 entra em vigor nesta segunda",
+      "veiculo": "Agência Brasil",
+      "data": "2023-05-01",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-05/salario-minimo-de-r-1320-entra-em-vigor-nesta-segunda",
+      "resumo": "Aumento, previsto no Orçamento Geral deste ano, teve de ser adiado porque valor não permitiria pagar benefícios do INSS durante todo o ano",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "renda"
+        ],
+        "indicadores": [
+          "SALARIO_REAL",
+          "SM_GASOLINA"
+        ],
+        "tipo": "politica_salarial",
+        "relevancia": "media",
+        "resumo": "O salário mínimo passou de R$ 1.302 para R$ 1.320 em 1º de maio de 2023, segundo aumento do ano.",
+        "causalidade": "contexto"
+      },
+      "id": "n075",
+      "indicadores": [
+        "SALARIO_REAL",
+        "SM_GASOLINA"
+      ],
+      "dimensoes": [
+        "renda"
+      ]
     },
     {
       "titulo": "Petrobras anuncia fim da paridade internacional de preços do petróleo",
@@ -880,7 +2260,28 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n056"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida"
+        ],
+        "indicadores": [
+          "GASOLINA",
+          "DIESEL"
+        ],
+        "tipo": "politica_energetica",
+        "relevancia": "media",
+        "resumo": "A Petrobras anunciou o fim da paridade internacional de preços (PPI) na formação dos preços dos combustíveis.",
+        "causalidade": "contexto"
+      },
+      "id": "n076",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Pela 1ª vez em três anos, Banco Central corta taxa de juros; Selic vai a 13,25% ao ano",
@@ -895,7 +2296,66 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n057"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "SELIC"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "alta",
+        "resumo": "O Banco Central cortou a Selic pela primeira vez em três anos, para 13,25% ao ano.",
+        "causalidade": "contexto"
+      },
+      "id": "n077",
+      "indicadores": [
+        "SELIC"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Veto a dispositivo do arcabouço facilitará acordos sobre precatórios",
+      "veiculo": "Agência Brasil",
+      "data": "2023-08-31",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-08/veto-dispositivo-do-arcabouco-facilitara-acordos-sobre-precatorios",
+      "resumo": "Em entrevista coletiva, ministros Fernando Haddad e Simone Tebet negaram que decisão tenha caráter político e afirmaram que pedido partiu da área técnica da equipe econômica.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados",
+          "atividade"
+        ],
+        "indicadores": [
+          "SELIC",
+          "DOLAR",
+          "IBOVESPA"
+        ],
+        "tipo": "politica_fiscal",
+        "relevancia": "media",
+        "resumo": "Ao sancionar a Lei Complementar 200, o novo arcabouço fiscal, o presidente vetou dois dispositivos, entre eles o que proibia a LDO de prever exclusões de gastos ao verificar as metas fiscais.",
+        "causalidade": "contexto"
+      },
+      "id": "n078",
+      "indicadores": [
+        "SELIC",
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "atividade",
+        "mercados"
+      ]
     },
     {
       "titulo": "Dieese: preço da cesta básica cai em 14 de 17 capitais pesquisadas",
@@ -910,7 +2370,12 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n058"
+      "verificado_em": "2026-09-30",
+      "id": "n079",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Prévia da inflação oficial fica em 0,21% em outubro, informa IBGE",
@@ -925,7 +2390,52 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n059"
+      "verificado_em": "2026-09-30",
+      "id": "n080",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
+    },
+    {
+      "titulo": "Congresso promulga emenda constitucional da reforma tributária",
+      "veiculo": "Agência Brasil",
+      "data": "2023-12-20",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2023-12/congresso-promulga-emenda-constitucional-da-reforma-tributaria",
+      "resumo": "Após 30 anos de discussão, a reforma simplifica a tributação sobre o consumo e provocará mudança na vida dos brasileiros na hora de comprar produtos e serviços.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": "https://imagens.ebc.com.br/hJaOUq8utl5qlkwx5d986Yy5Srk=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/lula7788-5.jpg?itok=Kmei8skC",
+      "credito_imagem": "Lula Marques/ Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "atividade"
+        ],
+        "indicadores": [
+          "IPCA",
+          "PIB"
+        ],
+        "tipo": "politica_tributaria",
+        "relevancia": "media",
+        "resumo": "O Congresso promulgou a Emenda Constitucional 132/2023, da reforma tributária sobre o consumo, após cerca de 30 anos de discussão.",
+        "causalidade": "contexto"
+      },
+      "id": "n081",
+      "indicadores": [
+        "IPCA",
+        "PIB"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "atividade"
+      ]
     },
     {
       "titulo": "Entenda como os preços dos combustíveis variaram em 2023",
@@ -940,7 +2450,12 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n060"
+      "verificado_em": "2026-09-30",
+      "id": "n082",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Ibovespa fecha 2023 com valorização de mais de 20%",
@@ -955,7 +2470,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n061"
+      "verificado_em": "2026-09-30",
+      "id": "n083",
+      "indicadores": [
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Após arroz subir 18%, feijão deve ficar mais caro em 2024",
@@ -972,7 +2494,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n062"
+      "verificado_em": "2026-09-30",
+      "id": "n084",
+      "indicadores": [
+        "Feijão carioca",
+        "Arroz"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "IPCA 2023: veja o que mais caiu e mais subiu no ano",
@@ -989,7 +2519,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n063"
+      "verificado_em": "2026-09-30",
+      "id": "n085",
+      "indicadores": [
+        "Óleo de soja",
+        "Carne bovina (patinho)"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "IPCA fecha 2023 em 4,62% e fica abaixo do teto da meta pela 1ª vez desde 2020",
@@ -1005,7 +2543,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n064"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O IPCA de 2023 fechou em 4,62%, abaixo do teto da meta pela primeira vez desde 2020.",
+        "causalidade": "contexto"
+      },
+      "id": "n086",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Preço da gasolina e do diesel sobem nesta quinta com novo ICMS",
@@ -1021,7 +2578,15 @@
       "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n065"
+      "verificado_em": "2026-09-30",
+      "id": "n087",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Economia brasileira cresce 2,9% em 2023",
@@ -1037,7 +2602,61 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n066"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O PIB cresceu 2,9% em 2023, segundo o IBGE.",
+        "causalidade": "contexto"
+      },
+      "id": "n088",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
+    },
+    {
+      "titulo": "Taxa de desemprego fica em 7,9%; índice é o menor em 10 anos",
+      "veiculo": "Agência Brasil",
+      "data": "2024-05-17",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-05/taxa-de-desemprego-fica-em-79-indice-e-o-menor-em-10-anos",
+      "resumo": "Na comparação com o primeiro trimestre do ano passado, a taxa de desocupação caiu em 21 estados e no Distrito Federal.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/JbRLWObzDjzISjipVznUA9jPDz8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/02_carteira_de_trabalho.jpg?itok=VCMlSAgJ",
+      "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa de desocupação foi de 7,9% no 1º trimestre de 2024, 0,9 ponto percentual abaixo do mesmo período de 2023 (8,8%) e a menor para o período em 10 anos.",
+        "causalidade": "contexto"
+      },
+      "id": "n089",
+      "indicadores": [
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Governo encerra leilão e compra 263 mil toneladas de arroz",
@@ -1053,7 +2672,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n067"
+      "verificado_em": "2026-09-30",
+      "id": "n090",
+      "indicadores": [
+        "Arroz"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras reajusta em 7,12% preço da gasolina para distribuidoras",
@@ -1069,7 +2695,15 @@
       "credito_imagem": "Tomaz Silva/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n068"
+      "verificado_em": "2026-09-30",
+      "id": "n091",
+      "indicadores": [
+        "GASOLINA",
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Batata-inglesa e leite longa vida puxam inflação em junho",
@@ -1084,7 +2718,14 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n069"
+      "verificado_em": "2026-09-30",
+      "id": "n092",
+      "indicadores": [
+        "Leite longa vida"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Copom mantém juros básicos em 10,5% ao ano",
@@ -1099,7 +2740,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n070"
+      "verificado_em": "2026-09-30",
+      "id": "n093",
+      "indicadores": [
+        "SELIC"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Ibovespa sobe e renova recorde com Petrobras; Haddad confirma Galípolo para presidente do BC",
@@ -1115,7 +2763,52 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n071"
+      "verificado_em": "2026-09-30",
+      "id": "n094",
+      "indicadores": [
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "RS: organismos internacionais calculam danos de R$ 88,9 bi com chuvas",
+      "veiculo": "Agência Brasil",
+      "data": "2024-11-28",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2024-11/rs-organismos-internacionais-calculam-danos-de-r-889-bi-com-chuvas",
+      "resumo": "Estudo afirma que atuação do governo federal evitou queda de 1,1% do PIB gaúcho e propõe medidas para a recuperação do estado",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": "https://imagens.ebc.com.br/l5z5-LwFu0HOTf-HzrW_8ejasLI=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/06/20/_mg_5331.jpg?itok=VyKlcmp8",
+      "credito_imagem": "Bruno Peres/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade",
+          "trabalho"
+        ],
+        "indicadores": [
+          "PIB",
+          "DESOCUPACAO"
+        ],
+        "tipo": "calamidade",
+        "relevancia": "media",
+        "resumo": "BID, Cepal e Banco Mundial estimaram em R$ 88,9 bilhões os danos das chuvas de abril e maio de 2024 no Rio Grande do Sul, 69% no setor produtivo.",
+        "causalidade": "contexto"
+      },
+      "id": "n095",
+      "indicadores": [
+        "PIB",
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho",
+        "atividade"
+      ]
     },
     {
       "titulo": "Dólar fecha a R$ 6 pela 1ª vez e tem alta de 24% no ano",
@@ -1131,7 +2824,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n072"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "DOLAR"
+        ],
+        "tipo": "choque_fiscal",
+        "relevancia": "alta",
+        "resumo": "O dólar fechou a R$ 6 pela primeira vez, com alta de 24% no ano, após o anúncio de um pacote fiscal pouco detalhado, segundo o Poder360.",
+        "causalidade": "contexto"
+      },
+      "id": "n096",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Brasil exporta 46 milhões de sacas de café, atingindo recorde em 2024",
@@ -1146,7 +2858,14 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n073"
+      "verificado_em": "2026-09-30",
+      "id": "n097",
+      "indicadores": [
+        "Café moído"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Clima, dólar e preço da carne explicam inflação acima da meta em 2024",
@@ -1161,7 +2880,14 @@
       "credito_imagem": "Joédson Alves/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n074"
+      "verificado_em": "2026-09-30",
+      "id": "n098",
+      "indicadores": [
+        "Carne bovina (patinho)"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Economia brasileira cresce 3,4% em 2024, maior alta desde 2021",
@@ -1177,7 +2903,63 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n075"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O PIB cresceu 3,4% em 2024, a maior alta desde 2021 e o quarto ano seguido de crescimento.",
+        "causalidade": "contexto"
+      },
+      "id": "n099",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
+    },
+    {
+      "titulo": "Rendimento mensal do trabalhador bate recorde e chega a R$ 3.378",
+      "veiculo": "Agência Brasil",
+      "data": "2025-03-28",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-03/rendimento-mensal-do-trabalhador-bate-recorde-e-chega-r-3378",
+      "resumo": "Valor leva em conta a inflação acumulada no período, fazendo com que a comparação reflita o real poder de compra do trabalhador.",
+      "produtos": [
+        "trabalho",
+        "RENDIMENTO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/JbRLWObzDjzISjipVznUA9jPDz8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/02_carteira_de_trabalho.jpg?itok=VCMlSAgJ",
+      "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "RENDIMENTO",
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "O rendimento médio do trabalhador foi de R$ 3.378 no trimestre encerrado em fevereiro de 2025, o mais alto desde 2012; a taxa de desocupação foi de 6,8%.",
+        "causalidade": "contexto"
+      },
+      "id": "n100",
+      "indicadores": [
+        "RENDIMENTO",
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Petrobras reduz preço do diesel para as distribuidoras",
@@ -1192,7 +2974,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n076"
+      "verificado_em": "2026-09-30",
+      "id": "n101",
+      "indicadores": [
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preço do café moído sobe 80% em 12 meses e tem maior alta desde início do Plano Real",
@@ -1208,7 +2997,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n077"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida"
+        ],
+        "indicadores": [
+          "Café moído"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O preço do café moído subiu 80% em 12 meses, a maior alta desde o início do Plano Real, segundo o InfoMoney.",
+        "causalidade": "contexto"
+      },
+      "id": "n102",
+      "indicadores": [
+        "Café moído"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Dólar cai para R$ 5,60, e bolsa fecha em máxima histórica",
@@ -1224,7 +3032,15 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n078"
+      "verificado_em": "2026-09-30",
+      "id": "n103",
+      "indicadores": [
+        "IBOVESPA",
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Prévia da inflação oficial recua para 0,36% em maio, diz IBGE",
@@ -1239,7 +3055,14 @@
       "credito_imagem": "Fabio Rodrigues Pozzebom/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n079"
+      "verificado_em": "2026-09-30",
+      "id": "n104",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "BC sobe juros para 15% ao ano e sinaliza fim do ciclo de alta",
@@ -1254,7 +3077,30 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n080"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados",
+          "inflacao"
+        ],
+        "indicadores": [
+          "SELIC",
+          "IPCA"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "alta",
+        "resumo": "O Copom elevou a Selic para 15% ao ano, por unanimidade, com alta de 0,25 ponto percentual.",
+        "causalidade": "contexto"
+      },
+      "id": "n105",
+      "indicadores": [
+        "SELIC",
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao",
+        "mercados"
+      ]
     },
     {
       "titulo": "Governo aumenta mistura do etanol na gasolina para 30%",
@@ -1269,7 +3115,131 @@
       "credito_imagem": "José Cruz/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 0.86,
-      "id": "n081"
+      "verificado_em": "2026-09-30",
+      "id": "n106",
+      "indicadores": [
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Em carta a Lula, Trump anuncia tarifa de 50% a produtos brasileiros",
+      "veiculo": "Agência Brasil",
+      "data": "2025-07-09",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2025-07/em-carta-lula-trump-anuncia-tarifa-de-50-produtos-brasileiros",
+      "resumo": "No documento, o presidente norte-americano cita apoio ao ex-presidente Jair Bolsonaro e acusa o Brasil de praticar relação comercial injusta com os Estados Unidos.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade",
+          "mercados",
+          "trabalho"
+        ],
+        "indicadores": [
+          "PIB",
+          "DOLAR",
+          "IBOVESPA"
+        ],
+        "tipo": "comercio_exterior",
+        "relevancia": "alta",
+        "resumo": "O presidente dos EUA comunicou, em carta a Lula, tarifa de 50% sobre as exportações brasileiras a partir de 1º de agosto de 2025; ele citou como motivo o tratamento dado a Jair Bolsonaro e práticas comerciais que considera injustas (alegações dele, não estabelecidas pela reportagem).",
+        "causalidade": "contexto"
+      },
+      "id": "n107",
+      "indicadores": [
+        "PIB",
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "trabalho",
+        "atividade",
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "IBGE: taxa de desemprego cai para 5,8%, a menor já registrada",
+      "veiculo": "Agência Brasil",
+      "data": "2025-07-31",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-07/ibge-taxa-de-desemprego-cai-para-5,8%25-a-menor-ja-registrada",
+      "resumo": "Levantamento mostra que o país bateu recorde de emprego com carteira e salário do trabalhador.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/gp2i2s9arxJsVVrNT1tsFV-GSGg=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/camelo.jpg?itok=emuxweMU",
+      "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "RENDIMENTO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa de desocupação foi de 5,8% no 2º trimestre de 2025, a menor da série iniciada em 2012; o rendimento médio chegou a R$ 3.477, recorde, e as pessoas com carteira assinada, a 39 milhões.",
+        "causalidade": "contexto"
+      },
+      "id": "n108",
+      "indicadores": [
+        "DESOCUPACAO",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
+    },
+    {
+      "titulo": "Tarifaço sobre parte de exportações brasileiras entra em vigor hoje",
+      "veiculo": "Agência Brasil",
+      "data": "2025-08-06",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2025-08/tarifaco-sobre-parte-das-exportacoes-brasileiras-entra-em-vigor-hoje",
+      "resumo": "Tarifaço faz parte da nova política inaugurada por Donald Trump de elevar as tarifas contra parceiros comerciais na tentativa de reverter perda de competitividade.",
+      "produtos": [
+        "contexto"
+      ],
+      "imagem": null,
+      "credito_imagem": null,
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade",
+          "mercados"
+        ],
+        "indicadores": [
+          "PIB",
+          "DOLAR"
+        ],
+        "tipo": "comercio_exterior",
+        "relevancia": "media",
+        "resumo": "Entraram em vigor as tarifas de 50% sobre parte das exportações brasileiras aos EUA (café, frutas e carnes, entre outros); suco de laranja, combustíveis, minérios, fertilizantes e aeronaves civis ficaram de fora, e o conjunto atinge 35,9% das mercadorias enviadas ao mercado americano, cerca de 4% das exportações totais.",
+        "causalidade": "contexto"
+      },
+      "id": "n109",
+      "indicadores": [
+        "PIB",
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "atividade",
+        "mercados"
+      ]
     },
     {
       "titulo": "Preço do café cai pela primeira vez depois de 18 meses, diz IBGE",
@@ -1284,7 +3254,14 @@
       "credito_imagem": "Marcello Casal jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n082"
+      "verificado_em": "2026-09-30",
+      "id": "n110",
+      "indicadores": [
+        "Café moído"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Preços dos alimentos caem pelo 4º mês consecutivo, diz IBGE",
@@ -1299,7 +3276,12 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n083"
+      "verificado_em": "2026-09-30",
+      "id": "n111",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras (PETR4) reduz em R$ 0,14, ou 4,9%, o preço da gasolina para distribuidoras",
@@ -1315,7 +3297,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n084"
+      "verificado_em": "2026-09-30",
+      "id": "n112",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Dólar cai 11,17% em 2025, maior queda desde 2016, e encerra ano cotado a R$ 5,48",
@@ -1331,7 +3320,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n085"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "DOLAR"
+        ],
+        "tipo": "mercado",
+        "relevancia": "media",
+        "resumo": "O dólar caiu 11,17% em 2025, a maior queda desde 2016, e encerrou o ano a R$ 5,48.",
+        "causalidade": "contexto"
+      },
+      "id": "n113",
+      "indicadores": [
+        "DOLAR"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Alimentos contribuem para a inflação mais baixa em 2025, diz IBGE",
@@ -1348,7 +3356,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n086"
+      "verificado_em": "2026-09-30",
+      "id": "n114",
+      "indicadores": [
+        "Arroz",
+        "Feijão carioca"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "IPCA vai a 0,33% em dezembro e fecha 2025 em 4,26%, abaixo da meta",
@@ -1363,7 +3379,26 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n087"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O IPCA de dezembro foi de 0,33% e o de 2025 fechou em 4,26%, abaixo da meta.",
+        "causalidade": "contexto"
+      },
+      "id": "n115",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Economia brasileira cresce 2,3% em 2025, revela IBGE",
@@ -1379,7 +3414,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n088"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O PIB cresceu 2,3% em 2025, quinto ano seguido de crescimento, com alta de 0,1% no 4º trimestre.",
+        "causalidade": "contexto"
+      },
+      "id": "n116",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "PIB cresce 2,3% em 2025",
@@ -1394,7 +3448,14 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n089"
+      "verificado_em": "2026-09-30",
+      "id": "n117",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Petrobras reajusta preço do diesel em R$ 0,38 por litro",
@@ -1409,7 +3470,14 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n090"
+      "verificado_em": "2026-09-30",
+      "id": "n118",
+      "indicadores": [
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras aprova adesão a programa para conter alta do diesel",
@@ -1426,7 +3494,30 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n091"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "custo_vida",
+          "inflacao"
+        ],
+        "indicadores": [
+          "DIESEL",
+          "GASOLINA"
+        ],
+        "tipo": "choque_externo",
+        "relevancia": "alta",
+        "resumo": "Em 13/3/2026, a matéria diz que a Petrobras aprovou a adesão a programa que permite subvenção de R$ 0,32 por litro de diesel; a ofensiva dos EUA e de Israel contra o Irã completava duas semanas e o barril havia subido cerca de 40% em 15 dias.",
+        "causalidade": "contexto"
+      },
+      "id": "n119",
+      "indicadores": [
+        "DIESEL",
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
     },
     {
       "titulo": "Depois do diesel, preço da gasolina também vai subir? Entenda os possíveis impactos econômicos no Brasil da guerra no Irã",
@@ -1445,7 +3536,15 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n092"
+      "verificado_em": "2026-09-30",
+      "id": "n120",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Alta do diesel: Petrobras eleva preço, mesmo após governo Lula zerar imposto com guerra no Irã",
@@ -1463,7 +3562,14 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n093"
+      "verificado_em": "2026-09-30",
+      "id": "n121",
+      "indicadores": [
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Conflito com Irã: como o preço da gasolina no Brasil é afetado",
@@ -1481,7 +3587,14 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n094"
+      "verificado_em": "2026-09-30",
+      "id": "n122",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Cesta básica fica mais cara em todas as capitais brasileiras em março",
@@ -1496,7 +3609,12 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n095"
+      "verificado_em": "2026-09-30",
+      "id": "n123",
+      "indicadores": [],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras devolverá diferença de preço de leilão de gás",
@@ -1511,7 +3629,14 @@
       "credito_imagem": "Fernando Frazão/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n096"
+      "verificado_em": "2026-09-30",
+      "id": "n124",
+      "indicadores": [
+        "GLP"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Dólar fecha abaixo de R$ 5 pela primeira vez em mais de dois anos",
@@ -1527,7 +3652,15 @@
       "credito_imagem": "Valter Campanato/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n097"
+      "verificado_em": "2026-09-30",
+      "id": "n125",
+      "indicadores": [
+        "DOLAR",
+        "IBOVESPA"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
     },
     {
       "titulo": "Banco Central reduz juros básicos para 14,5% ao ano",
@@ -1542,7 +3675,63 @@
       "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n098"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "mercados"
+        ],
+        "indicadores": [
+          "SELIC"
+        ],
+        "tipo": "politica_monetaria",
+        "relevancia": "media",
+        "resumo": "O Copom cortou a Selic para 14,5% ao ano, mesmo com a guerra no Oriente Médio.",
+        "causalidade": "contexto"
+      },
+      "id": "n126",
+      "indicadores": [
+        "SELIC"
+      ],
+      "dimensoes": [
+        "mercados"
+      ]
+    },
+    {
+      "titulo": "Distrito Federal e 15 estados têm rendimento do trabalhador recorde",
+      "veiculo": "Agência Brasil",
+      "data": "2026-05-14",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-05/distrito-federal-e-15-estados-tem-rendimento-do-trabalhador-recorde",
+      "resumo": "Pesquisa Pnad Contínua, do IBGE, apura o comportamento no mercado de trabalho para pessoas com 14 anos de idade ou mais e leva em conta todas as formas de ocupação.",
+      "produtos": [
+        "trabalho",
+        "RENDIMENTO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/mW2yYmUWjSmKGqgjU7ETDGOc5jg=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dinheiro_caixa_mcajr_abr_2907221128.jpg?itok=kyoGQMUw",
+      "credito_imagem": "Marcello Casal Jr/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "RENDIMENTO",
+          "DESOCUPACAO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "No 1º trimestre de 2026, o Distrito Federal e 15 estados tiveram rendimento médio recorde; a média nacional foi de R$ 3.722 e a taxa de desocupação, de 6,1%, a menor para o período.",
+        "causalidade": "contexto"
+      },
+      "id": "n127",
+      "indicadores": [
+        "RENDIMENTO",
+        "DESOCUPACAO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Petrobras anuncia alta de R$ 0,04 na gasolina vendida a distribuidoras",
@@ -1557,7 +3746,14 @@
       "credito_imagem": "Arquivo/Agência Brasil · CC BY 4.0",
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n099"
+      "verificado_em": "2026-09-30",
+      "id": "n128",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Economia brasileira cresce 1,1% no 1º trimestre",
@@ -1573,7 +3769,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n100"
+      "verificado_em": "2026-09-30",
+      "id": "n129",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "PIB cresce 1,1% no primeiro trimestre de 2026",
@@ -1588,7 +3791,14 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n101"
+      "verificado_em": "2026-09-30",
+      "id": "n130",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Governo prevê aumento de etanol na gasolina de 30% para até 32%",
@@ -1603,7 +3813,14 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n102"
+      "verificado_em": "2026-09-30",
+      "id": "n131",
+      "indicadores": [
+        "ETANOL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Inflação de maio é a maior para o mês em cinco anos e fura teto da meta",
@@ -1619,7 +3836,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n103"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "inflacao"
+        ],
+        "indicadores": [
+          "IPCA"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O IPCA de maio de 2026 foi o maior para o mês em cinco anos e ficou acima do teto da meta; em 12 meses, 4,72%.",
+        "causalidade": "contexto"
+      },
+      "id": "n132",
+      "indicadores": [
+        "IPCA"
+      ],
+      "dimensoes": [
+        "inflacao"
+      ]
     },
     {
       "titulo": "Com nova alta mundial do petróleo, governo mantém desconto na gasolina",
@@ -1636,7 +3872,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n104"
+      "verificado_em": "2026-09-30",
+      "id": "n133",
+      "indicadores": [
+        "GASOLINA"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Disparada do petróleo acende alerta para nova pressão na inflação",
@@ -1656,7 +3899,54 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n105"
+      "verificado_em": "2026-09-30",
+      "id": "n134",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL",
+        "IPCA"
+      ],
+      "dimensoes": [
+        "custo_vida",
+        "inflacao"
+      ]
+    },
+    {
+      "titulo": "Desemprego no 2º trimestre é 5,4%, o menor já registrado no período",
+      "veiculo": "Agência Brasil",
+      "data": "2026-07-30",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-07/desemprego-no-2o-trimestre-e-54-o-menor-ja-registrado-no-periodo",
+      "resumo": "Brasil atingiu o número de 103,1 milhões de pessoas ocupadas, cerca de 1,081 milhão a mais que no primeiro trimestre, diz Pesquisa Nacional por Amostra de Domicílios (Pnad) Contínua.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/6BhWgic1-V_RScaOgnbdoNjzp9k=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/carteira-de-trabalho-digital_mcamgo_abr_240620211818-6.jpg?itok=hDynM-QN",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "RENDIMENTO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "A taxa de desocupação foi de 5,4% no 2º trimestre de 2026 (6,1% no 1º e 5,8% um ano antes); 103,1 milhões de pessoas ocupadas, o maior número da série, com rendimento médio de R$ 3.738.",
+        "causalidade": "contexto"
+      },
+      "id": "n135",
+      "indicadores": [
+        "DESOCUPACAO",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     },
     {
       "titulo": "Preço do feijão-carioca aumenta 96,8% em 2026, aponta levantamento da VR",
@@ -1672,7 +3962,14 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "imagem_sem_licenca": true,
-      "id": "n106"
+      "verificado_em": "2026-09-30",
+      "id": "n136",
+      "indicadores": [
+        "Feijão carioca"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "PIB do Brasil cresce 0,5% no segundo trimestre, mostra IBGE",
@@ -1688,7 +3985,26 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "pib",
-      "id": "n107"
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "atividade"
+        ],
+        "indicadores": [
+          "PIB"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "media",
+        "resumo": "O PIB cresceu 0,5% no 2º trimestre de 2026 e 2% sobre o 2º trimestre de 2025.",
+        "causalidade": "contexto"
+      },
+      "id": "n137",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "PIB cresce 0,5% no segundo trimestre de 2026",
@@ -1703,7 +4019,14 @@
       "credito_imagem": null,
       "verificacao": "manual",
       "tema": "pib",
-      "id": "n108"
+      "verificado_em": "2026-09-30",
+      "id": "n138",
+      "indicadores": [
+        "PIB"
+      ],
+      "dimensoes": [
+        "atividade"
+      ]
     },
     {
       "titulo": "Subsídios à gasolina e ao diesel são ampliados após alta do petróleo",
@@ -1721,7 +4044,15 @@
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
-      "id": "n109"
+      "verificado_em": "2026-09-30",
+      "id": "n139",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petróleo volta a US$ 100 pela 1ª vez desde julho com conflito no Oriente",
@@ -1740,7 +4071,15 @@
       "similaridade_titulo": 1.0,
       "tema": "ormuz-ira",
       "imagem_sem_licenca": true,
-      "id": "n110"
+      "verificado_em": "2026-09-30",
+      "id": "n140",
+      "indicadores": [
+        "GASOLINA",
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
     },
     {
       "titulo": "Petrobras aumenta diesel, mas subsídio mantém valor final; entenda",
@@ -1755,7 +4094,51 @@
       "credito_imagem": null,
       "verificacao": "automatica",
       "similaridade_titulo": 1.0,
-      "id": "n111"
+      "verificado_em": "2026-09-30",
+      "id": "n141",
+      "indicadores": [
+        "DIESEL"
+      ],
+      "dimensoes": [
+        "custo_vida"
+      ]
+    },
+    {
+      "titulo": "Taxa de desemprego cai para 5,3%, a menor para o trimestre até agosto",
+      "veiculo": "Agência Brasil",
+      "data": "2026-09-29",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/taxa-de-desemprego-cai-para-53-menor-para-o-trimestre-ate-agosto",
+      "resumo": "Pesquisa Nacional por Amostra de Domicílios, do IBGE, mostra que população ocupada atingiu 103,5 milhões de pessoas, alta de 0,8% em relação ao trimestre anterior.",
+      "produtos": [
+        "trabalho",
+        "DESOCUPACAO"
+      ],
+      "imagem": "https://imagens.ebc.com.br/XU0KxiRRSyu-jsOwSXrX7QW9FWY=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/carteira-de-trabalho-digital_mcamgo_abr_240620211818.jpg?itok=N7Fj4zTX",
+      "credito_imagem": "Marcelo Camargo/Agência Brasil · CC BY 4.0",
+      "verificacao": "automatica",
+      "similaridade_titulo": 1.0,
+      "verificado_em": "2026-09-30",
+      "marco": {
+        "dimensoes": [
+          "trabalho"
+        ],
+        "indicadores": [
+          "DESOCUPACAO",
+          "RENDIMENTO"
+        ],
+        "tipo": "dado_oficial",
+        "relevancia": "alta",
+        "resumo": "A taxa de desocupação foi de 5,3% no trimestre encerrado em agosto de 2026, a menor para o período desde 2012; 103,5 milhões de pessoas ocupadas e 39,5 milhões de empregados do setor privado com carteira assinada.",
+        "causalidade": "contexto"
+      },
+      "id": "n142",
+      "indicadores": [
+        "DESOCUPACAO",
+        "RENDIMENTO"
+      ],
+      "dimensoes": [
+        "trabalho"
+      ]
     }
   ]
 }

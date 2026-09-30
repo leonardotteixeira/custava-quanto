@@ -15,6 +15,8 @@ import {
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
 import { initApoie } from "./apoie.js";
 import { initAnalise } from "./analise.js";
+import { initLinhaDoTempo } from "./linhadotempo.js";
+import { initArquivo } from "./arquivo.js";
 import { renderPibIntro, renderPibExtra, renderPibContext, hidePibBlocks, bindPibControls, anoDaNoticia, triLabel, PIB_JANELA_INICIO } from "./pib.js";
 
 const DATA_URL = "../data/processed/dashboard_data.json";
@@ -27,7 +29,7 @@ let NEWS_META = null;
 let STATUS = null;
 let MONTHS = [];
 let heroChart = null; // API do gráfico-textura da abertura (ver charts.js:texture) — sincronizado com S.product
-const S = { pibYear: null, product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null, archive: "produto" };
+const S = { pibYear: null, product: "GASOLINA", base: "troca", metric: "nominal", cohort: "governo_inteiro", newsId: null, ppIdx: null, tmIso: null };
 const P = (code) => D.produtos[code];
 
 // Datas públicas e amplamente documentadas, só como referência de
@@ -161,6 +163,8 @@ async function init() {
   bindPibControls(() => P("PIB"));
   initApoie();
   initAnalise();
+  initLinhaDoTempo({ NEWS });
+  initArquivo({ NEWS });
   selectProduct(S.product, { initial: true });
   renderMethod();
   bindScroll();
@@ -1109,48 +1113,6 @@ function renderPeriods() {
 }
 
 // =====================================================================
-// 07 · ARQUIVO
-// =====================================================================
-function renderArchive() {
-  const code = S.product, prod = P(code), k = kind(prod), m = META[code];
-  const list = S.archive === "todas" ? [...NEWS].sort((a, b) => a.data.localeCompare(b.data)) : noticiasDo(code);
-  $("#archive-filter-produto").textContent = `Sobre ${m.curto.toLowerCase() === m.curto ? m.curto : m.curto}`;
-  $("#archive-filter-todas").textContent = `Todas (${NEWS.length})`;
-  const veic = new Set(list.map((n) => n.veiculo)).size;
-  const annual = new Map(prod.serie_anual.map((r) => [String(r.ano), r]));
-  const anVal = (r) => (!r ? null : k === "preco" ? r.preco_nominal_medio : k === "indice" ? r.indice_nominal_medio : isTaxaLike(prod) ? r.taxa_media : r.pontos_medio);
-  // PIB: só os anos com reportagem/release verificado (uma linha por ano vazio não ajudaria)
-  const years = prod.tipo === "pib"
-    ? [...new Set(list.map((n) => n.data.slice(0, 4)))].sort()
-    : [...new Set([...prod.serie_anual.map((r) => String(r.ano)), ...list.map((n) => n.data.slice(0, 4))])].sort();
-  $("#arquivo-title").textContent = prod.tipo === "pib" ? "O que estava acontecendo quando o PIB mudou?" : "O noticiário, ano a ano";
-  $("#archive-deck").textContent = list.length
-    ? `${list.length} ${list.length === 1 ? "matéria real" : "matérias reais"} de ${veic} ${veic === 1 ? "veículo" : "veículos"}${S.archive === "produto" ? `, sobre ${m.titulo.toLowerCase()} e o contexto em volta` : ""}. Ao lado de cada ano, a média ${m.de} naquele ano.`
-    : "O arquivo ainda não tem matérias para esta história. Mude para “Todas”.";
-  $("#archive").innerHTML = years.map((y, yi) => {
-    const per = +y < 2023 ? "Bolsonaro" : "Lula";
-    const r = annual.get(y), prevR = annual.get(String(+y - 1));
-    const v = anVal(r), pv = anVal(prevR);
-    const yoy = !isNil(v) && !isNil(pv) ? fmtChange(change(prod, pv, v)) : null;
-    const items = list.filter((n) => n.data.startsWith(y));
-    const leadN = [...items].sort((a, b) => Number(!!b.imagem) - Number(!!a.imagem) || Number(!!b.especifica) - Number(!!a.especifica))[0];
-    const rest = items.filter((n) => n !== leadN);
-    const get = nativeValue(prod);
-    const valueFor = (n) => { const row = linhaDoMes(prod, n.data, get); return row ? `<p class="clip-value">${esc(m.curto)} em ${mesAno(row.ano_mes)}: <b>${fmtValue(prod, get(row))}</b></p>` : ""; };
-    const side = `<div class="ay-side">
-      <p class="ay-year">${y}</p>
-      <span class="ay-period">${pmark(per)}Governo ${per}</span>
-      ${!isNil(v) ? `<div class="ay-stat"><span class="ay-stat-label">${esc(m.curto)} · média do ano</span><span class="ay-stat-val">${fmtValue(prod, v, { compact: true })}</span>${yoy ? `<span class="ay-stat-yoy">${yoy} sobre ${+y - 1}</span>` : ""}${r.n_meses < 12 ? `<span class="ay-stat-partial">média de ${r.n_meses} ${r.n_meses === 1 ? "mês" : "meses"}</span>` : ""}</div>` : ""}
-    </div>`;
-    if (!leadN) return `<article class="ay" aria-label="${y}">${side}<p class="ay-empty">Nenhuma matéria deste ano no arquivo${S.archive === "produto" ? " desta história" : ""}.</p></article>`;
-    return `<article class="ay${leadN.imagem ? "" : " ay--noimg"}" aria-label="${y}">${side}
-      <div class="ay-lead">${clip(leadN, { lead: true, value: valueFor(leadN) })}</div>
-      <ul class="ay-rest">${rest.map((n) => `<li>${clip(n, { sum: false })}</li>`).join("")}</ul>
-    </article>`;
-  }).join("");
-}
-
-// =====================================================================
 // 08 · MÉTODO
 // =====================================================================
 function renderMethod() {
@@ -1182,7 +1144,6 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   renderContext();
   renderMachine();
   renderPeriods();
-  renderArchive();
   if (P(code).tipo === "pib") { renderPibIntro(P(code)); renderPibExtra(P(code), { S, NEWS, clip }); } else hidePibBlocks();
   renumber();
   renderNextLinks();
@@ -1227,13 +1188,6 @@ function bindControls() {
     S.cohort = b.dataset.cohort;
     setPressed($("#cohort-toggle"), b);
     renderPeriods();
-  });
-  $("#archive-filter").addEventListener("click", (e) => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    S.archive = b.dataset.filter;
-    setPressed($("#archive-filter"), b);
-    renderArchive();
   });
   $("#tm-range").addEventListener("input", (e) => setMachine(MONTHS[+e.target.value]));
   $("#tm-prev").addEventListener("click", () => { const i = MONTHS.indexOf(S.tmIso); if (i > 0) setMachine(MONTHS[i - 1]); });

@@ -21,6 +21,13 @@ Itens reprovados são listados no log e ficam fora do JSON final. Use
 --manter-bloqueados para publicar também itens cuja página bloqueia acesso
 automatizado (paywall/anti-robô) mas que foram conferidos manualmente — eles
 saem marcados com "verificacao": "manual".
+
+Marcos históricos (contexto): data/news/marcos.json marca matérias já curadas (ou novas, em
+data/news/raw_*.json) como MARCOS do contexto econômico, com dimensão, indicadores, tipo de evento,
+relevância e um resumo curto escrito pelo projeto. O marco vira o campo "marco" do item em
+noticias.json. É contexto, não causa: o resumo não pode afirmar causalidade (o script recusa
+"causou", "provocou", "foi responsável por"...), e todo marco precisa apontar para uma matéria que
+passou na verificação. Cada item leva a data da última verificação ("verificado_em").
 """
 from __future__ import annotations
 
@@ -66,7 +73,33 @@ TAGS_VALIDAS = {
     "combustiveis", "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
     "alimentos", "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
     "DOLAR", "SELIC", "IBOVESPA", "IPCA", "PIB",
+    # mercado de trabalho e contexto geral (marcos históricos)
+    "trabalho", "DESOCUPACAO", "SUBUTILIZACAO", "RENDIMENTO", "contexto",
 }
+
+MARCOS_ARQ = NEWS_DIR / "marcos.json"
+DIMENSOES_MARCO = {"custo_vida", "inflacao", "renda", "trabalho", "atividade", "mercados"}
+INDICADORES_MARCO = {
+    "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP", "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida",
+    "Óleo de soja", "Café moído", "IPCA", "SALARIO_REAL", "SM_GASOLINA", "SALARIO_NOMINAL", "DESOCUPACAO", "SUBUTILIZACAO", "RENDIMENTO",
+    "PIB", "DOLAR", "SELIC", "IBOVESPA",
+}
+TIPOS_MARCO = {
+    "choque_global", "choque_externo", "mercado", "choque_fiscal", "politica_monetaria", "politica_fiscal", "politica_tributaria", "politica_trabalhista",
+    "politica_salarial", "politica_energetica", "protecao_social", "regulatoria", "comercio_exterior", "calamidade", "dado_oficial",
+}
+# Classificação de TODO item (para o Arquivo pesquisável): indicadores e dimensões, derivados das tags de
+# produto e, nos marcos, também do que a curadoria do marco informa. Nada é apagado: só se acrescenta.
+DIM_DA_TAG = {
+    "combustiveis": "custo_vida", "GASOLINA": "custo_vida", "ETANOL": "custo_vida", "DIESEL": "custo_vida", "DIESEL S10": "custo_vida", "GLP": "custo_vida",
+    "alimentos": "custo_vida", "Arroz": "custo_vida", "Feijão carioca": "custo_vida", "Carne bovina (patinho)": "custo_vida", "Leite longa vida": "custo_vida",
+    "Óleo de soja": "custo_vida", "Café moído": "custo_vida", "IPCA": "inflacao", "PIB": "atividade", "DOLAR": "mercados", "SELIC": "mercados",
+    "IBOVESPA": "mercados", "trabalho": "trabalho", "DESOCUPACAO": "trabalho", "SUBUTILIZACAO": "trabalho", "RENDIMENTO": "trabalho",
+}
+ORDEM_DIM = ["custo_vida", "inflacao", "renda", "trabalho", "atividade", "mercados"]
+
+# Linguagem causal proibida no resumo de um marco: a proximidade no tempo não é evidência de causa.
+CAUSAL = re.compile(r"(causou|causaram|causando|provocou|provocaram|foi respons[aá]vel|foram respons[aá]veis|respons[aá]vel por|explica sozinh[oa]|por causa d[eao]s?)", re.I)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36",
@@ -195,6 +228,62 @@ def melhor_url_imagem(url: str) -> str:
     return url
 
 
+def aplicar_marcos_e_classes(itens: list[dict], marcos: dict[str, dict], hoje: str | None = None) -> set[str]:
+    """Aplica o campo "marco" e acrescenta "indicadores" e "dimensoes" a cada item. Devolve as URLs de marcos usadas."""
+    usados: set[str] = set()
+    for n in itens:
+        if hoje:
+            n["verificado_em"] = hoje
+        if n["url"] in marcos:
+            n["marco"] = marcos[n["url"]]
+            usados.add(n["url"])
+        elif "marco" in n:
+            del n["marco"]  # marco retirado da curadoria
+        inds = [t for t in n["produtos"] if t in INDICADORES_MARCO]
+        dims = {DIM_DA_TAG[t] for t in n["produtos"] if t in DIM_DA_TAG}
+        if n.get("marco"):
+            inds += [i for i in n["marco"]["indicadores"] if i not in inds]
+            dims |= set(n["marco"]["dimensoes"])
+        n["indicadores"] = inds
+        n["dimensoes"] = sorted(dims, key=ORDEM_DIM.index)
+    return usados
+
+
+def carregar_marcos() -> dict[str, dict]:
+    """Lê e valida a curadoria de marcos. Erro de curadoria interrompe o build: nada é descartado em silêncio."""
+    if not MARCOS_ARQ.exists():
+        return {}
+    lista = json.loads(MARCOS_ARQ.read_text(encoding="utf-8"))
+    erros, out = [], {}
+    for m in lista:
+        rot = m.get("url", "?")[-70:]
+        if not m.get("url", "").startswith("https://"):
+            erros.append(f"{rot}: url ausente ou sem https")
+        if m["url"] in out:
+            erros.append(f"{rot}: marco duplicado")
+        if not m.get("dimensoes") or not set(m["dimensoes"]) <= DIMENSOES_MARCO:
+            erros.append(f"{rot}: dimensões inválidas {m.get('dimensoes')}")
+        if not m.get("indicadores") or not set(m["indicadores"]) <= INDICADORES_MARCO:
+            erros.append(f"{rot}: indicadores inválidos {m.get('indicadores')}")
+        if m.get("tipo") not in TIPOS_MARCO:
+            erros.append(f"{rot}: tipo inválido {m.get('tipo')}")
+        if m.get("relevancia") not in ("alta", "media"):
+            erros.append(f"{rot}: relevância inválida")
+        if m.get("causalidade") != "contexto":
+            erros.append(f"{rot}: causalidade deve ser 'contexto'")
+        resumo = (m.get("resumo") or "").strip()
+        if not (20 <= len(resumo) <= 420):
+            erros.append(f"{rot}: resumo deve ter entre 20 e 420 caracteres ({len(resumo)})")
+        if CAUSAL.search(resumo):
+            erros.append(f"{rot}: resumo com linguagem causal ({CAUSAL.search(resumo).group(0)!r})")
+        out[m["url"]] = {k: m[k] for k in ("dimensoes", "indicadores", "tipo", "relevancia", "resumo", "causalidade") if k in m}
+    if erros:
+        for e in erros:
+            log.error("marcos.json: %s", e)
+        sys.exit(1)
+    return out
+
+
 def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
     url = item["url"]
     try:
@@ -279,9 +368,21 @@ def verificar(item: dict, sessao: requests.Session) -> tuple[dict | None, str]:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--so-metadados", action="store_true",
+                    help="não verifica nada na rede: relê noticias.json e reaplica só marcos.json e a classificação (indicadores, dimensões)")
     ap.add_argument("--manter-bloqueados", action="store_true",
                     help="publica itens com HTTP 401/403/429 (bloqueio anti-robô) marcados como verificação manual")
     args = ap.parse_args()
+
+    if args.so_metadados:
+        dados = json.loads(SAIDA.read_text(encoding="utf-8"))
+        marcos = carregar_marcos()
+        usados = aplicar_marcos_e_classes(dados["itens"], marcos)
+        for u in [u for u in marcos if u not in usados]:
+            log.error("marco sem matéria em noticias.json: %s", u)
+        SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info("metadados reaplicados: %d itens, %d marcos (nenhuma matéria foi reverificada nem removida)", len(dados["itens"]), len(usados))
+        return
 
     ensure_dirs(DATA_PROCESSED)
     arquivos = sorted(NEWS_DIR.glob("raw_*.json"))
@@ -320,6 +421,13 @@ def main() -> None:
             log.info("  REPROVADO: %s", motivo)
         time.sleep(0.6)
 
+    marcos = carregar_marcos()
+    hoje = datetime.now(BRASILIA).date().isoformat()
+    usados = aplicar_marcos_e_classes(aprovados, marcos, hoje)
+    sem_materia = [u for u in marcos if u not in usados]
+    for u in sem_materia:
+        log.error("marco sem matéria aprovada (a matéria não passou na verificação ou não está em data/news): %s", u)
+
     aprovados.sort(key=lambda n: n["data"])
     for i, n in enumerate(aprovados, 1):
         n["id"] = f"n{i:03d}"
@@ -330,7 +438,7 @@ def main() -> None:
         "itens": aprovados,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    log.info("%d aprovadas, %d reprovadas -> %s", len(aprovados), len(reprovados), SAIDA)
+    log.info("%d aprovadas (%d marcos), %d reprovadas -> %s", len(aprovados), len(usados), len(reprovados), SAIDA)
     for titulo, motivo in reprovados:
         log.info("  fora: %s — %s", titulo[:80], motivo)
 

@@ -125,8 +125,9 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 - **L7.** Higiene do repositório: existem dois PDFs de brand book na raiz — um
   versionado ("Custava Quanto - Brand Book.pdf") e outro **não** versionado com o
   nome grafado "Custavo" —, mais `p.html` e `.impeccable/review/` não versionados.
-  Não há arquivo `LICENSE`, nem configuração de deploy (`.github/`, `CNAME`) no
-  repositório.
+  Não há arquivo `LICENSE`. A configuração de deploy existe no repositório
+  (`.github/workflows/pages.yml`, `dashboard/CNAME`), mas o Pages, o DNS e o HTTPS de
+  `custavaquanto.me` ainda dependem de passos à mão (ver [DEPLOY.md](DEPLOY.md)).
 - **L9.** Docstrings antigas: `download_pib.py` diz que a API do IBGE "está
   bloqueada nesta sessão" e que nenhuma tabela foi aberta diretamente, e
   `download_conab.py` foi escrito sem o arquivo real. O primeiro já baixou dados reais;
@@ -150,6 +151,23 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 - **L13.** Contraste do número "10" no item Apoie do menu superior: 3,7:1 (mínimo 4,5:1), por
   `.mast-nav .nav-apoie a { opacity: 0.8 }` em `styles.css`. É a única violação do axe-core na
   página inteira em 30/09/2026 e existia antes da reconstrução da Análise.
+- **L14.** Mercado de trabalho: duas das três séries (desocupação e subutilização) medem quase
+  o mesmo fenômeno e andam juntas, então a dimensão pesa mais nelas do que no rendimento; a
+  leitura "sem uma série" (3 de 3) mostra que nenhuma série sozinha muda o resultado. Com a métrica
+  alternativa (variação do início ao fim, em p.p., para as taxas) a dimensão ficaria "praticamente
+  igual" no período completo; a regra da métrica foi fixada antes do cálculo e está na
+  metodologia (ver AUDITORIA v1.2). Os pontos são trimestres móveis: o primeiro trimestre inteiro
+  de cada período termina em mar/2019 e mar/2023.
+- **L15.** Contexto histórico: páginas do IBGE Agência de Notícias devolvem 403 a acessos
+  automáticos e a Agência Brasil desativa algumas páginas por legislação eleitoral ("EBC - Página
+  temporariamente indisponível", HTTP 200). Esses itens não passam na verificação por título e
+  ficaram de fora (por exemplo, a sanção da isenção do Imposto de Renda até R$ 5 mil, em 2025, e
+  o resultado de desemprego de dez/2025). Resultados do IBGE entram pela cobertura da Agência
+  Brasil. A curadoria pode ser refeita quando as páginas voltarem.
+- **L16.** O rendimento médio real da PNAD é refeito pelo IBGE a cada divulgação (deflator do mês
+  mais recente): valores em reais de uma coleta antiga não são comparáveis com os de uma nova.
+  Por isso a página usa só variações dentro da mesma coleta e cita valores das matérias apenas como
+  o que foi divulgado na época.
 - **L8.** O ambiente local usa Python 3.11.9; o README anterior dizia "3.11+".
   Nenhuma versão máxima é imposta.
 
@@ -162,7 +180,7 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 | PIB 2026 | Só trimestres (até o 2º); resultado anual não existe |
 | Preço absoluto de alimentos (R$/kg) | Nenhuma fonte integrada; CONAB planejada (ver H1) |
 | Cesta básica DIEESE | Sem acesso público em lote desde abril/2018 |
-| Emprego, contas públicas, investimento, desigualdade | Sem série no projeto; fora da Análise |
+| Contas públicas, investimento, desigualdade, informalidade e qualidade do emprego | Sem série no projeto; fora da Análise (emprego e desemprego entraram na v1.2) |
 | Filtro regional | Os dados de combustível têm quebra por região; o dashboard só mostra "Brasil" |
 
 ## Resolvido nesta rodada (registrado para não reabrir)
