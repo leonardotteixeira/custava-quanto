@@ -632,8 +632,7 @@ function renderSens() {
   const A = dimsA();
   $("#an-sens").innerHTML = `<div class="table-scroll an-scroll"><table class="an-table an-sens-t an-stack">
     <thead><tr><th scope="col">Cenário (definido antes do cálculo)</th>${A.map((d) => `<th scope="col" class="num">${esc(d.titulo)}</th>`).join("")}<th scope="col">Síntese</th></tr></thead>
-    <tbody>${M.cenarios.map((c, j) => `<tr><th scope="row">${esc(c.nome)}<span class="an-cen-j">${esc(c.justificativa)}</span></th>${A.map((d) => `<td class="num" data-label="${esc(d.titulo)}">${c.pesos[d.id]}%</td>`).join("")}<td data-label="Síntese">${chipLado(sint[j].sentido)}</td></tr>`).join("")}</tbody></table></div>
-    <p class="an-robust">${esc(res().textos.robustez)}</p>`;
+    <tbody>${M.cenarios.map((c, j) => `<tr><th scope="row">${esc(c.nome)}<span class="an-cen-j">${esc(c.justificativa)}</span></th>${A.map((d) => `<td class="num" data-label="${esc(d.titulo)}">${c.pesos[d.id]}%</td>`).join("")}<td data-label="Síntese">${chipLado(sint[j].sentido)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 // Teste de sensibilidade: o resultado das TODAS as combinações de pesos, pré-calculado em Python (res().grade).
