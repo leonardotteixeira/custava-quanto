@@ -154,6 +154,11 @@ async function init() {
   const slug = q.get("historia");
   const found = PRODUCT_ORDER.find((c) => META[c].slug === slug && D.produtos[c]);
   if (found) { S.product = found; S.chosen = true; }
+  // Links antigos com ?historia= (e ?desde=) ainda abrem a série pedida, mas o endereço volta a ficar limpo.
+  if (q.has("historia") || q.has("desde")) {
+    q.delete("historia"); q.delete("desde");
+    history.replaceState(null, "", `${location.pathname}${q.toString() ? `?${q}` : ""}${location.hash}`);
+  }
 
   renderHero();
   fitNameplate();
@@ -1144,13 +1149,7 @@ function selectProduct(code, { initial = false, scroll = false } = {}) {
   S.product = code;
   if (!initial) S.chosen = true;
   if (changed || initial) { S.newsId = null; S.metric = "nominal"; S.ppIdx = null; S.pibYear = null; }
-  // Sem escolha do leitor, o endereço não ganha ?historia=: a gasolina é só o ponto de partida, não uma escolha.
-  if (S.chosen) {
-    const q = new URLSearchParams(location.search);
-    q.set("historia", META[code].slug);
-    q.delete("desde"); // links antigos com ?desde=2019 caem no ponto de partida padrão
-    history.replaceState(null, "", `${location.pathname}?${q}${location.hash}`);
-  }
+  // O endereço não muda com a série escolhida: fica sempre https://custavaquanto.me/.
 
   renderTOC();
   renderStory();

@@ -230,8 +230,11 @@ Não bloqueia (fica para depois):
 - `noticias.json` é pedido duas vezes na abertura (dois módulos); o navegador reaproveita o cache.
 - Alguns resumos de matérias terminam com a chamada do veículo ("Leia no Poder360.").
 - Na lista de trimestres do PIB, data e fonte têm 11,5 px no celular.
-- Voltar/avançar do navegador não alterna entre séries trocadas na mesma visita (a troca
-  substitui o endereço); recarregar mantém a série escolhida.
+- Por decisão de produto (01/10/2026), o endereço fica sempre `https://custavaquanto.me/`: escolher
+  uma série não muda o link. Consequências: recarregar a página volta ao ponto de partida
+  (gasolina), Voltar/Avançar não alternam entre séries, e não dá para compartilhar o link de uma
+  série específica. Links antigos com `?historia=` ainda abrem a série pedida e o endereço volta a
+  ficar limpo.
 
 ## Ideias
 

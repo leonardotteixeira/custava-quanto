@@ -31,7 +31,7 @@ export const getGovernmentComparison = (periodo) => (periodo === "Bolsonaro"
 // Último mês com dado de uma série (a mais recente que existir nos dados).
 export const getLatestAvailableDate = (rows, get) => { for (let i = rows.length - 1; i >= 0; i--) if (!isNil(get(rows[i]))) return rows[i].ano_mes; return null; };
 
-// Ordem editorial e textos de cada história. `slug` vira ?historia= na URL.
+// Ordem editorial e textos de cada história. `slug` é lido de ?historia= na URL (links antigos).
 export const PRODUCT_ORDER = [
   "GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP",
   "Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído",
