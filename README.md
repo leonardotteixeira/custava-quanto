@@ -118,7 +118,7 @@ Na prática, isso vira regras que o código faz cumprir:
 
 ---
 
-## O site em dez capítulos
+## O site em capítulos
 
 O site é uma publicação em capítulos (`dashboard/index.html`). O endereço **não muda** ao navegar:
 escolher uma série ou clicar em um capítulo só rola a página até o lugar certo, e a barra
@@ -136,7 +136,7 @@ série pedida.)
 | **07 Análise** | O que os números permitem afirmar? | Seis dimensões, critérios definidos antes do cálculo, gráficos, acontecimentos e a ferramenta "E se?" |
 | **08 Arquivo** | De onde vêm as informações? | Biblioteca de fontes pesquisável (busca e filtros), com link para cada matéria original |
 | **09 Método** | Como tudo foi calculado? | Fórmulas, fontes, limitações e **"Audite a análise"** |
-| **10 Apoie** | Como ajudar a manter o projeto? | Contribuição por Pix, sem confirmar pagamento: a transferência acontece no app do banco |
+| ~~10 Apoie~~ | Como ajudar a manter o projeto? | **Desativado por enquanto** (fora do site). Pronto para reativar: contribuição por Pix, sem confirmar pagamento |
 
 A numeração se ajusta sozinha: nas séries sem preço ou índice (Selic, IPCA, Ibovespa, PIB), o
 capítulo **Bolso** some e os seguintes sobem um número.
@@ -410,7 +410,7 @@ analysis/, output/   gráficos estáticos da primeira fase (histórico)
 - **Dependências em tempo de leitura:** Google Fonts e as imagens das matérias, servidas pelos
   próprios veículos. O gerador de QR Code (`qrcode-generator`, MIT) está copiado em
   `dashboard/vendor/`.
-- **Sem backend, sem cookies, sem rastreamento.** O Apoie por Pix só monta o código no
+- **Sem backend, sem cookies, sem rastreamento.** O Apoie por Pix (desativado por enquanto) só monta o código no
   navegador; o site não processa nem confirma pagamentos.
 
 ### Pipeline de dados

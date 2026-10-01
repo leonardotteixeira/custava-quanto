@@ -167,7 +167,7 @@ async function init() {
   initMachine();
   bindControls();
   bindPibControls(() => P("PIB"));
-  initApoie();
+  if (!$("#apoie")?.hidden) initApoie(); // capítulo Apoie desativado por enquanto (hidden no index.html)
   const analisePronta = initAnalise();
   initLinhaDoTempo({ NEWS });
   initArquivo({ NEWS });

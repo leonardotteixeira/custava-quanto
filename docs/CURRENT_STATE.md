@@ -4,6 +4,11 @@
 Status: **CURRENT** — escrito lendo o código, os scripts e os dados do
 repositório nesta data. Se este arquivo e o código discordarem, vale o código.
 
+> **Capítulo Apoie desativado (01/10/2026).** O capítulo "10 Apoie", o item do menu e o link do rodapé
+> estão com `hidden` em `dashboard/index.html`, e `app.js` não inicia o módulo. O código do Pix continua
+> no repositório; para reativar, tire os três `hidden` e a condição em `app.js`. Enquanto isso o site tem
+> nove capítulos (a numeração já se ajusta sozinha).
+>
 > **Atualização de 01/10/2026.** O endereço do site fica sempre `https://custavaquanto.me/`: a navegação
 > por capítulos só rola (não usa `#capítulo`) e a série escolhida não vai para a URL (`?historia=` antigo
 > ainda é lido). Na Análise, a Parte 1 virou régua do tempo com cartões e "Duas formas de olhar"; "Em 1

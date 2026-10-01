@@ -236,6 +236,13 @@ Não bloqueia (fica para depois):
   série específica. Links antigos com `?historia=` ainda abrem a série pedida e o endereço volta a
   ficar limpo.
 
+## Apoie desativado (01/10/2026)
+
+- Por decisão do dono do projeto, o capítulo Apoie (Pix) está fora do site por enquanto. O código e a
+  configuração (`dashboard/js/apoie.js`, `apoie.config.js`, `vendor/qrcode-generator.js`) seguem no
+  repositório. Documentos antigos que falam em "10 capítulos" ou no Apoie descrevem o site com o
+  capítulo ativo.
+
 ## Salário mínimo real (corrigido em 01/10/2026)
 
 - A escala do "Salário mínimo real" (~R$ 180–220) era um erro de unidade: salário ÷ número-índice do
