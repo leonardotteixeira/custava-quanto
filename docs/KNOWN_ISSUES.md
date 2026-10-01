@@ -236,6 +236,21 @@ Não bloqueia (fica para depois):
   série específica. Links antigos com `?historia=` ainda abrem a série pedida e o endereço volta a
   ficar limpo.
 
+## Refinamento da Análise (01/10/2026)
+
+- A Análise ficou ~950 px mais curta no computador (1280 px), mas ~7.000 px mais longa no celular
+  (390 px): o contexto de Mercado de trabalho, Atividade e Mercados agora fica sempre à vista, com
+  gráfico interativo, abas e acontecimentos recolhidos. O de Custo de vida, Inflação e Renda continua
+  atrás do botão "Ver o detalhe" no celular.
+- A "Diferença" dos cartões é a distância entre os dois valores já calculados em Python, arredondada
+  só no fim (por isso 7,0% e 4,6% aparecem com diferença de 2,3 p.p., não 2,4). É apresentação, não
+  um número novo do método; a classificação ("Diferença relevante", "Praticamente iguais", "Sem
+  direção definida") vem da leitura e da tolerância da metodologia, sem apontar vencedor.
+- A rolagem suave entre capítulos não foi vista em movimento no ambiente de teste (painel oculto);
+  o destino e o endereço foram conferidos com a animação desligada.
+- O PIB mantém as barras anuais e o gráfico de contexto (linha anual, acontecimentos recolhidos); os trimestres de 2026 continuam
+  separados. Nenhum número, fonte ou notícia foi alterado.
+
 ## Ideias
 
 - Colocar `download_pib*.py` e `download_ibge_combustiveis.py` no `update_data.py`

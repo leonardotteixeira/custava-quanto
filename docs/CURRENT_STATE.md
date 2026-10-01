@@ -4,6 +4,13 @@
 Status: **CURRENT** — escrito lendo o código, os scripts e os dados do
 repositório nesta data. Se este arquivo e o código discordarem, vale o código.
 
+> **Atualização de 01/10/2026.** O endereço do site fica sempre `https://custavaquanto.me/`: a navegação
+> por capítulos só rola (não usa `#capítulo`) e a série escolhida não vai para a URL (`?historia=` antigo
+> ainda é lido). Na Análise, a Parte 1 virou régua do tempo com cartões e "Duas formas de olhar"; "Em 1
+> minuto" virou cartões com diferença e classificação neutra; o contexto de cada dimensão tem abas por
+> série, gráfico com dica ao passar o mouse, números clicáveis e acontecimentos recolhidos (acordeões).
+> Detalhes e limites: [KNOWN_ISSUES.md](KNOWN_ISSUES.md) ("Refinamento da Análise").
+
 ## O que é
 
 **CUSTAVA QUANTO?** é um projeto independente de jornalismo de dados. Permite

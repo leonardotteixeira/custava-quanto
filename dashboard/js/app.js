@@ -181,10 +181,37 @@ async function init() {
   }
   bindScroll();
   bindReveal();
-  // Links com âncora (#periodos, #apoie...): os capítulos só ganham altura depois de montados (a Análise chega
-  // depois, por fetch), então o salto automático do navegador cai no lugar errado. Refaz o salto no fim.
-  const alvo = location.hash.length > 1 && !/^#an-/.test(location.hash) ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
-  if (alvo) Promise.resolve(analisePronta).catch(() => {}).then(() => setTimeout(() => alvo.scrollIntoView({ behavior: "instant", block: "start" }), 0));
+  bindAncoras();
+  // Link que chega com âncora (…/#periodos): os capítulos só ganham altura depois de montados (a Análise chega
+  // depois, por fetch), então o salto automático do navegador cai no lugar errado. Salta no fim da montagem e
+  // limpa o endereço: a navegação entre capítulos nunca deixa #capítulo na barra.
+  if (location.hash.length > 1) {
+    const alvo = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    Promise.resolve(analisePronta).catch(() => {}).then(() => setTimeout(() => {
+      alvo?.scrollIntoView({ behavior: "instant", block: "start" });
+      history.replaceState(null, "", `${location.pathname}${location.search}`);
+    }, 0));
+  }
+}
+
+// Navegação interna sem mexer no endereço: todo link "#capítulo" só rola até o alvo. O id fica como destino
+// de scrollIntoView(); nada vai para location.hash, então https://custavaquanto.me/ continua o mesmo.
+function irPara(alvo) {
+  alvo.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
+  if (!alvo.hasAttribute("tabindex")) alvo.setAttribute("tabindex", "-1"); // teclado e leitor de tela seguem de onde a rolagem parou
+  alvo.focus({ preventScroll: true });
+}
+function bindAncoras() {
+  document.addEventListener("click", (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest?.('a[href^="#"]');
+    if (!a) return;
+    const id = decodeURIComponent(a.getAttribute("href").slice(1));
+    const alvo = id && document.getElementById(id);
+    if (!alvo) return;
+    e.preventDefault();
+    irPara(alvo);
+  });
 }
 
 // =====================================================================

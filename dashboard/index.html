@@ -417,20 +417,36 @@
           <h3 class="an-part-title" id="an-p2-title">Primeiro, colocamos os períodos na mesma régua.</h3>
           <p class="an-part-lead" id="an-p2-lead"></p>
           <div class="an-ruler" id="an-ruler" aria-live="polite"></div>
-          <div class="an-control">
-            <label class="an-switch" for="an-igual">
-              <input type="checkbox" id="an-igual">
-              <span class="an-switch-box" aria-hidden="true"></span>
-              <span class="an-switch-txt"><b>Comparar pelo mesmo número de meses</b><small>Controle secundário: a comparação principal é a dos períodos inteiros.</small></span>
-            </label>
-            <p class="an-control-note" id="an-control-note"></p>
+          <div class="an-modes">
+            <h4 class="an-kick mono">Duas formas de olhar</h4>
+            <div class="an-modes-grid">
+              <div class="an-mode" id="an-mode-completo" data-ativo="true">
+                <b>Período completo</b>
+                <span class="an-mode-tag mono">comparação principal</span>
+                <p>Usa todos os meses disponíveis de cada período. É a comparação principal.</p>
+              </div>
+              <div class="an-mode" id="an-mode-igual" data-ativo="false">
+                <b>Mesmo número de meses</b>
+                <span class="an-mode-tag mono">controle secundário</span>
+                <p>Compara só os primeiros meses de cada mandato, em igual número, para reduzir o efeito de durações diferentes.</p>
+              </div>
+            </div>
+            <p class="an-modes-nota">São duas réguas possíveis, e elas podem produzir leituras diferentes. Nenhuma delas é um “modo vencedor”.</p>
+            <div class="an-control">
+              <label class="an-switch" for="an-igual">
+                <input type="checkbox" id="an-igual">
+                <span class="an-switch-box" aria-hidden="true"></span>
+                <span class="an-switch-txt"><b>Comparar pelo mesmo número de meses</b><small>Controle secundário: a comparação principal é a dos períodos inteiros.</small></span>
+              </label>
+              <p class="an-control-note" id="an-control-note"></p>
+            </div>
           </div>
         </section>
 
         <section class="an-minute" aria-labelledby="an-min-title">
           <h3 class="an-kick mono" id="an-min-title">Em 1 minuto</h3>
           <ol class="an-min-list" id="an-min-list"></ol>
-          <p class="an-min-foot">Quer conferir os cálculos? Continue abaixo: cada linha tem a pergunta, os números, o gráfico e a fonte.</p>
+          <p class="an-min-foot">A diferença usa os valores completos e é arredondada só no fim, então pode diferir em 0,1 da conta feita com os números arredondados. Quer conferir os cálculos? Continue abaixo: cada dimensão tem a pergunta, os números, o gráfico e a fonte.</p>
         </section>
 
         <!-- PARTE 3 — o que medimos -->

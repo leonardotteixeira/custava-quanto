@@ -124,6 +124,16 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   anterior; links `?historia=` (válido, inválido, com `#capítulo`), recarregar, voltar e avançar.
   axe-core: 0 violações em 390, 1024 e 1366 px (com a animação do mês da Máquina do tempo
   terminada).
+- **Refinamento da Análise (01/10/2026):** navegação por capítulos sem `#capítulo` na barra
+  (cliques no menu e nos links internos só rolam; link que chega com `#capítulo` salta e limpa o
+  endereço; `?historia=` antigo ainda abre a série); cartões "Em 1 minuto" (valores iguais aos da
+  tabela anterior: custo de vida +34,8%/−9,8%, inflação 7,0%/4,6%, renda +0,8%/+0,9%, trabalho
+  12,1%/6,6%, 25,3%/15,7%, −1,5%/+13,2%, atividade 1,4%/3,0%, mercados +35,2%/−4,3%, +7,25/0,00 p.p.,
+  +20,6%/+76,2%; nenhum arquivo de `data/` mudou); abas de série, acontecimentos recolhidos,
+  "Mostrar todos", clique e Enter nos números do gráfico, dica ao passar o mouse, setas/Home/End nas
+  abas, Esc; as seis dimensões, todas as abas e o modo "mesmo número de meses". Sem rolagem lateral
+  nem alvo de toque abaixo de 44 px em 320–430 px; sem rolagem lateral em 768–1920 px; axe-core com 0
+  violações em 390 e 1280 px (eventos abertos e detalhes expandidos).
 ## Histórico
 
 `PHASE_1_QA_REPORT.md` (23/09/2026) é o relatório de QA da primeira reformulação e

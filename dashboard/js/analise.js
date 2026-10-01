@@ -4,8 +4,8 @@
 // (analysis_results.json) vêm prontos de scripts/build_analise.py. Aqui se
 // escolhe a janela, formata e desenha. A única conta feita no navegador é a soma
 // ponderada dos SENTIDOS já calculados (+1, 0, -1) quando o leitor mexe nas
-// prioridades — a mesma fórmula escrita na metodologia. Nenhum número econômico
-// é calculado aqui.
+// prioridades — a mesma fórmula escrita na metodologia — e a distância entre dois
+// valores já calculados (cartões "Em 1 minuto"). Nenhum número econômico novo é calculado aqui.
 import { esc, fmtNum, mesAno, dataCurta, dataNoticia, monthIdx } from "./util.js";
 import { spark } from "./charts.js";
 
@@ -17,7 +17,6 @@ let R = null; // resultados
 let modo = "completo"; // janela principal; "mesmo_tempo" é a visão secundária
 let pesos = null; // prioridades do leitor (dimensão -> 0..100)
 let MARCOS = []; // marcos históricos (noticias.json, itens com "marco"): contexto, nunca causa
-const ctxSel = {}; // dimensão -> indicador escolhido no gráfico de contexto
 
 async function getJSON(url) {
   try { const r = await fetch(url, { cache: "no-cache" }); return r.ok ? await r.json() : null; } catch { return null; }
@@ -77,52 +76,94 @@ function janela(id) {
 
 function renderRegua() {
   const g = janela("GASOLINA"), dol = ind("DOLAR").completo, ipca = janela("IPCA"), pib = janela("PIB");
-  const total = Math.max(g.nb, g.nl, 48);
   const dur = R.duracao;
   const igual = modo === "mesmo_tempo";
-  const card = (p, w, n, extra) => `<div class="an-pcard" data-gov="${p === "Bolsonaro" ? "b" : "l"}">
-      ${tag(p)}
-      <span class="an-pcard-when">${quando(w.inicio)} → ${quando(w.fim)}</span>
-      <span class="an-pcard-dur"><b>${n} meses</b> · dado mensal${w.n < n ? ` (${w.n} com dado)` : ""}${extra || ""}</span>
-      <div class="an-bar-track"><span class="an-bar" data-gov="${p === "Bolsonaro" ? "b" : "l"}" style="width:${(n / total) * 100}%"></span></div>
+  // Régua do calendário: os dois períodos lado a lado, na proporção dos meses de cada um. No modo "mesmo número
+  // de meses", o trecho que entra na comparação fica cheio e o resto esmaecido.
+  const totalMeses = dur.bolsonaro_meses + dur.lula_meses_disponiveis;
+  const anos = [];
+  for (let a = 2019; a <= Number(g.l.fim.slice(0, 4)); a++) anos.push(a);
+  const seg = (p, meses, usados) => `<span class="an-rl-seg" data-gov="${p === "Bolsonaro" ? "b" : "l"}" style="flex:${meses} 1 0"><i style="width:${(usados / meses) * 100}%"></i><b>Período ${p}${p === "Lula" ? " · em curso" : ""}</b></span>`;
+  const regua = `<div class="an-rl" role="img" aria-label="Régua do tempo: período Bolsonaro, de ${quando(g.b.inicio)} a ${quando(g.b.fim)}, com ${dur.bolsonaro_meses} meses; período Lula, em curso, de ${quando(g.l.inicio)} a ${quando(g.l.fim)}, com ${dur.lula_meses_disponiveis} meses de dados.">
+      <div class="an-rl-years" aria-hidden="true">${anos.map((a) => `<span style="left:${(((a - 2019) * 12) / totalMeses) * 100}%">${a}</span>`).join("")}<span class="an-rl-fim">${quando(g.l.fim)}</span></div>
+      <div class="an-rl-bar" aria-hidden="true">${seg("Bolsonaro", dur.bolsonaro_meses, igual ? g.nb : dur.bolsonaro_meses)}${seg("Lula", dur.lula_meses_disponiveis, igual ? g.nl : dur.lula_meses_disponiveis)}</div>
     </div>`;
+  const card = (p, w, n, extra) => `<article class="an-pcard" data-gov="${p === "Bolsonaro" ? "b" : "l"}">
+      <p class="an-pcard-k mono">Período ${p}${p === "Lula" ? " · em curso" : ""}</p>
+      <p class="an-pcard-when">${quando(w.inicio)} → ${quando(w.fim)}</p>
+      <p class="an-pcard-n"><b>${n} meses</b></p>
+      <p class="an-pcard-dur">dado mensal${w.n < n ? ` (${w.n} com dado)` : ""}${extra || ""}</p>
+    </article>`;
   const tri = R.pib_ultimo_trimestre;
   const ultimos = `Último dado: ${quando(g.l.fim)} (mensal)${tri ? `, ${triRot(tri.trimestre)} (PIB trimestral)` : ""}, ${dataCurta(dol.Lula.fim)} (diário).`;
-  $("#an-p2-lead").textContent = `O período Bolsonaro tem ${dur.bolsonaro_meses} meses e o período Lula está em curso, com ${dur.lula_meses_disponiveis} meses de dados. A comparação principal usa cada período inteiro, como o projeto os define. Como as durações diferem, um acumulado tem mais tempo para crescer no período mais longo: por isso existe também a visão por igual duração.`;
+  $("#an-p2-lead").textContent = `O período Bolsonaro tem ${dur.bolsonaro_meses} meses. O período Lula está em curso e tem ${dur.lula_meses_disponiveis} meses de dados até agora. A comparação principal usa cada período inteiro; existe também uma segunda leitura, pelo mesmo número de meses.`;
+  const notaSeries = igual
+    ? `Os primeiros <b>${g.nb} meses</b> de cada mandato. Séries mais curtas usam só os meses em que os dois lados têm dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)} (${ipca.nb} meses); PIB, ${pib.nb} anos fechados de cada período (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam a média mensal.`
+    : `Como as durações diferem, um acumulado tem mais tempo para crescer no período mais longo: por isso existe também a visão por igual duração. Séries mais curtas usam só os meses com dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)}; PIB, anos fechados (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário: ${dataCurta(dol.Bolsonaro.inicio)} a ${dataCurta(dol.Bolsonaro.fim)} e ${dataCurta(dol.Lula.inicio)} a ${dataCurta(dol.Lula.fim)}.`;
+  const jt = janela("DESOCUPACAO");
+  const notaTrab = jt ? `<p class="an-ruler-note">Mercado de trabalho (PNAD Contínua): cada ponto é um trimestre móvel, identificado pelo mês em que termina, e só entram os trimestres inteiros dentro de cada período: de ${quando(jt.b.inicio)} a ${quando(jt.b.fim)} e de ${quando(jt.l.inicio)} a ${quando(jt.l.fim)}. Último resultado publicado: ${esc(R.mercado_trabalho.series.DESOCUPACAO.ultima_observacao_rotulo)}.</p>` : "";
   $("#an-ruler").innerHTML = `
     <p class="an-visao mono">${esc(M.regras.modos_nomes[modo])}${igual ? " · visão secundária" : " · comparação principal"}</p>
+    ${regua}
     <div class="an-pcards">
       ${card("Bolsonaro", g.b, g.nb, igual ? ` · meses 1 a ${g.nb} do mandato` : " · mandato completo")}
       ${card("Lula", g.l, g.nl, igual ? ` · meses 1 a ${g.nl} do mandato` : " · período em curso")}
     </div>
-    <p class="an-ruler-note">${igual
-      ? `Os primeiros <b>${g.nb} meses</b> de cada mandato. Séries mais curtas usam só os meses em que os dois lados têm dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)} (${ipca.nb} meses); PIB, ${pib.nb} anos fechados de cada período (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam a média mensal.`
-      : `Séries mais curtas usam só os meses com dado: IPCA em 12 meses, de ${quando(ipca.b.inicio)} a ${quando(ipca.b.fim)} contra ${quando(ipca.l.inicio)} a ${quando(ipca.l.fim)}; PIB, anos fechados (${quando(pib.b.inicio, { anual: true })}–${quando(pib.b.fim, { anual: true })} e ${quando(pib.l.inicio, { anual: true })}–${quando(pib.l.fim, { anual: true })}). Dólar, Selic e Ibovespa usam o primeiro e o último dado diário: ${dataCurta(dol.Bolsonaro.inicio)} a ${dataCurta(dol.Bolsonaro.fim)} e ${dataCurta(dol.Lula.inicio)} a ${dataCurta(dol.Lula.fim)}.`}
-      ${ultimos}</p>`;
-  const jt = janela("DESOCUPACAO");
-  if (jt) {
-    $("#an-ruler").insertAdjacentHTML("beforeend", `<p class="an-ruler-note">Mercado de trabalho (PNAD Contínua): cada ponto é um trimestre móvel, identificado pelo mês em que termina, e só entram os trimestres inteiros dentro de cada período: de ${quando(jt.b.inicio)} a ${quando(jt.b.fim)} e de ${quando(jt.l.inicio)} a ${quando(jt.l.fim)}. Último resultado publicado: ${esc(R.mercado_trabalho.series.DESOCUPACAO.ultima_observacao_rotulo)}.</p>`);
-  }
+    <details class="an-details an-rl-det"><summary>Como tratamos as séries mais curtas e os últimos dados</summary>
+      <p class="an-ruler-note">${notaSeries} ${ultimos}</p>${notaTrab}</details>`;
+  $("#an-mode-completo")?.setAttribute("data-ativo", String(!igual));
+  $("#an-mode-igual")?.setAttribute("data-ativo", String(igual));
   const jm = R.janela_muda;
   $("#an-control-note").textContent = jm?.dimensoes?.length ? jm.texto : "A leitura de cada dimensão é a mesma nas duas janelas.";
 }
 
 // ------------------------------------------------------------ em 1 minuto
-function linhaDim(d) {
+// Cada dimensão vira um cartão do mesmo sistema: valor de cada período, diferença, regra e classificação.
+// A diferença é só a distância entre os dois valores já calculados em Python (apresentação, não método);
+// a classificação vem da leitura e da tolerância da metodologia. Nenhum cartão aponta vencedor.
+const difAbs = (a, b, nivel) => `${fmtNum(Math.abs(a - b), nivel ? 2 : 1)} p.p.`;
+const CLASSE = { rel: "Diferença relevante", igual: "Praticamente iguais", sem: "Sem direção definida" };
+const chipClasse = (c, txt) => `<span class="an-class" data-c="${c}">${txt || CLASSE[c]}</span>`;
+const tolTxt = (t) => `${fmtNum(t, 1)} p.p.`;
+
+function trio(rotulo, vb, vl, dif, classe) {
+  return `<div class="an-mc-s">
+    ${rotulo || classe ? `<p class="an-mc-lab">${rotulo ? `<span>${rotulo}</span>` : ""}${classe || ""}</p>` : ""}
+    <dl class="an-mc-trio">
+      <div data-gov="b"><dt>Bolsonaro</dt><dd>${vb}</dd></div>
+      <div data-gov="l"><dt>Lula</dt><dd>${vl}</dd></div>
+      <div class="an-mc-dif"><dt>Diferença</dt><dd>${dif}</dd></div>
+    </dl></div>`;
+}
+
+function cartaoMinuto(d) {
   const r = dimRes(d.id);
-  if (d.tipo !== "A") return `<span class="an-min-res">descritos, sem direção definida</span><span class="an-min-leit">fora da síntese</span>`;
+  const cab = `<h4 class="an-mc-t"><a href="#an-dim-${d.id}" class="an-min-dim">${esc(d.titulo)}</a></h4><p class="an-mc-q">${esc(d.pergunta)}</p>`;
+  if (d.tipo !== "A") {
+    const ids = M.indicadores.filter((i) => i.dimensao === d.id).map((i) => i.id);
+    const secoes = ids.map((id) => {
+      const s = ind(id)[modo], nivel = meta(id).metrica === "nivel";
+      return trio(esc(meta(id).nome), fmtValor(id, s.Bolsonaro.valor), fmtValor(id, s.Lula.valor), difAbs(s.Bolsonaro.valor, s.Lula.valor, nivel));
+    }).join("");
+    return `<li class="an-mc">${cab}${secoes}<p class="an-mc-leit">${chipClasse("sem")}<span>Descritivo: estes indicadores não têm uma direção única de bem-estar e ficam fora da síntese.</span></p></li>`;
+  }
   if (r.por_serie) {
     const nomes = { DESOCUPACAO: "desocupação, média", SUBUTILIZACAO: "subutilização, média", RENDIMENTO: "rendimento real, variação" };
-    const linhas = r.por_serie.map((l) => `<span class="an-min-line"><span class="an-pair">${nomes[l.id] || esc(l.nome)}</span> <span class="an-pair">${tag("Bolsonaro")} <b>${fmtValor(l.id, l.Bolsonaro)}</b></span><span class="an-pair">${tag("Lula")} <b>${fmtValor(l.id, l.Lula)}</b></span></span>`).join("");
-    return `<span class="an-min-res an-min-multi">${linhas}</span><span class="an-min-leit">${chipLado(r.leitura)}<small>${r.votos.lula} de ${r.por_serie.length} séries pelo período Lula</small></span>`;
+    const secoes = r.por_serie.map((l) => trio(nomes[l.id] || esc(l.nome), fmtValor(l.id, l.Bolsonaro), fmtValor(l.id, l.Lula), difAbs(l.Bolsonaro, l.Lula, false),
+      l.leitura === 0 ? chipClasse("igual") : chipClasse("rel"))).join("");
+    const nRel = r.por_serie.filter((l) => l.leitura !== 0).length, n = r.por_serie.length;
+    return `<li class="an-mc">${cab}${secoes}<p class="an-mc-leit">${nRel === 0 ? chipClasse("igual") : chipClasse("rel", nRel === n ? `Diferença relevante nas ${n} séries` : `Diferença relevante em ${nRel} de ${n} séries`)}<span>Cada série é lida pela sua própria tolerância (${tolTxt(r.por_serie[0].tolerancia)} nas taxas). Cada uma vota uma vez; os votos aparecem na leitura abaixo.</span></p></li>`;
   }
-  const pb = r.por_periodo.Bolsonaro, pl = r.por_periodo.Lula;
-  const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação mediana do poder de compra", atividade: "crescimento médio anual" }[d.id] || "mediana";
-  return `<span class="an-min-res"><span class="an-pair">${unidade}</span> <span class="an-pair">${tag("Bolsonaro")} <b>${valDim(r, pb.mediana_valor)}</b></span><span class="an-pair">${tag("Lula")} <b>${valDim(r, pl.mediana_valor)}</b></span></span>
-    <span class="an-min-leit">${chipLado(r.leitura)}</span>`;
+  const pb = r.por_periodo.Bolsonaro.mediana_valor, pl = r.por_periodo.Lula.mediana_valor;
+  const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação mediana do poder de compra", atividade: "crescimento médio anual do PIB" }[d.id] || "mediana";
+  const dif = difAbs(pb, pl, false);
+  const regra = r.leitura === 0
+    ? `Diferença de ${dif}: dentro do limite de ${tolTxt(r.tolerancia)} definido na metodologia.`
+    : `Diferença de ${dif}: acima do limite de ${tolTxt(r.tolerancia)} definido na metodologia. Critério da dimensão: ${esc(d.criterio.explica)}.`;
+  return `<li class="an-mc">${cab}${trio(unidade, valDim(r, pb), valDim(r, pl), dif)}<p class="an-mc-leit">${chipClasse(r.leitura === 0 ? "igual" : "rel")}<span>${regra}</span></p></li>`;
 }
 function renderMinuto() {
-  $("#an-min-list").innerHTML = M.dimensoes.map((d) => `<li><a href="#an-dim-${d.id}" class="an-min-dim">${esc(d.titulo)}</a>${linhaDim(d)}</li>`).join("");
+  $("#an-min-list").innerHTML = M.dimensoes.map(cartaoMinuto).join("");
 }
 
 // ------------------------------------------------------------ Parte 2 — o que medimos
@@ -272,8 +313,10 @@ function fmtSerie(id, v) {
 }
 
 // Marcos de uma dimensão: os de maior relevância primeiro, espalhados pelos anos (no máximo n).
-function marcosDim(dimId, n = 7) {
-  const cand = MARCOS.filter((m) => m.marco.dimensoes.includes(dimId));
+function marcosDim(dimId, n = 7, serie = null) {
+  let cand = MARCOS.filter((m) => m.marco.dimensoes.includes(dimId));
+  // com uma série escolhida, entram os marcos que citam essa série; se nenhum cita, ficam os da dimensão
+  if (serie) { const so = cand.filter((m) => m.marco.indicadores.includes(serie)); if (so.length) cand = so; }
   // relevância alta primeiro; entre elas, os eventos (choques, decisões) antes das divulgações de dado, que já aparecem nos números da própria dimensão
   const chave = (m) => (m.marco.relevancia === "alta" ? 0 : 2) + (m.marco.tipo === "dado_oficial" ? 1 : 0);
   const rank = [...cand].sort((a, b) => chave(a) - chave(b) || a.data.localeCompare(b.data));
@@ -289,7 +332,17 @@ function valorNoMes(id, iso) {
   return r ? r.v : null;
 }
 
-function graficoContexto(id, evs) {
+// Estado do bloco de contexto de cada dimensão: série escolhida e acontecimentos abertos.
+const ctxEst = {};
+const estCtx = (dimId, ids) => {
+  const e = ctxEst[dimId] || (ctxEst[dimId] = { sel: ids[0], abertos: new Set() });
+  if (!ids.includes(e.sel)) { e.sel = ids[0]; e.abertos = new Set(); }
+  return e;
+};
+const CTXG = {}; // dimensão -> geometria do gráfico (para o hover)
+const semMovimento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function graficoContexto(id, evs, dimId) {
   const m = meta(id), rows = ind(id).serie.filter((r) => r.iso >= "2019-01-01");
   const compacto = innerWidth <= 760; // no celular o desenho é feito na largura real, para o texto do gráfico não encolher
   const W = compacto ? 360 : 1000, H = compacto ? 330 : 350, Lm = compacto ? 54 : 64, Rm = compacto ? 12 : 18, Tm = 34, Bm = 100;
@@ -299,6 +352,7 @@ function graficoContexto(id, evs) {
   let lo = Math.min(...vals), hi = Math.max(...vals);
   const pad = (hi - lo) * 0.12 || 1; lo -= pad; hi += pad;
   const Y = (v) => Tm + (1 - (v - lo) / (hi - lo)) * (H - Tm - Bm);
+  CTXG[dimId] = { id, rows, W, H, Lm, Rm, Tm, Bm, X, Y, evs };
   const path = (rs) => rs.map((r, k) => `${k ? "L" : "M"}${X(r.iso).toFixed(1)},${Y(r.v).toFixed(1)}`).join("");
   const antes = rows.filter((r) => r.iso < "2023-01-01"), depois = rows.filter((r) => r.iso >= "2023-01-01");
   const ponte = antes.length && depois.length ? [antes[antes.length - 1], ...depois] : depois;
@@ -311,10 +365,11 @@ function graficoContexto(id, evs) {
     const x = X(e.data), lin = x - fila[0] >= 24 ? 0 : x - fila[1] >= 24 ? 1 : 0;
     fila[lin] = x;
     const v = valorNoMes(id, e.data), yy = v == null ? Tm : Y(v), yb = H - Bm + 44 + lin * 28;
-    return `<g class="ctx-ev"><line x1="${x}" y1="${yy}" x2="${x}" y2="${yb - 10}" /><circle cx="${x}" cy="${yb}" r="10" /><text x="${x}" y="${yb + 4}" text-anchor="middle">${k + 1}</text></g>`;
+    return `<g class="ctx-ev" data-k="${k}" role="button" tabindex="0" aria-label="Acontecimento ${k + 1}, ${dataNoticia(e.data)}: ${esc(e.titulo)}. Abrir os detalhes."><line x1="${x}" y1="${yy}" x2="${x}" y2="${yb - 10}" /><circle class="ctx-hit" cx="${x}" cy="${yb}" r="17" /><circle class="ctx-c" cx="${x}" cy="${yb}" r="10" /><text x="${x}" y="${yb + 4}" text-anchor="middle">${k + 1}</text></g>`;
   }).join("");
   const ptsAnual = m.anual ? rows.map((r) => `<circle class="ctx-pt" cx="${X(r.iso)}" cy="${Y(r.v)}" r="3.5" />`).join("") : "";
-  return `<svg class="ctx-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.nome)} de ${mesAno(rows[0].iso)} a ${mesAno(rows[rows.length - 1].iso)}, com ${evs.length} eventos marcados; a lista logo abaixo descreve cada evento.">
+  return `<svg class="ctx-svg" viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(m.nome)}, de ${mesAno(rows[0].iso)} a ${mesAno(rows[rows.length - 1].iso)}, com ${evs.length} acontecimentos numerados; a lista logo abaixo descreve cada um." data-dim="${dimId}">
+    <g aria-hidden="true">
     ${yt.map((v) => `<g class="ctx-grid"><line x1="${Lm}" x2="${W - Rm}" y1="${Y(v)}" y2="${Y(v)}" /><text x="${Lm - 8}" y="${Y(v) + 4}" text-anchor="end">${fmtSerie(id, v)}</text></g>`).join("")}
     ${anos.map((a) => `<text class="ctx-x" x="${X(`${a}-01-01`)}" y="${H - Bm + 16}" text-anchor="middle">${a}</text>`).join("")}
     <line class="ctx-cut" x1="${xc}" x2="${xc}" y1="${Tm - 8}" y2="${H - Bm}" />
@@ -322,70 +377,98 @@ function graficoContexto(id, evs) {
     <text class="ctx-per" x="${xc + 8}" y="${Tm - 14}">${compacto ? "Lula" : "Período Lula · em curso"}</text>
     <path class="ctx-line ctx-line--b" d="${path(antes)}" /><path class="ctx-line ctx-line--l" d="${path(ponte)}" />
     ${ptsAnual}
+    <g class="ctx-hover"><line class="ctx-guide" x1="0" x2="0" y1="${Tm - 8}" y2="${H - Bm}" /><circle class="ctx-dot" cx="0" cy="0" r="5" /></g>
+    </g>
     ${marcas}
   </svg>`;
 }
 
-function cartaoEvento(e, k, id) {
+// Um acontecimento: uma linha (data, título, veículo) que abre o resumo, o valor da série, a imagem e o link da fonte.
+function eventoItem(e, k, id, dimId, aberto) {
   const m = e.marco, v = valorNoMes(id, e.data), sm = meta(id);
   const mes = sm.trimestre_movel ? `trimestre encerrado em ${mesAno(e.data)}` : mesAno(e.data);
-  return `<li class="an-ev"><span class="an-ev-n mono" aria-hidden="true">${k + 1}</span>
-    <div class="an-ev-body">
-      <p class="an-ev-meta mono"><time datetime="${e.data}">${dataNoticia(e.data)}</time> · ${esc(TIPO_ROTULO[m.tipo] || m.tipo)} · ocorreu no período ${periodoDe(e.data)}</p>
-      <p class="an-ev-t"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.titulo)}</a> <span class="an-ev-src">${esc(e.veiculo)}</span></p>
+  const bid = `an-evb-${dimId}-${k}`, pid = `an-evp-${dimId}-${k}`;
+  return `<li class="an-ev${aberto ? " is-open" : ""}" id="an-ev-${dimId}-${k}" data-k="${k}">
+    <h5 class="an-ev-h"><button type="button" class="an-ev-btn" id="${bid}" data-dim="${dimId}" data-k="${k}" aria-expanded="${aberto}" aria-controls="${pid}">
+      <span class="an-ev-n mono" aria-hidden="true">${k + 1}</span>
+      <span class="an-ev-line"><time class="an-ev-date mono" datetime="${e.data}">${dataNoticia(e.data)}</time><span class="an-ev-title">${esc(e.titulo)}</span><span class="an-ev-src">${esc(e.veiculo)}</span></span>
+      <span class="an-ev-sign mono" aria-hidden="true">${aberto ? "−" : "+"}</span>
+    </button></h5>
+    <div class="an-ev-panel" id="${pid}"${aberto ? "" : " hidden"}>
+      <p class="an-ev-meta mono">${esc(TIPO_ROTULO[m.tipo] || m.tipo)} · ocorreu no período ${periodoDe(e.data)}</p>
       <p class="an-ev-s">${esc(m.resumo)}</p>
       ${v != null ? `<p class="an-ev-v mono">${esc(sm.nome)} no mês do evento: <b>${fmtSerie(id, v)}</b>${sm.trimestre_movel ? ` (${mes})` : ""}</p>` : ""}
+      ${e.imagem ? `<figure class="an-ev-fig"><img src="${esc(e.imagem)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('figure').remove()"><figcaption>Foto: ${esc(e.credito_imagem || e.veiculo)}</figcaption></figure>` : ""}
+      <p class="an-ev-link"><a href="${esc(e.url)}" target="_blank" rel="noopener">Ler na fonte: ${esc(e.veiculo)}<span class="sr-only"> (abre em nova aba)</span> →</a></p>
     </div></li>`;
 }
 
-// No celular só os 3 primeiros eventos de cada dimensão ficam abertos; o botão mostra o resto (no computador o botão some e a lista é inteira).
-const EV_VISIVEIS = 3;
-const evAbertos = new Set();
-// No celular cada dimensão mostra primeiro o essencial (pergunta, números, gráfico, leitura, o que não mede);
-// contexto do período, robustez, maiores movimentos e a tabela por série ficam atrás de um botão. Nada é removido.
+// No celular o essencial de cada dimensão vem primeiro; robustez, maiores movimentos e a tabela por série ficam
+// atrás de um botão (em qualquer tela). O contexto do período fica sempre à vista, com os acontecimentos recolhidos.
 const deepAbertos = new Set();
 const CELULAR = matchMedia("(max-width: 760px)");
-function blocoContexto(dimId) {
-  const ids = (CTX_SERIES[dimId] || []).filter((id) => ind(id) && !ind(id).excluido);
-  if (!ids.length) return "";
-  const sel = ids.includes(ctxSel[dimId]) ? ctxSel[dimId] : ids[0];
-  ctxSel[dimId] = sel;
-  const evs = marcosDim(dimId);
-  if (!evs.length) return "";
-  const botoes = ids.length > 1 ? `<div class="an-ctx-btns" role="group" aria-label="Série exibida no gráfico">${ids.map((id) => `<button type="button" class="an-ctx-btn" data-dim="${dimId}" data-ind="${esc(id)}" aria-pressed="${id === sel}">${esc(meta(id).nome)}</button>`).join("")}</div>` : "";
-  return `<div class="an-ctx-block" id="an-ctx-${dimId}">
-    <h4 class="an-kick mono">Contexto do período</h4>
-    <p class="an-ctx-lead">O que estava acontecendo em torno dos movimentos desta série. Os eventos aparecem pela data em que ocorreram, não por terem causado a mudança.</p>
-    ${botoes}
-    <figure class="an-ctx-fig">${graficoContexto(sel, evs)}<figcaption class="mono">${esc(meta(sel).nome)} · ${esc(meta(sel).unidade)}${meta(sel).trimestre_movel ? " · trimestre móvel, no mês em que termina" : ""} · fonte: ${esc(meta(sel).fonte)}</figcaption></figure>
-    <ol class="an-ev-list${evAbertos.has(dimId) ? " is-open" : ""}" id="an-evl-${dimId}">${evs.map((e, k) => cartaoEvento(e, k, sel)).join("")}</ol>
-    ${evs.length > EV_VISIVEIS ? `<button type="button" class="an-ev-mais" data-dim="${dimId}" aria-expanded="${evAbertos.has(dimId)}" aria-controls="an-evl-${dimId}">${evAbertos.has(dimId) ? "Mostrar menos eventos" : `Mostrar os outros ${evs.length - EV_VISIVEIS} eventos (${EV_VISIVEIS + 1} a ${evs.length})`}</button>` : ""}
+// No celular, o contexto de Custo de vida, Inflação e Renda também fica atrás do botão do detalhe; o de Mercado de
+// trabalho, Atividade (PIB) e Mercados fica sempre à vista. No computador o contexto é sempre visível.
+const CTX_NO_DETALHE = ["custo_vida", "inflacao", "renda"];
+const textoDeep = (dimId, aberto) => aberto ? "Recolher o detalhe" : CELULAR.matches && CTX_NO_DETALHE.includes(dimId)
+  ? "Ver o detalhe: contexto do período, robustez e números por série" : "Ver o detalhe: robustez, maiores movimentos e números por série";
+const LEAD_CTX = {
+  trabalho: "Três séries oficiais da PNAD Contínua ajudam a observar diferentes dimensões do mercado de trabalho. Escolha uma delas: o gráfico, a unidade, a explicação e os acontecimentos mudam junto.",
+};
+
+// Mercado de trabalho: números da série escolhida (valor de cada período, diferença, tolerância e métrica alternativa).
+function statsSerie(dimId, id) {
+  const r = dimRes(dimId), l = r.por_serie?.find((x) => x.id === id);
+  if (!l) return "";
+  const m = meta(id), f = ind(id).fonte_ultima;
+  const rot = { DESOCUPACAO: "média da taxa no período", SUBUTILIZACAO: "média da taxa no período", RENDIMENTO: "variação do início ao fim" }[id];
+  const ini = (p) => `${fmtSerie(id, l.valor_inicio[p])} → ${fmtSerie(id, l.valor_fim[p])}`;
+  const alt = l.alternativa;
+  const altTxt = l.metrica === "media"
+    ? `Do início ao fim da janela, a taxa variou ${pp(alt.Bolsonaro, 1)} no período Bolsonaro e ${pp(alt.Lula, 1)} no período Lula.`
+    : `Média do rendimento real na janela: ${fmtSerie(id, alt.Bolsonaro)} no período Bolsonaro e ${fmtSerie(id, alt.Lula)} no período Lula.`;
+  const dif = difAbs(l.Bolsonaro, l.Lula, false);
+  const regra = l.leitura === 0 ? `dentro do limite de ${tolTxt(l.tolerancia)} definido na metodologia` : `acima do limite de ${tolTxt(l.tolerancia)} definido na metodologia`;
+  return `<div class="an-ss">
+    <p class="an-ss-rot mono">${rot} · ${esc(m.unidade)}</p>
+    <dl class="an-mc-trio an-ss-trio">
+      <div data-gov="b"><dt>Bolsonaro</dt><dd>${fmtValor(id, l.Bolsonaro)}<small>${ini("Bolsonaro")}</small></dd></div>
+      <div data-gov="l"><dt>Lula</dt><dd>${fmtValor(id, l.Lula)}<small>${ini("Lula")}</small></dd></div>
+      <div class="an-mc-dif"><dt>Diferença</dt><dd>${dif}</dd></div>
+    </dl>
+    <p class="an-ss-regra">${chipClasse(l.leitura === 0 ? "igual" : "rel")} <span>Diferença de ${dif}: ${regra}.</span></p>
+    <p class="an-tb-alt">${altTxt}</p>
   </div>`;
 }
 
-// Mercado de trabalho: cada série na sua unidade, com o seu voto.
-function trabalhoBlock(d, r) {
-  const rot = { DESOCUPACAO: "média da taxa no período", SUBUTILIZACAO: "média da taxa no período", RENDIMENTO: "variação do início ao fim" };
-  const cards = r.por_serie.map((l) => {
-    const m = meta(l.id), i = ind(l.id), f = i.fonte_ultima;
-    const ini = (p) => l.metrica === "media" ? `${fmtSerie(l.id, l.valor_inicio[p])} → ${fmtSerie(l.id, l.valor_fim[p])}` : `${fmtSerie(l.id, l.valor_inicio[p])} → ${fmtSerie(l.id, l.valor_fim[p])}`;
-    const alt = l.alternativa;
-    const altTxt = l.metrica === "media"
-      ? `Do início ao fim da janela, a taxa variou ${pp(alt.Bolsonaro, 1)} no período Bolsonaro e ${pp(alt.Lula, 1)} no período Lula.`
-      : `Média do rendimento real na janela: ${fmtSerie(l.id, alt.Bolsonaro)} no período Bolsonaro e ${fmtSerie(l.id, alt.Lula)} no período Lula.`;
-    return `<article class="an-tb">
-      <h4>${esc(m.nome)}</h4>
-      <p class="an-tb-rot mono">${rot[l.id]} · ${esc(m.unidade)}</p>
-      <div class="an-tb-vals">
-        <div data-gov="b"><span class="an-big-v">${fmtValor(l.id, l.Bolsonaro)}</span>${tag("Bolsonaro")}<small>${ini("Bolsonaro")}</small></div>
-        <div data-gov="l"><span class="an-big-v">${fmtValor(l.id, l.Lula)}</span>${tag("Lula")}<small>${ini("Lula")}</small></div>
+function blocoContexto(dimId) {
+  const ids = (CTX_SERIES[dimId] || []).filter((id) => ind(id) && !ind(id).excluido);
+  if (!ids.length) return "";
+  const est = estCtx(dimId, ids), sel = est.sel;
+  const evs = marcosDim(dimId, 7, sel);
+  if (!evs.length) return "";
+  const m = meta(sel), rows = ind(sel).serie, ultimo = rows[rows.length - 1];
+  const ultimoDado = m.trimestre_movel && ind(sel).fonte_ultima ? ind(sel).fonte_ultima.rotulo : `${quando(ultimo.iso, { anual: !!m.anual })}${m.anual ? " (ano fechado)" : ""}`;
+  const todos = est.abertos.size === evs.length;
+  const abas = ids.length > 1
+    ? `<div class="an-tabs" role="tablist" aria-label="Série exibida: ${esc(dimMeta(dimId).titulo)}">${ids.map((id) => `<button type="button" role="tab" class="an-tab" id="an-tab-${dimId}-${id}" data-dim="${dimId}" data-ind="${esc(id)}" aria-selected="${id === sel}" aria-controls="an-pan-${dimId}" tabindex="${id === sel ? 0 : -1}">${esc(meta(id).nome)}</button>`).join("")}</div>` : "";
+  return `<div class="an-ctx-block" id="an-ctx-${dimId}">
+    <h4 class="an-kick mono">Contexto do período</h4>
+    <p class="an-ctx-lead">${esc(LEAD_CTX[dimId] || "O que estava acontecendo em torno dos movimentos desta série.")}</p>
+    ${abas}
+    <div class="an-ctx-pan" id="an-pan-${dimId}"${ids.length > 1 ? ` role="tabpanel" aria-labelledby="an-tab-${dimId}-${sel}"` : ""}>
+      ${statsSerie(dimId, sel)}
+      <p class="an-ctx-int">${esc(m.interpretacao)}</p>
+      <figure class="an-ctx-fig" data-dim="${dimId}">${graficoContexto(sel, evs, dimId)}<div class="ctx-tip" hidden aria-hidden="true"></div>
+        <figcaption><dl class="an-ctx-meta"><div><dt>Fonte</dt><dd>${esc(m.fonte)}</dd></div><div><dt>Unidade</dt><dd>${esc(m.unidade)}</dd></div><div><dt>Frequência</dt><dd>${esc(m.frequencia)}</dd></div><div><dt>Último dado disponível</dt><dd>${esc(ultimoDado)}</dd></div></dl>
+        <span class="an-ctx-dica">Passe o mouse (ou o dedo) sobre a linha para ver cada mês; toque nos números para abrir o acontecimento.</span></figcaption></figure>
+      <div class="an-evs">
+        <div class="an-evs-head"><h5 class="an-evs-t">${evs.length} acontecimento${evs.length > 1 ? "s" : ""} neste período</h5><button type="button" class="an-evs-all" data-dim="${dimId}" aria-expanded="${todos}">${todos ? "Recolher todos" : "Mostrar todos"}</button></div>
+        <p class="an-evs-nota">Os eventos aparecem pela data em que ocorreram, não por terem causado a mudança.</p>
+        <ol class="an-ev-list">${evs.map((e, k) => eventoItem(e, k, sel, dimId, est.abertos.has(k))).join("")}</ol>
       </div>
-      <p class="an-tb-voto">${chipLado(l.leitura)}</p>
-      <p class="an-tb-alt">${altTxt}</p>
-      <p class="an-tb-src mono">${esc(m.fonte)} · ${esc(m.frequencia)} · último resultado: ${esc(f.rotulo)}</p>
-    </article>`;
-  }).join("");
-  return `<div class="an-trab">${cards}</div>`;
+    </div>
+  </div>`;
 }
 
 function evidencia(d) {
@@ -394,7 +477,7 @@ function evidencia(d) {
   const idsA = ids.filter((id) => meta(id).tipo === "A");
   let visual = "", numero = "";
   if (d.tipo === "A" && r.por_serie) {
-    visual = trabalhoBlock(d, r);
+    visual = ""; // mercado de trabalho: a experiência (abas, gráfico, acontecimentos) é o bloco de contexto
   } else if (d.tipo === "A") {
     const pb = r.por_periodo.Bolsonaro, pl = r.por_periodo.Lula;
     const rot = r.metrica === "media" ? (d.id === "atividade" ? "crescimento médio anual do PIB" : "inflação média em 12 meses") : `${idsA.length > 1 ? "mediana da " : ""}variação real${idsA.length > 1 ? ` de ${idsA.length} séries` : ""}`;
@@ -443,19 +526,20 @@ function evidencia(d) {
   const n = d.tipo === "A" ? `${idsA.length} série${idsA.length > 1 ? "s" : ""} · entra na síntese` : `${ids.length} séries · só descrição`;
   const leitura = d.tipo === "A" ? `<p>${esc(res().textos.por_dimensao[d.id])}</p><p class="an-read-lado">${chipLado(r.leitura)}</p>${r.por_serie ? `<p class="an-read-alt">Com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), a dimensão ${r.leitura_alternativa === 0 ? "ficaria praticamente igual entre os períodos" : `apontaria para o período ${r.leitura_alternativa > 0 ? "Lula" : "Bolsonaro"}`}. A métrica principal foi fixada antes do cálculo (regra da métrica na metodologia).</p>` : ""}` : `<p>${esc(res().textos.por_dimensao[d.id])}</p>`;
   const aberto = deepAbertos.has(d.id);
-  const temDeep = [blocoContexto(d.id), robustezDim(r), movimentos(d), numeros(ids)].some(Boolean);
-  return `<section class="an-part an-dim${aberto ? " is-deep" : ""}" id="an-dim-${d.id}" aria-labelledby="an-dt-${d.id}">
+  const cdeep = CTX_NO_DETALHE.includes(d.id);
+  const temDeep = [cdeep && blocoContexto(d.id), robustezDim(r), movimentos(d), numeros(ids)].some(Boolean);
+  return `<section class="an-part an-dim${aberto ? " is-deep" : ""}${cdeep ? " an-dim--cdeep" : ""}" id="an-dim-${d.id}" aria-labelledby="an-dt-${d.id}">
     <p class="an-part-n mono">Parte ${d.ordem + 2} · ${esc(d.titulo)}</p>
     <h3 class="an-part-title" id="an-dt-${d.id}">${TITULOS[d.id] || esc(d.titulo)}</h3>
     <div class="an-q"><span class="mono">A pergunta</span><p>${esc(d.pergunta)}</p><span class="an-dim-type">${badgeEvid(r.nivel_evidencia)}<span class="mono">${n}</span></span></div>
     <p class="an-part-lead">${esc(d.explicacao)}</p>
     <dl class="an-scope"><div><dt class="mono">Mede</dt><dd>${esc(fim(d.mede))}</dd></div><div><dt class="mono">Não mede</dt><dd>${esc(fim(d.nao_mede))}</dd></div></dl>
-    <div class="an-evid${r.por_serie ? " an-evid--serie" : ""}">${numero}${visual}</div>
+    ${numero || visual ? `<div class="an-evid">${numero}${visual}</div>` : ""}
     ${ctx}
     ${blocoContexto(d.id)}
     <div class="an-read"><h4 class="an-kick mono">Leitura dos dados</h4><div>${leitura}</div></div>
     ${infos}
-    ${temDeep ? `<button type="button" class="an-deep-btn" data-dim="${d.id}" aria-expanded="${aberto}">${aberto ? "Recolher o detalhe" : "Ver o detalhe: contexto do período, robustez e números por série"}</button>` : ""}
+    ${temDeep ? `<button type="button" class="an-deep-btn" data-dim="${d.id}" aria-expanded="${aberto}">${textoDeep(d.id, aberto)}</button>` : ""}
     ${robustezDim(r)}
     ${movimentos(d)}
     ${numeros(ids)}
@@ -642,6 +726,142 @@ function renderSumario() {
   }).join("")}</ol></details>`;
 }
 
+// ------------------------------------------------------------ interação do contexto (abas, acontecimentos, gráfico)
+function recarregarCtx(dimId, foco) {
+  const el = $(`#an-ctx-${dimId}`);
+  if (!el) return;
+  el.outerHTML = blocoContexto(dimId);
+  if (foco) $(foco)?.focus();
+}
+
+function alternarEvento(dimId, k, abrir) {
+  const est = ctxEst[dimId], li = $(`#an-ev-${dimId}-${k}`);
+  if (!est || !li) return;
+  if (abrir == null) abrir = !est.abertos.has(k);
+  if (abrir) est.abertos.add(k); else est.abertos.delete(k);
+  li.classList.toggle("is-open", abrir);
+  $(".an-ev-btn", li).setAttribute("aria-expanded", String(abrir));
+  $(".an-ev-sign", li).textContent = abrir ? "−" : "+";
+  $(".an-ev-panel", li).hidden = !abrir;
+  const todos = $$(".an-ev", $(`#an-ctx-${dimId}`)).length === est.abertos.size;
+  const b = $(`#an-ctx-${dimId} .an-evs-all`);
+  if (b) { b.setAttribute("aria-expanded", String(todos)); b.textContent = todos ? "Recolher todos" : "Mostrar todos"; }
+}
+
+function abrirEventoDoGrafico(dimId, k) {
+  alternarEvento(dimId, k, true);
+  const li = $(`#an-ev-${dimId}-${k}`);
+  if (!li) return;
+  li.scrollIntoView({ behavior: semMovimento() ? "auto" : "smooth", block: "nearest" });
+  $(".an-ev-btn", li)?.focus({ preventScroll: true });
+  li.classList.add("is-foco");
+  setTimeout(() => li.classList.remove("is-foco"), 1600);
+}
+
+function mostrarTip(fig, html, fx, fy) {
+  const tip = $(".ctx-tip", fig);
+  tip.innerHTML = html;
+  tip.hidden = false;
+  tip.style.left = `${fx * 100}%`;
+  tip.style.top = `${fy * 100}%`;
+  tip.classList.toggle("is-dir", fx > 0.6);
+  tip.classList.toggle("is-esq", fx < 0.2);
+}
+function esconderTip(fig) {
+  $(".ctx-tip", fig).hidden = true;
+  $(".ctx-hover", fig)?.classList.remove("on");
+}
+
+function dicaMes(G, row) {
+  const m = meta(G.id), per = periodoDe(row.iso);
+  const quandoTxt = m.anual ? `ano de ${row.iso.slice(0, 4)}` : m.trimestre_movel ? `trimestre encerrado em ${mesAno(row.iso)}` : mesAno(row.iso);
+  return `<span class="ctx-tip-d mono">${esc(quandoTxt)}</span><b class="ctx-tip-v">${fmtSerie(G.id, row.v)}</b><span class="ctx-tip-p">Período ${per}${per === "Lula" ? " · em curso" : ""}</span><span class="ctx-tip-f">Fonte: ${esc(m.fonte)}</span>`;
+}
+
+function ligarContexto() {
+  const raiz = $("#an-dims");
+  // abas e acordeões
+  raiz.addEventListener("click", (e) => {
+    const deep = e.target.closest(".an-deep-btn");
+    if (deep) {
+      const dim = deep.dataset.dim, sec = deep.closest(".an-dim"), aberto = sec.classList.toggle("is-deep");
+      if (aberto) deepAbertos.add(dim); else deepAbertos.delete(dim);
+      deep.setAttribute("aria-expanded", String(aberto));
+      deep.textContent = textoDeep(dim, aberto);
+      return;
+    }
+    const aba = e.target.closest(".an-tab");
+    if (aba) {
+      const est = ctxEst[aba.dataset.dim];
+      if (est.sel !== aba.dataset.ind) { est.sel = aba.dataset.ind; est.abertos = new Set(); }
+      recarregarCtx(aba.dataset.dim, `#an-tab-${aba.dataset.dim}-${aba.dataset.ind}`);
+      return;
+    }
+    const btn = e.target.closest(".an-ev-btn");
+    if (btn) { alternarEvento(btn.dataset.dim, Number(btn.dataset.k)); return; }
+    const todos = e.target.closest(".an-evs-all");
+    if (todos) {
+      const dim = todos.dataset.dim, est = ctxEst[dim], n = $$(".an-ev", $(`#an-ctx-${dim}`)).length, abrir = est.abertos.size !== n;
+      for (let k = 0; k < n; k++) alternarEvento(dim, k, abrir);
+      return;
+    }
+    const marca = e.target.closest(".ctx-ev");
+    if (marca) abrirEventoDoGrafico(marca.closest(".ctx-svg").dataset.dim, Number(marca.dataset.k));
+  });
+  // teclado: setas nas abas; Enter/espaço nos números do gráfico; Esc fecha a dica
+  raiz.addEventListener("keydown", (e) => {
+    const aba = e.target.closest(".an-tab");
+    if (aba && ["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) {
+      e.preventDefault();
+      const abas = $$(".an-tab", aba.closest(".an-tabs")), i = abas.indexOf(aba);
+      const prox = e.key === "Home" ? abas[0] : e.key === "End" ? abas[abas.length - 1] : abas[(i + (e.key === "ArrowRight" ? 1 : abas.length - 1)) % abas.length];
+      prox.click();
+      return;
+    }
+    const marca = e.target.closest(".ctx-ev");
+    if (marca && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); abrirEventoDoGrafico(marca.closest(".ctx-svg").dataset.dim, Number(marca.dataset.k)); return; }
+    if (e.key === "Escape") $$(".an-ctx-fig", raiz).forEach(esconderTip);
+  });
+  // dica ao passar o mouse/dedo: o mês mais próximo da linha, ou o acontecimento sob o ponteiro
+  raiz.addEventListener("pointermove", (e) => {
+    const svg = e.target.closest?.(".ctx-svg");
+    if (!svg) return;
+    const fig = svg.closest(".an-ctx-fig"), G = CTXG[fig.dataset.dim];
+    if (!G) return;
+    const r = svg.getBoundingClientRect(), x = ((e.clientX - r.left) / r.width) * G.W;
+    const marca = e.target.closest(".ctx-ev");
+    if (marca) {
+      const k = Number(marca.dataset.k), ev = G.evs[k];
+      const c = marca.querySelector(".ctx-c");
+      mostrarTip(fig, `<span class="ctx-tip-d mono">${dataNoticia(ev.data)}</span><b>${esc(ev.titulo)}</b><span class="ctx-tip-f">Clique para abrir</span>`, c.getAttribute("cx") / G.W, c.getAttribute("cy") / G.H);
+      fig.querySelector(".ctx-hover")?.classList.remove("on");
+      return;
+    }
+    if (x < G.Lm - 4 || x > G.W - G.Rm + 4) { esconderTip(fig); return; }
+    let melhor = G.rows[0], dmin = Infinity;
+    for (const row of G.rows) { const d = Math.abs(G.X(row.iso) - x); if (d < dmin) { dmin = d; melhor = row; } }
+    const px = G.X(melhor.iso), py = G.Y(melhor.v), hov = fig.querySelector(".ctx-hover");
+    hov.classList.add("on");
+    hov.querySelector(".ctx-guide").setAttribute("x1", px); hov.querySelector(".ctx-guide").setAttribute("x2", px);
+    hov.querySelector(".ctx-dot").setAttribute("cx", px); hov.querySelector(".ctx-dot").setAttribute("cy", py);
+    mostrarTip(fig, dicaMes(G, melhor), px / G.W, py / G.H);
+  });
+  raiz.addEventListener("pointerout", (e) => {
+    const svg = e.target.closest?.(".ctx-svg");
+    if (svg && !e.relatedTarget?.closest?.(".ctx-svg, .ctx-tip")) esconderTip(svg.closest(".an-ctx-fig"));
+  });
+  raiz.addEventListener("focusin", (e) => {
+    const marca = e.target.closest?.(".ctx-ev");
+    if (!marca) return;
+    const fig = marca.closest(".an-ctx-fig"), G = CTXG[fig.dataset.dim], ev = G.evs[Number(marca.dataset.k)], c = marca.querySelector(".ctx-c");
+    mostrarTip(fig, `<span class="ctx-tip-d mono">${dataNoticia(ev.data)}</span><b>${esc(ev.titulo)}</b><span class="ctx-tip-f">Enter para abrir</span>`, c.getAttribute("cx") / G.W, c.getAttribute("cy") / G.H);
+  });
+  raiz.addEventListener("focusout", (e) => {
+    const marca = e.target.closest?.(".ctx-ev");
+    if (marca) esconderTip(marca.closest(".an-ctx-fig"));
+  });
+}
+
 // ------------------------------------------------------------ montagem
 function renderModo() {
   $("#an-igual").checked = modo === "mesmo_tempo";
@@ -698,33 +918,8 @@ export async function initAnalise() {
     e.currentTarget.setAttribute("aria-expanded", String(aberto));
     e.currentTarget.textContent = aberto ? "Mostrar menos marcos" : `Mostrar os outros ${ul.children.length - 4} marcos`;
   });
-  $("#an-dims").addEventListener("click", (e) => {
-    const deep = e.target.closest(".an-deep-btn");
-    if (deep) {
-      const dim = deep.dataset.dim, sec = deep.closest(".an-dim"), aberto = sec.classList.toggle("is-deep");
-      if (aberto) deepAbertos.add(dim); else deepAbertos.delete(dim);
-      deep.setAttribute("aria-expanded", String(aberto));
-      deep.textContent = aberto ? "Recolher o detalhe" : "Ver o detalhe: contexto do período, robustez e números por série";
-      return;
-    }
-    const mais = e.target.closest(".an-ev-mais");
-    if (mais) {
-      const dim = mais.dataset.dim;
-      if (evAbertos.has(dim)) evAbertos.delete(dim); else evAbertos.add(dim);
-      $(`#an-ctx-${dim}`).outerHTML = blocoContexto(dim);
-      $(`#an-ctx-${dim} .an-ev-mais`)?.focus();
-      return;
-    }
-    const b = e.target.closest(".an-ctx-btn");
-    if (!b) return;
-    ctxSel[b.dataset.dim] = b.dataset.ind;
-    const bloco = $(`#an-ctx-${b.dataset.dim}`);
-    bloco.outerHTML = blocoContexto(b.dataset.dim);
-    $(`#an-ctx-${b.dataset.dim} .an-ctx-btn[aria-pressed="true"]`)?.focus();
-  });
+  ligarContexto();
   matchMedia("(max-width: 760px)").addEventListener("change", () => renderModo());
-  // links diretos (#an-dim-trabalho etc.): as seções nascem depois do carregamento, então o salto do navegador falha
-  if (/^#an-/.test(location.hash)) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   $("#an-igual").addEventListener("change", (e) => {
     modo = e.target.checked ? "mesmo_tempo" : M.regras.modo_principal;
     renderModo();
