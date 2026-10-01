@@ -124,6 +124,14 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   anterior; links `?historia=` (válido, inválido, com `#capítulo`), recarregar, voltar e avançar.
   axe-core: 0 violações em 390, 1024 e 1366 px (com a animação do mês da Máquina do tempo
   terminada).
+- **Parte 10 da Análise, bloco "Teste de sensibilidade" (01/10/2026):** números lidos de `res().grade`
+  (10.626 = 10.625 + 1 + 0 no período completo; 10.626 + 0 + 0 em "mesmo número de meses"); mexer nos
+  controles "Seus pesos" não altera o bloco; sem rolagem lateral em 320–1920 px; axe-core com 0
+  violações em 390 e 1280 px.
+- **Salário mínimo real (01/10/2026):** `test_analise.py` agora recalcula, por fora, cada mês do salário
+  mínimo real (nominal × IPCA do último mês ÷ IPCA do mês), exige igualdade com o nominal no mês-base
+  (ago/2026), a ordem de grandeza e a unidade em R$. Comparado campo a campo com a geração anterior:
+  só mudaram os valores absolutos do salário real; variação, leitura, síntese e grade ficaram iguais.
 - **Refinamento da Análise (01/10/2026):** navegação por capítulos sem `#capítulo` na barra
   (cliques no menu e nos links internos só rolam; link que chega com `#capítulo` salta e limpa o
   endereço; `?historia=` antigo ainda abre a série); cartões "Em 1 minuto" (valores iguais aos da

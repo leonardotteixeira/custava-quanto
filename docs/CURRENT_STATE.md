@@ -45,7 +45,7 @@ recalculada no navegador: o capítulo **Bolso** some nas histórias sem preço o
 | **09 Método** | Como chegaram a estes números? | Fontes, cálculo, PIB, estimativa da ANP, limitações, definições, frescor, **Audite a análise** (versão e hash da metodologia, períodos, tipos, indicadores, fórmulas e arquivos para baixar) | texto + `mercados_status.json` | Contém textos **desatualizados** (ver KNOWN_ISSUES H1, H2, M4) |
 | **10 Apoie** | Como ajudar a manter o projeto? | Valores sugeridos (R$ 10, 25, 50, 100 e outro valor), Pix Copia e Cola no padrão BR Code e QR Code com o valor escolhido, "para onde vai o apoio", transparência | `PIX_KEY`, `MERCHANT_NAME` e `MERCHANT_CITY` em `dashboard/js/apoie.config.js`; QR pela biblioteca `qrcode-generator` (MIT) em `dashboard/vendor/`, carregada só quando há QR | **Chave Pix e nome do recebedor ainda são "COLOQUE_…"**: sem eles a página não gera QR nem código; o site não processa nem confirma pagamentos |
 
-## Dimensões da Análise (metodologia v1.2)
+## Dimensões da Análise (metodologia v1.2.1)
 
 | Dimensão | Tipo | Séries |
 |---|---|---|

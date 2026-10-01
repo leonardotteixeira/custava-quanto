@@ -19,6 +19,27 @@ Qualquer mudança futura na metodologia deve subir a versão em
 
 ## Histórico de versões
 
+### v1.2.1 · 01/10/2026 — correção da escala do salário mínimo real
+
+Achado (auditoria de 01/10/2026): o "Salário mínimo real" era `salário nominal / número-índice do
+IPCA × 1000`. O número-índice do IBGE (base dez/1993 = 100, ~7.633 em ago/2026) não é uma data de
+referência, então o resultado (~R$ 180–220) não era R$ de data nenhuma, apesar da unidade "R$
+descontado o IPCA". Era o único valor real do projeto fora do padrão dos demais (nominal × IPCA do
+último mês ÷ IPCA do mês).
+
+Correção: `salário real = salário nominal × IPCA do último mês disponível ÷ IPCA do mês`, em R$ do
+último mês com IPCA (ago/2026 hoje; nesse mês o valor real é igual ao nominal, R$ 1.621). A unidade
+passou a "R$ do último mês com IPCA (descontado o IPCA)" e o mês-base vai em
+`analysis_results.json` (`salario_real_referencia`).
+
+O que **não** mudou: como a diferença entre as duas escalas é um fator constante (ipca_ref ÷ 1000),
+a variação percentual, a leitura da dimensão Renda, a síntese, os pesos e as 10.626 combinações
+ficaram idênticos (conferido campo a campo contra a geração anterior: só mudaram `valor_inicio`,
+`valor_fim`, `media`, `min`, `max` e `serie[].v` do salário real). Metodologia regravada, novo hash.
+Novos testes em `test_analise.py`: mês-base, recálculo independente de cada mês, igualdade com o
+nominal no mês-base e ordem de grandeza.
+
+
 ### v1.2 · 30/09/2026 — dimensão Mercado de trabalho e contexto histórico
 
 Mudanças (metodologia regravada, novo hash; nenhuma série anterior foi excluída e nenhuma

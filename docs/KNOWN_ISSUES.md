@@ -236,6 +236,12 @@ Não bloqueia (fica para depois):
   série específica. Links antigos com `?historia=` ainda abrem a série pedida e o endereço volta a
   ficar limpo.
 
+## Salário mínimo real (corrigido em 01/10/2026)
+
+- A escala do "Salário mínimo real" (~R$ 180–220) era um erro de unidade: salário ÷ número-índice do
+  IPCA × 1000. Agora é R$ do último mês com IPCA (faixa ~R$ 1.370–1.670; ago/2026 = R$ 1.621).
+  Nenhuma leitura mudou. Detalhes: AUDITORIA_ANALISE_GOVERNOS.md (v1.2.1).
+
 ## Refinamento da Análise (01/10/2026)
 
 - A Análise ficou ~950 px mais curta no computador (1280 px), mas ~7.000 px mais longa no celular

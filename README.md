@@ -279,7 +279,7 @@ Tabela completa por indicador (frequência, campo, processamento, limitações):
 ## Metodologia em resumo
 
 A metodologia completa está em [docs/METHODOLOGY.md](docs/METHODOLOGY.md); a da Análise (versão
-**1.2**) é congelada em `data/processed/analysis_methodology.json`.
+**1.2.1**) é congelada em `data/processed/analysis_methodology.json`.
 
 - **Variação** = `(fim ÷ início − 1) × 100`. Para taxas (Selic, IPCA, PIB), a diferença é em
   **pontos percentuais**.

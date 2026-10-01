@@ -1,6 +1,6 @@
 {
-  "versao": "1.2",
-  "data": "2026-09-30",
+  "versao": "1.2.1",
+  "data": "2026-10-01",
   "dimensoes": [
     {
       "id": "custo_vida",
@@ -321,7 +321,7 @@
       "campo": "salario_minimo_real",
       "metrica": "variacao_pct",
       "direcao": "maior",
-      "unidade": "R$ descontado o IPCA",
+      "unidade": "R$ do último mês com IPCA (descontado o IPCA)",
       "fonte": "Banco Central (salário mínimo) + IBGE (IPCA)",
       "frequencia": "mensal",
       "nome": "Salário mínimo real",
@@ -605,7 +605,7 @@
       "trimestre_movel": "A PNAD Contínua divulga um resultado por mês, média dos três meses que terminam nele. Cada ponto é identificado pelo mês em que termina. Só entram trimestres inteiros dentro de um mandato: os que misturam meses dos dois períodos (terminados em jan e fev de 2019 e de 2023) ficam de fora e nada é rateado.",
       "por_serie": "Dimensão com séries de unidades diferentes (Mercado de trabalho): cada série é comparada na sua métrica e na sua tolerância e vota +1 (período Lula), -1 (período Bolsonaro) ou 0 (praticamente iguais); a dimensão segue o sinal da soma dos votos. Uma dimensão continua valendo um único sentido na síntese, qualquer que seja o número de séries. Também se informa o que aconteceria com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), só como transparência.",
       "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
-      "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
+      "salario_minimo_real": "salário mínimo nominal do mês x (índice IPCA do último mês disponível / índice IPCA do mês): R$ do último mês com IPCA (preços de hoje, o mesmo mês-base dos preços reais do projeto)",
       "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
       "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
       "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",

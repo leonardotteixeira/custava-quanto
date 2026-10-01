@@ -40,8 +40,13 @@ from common import DATA_PROCESSED, ensure_dirs, get_logger
 
 logger = get_logger("build_analise")
 
-METODOLOGIA_VERSAO = "1.2"
-METODOLOGIA_DATA = "2026-09-30"
+METODOLOGIA_VERSAO = "1.2.1"
+METODOLOGIA_DATA = "2026-10-01"
+
+# IPCA (número-índice) do último mês disponível: o mês-base dos valores reais ("a preços de hoje"), o mesmo
+# que build_dataset.py usa nos preços reais. Preenchido em calcular_resultados() a partir de dashboard_data.json.
+_IPCA_REF: float | None = None
+_IPCA_REF_MES: str | None = None
 
 INICIO = {"Bolsonaro": (2019, 1), "Lula": (2023, 1)}
 
@@ -120,7 +125,7 @@ INDICADORES = [
      "limitacoes": ["Média nacional de uma cesta: não é a inflação de cada família.",
                     "A série de 12 meses começa em jan/2020 (precisa de 12 meses anteriores)."], "confianca": "alta"},
     {"id": "SALARIO_REAL", "origem": "GASOLINA", "dimensao": "renda", "tipo": "A", "campo": "salario_minimo_real", "metrica": "variacao_pct",
-     "direcao": "maior", "unidade": "R$ descontado o IPCA", "fonte": "Banco Central (salário mínimo) + IBGE (IPCA)",
+     "direcao": "maior", "unidade": "R$ do último mês com IPCA (descontado o IPCA)", "fonte": "Banco Central (salário mínimo) + IBGE (IPCA)",
      "frequencia": "mensal", "nome": "Salário mínimo real",
      "interpretacao": "Alta real do salário mínimo representa mais poder de compra para quem o recebe.",
      "limitacoes": ["Quem ganha o salário mínimo é uma parte da população; não mede a renda média nem a renda das famílias."], "confianca": "alta"},
@@ -219,7 +224,7 @@ REGRAS = {
         "trimestre_movel": "A PNAD Contínua divulga um resultado por mês, média dos três meses que terminam nele. Cada ponto é identificado pelo mês em que termina. Só entram trimestres inteiros dentro de um mandato: os que misturam meses dos dois períodos (terminados em jan e fev de 2019 e de 2023) ficam de fora e nada é rateado.",
         "por_serie": "Dimensão com séries de unidades diferentes (Mercado de trabalho): cada série é comparada na sua métrica e na sua tolerância e vota +1 (período Lula), -1 (período Bolsonaro) ou 0 (praticamente iguais); a dimensão segue o sinal da soma dos votos. Uma dimensão continua valendo um único sentido na síntese, qualquer que seja o número de séries. Também se informa o que aconteceria com a métrica alternativa (variação do início ao fim para as taxas; média da janela para o rendimento), só como transparência.",
         "nivel": "descrição: início, fim, média, mínimo e máximo da janela, em % ao ano; variação em pontos percentuais",
-        "salario_minimo_real": "salário mínimo do mês / índice IPCA do mesmo mês (valores constantes)",
+        "salario_minimo_real": "salário mínimo nominal do mês x (índice IPCA do último mês disponível / índice IPCA do mês): R$ do último mês com IPCA (preços de hoje, o mesmo mês-base dos preços reais do projeto)",
         "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
         "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
         "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",
@@ -266,7 +271,7 @@ def _k(iso: str, periodo: str, anual: bool) -> int:
 def _valor(row: dict, campo: str):
     if campo == "salario_minimo_real":
         sm, ip = row.get("salario_minimo"), row.get("ipca_indice")
-        return sm / ip * 1000 if sm is not None and ip else None
+        return sm * _IPCA_REF / ip if sm is not None and ip and _IPCA_REF else None
     return row.get(campo)
 
 
@@ -648,6 +653,9 @@ def calcular_resultados() -> dict:
     met = json.loads(texto_met)  # lê do disco: o cálculo segue a versão gravada
     d = json.loads((DATA_PROCESSED / "dashboard_data.json").read_text(encoding="utf-8"))
     produtos = d["produtos"]
+    global _IPCA_REF, _IPCA_REF_MES
+    com_ipca = [r for r in produtos["GASOLINA"]["serie_mensal"] if r.get("ipca_indice")]
+    _IPCA_REF, _IPCA_REF_MES = float(com_ipca[-1]["ipca_indice"]), com_ipca[-1]["ano_mes"]
     blocos = {"mercado_trabalho": (d.get("mercado_trabalho") or {}).get("produtos", {})}
     inds = []
     for ind in met["indicadores"]:
@@ -656,6 +664,7 @@ def calcular_resultados() -> dict:
         inds.append(r)
     saida = {"gerado_em": datetime.now(timezone.utc).isoformat(timespec="minutes"), "dados_gerados_em": d.get("gerado_em"),
              "metodologia_versao": met["versao"], "metodologia_sha256": hashlib.sha256(texto_met.encode("utf-8")).hexdigest(),
+             "salario_real_referencia": {"mes": _IPCA_REF_MES, "ipca_indice": _IPCA_REF},
              "indicadores": inds, "modos": {}}
     mensais = [i for i in inds if not i.get("excluido") and i.get("k_comum") and not next(x for x in met["indicadores"] if x["id"] == i["id"]).get("anual")]
     kmax = max((i["k_comum"][1] for i in mensais), default=None)

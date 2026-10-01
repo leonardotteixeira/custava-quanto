@@ -297,6 +297,23 @@ def main() -> None:
     news_dir = DATA_PROCESSED.parent / "news"
     urls_curadas = {i["url"].strip() for f in sorted(news_dir.glob("raw_*.json")) for i in json.loads(f.read_text(encoding="utf-8")) if i.get("url")}
     urls_publicadas = {n["url"] for n in noticias}
+    # ---------------------------------------------------------------- v1.2.1: salário mínimo real em R$ de uma data comum
+    # recalculado por fora: salário nominal x IPCA do último mês disponível / IPCA do mês
+    gas = dash["produtos"]["GASOLINA"]["serie_mensal"]
+    com_ipca = [r for r in gas if r.get("ipca_indice")]
+    ref = com_ipca[-1]
+    check(res["salario_real_referencia"]["mes"] == ref["ano_mes"] and abs(res["salario_real_referencia"]["ipca_indice"] - ref["ipca_indice"]) < 1e-6,
+          "mês-base do salário mínimo real não é o último mês com IPCA")
+    sr = {x["iso"]: x["v"] for x in next(i for i in res["indicadores"] if i["id"] == "SALARIO_REAL")["serie"]}
+    base = {r["ano_mes"]: r for r in gas if r.get("salario_minimo") and r.get("ipca_indice")}
+    check(set(sr) <= set(base) and len(sr) > 0, "salário mínimo real tem mês sem salário nominal ou sem IPCA")
+    for iso, v in sr.items():
+        esperado = base[iso]["salario_minimo"] * ref["ipca_indice"] / base[iso]["ipca_indice"]
+        check(abs(v - esperado) < 1e-6, f"salário mínimo real de {iso}: {v:.2f} != {esperado:.2f}")
+    check(abs(sr[ref["ano_mes"]] - ref["salario_minimo"]) < 1e-6, "no mês-base o salário mínimo real deve ser igual ao nominal")
+    check(all(v >= base[iso]["salario_minimo"] * 0.5 for iso, v in sr.items()), "salário mínimo real fora da ordem de grandeza do nominal (escala errada)")
+    check("ipca_indice" not in imeta["SALARIO_REAL"]["unidade"] and "R$" in imeta["SALARIO_REAL"]["unidade"], "unidade do salário mínimo real deve ser R$ de uma data de referência")
+
     check(urls_curadas <= urls_publicadas, f"fonte curada ausente de noticias.json: {sorted(urls_curadas - urls_publicadas)[:3]}")
     check(len(urls_publicadas) == len(noticias), "URL duplicada em noticias.json")
     for n in noticias:

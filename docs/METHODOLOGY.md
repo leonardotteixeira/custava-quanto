@@ -2,7 +2,7 @@
 
 Última atualização: 28/09/2026
 Status: **CURRENT** — descreve o que o código calcula hoje. Metodologia da
-Análise: **v1.2** (arquivo congelado em `data/processed/analysis_methodology.json`).
+Análise: **v1.2.1** (arquivo congelado em `data/processed/analysis_methodology.json`).
 
 Este texto é para quem lê, não para quem programa. Onde há fórmula, ela é a que o
 código usa (arquivo indicado). Fontes, frequências e limitações de cada série
@@ -140,7 +140,7 @@ Compara-se a **mesma posição no mandato**, não o mesmo calendário: os primei
 meses de cada período correspondem a momentos diferentes do ciclo econômico
 mundial.
 
-## Análise: como a leitura é construída (metodologia v1.2)
+## Análise: como a leitura é construída (metodologia v1.2.1)
 
 A **comparação principal** é a dos períodos inteiros ("período completo disponível":
 Bolsonaro jan/2019–dez/2022; Lula jan/2023–último dado, em curso). A comparação por
@@ -199,6 +199,12 @@ todas as séries): *taxas* (IPCA, desocupação, subutilização) entram pela **
 que mede a pressão ao longo do período e não a trajetória entre dois pontos; *valores em R$
 ou índices* (salário mínimo real, rendimento médio real, preços reais) entram pela **variação
 percentual do início ao fim da janela**.
+
+**Salário mínimo real** = salário mínimo nominal do mês × (número-índice do IPCA do último mês
+disponível ÷ número-índice do IPCA do mês): R$ do último mês com IPCA (ago/2026 hoje), o mesmo
+mês-base dos preços reais do projeto. Até a v1.2 o valor era calculado como salário ÷ índice × 1000,
+que não é R$ de data nenhuma (ver [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md), v1.2.1).
+"Litros de gasolina por salário mínimo" continua nominal: salário nominal ÷ preço nominal do mês.
 
 **Dimensões de unidades diferentes (agregação "por série").** Mercado de trabalho mistura %, %
 e R$; uma mediana entre elas seria misturar unidades. Cada série é comparada na sua métrica e

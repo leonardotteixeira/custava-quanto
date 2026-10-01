@@ -1426,8 +1426,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .an-prio-nota { margin-top: 10px; font-size: 0.78rem; color: var(--fg-3); }
 .an-sub { margin-top: 32px; font-family: var(--serif); font-weight: 500; font-size: 1.4rem; }
 .an-sub + #an-sens { margin-top: 10px; }
-.an-grade { margin-top: 26px; }
-.an-grade .an-prio-bar { height: 16px; margin-top: 10px; }
 @media (prefers-reduced-motion: reduce) { .an-prio-bar span { transition: none; } }
 
 /* em resumo */
@@ -1961,4 +1959,58 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .an-dim--cdeep > .an-deep-btn { order: 9; }
   .an-dim--cdeep > :is(.an-robdim, .an-moves, .an-nums) { order: 10; }
   .an-dim--cdeep:not(.is-deep) > .an-ctx-block { display: none; }
+}
+
+/* =====================================================================
+   Parte 10 — teste de sensibilidade (todas as combinações de pesos) × "Seus pesos" (interação individual)
+   ===================================================================== */
+.an-escopo { margin-top: 2px; color: var(--accent-text); }
+.an-teste { margin-top: clamp(26px, 4vw, 44px); padding: clamp(22px, 4vw, 40px) 0 clamp(26px, 4vw, 40px); border-top: 6px solid var(--fg); border-bottom: 1px solid var(--line); }
+.an-teste-intro { max-width: 52ch; margin-top: 10px; font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.35; }
+.an-tt-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(22px, 5vw, 64px); align-items: end; margin-top: clamp(24px, 4vw, 44px); }
+.an-tt-total { display: grid; gap: 12px; }
+.an-tt-total b { font-family: var(--serif); font-weight: 500; font-size: clamp(4rem, 15vw, 9.5rem); line-height: 0.88; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.an-tt-total span { font-size: clamp(1rem, 1.6vw, 1.25rem); line-height: 1.35; color: var(--fg-2); }
+.an-tt-stats { list-style: none; display: grid; }
+.an-tt-stats li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 4px 18px; padding: 14px 0 12px; border-top: 3px solid var(--fg-3); }
+.an-tt-stats li[data-l="l"] { border-top-color: var(--pl); }
+.an-tt-stats li[data-l="b"] { border-top-color: var(--pb); }
+.an-tt-n { font-family: var(--serif); font-weight: 500; font-size: clamp(2.2rem, 4.2vw, 3.2rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.an-tt-d { font-size: 1.02rem; line-height: 1.35; color: var(--fg-2); }
+.an-tt-short { display: none; }
+.an-tt-bar { position: relative; margin-top: clamp(30px, 4vw, 48px); padding-top: 34px; }
+.an-tt-track { display: flex; height: 30px; background: var(--paper-3); }
+.an-tt-track span { display: block; height: 100%; }
+.an-tt-track span[data-l="b"] { background: var(--pb); }
+.an-tt-track span[data-l="l"] { background: var(--pl); }
+.an-tt-track span[data-l="0"] { background: var(--fg); }
+.an-tt-marca { position: absolute; top: 0; display: flex; align-items: center; gap: 8px; transform: translateX(-6px); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg); white-space: nowrap; }
+.an-tt-marca i { flex: none; width: 11px; height: 11px; background: var(--fg); transform: rotate(45deg); }
+.an-tt-marca::after { content: ""; position: absolute; left: 5px; top: 14px; width: 1.5px; height: 20px; background: var(--fg); }
+.an-tt-marca.is-fim { transform: translateX(calc(-100% + 6px)); flex-direction: row-reverse; }
+.an-tt-marca.is-fim::after { left: auto; right: 5px; }
+.an-tt-leg { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.an-tt-leg > div { display: grid; gap: 2px; min-width: 0; }
+.an-tt-leg > div:nth-child(2) { text-align: center; }
+.an-tt-leg > div:last-child { text-align: right; }
+.an-tt-leg dt { font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-2); }
+.an-tt-leg dd { font-family: var(--serif); font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.an-tt-leg > div[data-l="b"] dt::before, .an-tt-leg > div[data-l="l"] dt::before, .an-tt-leg > div[data-l="0"] dt::before { content: ""; display: inline-block; width: 0.7em; height: 0.7em; margin-right: 0.45em; background: var(--fg); }
+.an-tt-leg > div[data-l="b"] dt::before { background: var(--pb); }
+.an-tt-leg > div[data-l="l"] dt::before { background: var(--pl); border-radius: 50%; }
+.an-tt-leg > div[data-l="0"] dt::before { transform: rotate(45deg) scale(0.85); }
+.an-tt-escala { max-width: 72ch; margin-top: 12px; font-size: 0.82rem; line-height: 1.5; color: var(--fg-3); }
+.an-tt-frase { max-width: 30ch; margin-top: clamp(28px, 4vw, 48px); padding-left: 20px; border-left: 4px solid var(--signal); font-family: var(--serif); font-weight: 500; font-size: clamp(1.7rem, 3.6vw, 2.8rem); line-height: 1.15; letter-spacing: -0.01em; }
+.an-tt-nota { max-width: 66ch; margin-top: 14px; padding-left: 24px; font-size: 0.95rem; line-height: 1.55; color: var(--fg-2); }
+@media (max-width: 760px) {
+  .an-tt-grid { grid-template-columns: 1fr; align-items: start; }
+  .an-tt-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .an-tt-stats li { grid-template-columns: 1fr; gap: 4px; padding-top: 10px; }
+  .an-tt-n { font-size: clamp(1.45rem, 7.2vw, 2.1rem); }
+  .an-tt-long { display: none; }
+  .an-tt-short { display: inline; }
+  .an-tt-d { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .an-tt-leg dd { font-size: 1.15rem; }
+  .an-tt-frase { padding-left: 16px; }
+  .an-tt-nota { padding-left: 20px; }
 }

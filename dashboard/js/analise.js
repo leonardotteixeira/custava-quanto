@@ -299,6 +299,8 @@ const CTX_SERIES = {
   custo_vida: ["GASOLINA", "DIESEL", "Arroz"], inflacao: ["IPCA"], renda: ["SALARIO_REAL", "SM_GASOLINA"],
   trabalho: ["DESOCUPACAO", "SUBUTILIZACAO", "RENDIMENTO"], atividade: ["PIB"], mercados: ["DOLAR", "SELIC", "IBOVESPA"],
 };
+// Salário mínimo real: R$ do mês-base do IPCA (o último disponível); o mês vem dos resultados, não da metodologia.
+const unidadeDe = (id) => (id === "SALARIO_REAL" && R.salario_real_referencia ? `R$ de ${mesAno(R.salario_real_referencia.mes)} (descontado o IPCA)` : meta(id).unidade);
 const periodoDe = (iso) => (iso < "2023-01-01" ? "Bolsonaro" : "Lula");
 
 function fmtSerie(id, v) {
@@ -460,7 +462,7 @@ function blocoContexto(dimId) {
       ${statsSerie(dimId, sel)}
       <p class="an-ctx-int">${esc(m.interpretacao)}</p>
       <figure class="an-ctx-fig" data-dim="${dimId}">${graficoContexto(sel, evs, dimId)}<div class="ctx-tip" hidden aria-hidden="true"></div>
-        <figcaption><dl class="an-ctx-meta"><div><dt>Fonte</dt><dd>${esc(m.fonte)}</dd></div><div><dt>Unidade</dt><dd>${esc(m.unidade)}</dd></div><div><dt>Frequência</dt><dd>${esc(m.frequencia)}</dd></div><div><dt>Último dado disponível</dt><dd>${esc(ultimoDado)}</dd></div></dl>
+        <figcaption><dl class="an-ctx-meta"><div><dt>Fonte</dt><dd>${esc(m.fonte)}</dd></div><div><dt>Unidade</dt><dd>${esc(unidadeDe(sel))}</dd></div><div><dt>Frequência</dt><dd>${esc(m.frequencia)}</dd></div><div><dt>Último dado disponível</dt><dd>${esc(ultimoDado)}</dd></div></dl>
         <span class="an-ctx-dica">Passe o mouse (ou o dedo) sobre a linha para ver cada mês; toque nos números para abrir o acontecimento.</span></figcaption></figure>
       <div class="an-evs">
         <div class="an-evs-head"><h5 class="an-evs-t">${evs.length} acontecimento${evs.length > 1 ? "s" : ""} neste período</h5><button type="button" class="an-evs-all" data-dim="${dimId}" aria-expanded="${todos}">${todos ? "Recolher todos" : "Mostrar todos"}</button></div>
@@ -626,19 +628,62 @@ function renderPrioridades() {
 }
 
 function renderSens() {
-  const sint = res().sintese, g = res().grade;
+  const sint = res().sintese;
   const A = dimsA();
-  const t = g.combinacoes;
-  const pc = (n) => `${(n / t) * 100}%`;
   $("#an-sens").innerHTML = `<div class="table-scroll an-scroll"><table class="an-table an-sens-t an-stack">
     <thead><tr><th scope="col">Cenário (definido antes do cálculo)</th>${A.map((d) => `<th scope="col" class="num">${esc(d.titulo)}</th>`).join("")}<th scope="col">Síntese</th></tr></thead>
     <tbody>${M.cenarios.map((c, j) => `<tr><th scope="row">${esc(c.nome)}<span class="an-cen-j">${esc(c.justificativa)}</span></th>${A.map((d) => `<td class="num" data-label="${esc(d.titulo)}">${c.pesos[d.id]}%</td>`).join("")}<td data-label="Síntese">${chipLado(sint[j].sentido)}</td></tr>`).join("")}</tbody></table></div>
-    <div class="an-grade">
-      <h4 class="an-kick mono">Todas as ${milhar(t)} combinações de pesos (de ${g.passo} em ${g.passo} pontos)</h4>
-      <div class="an-prio-bar an-prio-bar--grade" role="img" aria-label="${milhar(g.bolsonaro)} combinações apontam para o período Bolsonaro, ${milhar(g.empate)} empatam e ${milhar(g.lula)} apontam para o período Lula"><span data-l="b" style="width:${pc(g.bolsonaro)}"></span><span data-l="0" style="width:${pc(g.empate)}"></span><span data-l="l" style="width:${pc(g.lula)}"></span></div>
-      <ul class="an-prio-leg mono"><li data-l="b">Período Bolsonaro <b>${milhar(g.bolsonaro)}</b></li><li data-l="0">Empate <b>${milhar(g.empate)}</b></li><li data-l="l">Período Lula <b>${milhar(g.lula)}</b></li></ul>
-    </div>
     <p class="an-robust">${esc(res().textos.robustez)}</p>`;
+}
+
+// Teste de sensibilidade: o resultado das TODAS as combinações de pesos, pré-calculado em Python (res().grade).
+// Não depende dos controles "Seus pesos". Nenhum número é recalculado aqui; só formatação e proporções da barra.
+function renderTeste() {
+  const g = res().grade, t = g.combinacoes;
+  const pc = (n) => (n / t) * 100;
+  const verbo = (n, a, b) => (n === 1 ? a : b);
+  const cinco = dimsA().length;
+  let frase, nota;
+  if (g.bolsonaro === 0 && g.lula > 0) {
+    frase = `Em nenhum dos ${milhar(t)} cenários testados a síntese apontou para o período Bolsonaro.`;
+  } else if (g.lula === 0 && g.bolsonaro > 0) {
+    frase = `Em nenhum dos ${milhar(t)} cenários testados a síntese apontou para o período Lula.`;
+  } else {
+    frase = `Dos ${milhar(t)} cenários testados, ${milhar(g.lula)} apontaram para o período Lula, ${milhar(g.bolsonaro)} para o período Bolsonaro e ${milhar(g.empate)} empataram.`;
+  }
+  if (g.mesmo_lado) {
+    const emp = g.empate === 0 ? "" : g.empate === 1 ? " e produziram um empate em um cenário" : ` e produziram empate em ${milhar(g.empate)} cenários`;
+    nota = `Os pesos alteram a importância relativa de cada dimensão. Nesta metodologia, eles mudaram o tamanho da diferença${emp}, mas não mudaram o lado da síntese ${g.empate === 0 ? "em nenhum cenário" : "nos demais cenários"}.`;
+  } else {
+    nota = "Os pesos alteram a importância relativa de cada dimensão. Aqui, o lado da síntese depende dos pesos escolhidos: veja a contagem acima.";
+  }
+  const empPeq = g.empate > 0 && pc(g.empate) < 0.5;
+  const marca = g.empate > 0 ? `<span class="an-tt-marca${pc(g.bolsonaro) > 70 ? " is-fim" : ""}" style="left:${pc(g.bolsonaro)}%" aria-hidden="true"><i></i><span>${milhar(g.empate)} ${verbo(g.empate, "empate", "empates")}</span></span>` : "";
+  const stat = (l, n, longo, curto) => `<li data-l="${l}"><b class="an-tt-n">${milhar(n)}</b><span class="an-tt-d"><span class="an-tt-long">${longo}</span><span class="an-tt-short">${curto}</span></span></li>`;
+  $("#an-teste").innerHTML = `<div class="an-teste" role="group" aria-labelledby="an-teste-t">
+    <p class="an-kick mono" id="an-teste-t">Teste de sensibilidade · todas as combinações</p>
+    <p class="an-teste-intro">Testamos sistematicamente diferentes pesos para as ${cinco === 5 ? "cinco" : cinco} dimensões. Veja o que aconteceu.</p>
+    <div class="an-tt-grid">
+      <p class="an-tt-total"><b>${milhar(t)}</b><span>combinações de pesos<br>testadas</span></p>
+      <ul class="an-tt-stats">
+        ${stat("l", g.lula, `${verbo(g.lula, "apontou", "apontaram")} para o período Lula`, "Lula")}
+        ${stat("0", g.empate, `${verbo(g.empate, "resultou", "resultaram")} em empate`, "Empate")}
+        ${stat("b", g.bolsonaro, `${verbo(g.bolsonaro, "apontou", "apontaram")} para o período Bolsonaro`, "Bolsonaro")}
+      </ul>
+    </div>
+    <div class="an-tt-bar" role="img" aria-label="${milhar(g.bolsonaro)} ${verbo(g.bolsonaro, "combinação aponta", "combinações apontam")} para o período Bolsonaro, ${milhar(g.empate)} ${verbo(g.empate, "resulta", "resultam")} em empate e ${milhar(g.lula)} ${verbo(g.lula, "aponta", "apontam")} para o período Lula, de ${milhar(t)} testadas">
+      ${marca}
+      <div class="an-tt-track" aria-hidden="true"><span data-l="b" style="width:${pc(g.bolsonaro)}%"></span><span data-l="0" style="width:${pc(g.empate)}%"></span><span data-l="l" style="width:${pc(g.lula)}%"></span></div>
+    </div>
+    <dl class="an-tt-leg">
+      <div data-l="b"><dt><span class="an-tt-long">Período Bolsonaro</span><span class="an-tt-short">Bolsonaro</span></dt><dd>${milhar(g.bolsonaro)}</dd></div>
+      <div data-l="0"><dt>Empate</dt><dd>${milhar(g.empate)}</dd></div>
+      <div data-l="l"><dt><span class="an-tt-long">Período Lula</span><span class="an-tt-short">Lula</span></dt><dd>${milhar(g.lula)}</dd></div>
+    </dl>
+    <p class="an-tt-escala">${empPeq ? `A barra é proporcional ao número de combinações. O empate (${milhar(g.empate)} em ${milhar(t)}) é pequeno demais para aparecer na barra, por isso tem uma marca própria. ` : "A barra é proporcional ao número de combinações. "}Pesos de ${g.passo} em ${g.passo} pontos, somando 100.</p>
+    <p class="an-tt-frase">${esc(frase)}</p>
+    <p class="an-tt-nota">${esc(nota)} É o resultado desta metodologia (v${esc(M.versao)}), com as leituras de hoje; não é um veredito.</p>
+  </div>`;
 }
 
 // ------------------------------------------------------------ Parte 10 — em resumo
@@ -870,6 +915,7 @@ function renderModo() {
   $("#an-dims").innerHTML = M.dimensoes.map(evidencia).join("");
   renderPesou();
   renderPrioridades();
+  renderTeste();
   renderSens();
   renderResumo();
 }
