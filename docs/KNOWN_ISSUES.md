@@ -207,6 +207,32 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 - Abaixo de 360 px o atalho da série atual some do cabeçalho (só resta o menu).
 - Não há item "mercado de trabalho" no Índice: ele só existe na Análise (não é série do painel).
 
+## Auditoria de lançamento V1 (30/09/2026)
+
+Corrigido:
+- Menu do computador: entre 1024 e ~1460 px, com a série no cabeçalho, os últimos capítulos
+  (Arquivo, Método, Apoie; em 1024 px, a partir de Períodos) ficavam escondidos numa rolagem
+  lateral sem barra. Agora a gaveta vale até 1279 px e, de 1280 a 1599 px, o menu fica um pouco
+  mais justo para os 10 itens e a série caberem na linha.
+- Links com âncora (`#periodos`, `#apoie`...) abriam no topo da página: os capítulos ganham altura
+  depois de montados. O salto é refeito no fim da montagem.
+- Prévia de compartilhamento: a raiz do domínio não tinha descrição nem `og:`; não havia imagem.
+
+Pendente (fora do código):
+- **Enforce HTTPS** no GitHub Pages: `http://custavaquanto.me/` ainda responde 200 sem
+  redirecionar para https.
+- Dólar, Selic e Ibovespa param em 22/09/2026 (o site mostra essa data). Rodar
+  `scripts/update_data.py` antes do lançamento atualiza os três.
+
+Não bloqueia (fica para depois):
+- Algumas imagens de matérias, servidas pelos próprios veículos, passam de 1 MB (carregam só
+  quando aparecem na tela).
+- `noticias.json` é pedido duas vezes na abertura (dois módulos); o navegador reaproveita o cache.
+- Alguns resumos de matérias terminam com a chamada do veículo ("Leia no Poder360.").
+- Na lista de trimestres do PIB, data e fonte têm 11,5 px no celular.
+- Voltar/avançar do navegador não alterna entre séries trocadas na mesma visita (a troca
+  substitui o endereço); recarregar mantém a série escolhida.
+
 ## Ideias
 
 - Colocar `download_pib*.py` e `download_ibge_combustiveis.py` no `update_data.py`

@@ -163,7 +163,7 @@ async function init() {
   bindControls();
   bindPibControls(() => P("PIB"));
   initApoie();
-  initAnalise();
+  const analisePronta = initAnalise();
   initLinhaDoTempo({ NEWS });
   initArquivo({ NEWS });
   selectProduct(S.product, { initial: true });
@@ -176,6 +176,10 @@ async function init() {
   }
   bindScroll();
   bindReveal();
+  // Links com âncora (#periodos, #apoie...): os capítulos só ganham altura depois de montados (a Análise chega
+  // depois, por fetch), então o salto automático do navegador cai no lugar errado. Refaz o salto no fim.
+  const alvo = location.hash.length > 1 && !/^#an-/.test(location.hash) ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+  if (alvo) Promise.resolve(analisePronta).catch(() => {}).then(() => setTimeout(() => alvo.scrollIntoView({ behavior: "instant", block: "start" }), 0));
 }
 
 // =====================================================================
@@ -1227,7 +1231,7 @@ function bindControls() {
 function bindMenu() {
   const mast = $("#mast"), btn = $("#mast-menu"), nav = $("#mast-nav");
   if (!btn || !nav) return;
-  const mq = matchMedia("(max-width: 900px)");
+  const mq = matchMedia("(max-width: 1279px)"); // mesmo limite da gaveta no CSS
   const fora = () => [$("main"), $("footer")].filter(Boolean);
   const set = (open, { devolverFoco = false } = {}) => {
     if (open && !mq.matches) open = false;

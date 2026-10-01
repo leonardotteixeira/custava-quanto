@@ -110,6 +110,20 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   (jsQR, só no teste). A cópia foi verificada com a área de transferência simulada; o
   caminho real do navegador e o pagamento em app de banco não foram exercitados.
 
+- **Auditoria de lançamento V1 (30/09/2026), no site publicado:** `test_analise.py` passa;
+  `dashboard_data.json` sem NaN/infinito, sem mês duplicado, em ordem, sem lacuna além de
+  set/2020 dos combustíveis (sem pesquisa da ANP; a linha fica interrompida e a estimativa é
+  mostrada à parte, marcada); PIB anual só com anos fechados (1996–2025), 2026 só em trimestres;
+  Selic mensal (média da meta no mês) coerente com a série diária. As 142 fontes do Arquivo
+  abrem (138 respondem 200 a um script; as 4 da Agência IBGE bloqueiam robôs e foram abertas no
+  navegador, com o título certo); nas 138, título e data conferem com a página; os resumos
+  amostrados (um por ano) são a descrição da própria fonte; as 97 imagens carregam. Navegação:
+  10 âncoras do menu existem, nenhum link interno quebrado, nenhum recurso `http://`, nenhum erro
+  no console, todas as requisições 200. Fluxo Pix: 4 valores e "outro valor" (válidos e
+  inválidos), payload com CRC válido, QR gerado. Troca de série (9 séries) sem resto da série
+  anterior; links `?historia=` (válido, inválido, com `#capítulo`), recarregar, voltar e avançar.
+  axe-core: 0 violações em 390, 1024 e 1366 px (com a animação do mês da Máquina do tempo
+  terminada).
 ## Histórico
 
 `PHASE_1_QA_REPORT.md` (23/09/2026) é o relatório de QA da primeira reformulação e

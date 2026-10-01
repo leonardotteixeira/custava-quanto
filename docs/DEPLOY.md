@@ -25,9 +25,9 @@ Endereço oficial: **https://custavaquanto.me/**
 | Arquivo | Para quê |
 |---|---|
 | `CNAME` (raiz) | `custavaquanto.me`; é o que o Pages usa na publicação por branch. |
-| `.nojekyll` e `index.html` (raiz) | Desligam o Jekyll e redirecionam a raiz para `dashboard/index.html`. |
+| `.nojekyll` e `index.html` (raiz) | Desligam o Jekyll e redirecionam a raiz para `dashboard/index.html`. O `index.html` da raiz repete título, descrição, canonical e as tags `og:`/`twitter:`: os robôs de prévia (WhatsApp, X, Facebook) não seguem o redirecionamento por `meta refresh`, então é daqui que sai a prévia de quem compartilha `https://custavaquanto.me/`. |
 | `robots.txt` e `sitemap.xml` (raiz) | Permitem tudo e listam `https://custavaquanto.me/`. Ficam na raiz porque os rastreadores só procuram `/robots.txt` e `/sitemap.xml` ali. |
-| `dashboard/index.html` | `<link rel="canonical">` e `og:url` apontam para `https://custavaquanto.me/`; também `og:type`, `og:site_name`, `og:locale`, `og:title` e `og:description` (mesmo texto do `<title>` e da `description` que já existiam). Não há imagem de compartilhamento: nenhuma foi inventada. |
+| `dashboard/index.html` | `<link rel="canonical">` e `og:url` apontam para `https://custavaquanto.me/`; também `og:type`, `og:site_name`, `og:locale`, `og:title` e `og:description` (mesmo texto do `<title>` e da `description` que já existiam); `og:image` 1200×630 (`dashboard/assets/brand/og-image.jpg`, captura da própria abertura do site) e `twitter:card`. |
 | `.github/workflows/pages.yml` | **Opcional, só manual.** Publica o site na raiz do domínio (sem `/dashboard/`) por GitHub Actions. Só vale se o *Source* do Pages for trocado (abaixo). |
 
 Todos os recursos externos do site (Google Fonts, links de fonte, imagens de matérias) usam

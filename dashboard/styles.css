@@ -717,10 +717,9 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .mult:nth-child(n + 3) { border-top: 1px solid var(--line); }
 }
 
-@media (max-width: 900px) {
-  :root { --mast-h: 50px; }
-  body { font-size: 16px; }
-  /* celular e tablet: barra enxuta (nome + série + botão de menu); os capítulos viram uma gaveta em tela cheia */
+/* ---------------------------------------------------------------- menu em gaveta (até 1279 px) */
+@media (max-width: 1279px) {
+  /* celular, tablet e telas até 1279 px (com a série no cabeçalho, os 10 capítulos não cabiam numa linha): barra enxuta (nome + série + botão de menu); os capítulos viram uma gaveta em tela cheia */
   .mast-row { gap: 10px; height: var(--mast-h); flex-wrap: nowrap; padding-block: 0; }
   .mast-brand { min-height: 44px; }
   .mast-product { margin-left: auto; padding: 4px 10px; align-items: center; }
@@ -749,6 +748,19 @@ code { font-family: var(--mono); font-size: 0.88em; }
   html.menu-open { overflow: hidden; overscroll-behavior: none; }
   .mast.is-open { position: fixed; top: 0; left: 0; right: 0; }
   html { scroll-padding-top: calc(var(--mast-h) + 12px); }
+}
+/* 1280–1599 px: os 10 capítulos e a série atual cabem na mesma linha (antes "Apoie", "Método"... ficavam escondidos) */
+@media (min-width: 1280px) and (max-width: 1599px) {
+  .mast-row { gap: 16px; }
+  .mp-label { display: none; }
+  .mast-nav ol { gap: 0; }
+  .mast-nav a { padding-inline: 5px; }
+  .mast-nav a i { margin-right: 4px; }
+}
+
+@media (max-width: 900px) {
+  :root { --mast-h: 50px; }
+  body { font-size: 16px; }
   .hero-grid { grid-template-columns: 1fr; gap: 20px; }
   .hero-tagline, .hero-deck { grid-column: 1; }
   .ch-head, .ch-head--split, .ch-head--wide { grid-template-columns: 1fr; }
