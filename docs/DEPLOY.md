@@ -28,28 +28,34 @@ Endereço oficial: **https://custavaquanto.me/**
 | `.nojekyll` e `index.html` (raiz) | Desligam o Jekyll e redirecionam a raiz para `dashboard/index.html`. O `index.html` da raiz repete título, descrição, canonical e as tags `og:`/`twitter:`: os robôs de prévia (WhatsApp, X, Facebook) não seguem o redirecionamento por `meta refresh`, então é daqui que sai a prévia de quem compartilha `https://custavaquanto.me/`. |
 | `robots.txt` e `sitemap.xml` (raiz) | Permitem tudo e listam `https://custavaquanto.me/`. Ficam na raiz porque os rastreadores só procuram `/robots.txt` e `/sitemap.xml` ali. |
 | `dashboard/index.html` | `<link rel="canonical">` e `og:url` apontam para `https://custavaquanto.me/`; também `og:type`, `og:site_name`, `og:locale`, `og:title` e `og:description` (mesmo texto do `<title>` e da `description` que já existiam); `og:image` 1200×630 (`dashboard/assets/brand/og-image.jpg`, captura da própria abertura do site) e `twitter:card`. |
-| `.github/workflows/pages.yml` | **Opcional, só manual.** Publica o site na raiz do domínio (sem `/dashboard/`) por GitHub Actions. Só vale se o *Source* do Pages for trocado (abaixo). |
+| `.github/workflows/pages.yml` | Publica o site na raiz do domínio (sem `/dashboard/`) por GitHub Actions, a cada push na `master` que mexa em `dashboard/`, `data/processed/*.json`, `robots.txt`, `sitemap.xml` ou no próprio workflow (e manualmente em Actions > Run workflow). Só vale com o *Source* do Pages em "GitHub Actions" (abaixo). |
 
 Todos os recursos externos do site (Google Fonts, links de fonte, imagens de matérias) usam
 `https://`; não há `http://` no site além de `localhost` em ferramentas de desenvolvimento.
 
-## Opcional: publicar na raiz do domínio (sem `/dashboard/`)
+## Publicar na raiz do domínio (sem `/dashboard/`)
 
-O redirecionamento atual funciona, mas deixa o endereço final com `/dashboard/index.html` e o
-canonical (`https://custavaquanto.me/`) apontando para uma página que só redireciona. Para o site
-aparecer direto na raiz:
+Com "Deploy from a branch", o endereço final fica `https://custavaquanto.me/dashboard/index.html`
+(a raiz só redireciona). Com o workflow, o site aparece direto em `https://custavaquanto.me/`.
 
 1. Em `leonardotteixeira/custava-quanto` > Settings > Pages > *Build and deployment*, troque o
    **Source** de "Deploy from a branch" para **GitHub Actions**. O campo *Custom domain* continua
-   `custavaquanto.me`.
-2. Em Actions > *Publicar no GitHub Pages* > **Run workflow** (a cada atualização dos dados ou do
-   site; o workflow é só manual para não falhar enquanto o Source for "branch").
-3. O workflow monta `_site/` com `dashboard/` na raiz e `data/processed/*.json` em
-   `/data/processed/`: a partir da raiz do domínio, `../data/processed/x.json` resolve para
-   `/data/processed/x.json`, então o código do site não muda. Para voltar, restaure o Source para
-   "Deploy from a branch".
+   `custavaquanto.me` e o *Enforce HTTPS* continua marcado.
+2. A partir daí, cada push na `master` que mude o site ou os dados publica sozinho (Actions >
+   *Publicar no GitHub Pages*). Para publicar sem push: Actions > *Publicar no GitHub Pages* >
+   **Run workflow**.
+3. O workflow monta `_site/` com o conteúdo de `dashboard/` na raiz e `data/processed/*.json` em
+   `/data/processed/`: da raiz do domínio, `../data/processed/x.json` resolve para
+   `/data/processed/x.json`, então o código do site não muda e continua rodando localmente
+   (`python -m http.server` na raiz do repositório, abrindo `/dashboard/index.html`).
+4. Endereços antigos continuam valendo: `/dashboard/index.html?historia=arroz#periodos` vira
+   `/?historia=arroz#periodos` (página de redirecionamento criada pelo workflow).
+5. Para voltar: Source = "Deploy from a branch" (`master`, `/ (root)`). O `index.html` da raiz e o
+   `CNAME` continuam no repositório para isso.
 
-Se quiser que ele rode a cada push, troque `on:` por `push: { branches: [master], paths: [...] }`.
+Testado em 30/09/2026 montando `_site/` com os mesmos comandos do workflow e servindo-o como raiz:
+abertura, troca de série, Análise e Arquivo carregam, sem requisição falhando nem erro no console;
+o redirecionamento de `/dashboard/index.html?historia=pib#periodos` chega ao capítulo certo.
 
 ## DNS: registros no Namecheap
 

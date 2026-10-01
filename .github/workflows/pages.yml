@@ -1,19 +1,25 @@
-# Publica o site estático no GitHub Pages (https://custavaquanto.me/).
+# Publica o site estático no GitHub Pages, na RAIZ do domínio (https://custavaquanto.me/).
 #
 # O site vive em dashboard/ e lê os dados por caminhos relativos "../data/processed/*.json".
-# Aqui montamos a pasta _site/ com dashboard/ na raiz e data/processed/*.json em /data/processed/:
-# a partir da raiz do domínio, "../data/processed/x.json" resolve para "/data/processed/x.json".
+# Aqui montamos a pasta _site/ com o conteúdo de dashboard/ na raiz e data/processed/*.json em
+# /data/processed/: a partir da raiz do domínio, "../data/processed/x.json" resolve para
+# "/data/processed/x.json", então o código do site não muda (e continua rodando localmente).
 #
-# OPCIONAL. Hoje o GitHub Pages publica direto da branch master (raiz do repositório), com um
-# index.html na raiz que redireciona para dashboard/index.html. Este workflow publica o site
-# na RAIZ do domínio (https://custavaquanto.me/, sem /dashboard/), e só vale se, em Settings >
-# Pages, o Source for trocado para "GitHub Actions" (ver docs/DEPLOY.md). Enquanto o Source for
-# "Deploy from a branch", rodá-lo não muda o site. Nada é gerado aqui: os JSON são os versionados
-# em data/processed/ (rode scripts/update_data.py localmente e faça commit).
+# Só vale com Settings > Pages > Source = "GitHub Actions" (ver docs/DEPLOY.md). Nada é gerado
+# aqui: os JSON são os versionados em data/processed/ (rode scripts/update_data.py localmente e
+# faça commit).
 name: Publicar no GitHub Pages
 
 on:
-  workflow_dispatch:   # só manual: hoje o Pages publica direto da branch (ver docs/DEPLOY.md)
+  push:
+    branches: [master]
+    paths:
+      - "dashboard/**"
+      - "data/processed/*.json"
+      - "robots.txt"
+      - "sitemap.xml"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -34,11 +40,29 @@ jobs:
       - uses: actions/checkout@v4
       - name: Montar _site
         run: |
-          mkdir -p _site/data/processed
+          mkdir -p _site/data/processed _site/dashboard
           cp -r dashboard/. _site/
           cp data/processed/*.json _site/data/processed/
           cp CNAME robots.txt sitemap.xml _site/
           touch _site/.nojekyll
+          # na raiz, os arquivos de dashboard/assets/ ficam em /assets/
+          sed -i 's#https://custavaquanto.me/dashboard/assets/#https://custavaquanto.me/assets/#g' _site/index.html
+          # endereços antigos (/dashboard/index.html?historia=arroz#periodos) continuam funcionando
+          cat > _site/dashboard/index.html <<'EOF'
+          <!doctype html>
+          <html lang="pt-BR">
+          <head>
+          <meta charset="utf-8" />
+          <title>CUSTAVA QUANTO?</title>
+          <link rel="canonical" href="https://custavaquanto.me/" />
+          <script>location.replace("/" + location.search + location.hash);</script>
+          <meta http-equiv="refresh" content="0; url=/" />
+          </head>
+          <body><p><a href="/">Entrar em CUSTAVA QUANTO?</a></p></body>
+          </html>
+          EOF
+          test -f _site/index.html && test -f _site/data/processed/dashboard_data.json
+          if grep -rn "/dashboard/" _site/index.html; then echo "sobrou /dashboard/ no index.html"; exit 1; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
