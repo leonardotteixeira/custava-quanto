@@ -171,14 +171,32 @@ def _resumo_alimento(df: pd.DataFrame) -> dict:
     }
 
 
-def _cohorts_para_periodo(df_periodo: pd.DataFrame, resumo_fn) -> dict:
+def _inicio_do_periodo(df_periodo: pd.DataFrame) -> pd.Timestamp:
+    """Primeiro mês do mandato a que a série pertence: jan/2019 (Bolsonaro) ou jan/2023 (Lula)."""
+    return pd.Timestamp("2019-01-01") if df_periodo["ano_mes"].min() < pd.Timestamp(PERIODO_CORTE) else pd.Timestamp(PERIODO_CORTE)
+
+
+def _cohorts_para_periodo(df_periodo: pd.DataFrame, resumo_fn, calendario: bool = True) -> dict:
+    """Resumos dos primeiros 12/24/36 meses de cada período.
+
+    REGRA (metodologia 1.4.0): a janela é a mesma JANELA DE CALENDÁRIO nos dois períodos (os meses 1 a n do mandato:
+    jan/2019 + n-1 meses; jan/2023 + n-1 meses), não "as n primeiras observações disponíveis". Se uma série tem um
+    buraco (combustíveis em set/2020, sem pesquisa da ANP), contar observações deslocaria o fim da janela do período
+    Bolsonaro em um mês e os dois períodos deixariam de ser comparáveis. `calendario=False` mantém o comportamento
+    antigo só para o PIB, cujas linhas são anuais (uma por ano), não mensais."""
     df_periodo = df_periodo.sort_values("ano_mes")
     out = {"governo_inteiro": resumo_fn(df_periodo)}
     for nome, n in COHORTS.items():
-        cohort_df = df_periodo.head(n)
+        if calendario and not df_periodo.empty:
+            inicio = _inicio_do_periodo(df_periodo)
+            cohort_df = df_periodo[df_periodo["ano_mes"] < inicio + pd.DateOffset(months=n)]
+            completo = df_periodo["ano_mes"].max() >= inicio + pd.DateOffset(months=n - 1)
+        else:
+            cohort_df = df_periodo.head(n)
+            completo = len(cohort_df.dropna(how="all")) >= n and len(df_periodo) >= n
         resumo = resumo_fn(cohort_df)
         if resumo is not None:
-            resumo["completo"] = len(cohort_df.dropna(how="all")) >= n and len(df_periodo) >= n
+            resumo["completo"] = bool(completo)
         out[nome] = resumo
     return out
 
@@ -746,7 +764,7 @@ def montar_pib() -> dict:
 
     resumo = {}
     for periodo in ("Bolsonaro", "Lula"):
-        resumo[periodo] = _cohorts_para_periodo(df_serie[df_serie["periodo"] == periodo], _resumo_pib)
+        resumo[periodo] = _cohorts_para_periodo(df_serie[df_serie["periodo"] == periodo], _resumo_pib, calendario=False)
 
     ultimo_trim = serie_trimestral[-1] if serie_trimestral else None
     componentes = _componentes_pib()
@@ -904,6 +922,34 @@ def montar_mercado_trabalho() -> dict | None:
     return {"coletado_em": status["coletado_em"], "nota": status["nota"], "produtos": produtos}
 
 
+def montar_salario_minimo(salario: pd.DataFrame, ipca: pd.DataFrame) -> list:
+    """Série do salário mínimo nominal e do IPCA, mês a mês, INDEPENDENTE de qualquer série de produto.
+
+    Até a metodologia 1.3.0 a Análise lia o salário mínimo das linhas da série da gasolina, que não tem set/2020 (a ANP
+    não pesquisou preços), e o salário real herdava o buraco. O salário mínimo (BCB SGS 1619) e o IPCA (IBGE SIDRA 1737)
+    existem em todos os meses; aqui vão todos, de jan/2019 até o último mês com IPCA. Falta de mês é erro, não lacuna."""
+    df = salario.merge(ipca[["ano_mes", "ipca_indice"]], on="ano_mes", how="inner").dropna(subset=["salario_minimo", "ipca_indice"])
+    df = df[df["ano_mes"] >= pd.Timestamp("2019-01-01")].sort_values("ano_mes")
+    esperados = pd.date_range(df["ano_mes"].min(), df["ano_mes"].max(), freq="MS")
+    faltam = [d.strftime("%Y-%m") for d in esperados if d not in set(df["ano_mes"])]
+    if faltam:
+        raise ValueError(f"salário mínimo ou IPCA sem os meses {faltam}")
+    return [{"ano_mes": _fmt_mes(r["ano_mes"]),
+             "periodo": "Bolsonaro" if r["ano_mes"] < pd.Timestamp(PERIODO_CORTE) else "Lula",
+             "salario_minimo": round(float(r["salario_minimo"]), 2),
+             "ipca_indice": round(float(r["ipca_indice"]), 2)} for _, r in df.iterrows()]
+
+
+def montar_pesos_ipca() -> dict:
+    """Peso mensal de cada item do Custo de vida no IPCA (SIDRA, variável 66), por item e mês. Só alimenta a sensibilidade
+    do Custo de vida a um agregador ponderado (auditoria R3b); nenhuma leitura principal usa pesos."""
+    caminho = DATA_PROCESSED / "ipca_pesos_itens.csv"
+    if not caminho.exists():
+        return {}
+    df = pd.read_csv(caminho, parse_dates=["ano_mes"]).sort_values(["item", "ano_mes"])
+    return {item: {_fmt_mes(r["ano_mes"]): round(float(r["peso"]), 4) for _, r in g.iterrows()} for item, g in df.groupby("item")}
+
+
 def montar_fotografia_mensal(produtos: dict) -> dict:
     """"Como estava o Brasil?" — fotografia cross-indicador por mês, montada
     só a partir de campos que os produtos já calcularam (nenhuma conta
@@ -1023,6 +1069,8 @@ def main() -> None:
         "periodo_corte": "2023-01-01",
         "produtos": produtos,
         "fotografia_mensal": montar_fotografia_mensal(produtos),
+        "salario_minimo_serie": montar_salario_minimo(salario, ipca),
+        "ipca_pesos": montar_pesos_ipca(),
         "mercado_trabalho": montar_mercado_trabalho(),
         "presidentes": {
             "Bolsonaro": {

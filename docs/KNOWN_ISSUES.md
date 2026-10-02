@@ -172,7 +172,7 @@ quebrado é o autoteste e a confiança que ele deveria dar. (`download_conab.py
 | Lacuna | Situação |
 |---|---|
 | Setembro/2020 sem pesquisa da ANP | Documentado; linhas interrompidas; estimativa "≈" só na Máquina do tempo |
-| IPCA em 12 meses | Só a partir de jan/2020 (precisa de 12 meses anteriores) |
+| IPCA em 12 meses | Desde jan/2019 (v1.3.0: o número-índice é baixado desde jan/2018 para os 12 meses anteriores; antes começava em jan/2020) |
 | PIB 2026 | Só trimestres (até o 2º); resultado anual não existe |
 | Preço absoluto de alimentos (R$/kg) | Nenhuma fonte integrada; CONAB planejada (ver H1) |
 | Cesta básica DIEESE | Sem acesso público em lote desde abril/2018 |
@@ -248,6 +248,32 @@ Não bloqueia (fica para depois):
 - A escala do "Salário mínimo real" (~R$ 180–220) era um erro de unidade: salário ÷ número-índice do
   IPCA × 1000. Agora é R$ do último mês com IPCA (faixa ~R$ 1.370–1.670; ago/2026 = R$ 1.621).
   Nenhuma leitura mudou. Detalhes: AUDITORIA_ANALISE_GOVERNOS.md (v1.2.1).
+
+## Auditoria acadêmica e metodológica, etapas 2 e 3 (01/10/2026, metodologia v1.3.0 e v1.4.0)
+
+**Resolvido (não reabrir; evidência em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md)):**
+
+- IPCA em 12 meses sem 2019 (R1, v1.3.0); litros de gasolina por salário mínimo contados duas vezes em Renda (R2, v1.3.0);
+  "robustez" renomeada para "análise de sensibilidade aos pesos" (R7, v1.3.0).
+- **Diferença do etanol contra a série oficial da ANP:** causa determinada (ponderação por vendas; a amostra é a mesma). A série
+  oficial passou a ser a principal (v1.4.0); a média simples das coletas ficou como sensibilidade.
+- **Salário mínimo herdando o buraco de set/2020 da gasolina:** corrigido; a Análise lê uma série própria e completa (v1.4.0).
+- **Janela por número de observações (E11):** os resumos "primeiros 12/24/36 meses" usam agora a mesma janela de calendário nos dois
+  períodos (v1.4.0). A Análise já usava o calendário.
+- **Rótulo do subitem 1111004 ("Leite longa vida"):** correto nas duas estruturas do IPCA (BCB, Estudo Especial nº 69/2019).
+- **Links de notícias:** 142 verificados em 01/10/2026 (ver [AUDITORIA_LINKS_NOTICIAS.md](AUDITORIA_LINKS_NOTICIAS.md)).
+- **R3b (agregador do Custo de vida):** avaliado; método principal mantido como "defensável, com limitações" e alternativas
+  documentadas e calculadas no pipeline.
+
+**Limitações que permanecem (não são erros):** a mediana não ponderada, o voto ±1/0 com tolerância e a razão litros por salário
+mínimo são convenções do projeto, sem literatura que as sustente diretamente; a leitura do nível real do Custo de vida depende do resumo
+das séries (mediana e médias sem peso: período Bolsonaro; média ponderada pelo IPCA: período Lula, na margem da tolerância); o
+resíduo de 0,1% a 0,5% entre a reprodução da série oficial da ANP e a própria série não pôde ser explicado com a documentação pública;
+o texto integral do *Consumer Price Index Manual* não pôde ser aberto (acesso bloqueado).
+
+**Escolhas documentadas, não erros:** variação do início ao fim como leitura principal do Custo de vida, com o nível real
+como "outra forma de olhar" (R3a); IPCA em vez de INPC no salário real (R9); tolerâncias de 1,0 e 0,1 ponto (R8); câmbio nominal
+em reais de hoje, rotulado "Dólar corrigido pelo IPCA" (R5).
 
 ## Refinamento da Análise (01/10/2026)
 

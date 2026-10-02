@@ -5,7 +5,8 @@ classifica cada mês no período de governo correspondente, e calcula
 estatísticas resumo por período (Bolsonaro x Lula).
 
 Entradas (geradas pelos scripts download_*.py em data/processed/):
-    anp_precos_mensais.csv        - combustíveis, nominal, por região/produto
+    anp_oficial_mensal.csv        - combustíveis, preço médio NACIONAL oficial da ANP (ponderado por vendas)
+    anp_precos_mensais.csv        - combustíveis, média simples das coletas, por região/produto (e Brasil)
     ibge_itens_cesta_mensal.csv   - índice relativo de itens da cesta básica
     ipca_geral_mensal.csv         - IPCA número-índice (deflator)
     bcb_contexto_mensal.csv       - câmbio USD/BRL e Selic (contexto)
@@ -50,14 +51,27 @@ def carregar_base() -> pd.DataFrame:
     return base
 
 
+def _combustiveis_nacional_oficial(anp: pd.DataFrame) -> pd.DataFrame:
+    """Brasil (BR): o preço nominal é o da série nacional OFICIAL da ANP (ponderada por vendas), não a média simples das
+    coletas (que passa a ser `preco_simples_coletas`, só para comparação). As linhas regionais seguem sendo a média
+    simples das coletas da região (a ANP não publica região mensal no mesmo arquivo; a página só mostra Brasil).
+    Mês que a série oficial não tem fica sem preço: nunca se completa com a média simples, para não misturar métodos."""
+    oficial = pd.read_csv(DATA_PROCESSED / "anp_oficial_mensal.csv", parse_dates=["ano_mes"])
+    br = anp[anp["regiao"] == "BR"].rename(columns={"preco_medio": "preco_simples_coletas"})
+    br = br[["ano_mes", "regiao", "produto", "preco_simples_coletas"]].merge(
+        oficial[["ano_mes", "produto", "preco_medio"]], on=["ano_mes", "produto"], how="inner")
+    outros = anp[anp["regiao"] != "BR"].assign(preco_simples_coletas=lambda d: d["preco_medio"])
+    return pd.concat([br, outros[["ano_mes", "regiao", "produto", "preco_medio", "preco_simples_coletas"]]], ignore_index=True)
+
+
 def montar_combustiveis(base: pd.DataFrame) -> pd.DataFrame:
-    anp = pd.read_csv(DATA_PROCESSED / "anp_precos_mensais.csv", parse_dates=["ano_mes"])
+    anp = _combustiveis_nacional_oficial(pd.read_csv(DATA_PROCESSED / "anp_precos_mensais.csv", parse_dates=["ano_mes"]))
     df = anp.merge(base, on="ano_mes", how="left")
     df["preco_real"] = df["preco_medio"] * df["fator_deflator"]
     df["periodo"] = df["ano_mes"].apply(periodo_do_governo)
     cols = [
         "ano_mes", "periodo", "regiao", "produto",
-        "preco_medio", "preco_real",
+        "preco_medio", "preco_real", "preco_simples_coletas",
         "cambio_usd_brl", "brent_usd_bbl", "brent_brl_bbl", "selic_meta_aa", "ipca_indice",
     ]
     return df[cols].rename(columns={"preco_medio": "preco_nominal"}).sort_values(

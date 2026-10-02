@@ -136,7 +136,6 @@ série pedida.)
 | **07 Análise** | O que os números permitem afirmar? | Seis dimensões, critérios definidos antes do cálculo, gráficos, acontecimentos e a ferramenta "E se?" |
 | **08 Arquivo** | De onde vêm as informações? | Biblioteca de fontes pesquisável (busca e filtros), com link para cada matéria original |
 | **09 Método** | Como tudo foi calculado? | Fórmulas, fontes, limitações e **"Audite a análise"** |
-| ~~10 Apoie~~ | Como ajudar a manter o projeto? | **Desativado por enquanto** (fora do site). Pronto para reativar: contribuição por Pix, sem confirmar pagamento |
 
 A numeração se ajusta sozinha: nas séries sem preço ou índice (Selic, IPCA, Ibovespa, PIB), o
 capítulo **Bolso** some e os seguintes sobem um número.
@@ -158,7 +157,7 @@ A Análise segue um caminho de leitura progressiva, do geral para o detalhe:
 3. **Uma parte por dimensão:** a pergunta, o que mede e o que **não** mede, os números, o
    gráfico (com abas por série e acontecimentos recolhidos, que se abrem sob demanda) e a
    leitura dos dados.
-4. **Detalhe sob demanda:** robustez (a leitura muda se uma série sair?), maiores movimentos e a
+4. **Detalhe sob demanda:** a leitura muda se uma série sair?, maiores movimentos e a
    tabela por série ficam atrás de um botão.
 
 ---
@@ -196,8 +195,9 @@ mesmos dados + prioridades diferentes = leituras agregadas potencialmente difere
 
 ### Exemplo ilustrativo
 
-Os pesos abaixo são **um exemplo** (não são um cenário oficial do projeto). As barras de baixo
-mostram quanto do peso total está em dimensões que apontam para cada lado, como no site:
+Os pesos abaixo são **um exemplo** (não são um cenário oficial do projeto). Com os dados de hoje
+(metodologia 1.3.0), as cinco dimensões apontam para o mesmo período, então qualquer combinação de
+pesos dá o mesmo lado:
 
 ```text
 E SE VOCÊ PRIORIZAR CUSTO DE VIDA?
@@ -210,33 +210,24 @@ Atividade econômica      10%  ████
 
 Para onde o peso aponta, com os dados de hoje:
   Período Bolsonaro        0%
-  Praticamente iguais     15%  ██████         (Renda e poder de compra)
-  Período Lula            85%  ██████████████████████████████████
+  Praticamente iguais      0%
+  Período Lula           100%  ████████████████████████████████████████
 ```
 
-```text
-E SE VOCÊ PRIORIZAR RENDA E PODER DE COMPRA?     (cenário oficial "Ênfase em renda")
+Para mostrar a mecânica, a Parte 3 traz uma **"outra forma de olhar" o custo de vida**: em vez da
+variação do início ao fim de cada período (a leitura principal), o **nível real típico** dos
+preços durante o período. As duas perguntas são diferentes e podem apontar para lados diferentes.
+Essa leitura **não entra na síntese principal**, mas o site informa como ficaria a grade de pesos
+se ela entrasse, para que o resultado não pareça mais conclusivo do que é.
 
-Custo de vida            15%  ██████
-Inflação                 15%  ██████
-Renda e poder de compra  40%  ████████████████
-Mercado de trabalho      15%  ██████
-Atividade econômica      15%  ██████
-
-  Período Bolsonaro        0%
-  Praticamente iguais     40%  ████████████████
-  Período Lula            60%  ████████████████████████
-```
-
-Repare no que o exemplo mostra: com a **mesma** análise, quando a prioridade vai para uma
-dimensão em que os períodos ficam praticamente iguais (Renda e poder de compra), o peso
-"praticamente igual" sobe de 15% para 40%. A leitura agregada responde à prioridade.
-
-**Uma observação honesta sobre os dados de hoje:** nos números atuais, nenhuma das **10.626
-combinações** de pesos (de 5 em 5 pontos, somando 100) leva a síntese ao período Bolsonaro: 10.625
-apontam para o período Lula e 1 empata. O projeto mostra isso na Análise justamente para que a
-ferramenta não pareça mais conclusiva, nem menos, do que é. Seis cenários nomeados (pesos
-iguais e ênfase em cada dimensão) estão na metodologia; o leitor pode mover os pesos livremente.
+**Uma observação honesta sobre os dados de hoje:** nenhuma das **10.626 combinações** de pesos
+(de 5 em 5 pontos, somando 100) leva a síntese ao período Bolsonaro: as 10.626 apontam para o
+período Lula. Isso acontece porque nenhuma das cinco dimensões aponta para o período Bolsonaro
+(dominância), não porque o teste prove algo sobre os governos. É uma **análise de sensibilidade
+aos pesos**: ela testa uma grade discreta (5 em 5 pontos), não todos os pesos possíveis, vale para
+esta metodologia e estas dimensões, e não estabelece causa nem desempenho. Seis cenários nomeados
+(pesos iguais e ênfase em cada dimensão) estão na metodologia; o leitor pode mover os pesos
+livremente.
 
 ---
 
@@ -263,7 +254,7 @@ os trimestres de 2026 ficam separados e nunca entram nas barras anuais nem na m�
 
 | Fonte | O que | Status |
 |---|---|---|
-| ANP | Preços de combustíveis (média simples mensal nacional) | Produção |
+| ANP | Preços de combustíveis: **série mensal nacional oficial** (ponderada por vendas); a série por posto fica como sensibilidade | Produção |
 | IBGE / SIDRA | IPCA, variação mensal por item de alimento, PIB e componentes, PNAD Contínua (tabelas 6381, 6441 e 6390) | Produção |
 | Banco Central (SGS) | Dólar PTAX (série 1), meta Selic (432), salário mínimo (1619) | Produção |
 | B3 | Ibovespa (fechamento diário, site público do índice) | Produção |
@@ -279,7 +270,7 @@ Tabela completa por indicador (frequência, campo, processamento, limitações):
 ## Metodologia em resumo
 
 A metodologia completa está em [docs/METHODOLOGY.md](docs/METHODOLOGY.md); a da Análise (versão
-**1.2.1**) é congelada em `data/processed/analysis_methodology.json`.
+**1.4.0**) é congelada em `data/processed/analysis_methodology.json`.
 
 - **Variação** = `(fim ÷ início − 1) × 100`. Para taxas (Selic, IPCA, PIB), a diferença é em
   **pontos percentuais**.
@@ -315,7 +306,28 @@ porque comparar 48 com 44 meses distorce acumulados.
   períodos ficam "praticamente iguais" (1,0 ponto em variações; 0,1 ponto em médias).
 - **Nível de evidência** por dimensão: ALTA, MÉDIA ou INFORMATIVA, calculado por regra.
 - **Síntese:** soma dos sentidos ponderados, testada em seis cenários e em todas as 10.626
-  combinações de pesos. **Sem nota e sem vencedor.**
+  combinações de pesos de 5 em 5 pontos (**análise de sensibilidade aos pesos**: uma grade
+  discreta, não todos os pesos possíveis). **Sem nota e sem vencedor.**
+- **Combustíveis:** o preço mensal é a **série nacional oficial da ANP** (média ponderada pelas
+  vendas), não a média simples das coletas que o projeto usava até a versão 1.3.0. A diferença
+  (+6,5% no etanol) vinha da ponderação, e a amostra é a mesma; o raciocínio e os números estão em
+  [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
+- **Custo de vida, trajetória × nível:** a leitura principal é a **trajetória**, a variação real do
+  início ao fim de cada período ("como os preços variaram?"). O **nível** real médio durante o
+  período ("qual era o preço típico?") aparece à parte, em "Outra forma de olhar", e **não entra
+  na síntese**. São perguntas diferentes e nenhuma é apresentada como a melhor; a leitura do nível
+  depende do resumo das 11 séries (mediana e médias sem peso: período Bolsonaro; média ponderada
+  pelo IPCA: período Lula, na margem da tolerância).
+- **Salário mínimo real:** `salário nominal × IPCA do último mês disponível ÷ IPCA do mês`, em R$ do
+  último mês com IPCA (IPCA, e não INPC, como convenção do projeto; o INPC está testado como
+  sensibilidade e não muda nenhuma leitura). A série é própria (BCB e IPCA), com todos os meses.
+- **Poder de compra:** "litros de gasolina por salário mínimo" é um indicador à parte; ele
+  equivale ao salário real dividido pelo preço real da gasolina e por isso **não tem voto
+  próprio** em Renda (contaria a mesma informação duas vezes).
+- **Janela de comparação:** a mesma janela de calendário nos dois períodos (meses 1 a *n* do
+  mandato), não "as *n* primeiras observações disponíveis".
+- **Dólar:** o gráfico "Dólar corrigido pelo IPCA" é o câmbio nominal em reais de hoje, **não** a
+  taxa de câmbio real da literatura econômica.
 - **Mercados** nunca entram na síntese.
 
 ---
@@ -362,15 +374,28 @@ O projeto foi feito para ser conferido, por qualquer pessoa, em quatro níveis:
 4. **Nas fontes.** Cada notícia tem link para a página original; cada indicador, a tabela de
    origem (por exemplo, as tabelas 6381, 6441 e 6390 do SIDRA para a PNAD Contínua).
 
-Auditorias e decisões registradas: [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md) e
-[docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md).
+Auditorias e decisões registradas: [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md),
+[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) (referências acadêmicas e oficiais, cada
+uma classificada pelo que realmente sustenta), [docs/AUDITORIA_LINKS_NOTICIAS.md](docs/AUDITORIA_LINKS_NOTICIAS.md) e
+[docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md). Os scripts de auditoria (`docs/auditoria_*.py`) são
+somente leitura e podem ser reexecutados.
+
+### Referências, resumidas
+
+**Oficiais** (sustentam a fonte, a fórmula e a definição de cada série): IBGE (métodos de cálculo do IPCA, SIDRA, tabelas de correspondência
+POF × subitens), ANP (levantamento de preços e séries oficiais), Banco Central (SGS, Estudo Especial nº 69/2019), B3 (metodologia do
+Ibovespa), Ipeadata (câmbio real e salário mínimo real). **Acadêmicas** (sustentam partes: dupla contagem, análise de sensibilidade,
+agregação de índices e a ideia de salário em unidades de um bem; **nenhuma** sustenta o conjunto do método): OECD/JRC *Handbook on
+Constructing Composite Indicators* (Nardo et al., 2008), Saisana, Saltelli & Tarantola (2005), Munda & Nardo (2009), Scheffé (1958),
+Lahdelma et al. (1998), entre outras. Lista completa, com DOI conferido no Crossref: seções 6 e 7 da etapa 2 e a etapa 3 de
+[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md).
 
 ---
 
 ## Limitações, ditas em voz alta
 
-1. **ANP:** amostra de postos e média simples; **setembro/2020 sem pesquisa** (as linhas ficam
-   interrompidas, e a Máquina do tempo mostra uma estimativa marcada com "≈").
+1. **ANP:** série oficial, com a amostra de postos da própria ANP; **setembro/2020 sem pesquisa**
+   (as linhas ficam interrompidas, e a Máquina do tempo mostra uma estimativa marcada com "≈").
 2. **Alimentos:** índice, não R$; "carne" é só o corte patinho; o feijão é o carioca.
 3. **Preço absoluto de alimentos:** nenhum dado da CONAB está nos resultados.
 4. **PIB:** o IBGE revisa a série; 2026 só tem trimestres.
@@ -381,6 +406,11 @@ Auditorias e decisões registradas: [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AU
 8. **Nenhuma dimensão diz tudo.** Contas públicas, dívida, desigualdade de renda,
    informalidade e qualidade do emprego ficam fora por falta de série no projeto.
 9. **A Análise descreve; não explica.** Ela não mede causa e muda com os pesos.
+10. **Parte do método é convenção do projeto, sem literatura que a sustente diretamente:** a mediana
+    não ponderada das 11 séries do Custo de vida, o voto ±1/0 por dimensão com tolerância, a razão
+    litros por salário mínimo e a grade de pesos de 5 em 5 pontos. Cada uma está declarada como tal
+    em [docs/METHODOLOGY.md](docs/METHODOLOGY.md). **O projeto não é "cientificamente comprovado"**:
+    ele documenta cada escolha, mostra as alternativas e deixa o leitor conferir.
 
 Problemas verificados e lacunas: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
 
@@ -410,8 +440,7 @@ analysis/, output/   gráficos estáticos da primeira fase (histórico)
 - **Dependências em tempo de leitura:** Google Fonts e as imagens das matérias, servidas pelos
   próprios veículos. O gerador de QR Code (`qrcode-generator`, MIT) está copiado em
   `dashboard/vendor/`.
-- **Sem backend, sem cookies, sem rastreamento.** O Apoie por Pix (desativado por enquanto) só monta o código no
-  navegador; o site não processa nem confirma pagamentos.
+- **Sem backend, sem cookies, sem rastreamento.**
 
 ### Pipeline de dados
 
@@ -463,13 +492,14 @@ e abrir `http://localhost:8420/dashboard/index.html`.
 
 Depois de baixar o PIB, reconstrua com `scripts/build_dashboard_data.py`,
 `scripts/build_analise.py` e `scripts/test_analise.py`. Não rode `download_bcb.py` nem
-`download_ibovespa.py` (legados; sobrescrevem a fonte de produção). Para o Apoie, `PIX_KEY`,
-`MERCHANT_NAME` e `MERCHANT_CITY` ficam em `dashboard/js/apoie.config.js`.
+`download_ibovespa.py` (legados; sobrescrevem a fonte de produção).
 
 ### Testes
 
 ```bash
-.venv/Scripts/python scripts/test_analise.py                 # validações da Análise (automático)
+.venv/Scripts/python scripts/test_analise.py                 # validações da Análise e da metodologia (automático)
+.venv/Scripts/python docs/auditoria_antes_depois.py          # compara os resultados com a versão anterior (somente leitura)
+.venv/Scripts/python docs/auditoria_custo_vida_agregadores.py  # sensibilidade do Custo de vida ao agregador (somente leitura)
 .venv/Scripts/python scripts/download_conab.py --autoteste   # lógica do CONAB, com dados sintéticos
 ```
 
@@ -520,4 +550,5 @@ veículos: sem licença de reprodução (ver "Contexto e notícias").
 [CURRENT_STATE](docs/CURRENT_STATE.md) · [METHODOLOGY](docs/METHODOLOGY.md) ·
 [DATA_PIPELINE](docs/DATA_PIPELINE.md) · [KNOWN_ISSUES](docs/KNOWN_ISSUES.md) ·
 [ROADMAP](docs/ROADMAP.md) · [TESTING_AND_QA](docs/TESTING_AND_QA.md) · [DEPLOY](docs/DEPLOY.md) ·
-[DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md).
+[AUDITORIA_ACADEMICA_METODOLOGIA](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) ·
+[AUDITORIA_LINKS_NOTICIAS](docs/AUDITORIA_LINKS_NOTICIAS.md) · [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md).

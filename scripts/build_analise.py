@@ -32,6 +32,7 @@ from __future__ import annotations
 import hashlib
 import itertools
 import json
+import math
 import statistics
 import sys
 from datetime import datetime, timezone
@@ -40,7 +41,7 @@ from common import DATA_PROCESSED, ensure_dirs, get_logger
 
 logger = get_logger("build_analise")
 
-METODOLOGIA_VERSAO = "1.2.1"
+METODOLOGIA_VERSAO = "1.4.0"
 METODOLOGIA_DATA = "2026-10-01"
 
 # IPCA (número-índice) do último mês disponível: o mês-base dos valores reais ("a preços de hoje"), o mesmo
@@ -55,7 +56,7 @@ INICIO = {"Bolsonaro": (2019, 1), "Lula": (2023, 1)}
 DIMENSOES = [
     {"id": "custo_vida", "ordem": 1, "titulo": "Custo de vida", "tipo": "A",
      "pergunta": "Em qual período os preços analisados tiveram menor pressão real (descontada a inflação) sobre o consumidor?",
-     "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período.",
+     "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período. A leitura principal compara como os preços variaram do início ao fim de cada período; o nível real médio dos preços durante o período (outra pergunta) aparece à parte, como \"outra forma de olhar\", e não entra na síntese.",
      "mede": "quanto variou, descontada a inflação, o preço de cinco combustíveis (em R$) e o índice de preço de seis alimentos",
      "nao_mede": "o gasto de uma família nem o preço em reais dos alimentos",
      "criterio": {"metrica": "variação real mediana das 11 séries", "sentido": "menor", "explica": "menor variação real = menor pressão sobre o consumidor"}},
@@ -66,11 +67,11 @@ DIMENSOES = [
      "nao_mede": "a inflação vivida por cada família",
      "criterio": {"metrica": "média do IPCA em 12 meses", "sentido": "menor", "explica": "média menor = menor pressão inflacionária no período"}},
     {"id": "renda", "ordem": 3, "titulo": "Renda e poder de compra", "tipo": "A",
-     "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra nos indicadores disponíveis?",
-     "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação.",
-     "mede": "quanto o piso nacional rende, descontada a inflação, e quantos litros de gasolina ele compra",
+     "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra, descontada a inflação?",
+     "explicacao": "O salário mínimo descontada a inflação (IPCA). O valor nominal e os litros de gasolina que ele comprava aparecem só como informação: o nominal sobe em qualquer período com inflação, e os litros são o próprio salário real dividido pelo preço real da gasolina, ou seja, repetiriam a mesma informação e contariam duas vezes.",
+     "mede": "quanto o piso nacional rende, descontada a inflação",
      "nao_mede": "a renda média das famílias nem a de quem ganha acima do piso",
-     "criterio": {"metrica": "variação mediana do poder de compra das 2 séries", "sentido": "maior", "explica": "variação maior = o piso rende mais"}},
+     "criterio": {"metrica": "variação do salário mínimo real do início ao fim da janela", "sentido": "maior", "explica": "variação maior = o piso rende mais"}},
     {"id": "trabalho", "ordem": 4, "titulo": "Mercado de trabalho", "tipo": "A", "agregacao": "por_serie",
      "pergunta": "Em qual período o mercado de trabalho mostrou menor desocupação, menor subutilização da força de trabalho e maior rendimento real do trabalho?",
      "explicacao": "Três séries oficiais da PNAD Contínua (IBGE), em trimestres móveis: a taxa de desocupação, a taxa composta de subutilização da força de trabalho e o rendimento médio real habitual. As unidades são diferentes (%, % e R$); por isso cada série é lida na sua unidade e vota uma vez, em vez de misturar unidades numa mediana.",
@@ -95,14 +96,14 @@ DIMENSOES = [
 # Tipo A: direção interpretável definida. Tipo B: depende do contexto (só descrição).
 # Tipo C: informativo (não entra em nenhuma leitura de direção).
 _LIM_COMB = ["Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-             "Preço médio nacional de revenda: não é o preço de cada posto ou estado."]
+             "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."]
 _LIM_ALIM = ["Índice de preço encadeado (IPCA por item, IBGE), não o preço em reais do produto.",
              "Safra, clima e preços internacionais de grãos pesam sobre o resultado."]
 
 
 def _comb(cod, nome):
     return {"id": cod, "dimensao": "custo_vida", "tipo": "A", "campo": "preco_real", "metrica": "variacao_pct",
-            "direcao": "menor", "unidade": "R$ (em valores do último mês)", "fonte": "ANP — Levantamento de Preços de Combustíveis",
+            "direcao": "menor", "unidade": "R$ (em valores do último mês)", "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
             "frequencia": "mensal", "nome": nome,
             "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.", "limitacoes": _LIM_COMB, "confianca": "alta"}
 
@@ -123,18 +124,19 @@ INDICADORES = [
      "unidade": "% em 12 meses", "fonte": "IBGE — IPCA", "frequencia": "mensal", "nome": "IPCA (12 meses)",
      "interpretacao": "Inflação média menor representa menor pressão sobre os preços.",
      "limitacoes": ["Média nacional de uma cesta: não é a inflação de cada família.",
-                    "A série de 12 meses começa em jan/2020 (precisa de 12 meses anteriores)."], "confianca": "alta"},
-    {"id": "SALARIO_REAL", "origem": "GASOLINA", "dimensao": "renda", "tipo": "A", "campo": "salario_minimo_real", "metrica": "variacao_pct",
+                    "O IPCA em 12 meses de jan/2019 a dez/2019 usa o número-índice de 2018 (índice do mês / índice 12 meses antes), baixado do SIDRA justamente para isso."], "confianca": "alta"},
+    {"id": "SALARIO_REAL", "origem": "SALARIO_MINIMO", "dimensao": "renda", "tipo": "A", "campo": "salario_minimo_real", "metrica": "variacao_pct",
      "direcao": "maior", "unidade": "R$ do último mês com IPCA (descontado o IPCA)", "fonte": "Banco Central (salário mínimo) + IBGE (IPCA)",
      "frequencia": "mensal", "nome": "Salário mínimo real",
      "interpretacao": "Alta real do salário mínimo representa mais poder de compra para quem o recebe.",
      "limitacoes": ["Quem ganha o salário mínimo é uma parte da população; não mede a renda média nem a renda das famílias."], "confianca": "alta"},
-    {"id": "SM_GASOLINA", "origem": "GASOLINA", "dimensao": "renda", "tipo": "A", "campo": "unidades_por_salario_minimo", "metrica": "variacao_pct",
-     "direcao": "maior", "unidade": "litros por salário mínimo", "fonte": "ANP + Banco Central (cálculo do projeto)",
+    {"id": "SM_GASOLINA", "origem": "GASOLINA", "dimensao": "renda", "tipo": "C", "campo": "unidades_por_salario_minimo", "metrica": "variacao_pct",
+     "direcao": None, "unidade": "litros por salário mínimo", "fonte": "ANP + Banco Central (cálculo do projeto)",
      "frequencia": "mensal", "nome": "Litros de gasolina por salário mínimo",
-     "interpretacao": "Mais litros por salário mínimo representa mais poder de compra em combustível.",
-     "limitacoes": ["Mede o poder de compra em UM item; não é um índice de custo de vida."], "confianca": "alta"},
-    {"id": "SALARIO_NOMINAL", "origem": "GASOLINA", "dimensao": "renda", "tipo": "C", "campo": "salario_minimo", "metrica": "variacao_pct",
+     "interpretacao": "Informativo: mais litros por salário mínimo é mais poder de compra em combustível. Como equivale ao salário mínimo real dividido pelo preço real da gasolina, não recebe voto próprio na dimensão Renda (contaria duas vezes a mesma informação); continua como indicador à parte.",
+     "limitacoes": ["Mede o poder de compra em UM item; não é um índice de custo de vida.",
+                    "Matematicamente igual a (salário mínimo real) / (preço real da gasolina): carrega a informação do salário real e a do preço da gasolina, que já aparece no Custo de vida."], "confianca": "alta"},
+    {"id": "SALARIO_NOMINAL", "origem": "SALARIO_MINIMO", "dimensao": "renda", "tipo": "C", "campo": "salario_minimo", "metrica": "variacao_pct",
      "direcao": None, "unidade": "R$ (valor nominal)", "fonte": "Banco Central / decretos do salário mínimo",
      "frequencia": "mensal", "nome": "Salário mínimo (nominal)",
      "interpretacao": "Informativo: o valor nominal sobe com a inflação em qualquer período; a leitura de poder de compra está no valor real.",
@@ -210,7 +212,8 @@ REGRAS = {
     "modos_nomes": {"completo": "Período completo disponível", "mesmo_tempo": "Comparação por igual duração"},
     "modo_principal": "completo",
     "modo_principal_nota": "A comparação principal é a dos períodos inteiros, como o projeto os define (Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado). A comparação por igual duração é um controle secundário, para quando os tamanhos diferentes dos períodos importam. As duas nunca se misturam num mesmo número.",
-    "sensibilidade": {"passo_pesos": 5, "descricao": "Todas as combinações de pesos das cinco dimensões com critério definido, de 5 em 5 pontos, somando 100 (10.626 combinações)."},
+    "sensibilidade": {"passo_pesos": 5, "nome": "Análise de sensibilidade aos pesos",
+                      "descricao": "Análise de sensibilidade aos pesos: refaz a síntese para todas as combinações de pesos das cinco dimensões com critério definido, de 5 em 5 pontos percentuais, somando 100. O número de combinações é C(20+4, 4) = 10.626 (20 blocos de 5 pontos repartidos entre 5 dimensões). Pergunta: mudar a importância relativa das dimensões muda o lado da síntese? Não testa todos os vetores de pesos possíveis (só a grade de 5 em 5 pontos), os pesos são preferências de quem lê e não dados, e o resultado vale só para esta metodologia e estas dimensões."},
     "nivel_evidencia": {
         "regra": "Dimensão de tipo B: informativa. Dimensão de tipo A: o menor nível de confiança entre as séries com direção definida (alta > média). O nível de cada série está em 'confianca' e resume fonte, consistência de medida e comparabilidade entre os períodos. Não é uma nota para o desempenho de nenhum governo.",
         "alta": "Série medida da mesma forma nos dois períodos, com fonte oficial e valor em unidade concreta.",
@@ -228,8 +231,10 @@ REGRAS = {
         "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
         "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
         "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",
-        "grade_de_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em que fração delas a síntese aponta para cada lado.",
+        "sensibilidade_aos_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em quantas a síntese aponta para cada lado. O total vem da contagem de composições: C(n+k-1, k-1) com n = 100/5 = 20 blocos e k = 5 dimensões, isto é, C(24, 4) = 10.626. É uma grade discreta: não esgota os pesos contínuos possíveis.",
+        "nivel_real_custo_vida": "Outra forma de olhar (não entra na síntese): para cada uma das 11 séries do Custo de vida, o preço real de cada mês dentro da janela é dividido pela média dos preços reais dos dois períodos juntos e multiplicado por 100 (base 100 = nível médio conjunto). O nível de cada período é a média (e, à parte, a mediana) desses valores; a leitura do período usa a mediana entre as séries do nível médio, com a mesma tolerância de 1,0 ponto. Responde 'qual era o nível típico dos preços reais durante o período?', enquanto a leitura principal responde 'como os preços variaram do início ao fim?'.",
         "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude.",
+        "poder_de_compra_gasolina": "Litros de gasolina por salário mínimo = salário mínimo nominal / preço nominal da gasolina do mesmo mês, que é igual ao salário mínimo real / preço real da gasolina. Indicador de poder de compra à parte (tipo C): não recebe voto na dimensão Renda porque repete o salário real e o preço da gasolina.",
     },
     "tolerancia": {"variacao_pct": 1.0, "media": 0.1},
     "exclusoes": [],
@@ -522,6 +527,96 @@ def _grade(dims: list, met: dict) -> dict:
             "mesmo_lado": not (cont[1] > 0 and cont[-1] > 0)}
 
 
+def _nivel_real_custo_vida(met: dict, produtos: dict, modo: str, dims_res: list) -> dict:
+    """OUTRA FORMA DE OLHAR o Custo de vida (não entra na síntese principal): o nível real típico durante o período.
+
+    Para cada série, os preços reais da janela (dos dois períodos) são divididos pela média conjunta dos dois períodos
+    (base 100). O nível de um período é a média (e a mediana, à parte) desses valores. A leitura usa a mediana entre as
+    séries do nível médio, com a mesma tolerância de pontos da variação (1,0). Tudo sai dos dados: nada digitado."""
+    tol = met["regras"]["tolerancia"]["variacao_pct"]
+    linhas = []
+    for ind in met["indicadores"]:
+        if ind["dimensao"] != "custo_vida" or ind["tipo"] != "A":
+            continue
+        prod = produtos.get(ind.get("origem", ind["id"]))
+        sb, sl = _serie(prod, ind, "Bolsonaro"), _serie(prod, ind, "Lula")
+        ks = sorted(set(sb) & set(sl)) if modo == "mesmo_tempo" else None
+        vb = [v for k, (_, v) in sorted(sb.items()) if ks is None or k in ks]
+        vl = [v for k, (_, v) in sorted(sl.items()) if ks is None or k in ks]
+        if not vb or not vl:
+            continue
+        base = statistics.fmean(vb + vl)
+        linhas.append({"id": ind["id"], "nome": ind["nome"], "n_bolsonaro": len(vb), "n_lula": len(vl),
+                       "nivel_medio": {"Bolsonaro": round(statistics.fmean(vb) / base * 100, 2), "Lula": round(statistics.fmean(vl) / base * 100, 2)},
+                       "nivel_mediano": {"Bolsonaro": round(statistics.median(vb) / base * 100, 2), "Lula": round(statistics.median(vl) / base * 100, 2)}})
+    por = {}
+    for chave in ("nivel_medio", "nivel_mediano"):
+        por[chave] = {p: round(statistics.median([l[chave][p] for l in linhas]), 2) for p in PERIODOS}
+    # menor nível real = menor pressão: mesma direção (menor) do Custo de vida principal
+    leitura = _leitura({p: -por["nivel_medio"][p] for p in PERIODOS}, tol)
+    leitura_mediana = _leitura({p: -por["nivel_mediano"][p] for p in PERIODOS}, tol)
+    principal = next(d for d in dims_res if d["id"] == "custo_vida")["leitura"]
+    # a síntese e a grade que resultariam se esta métrica substituísse a principal (só transparência)
+    dims_alt = [{**d, "leitura": leitura} if d["id"] == "custo_vida" else d for d in dims_res]
+    sint_alt = _sintese(dims_alt, met["cenarios"])
+    return {"n_series": len(linhas), "nivel_medio": por["nivel_medio"], "nivel_mediano": por["nivel_mediano"],
+            "leitura": leitura, "leitura_mediana": leitura_mediana, "leitura_principal": principal,
+            "muda_leitura": leitura != principal, "tolerancia_pontos": tol, "por_serie": linhas,
+            "sintese_iguais": next(x for x in sint_alt if x["id"] == "iguais"),
+            "grade": _grade(dims_alt, met)}
+
+
+_CATEG_COMB = ["GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP"]
+
+
+def _pesos_ipca_medios(pesos_mensais: dict) -> dict:
+    """Peso médio de cada item no IPCA de jan/2020 ao último mês (uma só estrutura de ponderação, a da POF 2017-2018)."""
+    return {item: statistics.fmean(v for mes, v in serie.items() if mes >= "2020-01-01") for item, serie in pesos_mensais.items()
+            if any(mes >= "2020-01-01" for mes in serie)}
+
+
+def _agregadores_custo_vida(met: dict, inds: list, modo: str, dims_res: list, nivel: dict, pesos_mensais: dict) -> dict:
+    """SENSIBILIDADE do Custo de vida ao agregador das 11 séries (auditoria R3b). Não entra na síntese.
+
+    Refaz a leitura com outros resumos das mesmas séries, para as duas perguntas: a variação do início ao fim (leitura
+    principal) e o nível real médio (outra forma de olhar). Agregadores: mediana das 11 (atual), média aritmética,
+    média geométrica de relativos de preço (estimador de Jevons), mediana com o diesel e o diesel S10 contados como um item,
+    média das médias das duas categorias (combustíveis e alimentos) e média ponderada pelo peso dos itens no IPCA (diesel e
+    S10 são o mesmo subitem do IPCA). Lê só valores já calculados; a ponderação usa o peso médio de jan/2020 em diante."""
+    tol = met["regras"]["tolerancia"]["variacao_pct"]
+    ids = [i["id"] for i in inds if i["dimensao"] == "custo_vida" and i["tipo"] == "A" and not i.get("excluido") and i.get(modo)]
+    pesos = _pesos_ipca_medios(pesos_mensais) if pesos_mensais else {}
+    sem_diesel_s10 = [i for i in ids if i != "DIESEL S10"]
+    alimentos = [i for i in ids if i in INDICES_ALIMENTO]
+    combustiveis = [i for i in ids if i in _CATEG_COMB]
+
+    def calc(v: dict) -> list:
+        """v[id][periodo] em unidades de variação percentual (nível: nível relativo - 100)."""
+        fundido = {**v, "DIESEL": {p: statistics.fmean([v["DIESEL"][p], v["DIESEL S10"][p]]) for p in PERIODOS}} if "DIESEL" in v and "DIESEL S10" in v else v
+        f = {
+            "mediana": ("Mediana das 11 séries (método atual)", lambda p: statistics.median(v[i][p] for i in ids)),
+            "media": ("Média aritmética das 11 séries", lambda p: statistics.fmean(v[i][p] for i in ids)),
+            "geometrica": ("Média geométrica das 11 séries (estimador de Jevons)", lambda p: (math.exp(statistics.fmean(math.log(1 + v[i][p] / 100) for i in ids)) - 1) * 100),
+            "diesel_unico": ("Mediana com diesel e diesel S10 como um só item (10)", lambda p: statistics.median(fundido[i][p] for i in sem_diesel_s10)),
+            "categorias": ("Média das médias das duas categorias (combustíveis e alimentos)", lambda p: statistics.fmean([statistics.fmean(v[i][p] for i in combustiveis), statistics.fmean(v[i][p] for i in alimentos)])),
+        }
+        if pesos and all(i in pesos for i in sem_diesel_s10):
+            f["ponderada_ipca"] = ("Média ponderada pelo peso dos itens no IPCA (10 itens)", lambda p: sum(fundido[i][p] * pesos[i] for i in sem_diesel_s10) / sum(pesos[i] for i in sem_diesel_s10))
+        out = []
+        for chave, (nome, fn) in f.items():
+            b, l = fn("Bolsonaro"), fn("Lula")
+            lt = _leitura({"Bolsonaro": -b, "Lula": -l}, tol)
+            dims_alt = [{**d, "leitura": lt} if d["id"] == "custo_vida" else d for d in dims_res]
+            out.append({"id": chave, "nome": nome, "Bolsonaro": round(b, 2), "Lula": round(l, 2), "leitura": lt, "grade": _grade(dims_alt, met)})
+        return out
+
+    traj = {i: {p: next(x for x in inds if x["id"] == i)[modo][p]["valor"] for p in PERIODOS} for i in ids}
+    niv = {l["id"]: {p: l["nivel_medio"][p] - 100 for p in PERIODOS} for l in nivel["por_serie"]}
+    return {"trajetoria": calc(traj), "nivel": calc(niv),
+            "pesos_ipca": {"metodo": "peso médio de cada item no IPCA de jan/2020 ao último mês (estrutura POF 2017-2018); diesel e diesel S10 são um só subitem",
+                           "pesos": {k: round(v, 4) for k, v in pesos.items()}}}
+
+
 def _maiores_movimentos(inds: list, modo: str) -> dict:
     """Só séries com a mesma unidade de leitura (variação % real): custo de vida e poder de compra."""
     cands = []
@@ -620,21 +715,21 @@ def _textos(dims_res: list, inds: list, met: dict, modo: str, sint: list, grade:
     # 99,96% não pode aparecer como "100,0%" quando sobra pelo menos uma combinação fora do lado
     pct_ = lambda n: ("mais de 99,9%" if n < t and 100 * n / t >= 99.95 else f"{100 * n / t:.1f}".replace(".", ",") + "%")
     if grade["lula"] > 0 and grade["bolsonaro"] > 0:
-        rob = (f"A síntese depende dos pesos: aponta para o período Lula em {pct_(grade['lula'])} das {fmt_n(t)} combinações testadas, "
+        rob = (f"Na análise de sensibilidade aos pesos, a síntese depende dos pesos: aponta para o período Lula em {pct_(grade['lula'])} das {fmt_n(t)} combinações testadas, "
                f"para o período Bolsonaro em {pct_(grade['bolsonaro'])} e fica empatada em {pct_(grade['empate'])}. "
-               "O lado da conclusão depende do peso que cada leitor dá a cada dimensão.")
+               "O lado da síntese depende do peso que cada leitor dá a cada dimensão.")
     elif grade["lula"] == 0 and grade["bolsonaro"] == 0:
-        rob = f"Nas {fmt_n(t)} combinações de pesos testadas a síntese fica empatada."
+        rob = f"Na análise de sensibilidade aos pesos, a síntese fica empatada nas {fmt_n(t)} combinações testadas."
     else:
         lado = "Lula" if grade["lula"] > 0 else "Bolsonaro"
         oposto = "Bolsonaro" if lado == "Lula" else "Lula"
         n_lado = grade["lula"] if lado == "Lula" else grade["bolsonaro"]
         emp = (f" e fica empatada em {fmt_n(grade['empate'])} (quando todo o peso cai em dimensões que ficam praticamente iguais)"
                if grade["empate"] else "")
-        rob = (f"Nenhuma das {fmt_n(t)} combinações de pesos testadas leva a síntese ao período {oposto}: ela aponta para o período {lado} em "
-               f"{fmt_n(n_lado)} ({pct_(n_lado)}){emp}. Isso ocorre porque nenhuma dimensão aponta para o período {oposto}; "
-               "os pesos mudam o tamanho da diferença, não o lado.")
-    return {"por_dimensao": linhas, "geral": geral, "robustez": rob}
+        rob = (f"Na análise de sensibilidade aos pesos, nenhuma das {fmt_n(t)} combinações testadas (pesos de {grade['passo']} em {grade['passo']} pontos) leva a síntese ao período {oposto}: "
+               f"ela aponta para o período {lado} em {fmt_n(n_lado)} ({pct_(n_lado)}){emp}. Isso ocorre porque nenhuma dimensão aponta para o período {oposto}; "
+               "os pesos mudam o tamanho da diferença, não o lado. O resultado vale para esta metodologia e estas dimensões e não esgota todos os pesos possíveis.")
+    return {"por_dimensao": linhas, "geral": geral, "sensibilidade": rob}
 
 
 def _bloco_pib(pib: dict) -> dict:
@@ -654,7 +749,9 @@ def calcular_resultados() -> dict:
     d = json.loads((DATA_PROCESSED / "dashboard_data.json").read_text(encoding="utf-8"))
     produtos = d["produtos"]
     global _IPCA_REF, _IPCA_REF_MES
-    com_ipca = [r for r in produtos["GASOLINA"]["serie_mensal"] if r.get("ipca_indice")]
+    # O salário mínimo vem da série própria (BCB SGS 1619 + IPCA), com todos os meses, e não da série da gasolina.
+    produtos = {**produtos, "SALARIO_MINIMO": {"serie_mensal": d["salario_minimo_serie"]}}
+    com_ipca = [r for r in produtos["SALARIO_MINIMO"]["serie_mensal"] if r.get("ipca_indice")]
     _IPCA_REF, _IPCA_REF_MES = float(com_ipca[-1]["ipca_indice"]), com_ipca[-1]["ano_mes"]
     blocos = {"mercado_trabalho": (d.get("mercado_trabalho") or {}).get("produtos", {})}
     inds = []
@@ -685,7 +782,9 @@ def calcular_resultados() -> dict:
         sint = _sintese(dims_res, met["cenarios"])
         grade = _grade(dims_res, met)
         saida["modos"][modo] = {"dimensoes": dims_res, "sintese": sint, "grade": grade, "maiores_movimentos": _maiores_movimentos(inds, modo),
-                                "textos": _textos(dims_res, inds, met, modo, sint, grade)}
+                                "textos": _textos(dims_res, inds, met, modo, sint, grade),
+                                "custo_vida_nivel_real": _nivel_real_custo_vida(met, produtos, modo, dims_res)}
+        saida["modos"][modo]["custo_vida_agregadores"] = _agregadores_custo_vida(met, inds, modo, dims_res, saida["modos"][modo]["custo_vida_nivel_real"], d.get("ipca_pesos") or {})
     # o que muda de leitura quando se troca a janela
     dm = {x["id"]: x for x in met["dimensoes"]}
     muda = []

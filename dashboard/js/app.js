@@ -45,7 +45,7 @@ const EVENTS = [
 const eventsFor = (prod) => EVENTS.filter((e) => !e.fam || e.fam === familia(prod)).map((e, i) => ({ ...e, key: "ABCDEFG"[i] }));
 
 const FAMS = [
-  { key: "comb", title: "Combustíveis", unit: "R$ · média nacional" },
+  { key: "comb", title: "Combustíveis", unit: "R$ · média nacional oficial ANP" },
   { key: "alim", title: "Alimentos", unit: "índice · não é R$" },
   { key: "merc", title: "Economia", unit: "unidade de cada um" }, // inclui mercados e PIB
 ];
@@ -58,7 +58,7 @@ function unidade(code) {
 }
 function unitLong(code) {
   const prod = P(code);
-  if (prod.tipo === "combustivel") return `R$ ${unidade(code).por} · média nacional · ANP`;
+  if (prod.tipo === "combustivel") return `R$ ${unidade(code).por} · preço médio nacional de revenda · ANP (série oficial, ponderada por vendas)`;
   if (code === "DOLAR") return "R$ por dólar · PTAX venda, média do mês · Banco Central";
   if (prod.tipo === "alimento_indice") return "Índice de preço, jan/2019 = 100 · IBGE · não é valor em reais";
   if (code === "SELIC") return "% ao ano · meta definida pelo Copom · Banco Central";
@@ -551,7 +551,7 @@ function priceConfig(code) {
   if (k === "taxa") {
     get = (r) => r.taxa_aa; yFmt = (t, s) => `${fmtNum(t, s < 1 ? 1 : 0)}%`; vFmt = (v) => `${fmtNum(v, 2)}%`;
     help = code === "SELIC" ? "Meta da taxa básica de juros definida pelo Copom, média de cada mês." : "Inflação acumulada em 12 meses até cada mês (IPCA).";
-    deck = code === "SELIC" ? "A taxa básica de juros mês a mês, com os mesmos marcos e notícias das outras histórias." : "A inflação acumulada em 12 meses, mês a mês. A série começa em jan/2020, porque precisa de 12 meses anteriores.";
+    deck = code === "SELIC" ? "A taxa básica de juros mês a mês, com os mesmos marcos e notícias das outras histórias." : "A inflação acumulada em 12 meses, mês a mês. A série começa em jan/2019: o índice de 2018 entra só para calcular os primeiros 12 meses.";
   } else if (k === "pontos") {
     get = (r) => r.pontos; yFmt = (t) => `${fmtNum(t / 1000, 0)} mil`; vFmt = (v) => `${fmtInt(v)} pts`;
     help = "Fechamento do último pregão de cada mês, em pontos. Pontos não são reais.";
@@ -573,7 +573,9 @@ function priceConfig(code) {
     deck = `Como o preço ${m.de} variou, em índice. O IBGE não publica preço médio em reais por item, só a variação oficial de cada mês.`;
   } else if (S.metric === "real") {
     get = (r) => r.preco_real; ref = (r) => r.preco_nominal; yFmt = brlTick; vFmt = (v) => fmtBRL(v);
-    help = `Cada mês convertido para reais de ${mL}. Se a linha sobe, ficou mais caro de verdade, não só por causa da inflação. A linha pontilhada é o valor como estava na época.`;
+    help = code === "DOLAR"
+      ? `A cotação de cada mês (reais por dólar) convertida para reais de ${mL} pelo IPCA brasileiro. Não é o câmbio real usado na economia internacional, que também desconta a inflação dos Estados Unidos. A linha pontilhada é a cotação como estava na época.`
+      : `Cada mês convertido para reais de ${mL}. Se a linha sobe, ficou mais caro de verdade, não só por causa da inflação. A linha pontilhada é o valor como estava na época.`;
   } else if (S.metric === "pct_sm") {
     get = (r) => r.pct_salario_minimo; yFmt = (t, s) => `${fmtNum(t, s < 0.1 ? 2 : 1)}%`; vFmt = (v) => `${fmtNum(v, 2)}%`;
     help = `Quanto ${u.um} pesava no salário mínimo vigente em cada mês. Quanto mais alta a linha, mais pesa no bolso.`;
@@ -581,7 +583,7 @@ function priceConfig(code) {
     get = (r) => r.preco_nominal; yFmt = brlTick; vFmt = (v) => fmtBRL(v);
     help = "O valor cobrado em cada mês, sem ajuste. Para comparar épocas de forma justa, use “Corrigido pela inflação”.";
   }
-  if (k === "preco") deck = code === "DOLAR" ? "Quantos reais valia um dólar em cada mês, na média da cotação oficial." : `O preço médio nacional ${m.de} em cada mês, ${u.por}.`;
+  if (k === "preco") deck = code === "DOLAR" ? "Quantos reais valia um dólar em cada mês, na média da cotação oficial." : `O preço médio nacional de revenda ${m.de} (série mensal oficial da ANP, ponderada pelas vendas) em cada mês, ${u.por}.`;
   return { prod, k, get, ref, yFmt, vFmt, help, deck };
 }
 
@@ -603,7 +605,7 @@ function renderPrice(animate = true) {
     b.setAttribute("aria-pressed", String(b.dataset.metric === S.metric));
   });
   $('#metric-toggle [data-metric="nominal"]').textContent = pc.k === "indice" ? "Índice" : "Na época";
-  $('#metric-toggle [data-metric="real"]').textContent = pc.k === "indice" ? "Índice corrigido pela inflação" : "Corrigido pela inflação";
+  $('#metric-toggle [data-metric="real"]').textContent = pc.k === "indice" ? "Índice corrigido pela inflação" : code === "DOLAR" ? "Dólar corrigido pelo IPCA" : "Corrigido pela inflação";
   $("#metric-help").innerHTML = ref ? `${help} <span class="legend" style="display:inline-flex;margin:0 0 0 8px"><span><i class="k"></i>corrigido</span><span><i class="k k--dot" style="border-color:var(--fg-3)"></i>na época</span></span>` : help;
   $("#preco-title").textContent = pc.k === "pib" ? "Como o PIB mudou de 2019 para cá." : "Mês a mês, desde 2019.";
   $("#preco-deck").textContent = `${pc.deck} O fundo muda de cor na troca de governo. Letras marcam datas de contexto; números marcam notícias da época.`;

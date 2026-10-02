@@ -299,7 +299,8 @@ def main() -> None:
     urls_publicadas = {n["url"] for n in noticias}
     # ---------------------------------------------------------------- v1.2.1: salário mínimo real em R$ de uma data comum
     # recalculado por fora: salário nominal x IPCA do último mês disponível / IPCA do mês
-    gas = dash["produtos"]["GASOLINA"]["serie_mensal"]
+    # a série do salário mínimo é própria (BCB SGS 1619 + IPCA): não herda o buraco de set/2020 da gasolina
+    gas = dash["salario_minimo_serie"]
     com_ipca = [r for r in gas if r.get("ipca_indice")]
     ref = com_ipca[-1]
     check(res["salario_real_referencia"]["mes"] == ref["ano_mes"] and abs(res["salario_real_referencia"]["ipca_indice"] - ref["ipca_indice"]) < 1e-6,
@@ -323,6 +324,231 @@ def main() -> None:
         check(bool(n.get("titulo")) and bool(n.get("veiculo")) and bool(n.get("data")), f"item {rot}: título, veículo ou data ausente")
     check(any(n["data"] < "2020-01-01" for n in marcos), "nenhum marco de 2019")
     check(any(n["data"] >= "2026-01-01" for n in marcos), "nenhum marco de 2026")
+
+    # ---------------------------------------------------------------- v1.3.0: auditoria metodológica (R1-R10)
+    import csv
+    import itertools
+    import statistics
+
+    check(met["versao"] >= "1.3", "as correções R1/R2/R7 exigem metodologia v1.3 ou mais nova")
+
+    # R1: IPCA em 12 meses com cobertura completa. O número-índice começa 12 meses antes de jan/2019.
+    ipca_idx = {r["ano_mes"][:7]: float(r["ipca_indice"]) for r in csv.DictReader(open(DATA_PROCESSED / "ipca_geral_mensal.csv", encoding="utf-8"))}
+    meses_idx = sorted(ipca_idx)
+    check(meses_idx[0] <= "2018-01", f"R1: o número-índice do IPCA deve começar em jan/2018 ou antes (começa em {meses_idx[0]})")
+    check(len(meses_idx) == len(set(meses_idx)), "R1: mês duplicado no número-índice do IPCA")
+
+    def _menos(m: str, n: int) -> str:
+        t = int(m[:4]) * 12 + int(m[5:7]) - 1 - n
+        return f"{t // 12}-{t % 12 + 1:02d}"
+
+    ipca_serie = {r["ano_mes"][:7]: r["taxa_aa"] for r in dash["produtos"]["IPCA"]["serie_mensal"]}
+    check(min(ipca_serie) == "2019-01", f"R1: o IPCA em 12 meses deve começar em jan/2019 (começa em {min(ipca_serie)})")
+    for m_, v_ in ipca_serie.items():
+        esperado = round((ipca_idx[m_] / ipca_idx[_menos(m_, 12)] - 1) * 100, 2)
+        check(abs(v_ - esperado) <= 0.01, f"R1: IPCA em 12 meses de {m_}: {v_} != {esperado} (índice do mês / índice 12 meses antes)")
+    check(all(f"{a}-{m:02d}" in ipca_serie for a in range(2019, 2026) for m in range(1, 13)), "R1: faltam meses de 2019 a 2025 no IPCA em 12 meses")
+    ipca_res = next(i for i in res["indicadores"] if i["id"] == "IPCA")
+    check(ipca_res["completo"]["Bolsonaro"]["n"] == 48 and ipca_res["completo"]["Bolsonaro"]["inicio"] == "2019-01-01", "R1: o período Bolsonaro do IPCA deve ter 48 meses desde jan/2019")
+    mt_ = ipca_res["mesmo_tempo"]
+    check(mt_["Bolsonaro"]["n"] == mt_["Lula"]["n"] == res["duracao"]["mesmo_tempo_meses"], "R1: janelas de mesma duração do IPCA com tamanhos diferentes")
+    check(mt_["Bolsonaro"]["inicio"] == "2019-01-01" and mt_["Lula"]["inicio"] == "2023-01-01", "R1: a janela de igual duração do IPCA deve começar no mês 1 de cada mandato")
+    media_b = statistics.fmean(v for m_, v in ipca_serie.items() if "2019-01" <= m_ <= "2022-12")
+    check(abs(ipca_res["completo"]["Bolsonaro"]["media"] - media_b) < 1e-3, "R1: média do IPCA do período Bolsonaro não confere com a série")
+
+    # R2: litros de gasolina por salário mínimo fora da síntese de Renda, mas ainda disponíveis como série à parte
+    check(imeta["SM_GASOLINA"]["tipo"] == "C" and imeta["SM_GASOLINA"]["direcao"] is None, "R2: litros por salário mínimo deve ser informativo (Tipo C), sem voto em Renda")
+    check(imeta["SALARIO_REAL"]["tipo"] == "A", "R2: o salário mínimo real deve continuar sendo a série com voto em Renda")
+    for modo, bloco in res["modos"].items():
+        renda = next(d for d in bloco["dimensoes"] if d["id"] == "renda")
+        sm = next(i for i in res["indicadores"] if i["id"] == "SALARIO_REAL")[modo]
+        check(renda["por_periodo"]["Bolsonaro"]["n"] == 1 and renda["por_periodo"]["Lula"]["n"] == 1, f"R2/{modo}: Renda deve ter uma série com direção")
+        tol_ = met["regras"]["tolerancia"]["variacao_pct"]
+        esperado = 0 if abs(sm["Lula"]["valor"] - sm["Bolsonaro"]["valor"]) < tol_ else (1 if sm["Lula"]["valor"] > sm["Bolsonaro"]["valor"] else -1)
+        check(renda["leitura"] == esperado, f"R2/{modo}: leitura de Renda não segue só o salário mínimo real")
+    gas_s = dash["produtos"]["GASOLINA"]["serie_mensal"]
+    for r in gas_s:
+        if r.get("salario_minimo") and r.get("preco_nominal"):
+            check(abs(r["unidades_por_salario_minimo"] - r["salario_minimo"] / r["preco_nominal"]) <= 0.006 + 1e-4 * r["unidades_por_salario_minimo"], f"R2: litros por salário mínimo de {r['ano_mes']} não é salário/preço nominal")
+            if r.get("preco_real") and r.get("ipca_indice"):
+                sm_real_ = r["salario_minimo"] * ref["ipca_indice"] / r["ipca_indice"]
+                check(abs(r["unidades_por_salario_minimo"] - sm_real_ / r["preco_real"]) <= 0.01 + 1e-4 * r["unidades_por_salario_minimo"], f"R2: litros em {r['ano_mes']} deveria ser igual ao salário real / preço real")
+    check(next(i for i in res["indicadores"] if i["id"] == "SM_GASOLINA")["completo"]["Lula"]["valor"] is not None, "R2: a série de litros por salário mínimo continua calculada como indicador à parte")
+
+    # R3a: a variação do início ao fim continua a leitura principal; o nível real é outra forma de olhar e não entra na síntese
+    check("custo_vida" in met["regras"]["formulas"].get("nivel_real_custo_vida", "") or "nivel_real_custo_vida" in met["regras"]["formulas"], "R3a: a regra do nível real não está declarada na metodologia")
+    for modo, bloco in res["modos"].items():
+        nr = bloco["custo_vida_nivel_real"]
+        cv_ = next(d for d in bloco["dimensoes"] if d["id"] == "custo_vida")
+        check(nr["leitura_principal"] == cv_["leitura"], f"R3a/{modo}: a leitura principal do Custo de vida deve seguir a variação do início ao fim")
+        leit_ = {d["id"]: d["leitura"] for d in bloco["dimensoes"] if d.get("leitura") is not None}
+        check(leit_["custo_vida"] == cv_["leitura"], f"R3a/{modo}: a síntese deve usar a leitura principal")
+        # recálculo independente do nível médio por série
+        for l in nr["por_serie"]:
+            ind_ = next(i for i in res["indicadores"] if i["id"] == l["id"])
+            pontos = {x["iso"]: x["v"] for x in ind_["serie"]}
+            kb = {(int(iso[:4]) - 2019) * 12 + int(iso[5:7]): v for iso, v in pontos.items() if "2019-01-01" <= iso <= "2022-12-01"}
+            kl = {(int(iso[:4]) - 2023) * 12 + int(iso[5:7]): v for iso, v in pontos.items() if iso >= "2023-01-01"}
+            if modo == "mesmo_tempo":  # só as posições k em que os dois períodos têm dado
+                comuns_ = set(kb) & set(kl)
+                kb, kl = {k: v for k, v in kb.items() if k in comuns_}, {k: v for k, v in kl.items() if k in comuns_}
+            vb, vl = list(kb.values()), list(kl.values())
+            base_ = statistics.fmean(vb + vl)
+            check(abs(l["nivel_medio"]["Bolsonaro"] - statistics.fmean(vb) / base_ * 100) <= 0.01 and abs(l["nivel_medio"]["Lula"] - statistics.fmean(vl) / base_ * 100) <= 0.01,
+                  f"R3a/{modo}/{l['id']}: nível médio não confere")
+        check(abs(nr["nivel_medio"]["Bolsonaro"] - statistics.median(l["nivel_medio"]["Bolsonaro"] for l in nr["por_serie"])) <= 0.01, f"R3a/{modo}: mediana dos níveis médios não confere")
+        check(nr["n_series"] == cv_["n_series"], f"R3a/{modo}: o nível real deve usar as mesmas séries do Custo de vida")
+
+    # R5: terminologia do dólar. Nenhum texto do site chama a série de "dólar real" ou "câmbio real".
+    site_txt = "\n".join((DATA_PROCESSED.parent.parent / "dashboard" / f).read_text(encoding="utf-8") for f in ("index.html", "js/app.js", "js/analise.js", "js/pib.js", "js/arquivo.js", "js/linhadotempo.js"))
+    for proibida in ("dólar real", "dolar real"):
+        check(proibida not in site_txt.lower(), f"R5: o site usa '{proibida}', mas a série é o câmbio nominal corrigido pelo IPCA")
+    for pos_ in [m.start() for m in re.finditer(r"c[âa]mbio real", site_txt.lower())]:
+        check("não é" in site_txt.lower()[max(0, pos_ - 24):pos_], "R5: 'câmbio real' só pode aparecer para dizer que a série NÃO é o câmbio real")
+    check("Dólar corrigido pelo IPCA" in site_txt, "R5: rótulo 'Dólar corrigido pelo IPCA' ausente")
+    dol = dash["produtos"]["DOLAR"]["serie_mensal"]
+    for r in dol:
+        if r.get("preco_real") and r.get("ipca_indice"):
+            check(abs(r["preco_real"] - r["preco_nominal"] * ref["ipca_indice"] / r["ipca_indice"]) <= 0.001, f"R5: dólar corrigido de {r['ano_mes']} não é câmbio nominal x IPCA base / IPCA do mês")
+
+    # R6 (v1.4.0): o preço de combustível é a série mensal nacional OFICIAL da ANP; a média simples das coletas é só sensibilidade
+    check("série mensal nacional oficial da anp" in site_txt.lower(), "R6: o site não declara que o preço é a série mensal nacional oficial da ANP")
+    check("preço médio nacional ${m.de}" not in site_txt, "R6: ainda há 'preço médio nacional' como rótulo sem dizer que é a série oficial")
+    check("média simples das coletas da ANP ${m.de}" not in site_txt, "R6: o gráfico ainda rotula a série como média simples das coletas")
+    import pandas as pd
+    anp_csv = DATA_PROCESSED / "anp_precos_mensais.csv"
+    bruto_anp = DATA_RAW / "anp" / "ca"
+    if anp_csv.exists() and bruto_anp.exists() and list(bruto_anp.glob("ca-2019-0*.csv")):
+        nac = pd.read_csv(anp_csv, parse_dates=["ano_mes"])
+        nac = nac[(nac["regiao"] == "BR") & (nac["produto"] == "GASOLINA") & (nac["ano_mes"] == "2019-03-01")]
+        bruto = pd.read_csv(next(bruto_anp.glob("ca-2019-01.csv")), sep=";", decimal=",", encoding="utf-8-sig")
+        col_p = next(c for c in bruto.columns if c.lower().startswith("produto"))
+        col_d = next(c for c in bruto.columns if "data da coleta" in c.lower())
+        col_v = next(c for c in bruto.columns if "valor de venda" in c.lower())
+        bruto["dt"] = pd.to_datetime(bruto[col_d], format="%d/%m/%Y")
+        g_ = bruto[(bruto[col_p].str.upper().str.strip() == "GASOLINA") & (bruto["dt"].dt.strftime("%Y-%m") == "2019-03")][col_v]
+        if len(nac) == 1 and len(g_):
+            check(abs(float(nac["preco_medio"].iloc[0]) - g_.mean()) <= 1e-6, "R6: o preço nacional de mar/2019 não é a média simples das coletas")
+
+    # v1.4.0 R6/E-ANP: o preço nominal dos combustíveis (Brasil) é o da série oficial; a média simples fica à parte
+    ofi = list(csv.DictReader(open(DATA_PROCESSED / "anp_oficial_mensal.csv", encoding="utf-8")))
+    ofi_idx = {(r["produto"], r["ano_mes"][:7]): float(r["preco_medio"]) for r in ofi}
+    check(len(ofi_idx) == len(ofi), "ANP oficial: mês duplicado por produto")
+    check(all(v > 0 and math.isfinite(v) for v in ofi_idx.values()), "ANP oficial: preço não positivo ou não finito")
+    for cod_ in ("GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP"):
+        meses_o = sorted(m for (p_, m) in ofi_idx if p_ == cod_)
+        check(meses_o == sorted(set(meses_o)), f"ANP oficial/{cod_}: meses fora de ordem")
+        for r in dash["produtos"][cod_]["serie_mensal"]:
+            if r.get("preco_nominal") is None:
+                continue
+            check(abs(r["preco_nominal"] - ofi_idx[(cod_, r["ano_mes"][:7])]) <= 5e-4, f"ANP/{cod_}/{r['ano_mes']}: preço do dashboard difere da série oficial")
+    comb_final = list(csv.DictReader(open(DATA_PROCESSED / "combustiveis_final.csv", encoding="utf-8")))
+    br_ = [r for r in comb_final if r["regiao"] == "BR" and r["produto"] == "ETANOL"]
+    dif_ = [float(r["preco_simples_coletas"]) / float(r["preco_nominal"]) - 1 for r in br_]
+    check(len(br_) > 80 and 0.02 < statistics.fmean(dif_) < 0.12, "ANP: a média simples das coletas do etanol deveria ficar em média 2% a 12% acima da série oficial (documentado em ~6,5%)")
+
+    # v1.4.0: salário mínimo é série própria e completa (não herda o buraco de set/2020 da gasolina)
+    sm_meses = [r["ano_mes"][:7] for r in dash["salario_minimo_serie"]]
+    check(sm_meses == sorted(set(sm_meses)) and sm_meses[0] == "2019-01", "salário mínimo: série fora de ordem, duplicada ou que não começa em jan/2019")
+    check(all(f"{a}-{m:02d}" in sm_meses for a in range(2019, 2026) for m in range(1, 13)) and "2020-09" in sm_meses, "salário mínimo: faltam meses (inclusive set/2020)")
+    check(all(r["salario_minimo"] > 0 and r["ipca_indice"] > 0 for r in dash["salario_minimo_serie"]), "salário mínimo: valor não positivo")
+    sr_all = next(i for i in res["indicadores"] if i["id"] == "SALARIO_REAL")
+    check(sr_all["completo"]["Bolsonaro"]["n"] == 48 and sr_all["completo"]["Lula"]["n"] == len([m for m in sm_meses if m >= "2023-01"]), "salário mínimo real: número de meses não é o do calendário")
+    check(sr_all["mesmo_tempo"]["Bolsonaro"]["n"] == sr_all["mesmo_tempo"]["Lula"]["n"] == res["duracao"]["mesmo_tempo_meses"], "salário mínimo real: janelas de igual duração com tamanhos diferentes")
+    check(imeta["SALARIO_REAL"]["origem"] == "SALARIO_MINIMO" and imeta["SALARIO_NOMINAL"]["origem"] == "SALARIO_MINIMO", "salário mínimo deve ter origem própria (SALARIO_MINIMO), não a gasolina")
+
+    # v1.4.0: janela de CALENDÁRIO (meses 1 a n do mandato), não as n primeiras observações
+    for cod_ in ("GASOLINA", "ETANOL", "DIESEL", "DIESEL S10", "GLP", "DOLAR", "SELIC", "IPCA", "IBOVESPA", "Arroz", "Café moído"):
+        for per_, ini_ in (("Bolsonaro", (2019, 1)), ("Lula", (2023, 1))):
+            for nome_, n_ in (("primeiros_12m", 12), ("primeiros_24m", 24), ("primeiros_36m", 36)):
+                c_ = (dash["produtos"][cod_].get("resumo_periodos", {}).get(per_) or {}).get(nome_)
+                if not c_:
+                    continue
+                fim_ = int(c_["mes_fim"][:4]) * 12 + int(c_["mes_fim"][5:7]) - 1
+                lim_ = ini_[0] * 12 + ini_[1] - 1 + n_ - 1
+                check(fim_ <= lim_, f"{cod_}/{per_}/{nome_}: a janela passa do mês {n_} do mandato ({c_['mes_fim']})")
+                check(c_["n_meses"] <= n_, f"{cod_}/{per_}/{nome_}: mais de {n_} meses")
+    gas_c = dash["produtos"]["GASOLINA"]["resumo_periodos"]
+    check(gas_c["Bolsonaro"]["primeiros_24m"]["mes_fim"] == "2020-12-01" and gas_c["Lula"]["primeiros_24m"]["mes_fim"] == "2024-12-01",
+          "janela dos 24 primeiros meses da gasolina deve terminar em dez/2020 e dez/2024 (mesmo calendário), apesar de set/2020 sem pesquisa")
+
+    # v1.4.0 R3b: sensibilidade do Custo de vida ao agregador (não entra na síntese)
+    for modo, bloco in res["modos"].items():
+        ag = bloco["custo_vida_agregadores"]
+        cv_ = next(d for d in bloco["dimensoes"] if d["id"] == "custo_vida")
+        ids_cv = [i["id"] for i in res["indicadores"] if i["dimensao"] == "custo_vida" and i["tipo"] == "A"]
+        tr = {i: {p: next(x for x in res["indicadores"] if x["id"] == i)[modo][p]["valor"] for p in ("Bolsonaro", "Lula")} for i in ids_cv}
+        por_id = {x["id"]: x for x in ag["trajetoria"]}
+        for p in ("Bolsonaro", "Lula"):
+            check(abs(por_id["mediana"][p] - round(statistics.median(tr[i][p] for i in ids_cv), 2)) <= 0.011, f"R3b/{modo}: mediana do agregador difere do recálculo")
+            check(abs(por_id["media"][p] - round(statistics.fmean(tr[i][p] for i in ids_cv), 2)) <= 0.011, f"R3b/{modo}: média do agregador difere do recálculo")
+        check(por_id["mediana"]["leitura"] == cv_["leitura"], f"R3b/{modo}: o agregador 'mediana' deve reproduzir a leitura principal do Custo de vida")
+        check({x["id"] for x in ag["trajetoria"]} == {x["id"] for x in ag["nivel"]} and "ponderada_ipca" in por_id, f"R3b/{modo}: faltam agregadores (inclusive o ponderado pelo IPCA)")
+        check(all(x["grade"]["combinacoes"] == 10626 for x in ag["trajetoria"] + ag["nivel"]), f"R3b/{modo}: grade de cada agregador deve ter 10.626 combinações")
+        check(all(v > 0 for v in ag["pesos_ipca"]["pesos"].values()) and "DIESEL S10" not in ag["pesos_ipca"]["pesos"], "R3b: pesos do IPCA devem ser positivos e o diesel S10 não tem peso próprio (é o mesmo subitem do diesel)")
+    check(set(dash["ipca_pesos"]) == {"Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído", "GASOLINA", "ETANOL", "DIESEL", "GLP"}, "ipca_pesos: itens inesperados")
+
+    # R7: 10.626 combinações, calculadas aqui por enumeração independente
+    check(math.comb(24, 4) == 10626, "R7: C(24,4) deveria ser 10.626")
+    leit_c = {d["id"]: d["leitura"] for d in res["modos"]["completo"]["dimensoes"] if d.get("leitura") is not None}
+    ordem_a = [d["id"] for d in met["dimensoes"] if d["tipo"] == "A"]
+    cont_ = {1: 0, -1: 0, 0: 0}
+    total_ = 0
+    for corte in itertools.combinations(range(24), 4):  # estrelas e barras: 20 blocos de 5 pontos em 5 dimensões
+        pesos = [b - a - 1 for a, b in zip((-1, *corte), (*corte, 24))]
+        s_ = sum(5 * p * leit_c[k] for p, k in zip(pesos, ordem_a))
+        cont_[(s_ > 0) - (s_ < 0)] += 1
+        total_ += 1
+    gc = res["modos"]["completo"]["grade"]
+    check(total_ == 10626 and gc["combinacoes"] == 10626, "R7: a grade deve ter exatamente 10.626 combinações")
+    check((gc["lula"], gc["bolsonaro"], gc["empate"]) == (cont_[1], cont_[-1], cont_[0]), "R7: contagem da grade não confere com a enumeração independente")
+    check(met["regras"]["sensibilidade"]["nome"] == "Análise de sensibilidade aos pesos", "R7: a análise deve se chamar 'Análise de sensibilidade aos pesos'")
+    for modo, bloco in res["modos"].items():
+        check("sensibilidade" in bloco["textos"] and "robustez" not in bloco["textos"], f"R7/{modo}: o texto da grade deve se chamar 'sensibilidade', não 'robustez'")
+        t_ = bloco["textos"]["sensibilidade"].lower()
+        check("robust" not in t_ and "vencedor" not in t_ and "melhor governo" not in t_, f"R7/{modo}: texto da sensibilidade com termo proibido")
+        if bloco["grade"]["mesmo_lado"]:
+            check("não esgota" in t_ or "não esgota" in bloco["textos"]["sensibilidade"], f"R7/{modo}: o texto deve declarar que a grade não esgota todos os pesos")
+
+    # R8: tolerâncias declaradas na metodologia
+    check(met["regras"]["tolerancia"] == {"variacao_pct": 1.0, "media": 0.1}, "R8: tolerâncias diferentes das declaradas (1,0 ponto em variações; 0,1 em médias)")
+
+    # R9: salário mínimo real = salário nominal x IPCA do último mês / IPCA do mês, em meses de referência
+    for alvo_ in ("2019-01", "2020-01", "2021-01", "2022-01", "2023-01", "2024-01", "2025-01", "2026-01", ref["ano_mes"][:7]):
+        r_ = next((x for x in gas if x["ano_mes"][:7] == alvo_), None)
+        check(r_ is not None and alvo_ in {iso[:7] for iso in sr}, f"R9: sem salário mínimo real em {alvo_}")
+        if r_:
+            esperado = r_["salario_minimo"] * ref["ipca_indice"] / r_["ipca_indice"]
+            check(abs(sr[r_["ano_mes"]] - esperado) < 1e-6, f"R9: salário mínimo real de {alvo_} não confere")
+    check(res["salario_real_referencia"]["mes"] == max(ipca_idx) + "-01", "R9: o mês-base deve ser o último mês com IPCA publicado")
+
+    # R10: os seis subitens do IPCA são os pretendidos (código SIDRA, nome oficial do subitem, tabelas 1419 e 7060)
+    esperados_sidra = {"7173": "Arroz", "12222": "Feijão carioca", "7295": "Carne bovina (patinho)", "12393": "Leite longa vida", "7385": "Óleo de soja", "7392": "Café moído"}
+    subitens_ibge = {"7173": "1101002 Arroz", "12222": "1101073 Feijão - carioca (rajado)", "7295": "1107089 Patinho", "12393": "1111004 Leite longa vida", "7385": "1113013 Óleo de soja", "7392": "1114022 Café moído"}
+    itens_csv = list(csv.DictReader(open(DATA_PROCESSED / "ibge_itens_cesta_mensal.csv", encoding="utf-8")))
+    mapa_csv = {r["codigo_sidra"]: r["item"] for r in itens_csv}
+    check(mapa_csv == esperados_sidra, f"R10: códigos SIDRA dos itens diferem do verificado ({mapa_csv})")
+    check(set(subitens_ibge) == set(esperados_sidra), "R10: lista de subitens verificados incompleta")
+    for cod_, nome_ in esperados_sidra.items():
+        meses_ = [r["ano_mes"] for r in itens_csv if r["codigo_sidra"] == cod_]
+        check(meses_ == sorted(set(meses_)), f"R10/{nome_}: meses duplicados ou fora de ordem")
+        check(meses_[0] == "2019-01-01", f"R10/{nome_}: série deve começar em jan/2019 (base 100)")
+
+    # integridade geral: nenhum NaN/infinito, nenhuma série mensal com mês duplicado ou fora de ordem
+    def _sem_nao_finito(x, caminho="") -> None:
+        if isinstance(x, float):
+            check(math.isfinite(x), f"valor não finito em analysis_results.json: {caminho}")
+        elif isinstance(x, dict):
+            for k_, v_ in x.items():
+                _sem_nao_finito(v_, f"{caminho}/{k_}")
+        elif isinstance(x, list):
+            for n_, v_ in enumerate(x):
+                _sem_nao_finito(v_, f"{caminho}[{n_}]")
+
+    _sem_nao_finito(res)
+    for cod_, prod_ in dash["produtos"].items():
+        datas_ = [r.get("ano_mes") or str(r.get("ano")) for r in prod_.get("serie_mensal", [])]
+        check(datas_ == sorted(set(datas_)), f"{cod_}: meses duplicados ou fora de ordem em serie_mensal")
 
     if falhas:
         print(f"{len(falhas)} falha(s):")

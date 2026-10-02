@@ -155,7 +155,7 @@ function cartaoMinuto(d) {
     return `<li class="an-mc">${cab}${secoes}<p class="an-mc-leit">${nRel === 0 ? chipClasse("igual") : chipClasse("rel", nRel === n ? `Diferença relevante nas ${n} séries` : `Diferença relevante em ${nRel} de ${n} séries`)}<span>Cada série é lida pela sua própria tolerância (${tolTxt(r.por_serie[0].tolerancia)} nas taxas). Cada uma vota uma vez; os votos aparecem na leitura abaixo.</span></p></li>`;
   }
   const pb = r.por_periodo.Bolsonaro.mediana_valor, pl = r.por_periodo.Lula.mediana_valor;
-  const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação mediana do poder de compra", atividade: "crescimento médio anual do PIB" }[d.id] || "mediana";
+  const unidade = { custo_vida: "variação real mediana", inflacao: "inflação média em 12 meses", renda: "variação do salário mínimo real", atividade: "crescimento médio anual do PIB" }[d.id] || "mediana";
   const dif = difAbs(pb, pl, false);
   const regra = r.leitura === 0
     ? `Diferença de ${dif}: dentro do limite de ${tolTxt(r.tolerancia)} definido na metodologia.`
@@ -473,6 +473,38 @@ function blocoContexto(dimId) {
   </div>`;
 }
 
+// Outra forma de olhar o Custo de vida (R3a): nível real típico durante o período, em vez da variação do início ao fim.
+// Tudo vem pré-calculado em Python (res().custo_vida_nivel_real); aqui só formatação. Não entra na síntese principal.
+// Sensibilidade ao agregador (R3b): a mesma pergunta respondida com outros resumos das 11 séries. Pré-calculado em Python.
+function linhaAgregadores(lista) {
+  if (!lista?.length) return "";
+  const rot = { 1: "o período Lula", [-1]: "o período Bolsonaro", 0: "“praticamente iguais”" };
+  const grupos = { 1: [], [-1]: [], 0: [] };
+  lista.forEach((x) => grupos[x.leitura].push(x.nome));
+  const ordem = [1, -1, 0].filter((k) => grupos[k].length).sort((a, b) => grupos[b].length - grupos[a].length);
+  return ordem.map((k) => `${grupos[k].length} de ${lista.length} ${grupos[k].length === 1 ? "aponta" : "apontam"} para ${rot[k]}${grupos[k].length === 1 && lista.length > 1 ? ` (${grupos[k][0]})` : ""}`).join("; ");
+}
+
+function blocoNivelReal() {
+  const n = res().custo_vida_nivel_real;
+  if (!n) return "";
+  const ag = res().custo_vida_agregadores;
+  const nome = (l) => (l === 1 ? "Lula" : "Bolsonaro");
+  const f1 = (v) => fmtNum(v, 1);
+  const lado = n.leitura === 0 ? "Pela tolerância da metodologia, os dois períodos ficam praticamente iguais neste critério."
+    : `Neste critério, o nível real típico dos preços foi menor no período ${nome(n.leitura)} (${f1(n.nivel_medio[nome(n.leitura)])} contra ${f1(n.nivel_medio[nome(-n.leitura)])}).`;
+  const g = n.grade;
+  const sint = n.muda_leitura
+    ? `Esta leitura não entra na síntese principal. Se ela substituísse a variação do início ao fim, a grade de ${milhar(g.combinacoes)} combinações de pesos ficaria em ${milhar(g.lula)} para o período Lula, ${milhar(g.bolsonaro)} para o período Bolsonaro e ${milhar(g.empate)} empates.`
+    : "Esta leitura não entra na síntese principal; aqui ela coincide com a leitura principal.";
+  return `<div class="an-outra"><h4 class="an-kick mono">Outra forma de olhar</h4>
+    <p class="an-outra-q">A leitura principal pergunta <b>como os preços variaram</b> do início ao fim de cada período. Esta pergunta é outra: <b>qual era o nível típico dos preços reais durante o período?</b></p>
+    ${trio("nível real médio (média dos dois períodos = 100)", fmtNum(n.nivel_medio.Bolsonaro, 1), fmtNum(n.nivel_medio.Lula, 1), `${fmtNum(Math.abs(n.nivel_medio.Lula - n.nivel_medio.Bolsonaro), 1)} pontos`)}
+    <p>${lado} Pelo nível mediano, os valores são ${fmtNum(n.nivel_mediano.Bolsonaro, 1)} no período Bolsonaro e ${fmtNum(n.nivel_mediano.Lula, 1)} no período Lula.</p>
+    ${ag ? `<p><b>E com outro resumo das séries?</b> Refizemos as duas leituras com a média aritmética, a média geométrica, a mediana com diesel e diesel S10 contados como um item, a média das duas categorias e a média ponderada pelo peso de cada item no IPCA. <b>Variação do início ao fim:</b> ${linhaAgregadores(ag.trajetoria)}. <b>Nível real médio:</b> ${linhaAgregadores(ag.nivel)}. A ponderação pelo IPCA pesa muito a gasolina; por isso a leitura do nível depende do resumo escolhido, e nenhum deles é “o certo”.</p>` : ""}
+    <p>As duas perguntas podem ter respostas diferentes: preços que caem a partir de um ponto alto podem terminar abaixo de onde começaram e, ainda assim, ter ficado em média acima do outro período. Cada preço real é dividido pela média dos dois períodos juntos e a leitura usa a mediana entre as ${n.n_series} séries, com a mesma tolerância de ${fmtNum(n.tolerancia_pontos, 1)} ponto. ${sint}</p></div>`;
+}
+
 function evidencia(d) {
   const r = dimRes(d.id);
   const ids = M.indicadores.filter((i) => i.dimensao === d.id).map((i) => i.id);
@@ -540,6 +572,7 @@ function evidencia(d) {
     ${ctx}
     ${blocoContexto(d.id)}
     <div class="an-read"><h4 class="an-kick mono">Leitura dos dados</h4><div>${leitura}</div></div>
+    ${d.id === "custo_vida" ? blocoNivelReal() : ""}
     ${infos}
     ${temDeep ? `<button type="button" class="an-deep-btn" data-dim="${d.id}" aria-expanded="${aberto}">${textoDeep(d.id, aberto)}</button>` : ""}
     ${robustezDim(r)}
@@ -635,6 +668,19 @@ function renderSens() {
     <tbody>${M.cenarios.map((c, j) => `<tr><th scope="row">${esc(c.nome)}<span class="an-cen-j">${esc(c.justificativa)}</span></th>${A.map((d) => `<td class="num" data-label="${esc(d.titulo)}">${c.pesos[d.id]}%</td>`).join("")}<td data-label="Síntese">${chipLado(sint[j].sentido)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
+// Como ler a análise de sensibilidade: o que ela testa, o que não testa e o que o resultado não é.
+function notaLimites(g) {
+  const k = dimsA().length, n = 100 / g.passo;
+  const alt = res().custo_vida_nivel_real;
+  const g2 = alt && alt.muda_leitura ? alt.grade : null;
+  return `<div class="an-comoler"><h4 class="an-kick mono">Como ler esta análise</h4><ul>
+    <li><b>Os pesos são preferências de quem lê, não dados.</b> Não existe um conjunto certo de pesos.</li>
+    <li><b>Uma grade, não todos os pesos possíveis.</b> Os pesos variam de ${g.passo} em ${g.passo} pontos e somam 100: são ${n} blocos repartidos entre ${k} dimensões, ou seja, ${milhar(g.combinacoes)} combinações. Pesos intermediários não foram testados.</li>
+    <li><b>Estável nas combinações testadas</b> quer dizer que nenhuma delas mudou o lado da síntese, nesta metodologia e nestas ${k} dimensões. Não prova causa, não mede desempenho de governo e não vale para dimensões que o projeto não tem.</li>
+    ${g2 ? `<li><b>A leitura de cada dimensão também depende de escolhas de método.</b> Com a “outra forma de olhar” o Custo de vida (Parte 3), esta mesma grade ficaria em ${milhar(g2.lula)} combinações para o período Lula, ${milhar(g2.bolsonaro)} para o período Bolsonaro e ${milhar(g2.empate)} empates.</li>` : ""}
+  </ul></div>`;
+}
+
 // Teste de sensibilidade: o resultado das TODAS as combinações de pesos, pré-calculado em Python (res().grade).
 // Não depende dos controles "Seus pesos". Nenhum número é recalculado aqui; só formatação e proporções da barra.
 function renderTeste() {
@@ -660,8 +706,8 @@ function renderTeste() {
   const marca = g.empate > 0 ? `<span class="an-tt-marca${pc(g.bolsonaro) > 70 ? " is-fim" : ""}" style="left:${pc(g.bolsonaro)}%" aria-hidden="true"><i></i><span>${milhar(g.empate)} ${verbo(g.empate, "empate", "empates")}</span></span>` : "";
   const stat = (l, n, longo, curto) => `<li data-l="${l}"><b class="an-tt-n">${milhar(n)}</b><span class="an-tt-d"><span class="an-tt-long">${longo}</span><span class="an-tt-short">${curto}</span></span></li>`;
   $("#an-teste").innerHTML = `<div class="an-teste" role="group" aria-labelledby="an-teste-t">
-    <p class="an-kick mono" id="an-teste-t">Teste de sensibilidade · todas as combinações</p>
-    <p class="an-teste-intro">Testamos sistematicamente diferentes pesos para as ${cinco === 5 ? "cinco" : cinco} dimensões. Veja o que aconteceu.</p>
+    <p class="an-kick mono" id="an-teste-t">Análise de sensibilidade aos pesos · todas as combinações</p>
+    <p class="an-teste-intro">Testamos sistematicamente diferentes pesos para as ${cinco === 5 ? "cinco" : cinco} dimensões. A pergunta é se mudar a importância relativa delas muda o lado da síntese.</p>
     <div class="an-tt-grid">
       <p class="an-tt-total"><b>${milhar(t)}</b><span>combinações de pesos<br>testadas</span></p>
       <ul class="an-tt-stats">
@@ -682,6 +728,7 @@ function renderTeste() {
     <p class="an-tt-escala">${empPeq ? `A barra é proporcional ao número de combinações. O empate (${milhar(g.empate)} em ${milhar(t)}) é pequeno demais para aparecer na barra, por isso tem uma marca própria. ` : "A barra é proporcional ao número de combinações. "}Pesos de ${g.passo} em ${g.passo} pontos, somando 100.</p>
     <p class="an-tt-frase">${esc(frase)}</p>
     <p class="an-tt-nota">${esc(nota)} É o resultado desta metodologia (v${esc(M.versao)}), com as leituras de hoje; não é um veredito.</p>
+    ${notaLimites(g)}
   </div>`;
 }
 
@@ -696,7 +743,8 @@ function renderResumo() {
       return `<tr><th scope="row">${esc(d.titulo)}</th><td data-label="Evidência">${badgeEvid(r.nivel_evidencia)}</td><td class="num" data-label="Período Bolsonaro">${valDim(r, r.por_periodo.Bolsonaro.mediana_valor)}</td><td class="num" data-label="Período Lula">${valDim(r, r.por_periodo.Lula.mediana_valor)}</td><td data-label="Leitura">${chipLado(r.leitura)}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   const t = res().textos;
-  $("#an-geral").innerHTML = `<p>${esc(t.geral)}</p><p>${esc(t.robustez)}</p>
+  const gr = res().grade;
+  $("#an-geral").innerHTML = `<p>${esc(t.geral)}</p><p>${gr.mesmo_lado ? `Nas ${milhar(gr.combinacoes)} combinações de pesos testadas, a síntese não muda de lado.` : "A síntese muda de lado conforme os pesos."} Os detalhes, os limites da análise e o que ela não prova estão na <a href="#an-parte-10">Parte 10</a>.</p>
     <p class="an-geral-fim">Leitura descritiva das séries do projeto, sob a metodologia v${esc(M.versao)}, na janela “${esc(M.regras.modos_nomes[modo].toLowerCase())}”. Não mede causa e muda com os pesos.</p>`;
 }
 

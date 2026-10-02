@@ -1,8 +1,8 @@
 # Metodologia
 
-Última atualização: 28/09/2026
+Última atualização: 01/10/2026
 Status: **CURRENT** — descreve o que o código calcula hoje. Metodologia da
-Análise: **v1.2.1** (arquivo congelado em `data/processed/analysis_methodology.json`).
+Análise: **v1.4.0** (arquivo congelado em `data/processed/analysis_methodology.json`).
 
 Este texto é para quem lê, não para quem programa. Onde há fórmula, ela é a que o
 código usa (arquivo indicado). Fontes, frequências e limitações de cada série
@@ -68,11 +68,14 @@ acesso público em lote e nenhum código o usa.
 
 ### Combustíveis
 
-Preço médio nacional de revenda (ANP), em R$/litro (GLP: R$/botijão de 13 kg). É a
-**média simples de todas as coletas do mês**, sem ponderar por volume vendido ou
-por região. Setembro/2020 não tem pesquisa da ANP: as linhas ficam interrompidas e
-só a Máquina do tempo mostra uma estimativa "≈", calculada como `último preço da
-ANP × (1 + variação do item no IPCA)` e nunca usada em outra conta.
+**Preço médio nacional de revenda, série mensal OFICIAL da ANP** (a mesma que a ANP publica no arquivo
+`mensal-brasil-desde-jan2013.xlsx`), em R$/litro (GLP: R$/botijão de 13 kg). Desde a metodologia v1.4.0 é esta a série
+principal (`download_anp_oficial.py` → `anp_oficial_mensal.csv` → `build_dataset.py`). Até a v1.3.0 o projeto usava a **média
+simples de todas as coletas do mês** (`download_anp.py`), que continua calculada, como sensibilidade, na coluna
+`preco_simples_coletas`. A razão da troca está em "Preços de combustíveis (ANP)", abaixo. Setembro/2020 não tem pesquisa da
+ANP: as linhas ficam interrompidas e só a Máquina do tempo mostra uma estimativa "≈", calculada como `último preço da
+ANP × (1 + variação do item no IPCA)` e nunca usada em outra conta. Nenhum mês é completado com a média simples: um mês que
+a série oficial não tem fica sem preço.
 
 Câmbio e Brent aparecem como **contexto** dos combustíveis; a proximidade entre
 eles e o preço não é prova de causa (preço da Petrobras, ICMS e tributos federais
@@ -82,7 +85,11 @@ também pesam).
 
 Salário mínimo nacional (BCB SGS 1619, nominal). "% do salário mínimo" e
 "unidades por salário mínimo" usam o salário **vigente no mês** de cada preço, não
-o de hoje. É o piso nacional; alguns estados têm pisos maiores.
+o de hoje. É o piso nacional; alguns estados têm pisos maiores. Na Análise, o salário mínimo
+(nominal e real) vem de uma **série própria** (`salario_minimo_serie` em `dashboard_data.json`: BCB SGS 1619 e IPCA, todos os
+meses de jan/2019 ao último com IPCA), e não das linhas da série de combustíveis. Até a v1.3.0 ele era lido da série da gasolina
+e herdava o buraco de set/2020 (sem pesquisa da ANP); o salário mínimo e o IPCA existem em todos os meses, então a lacuna é só
+dos combustíveis.
 
 ### PIB
 
@@ -131,16 +138,26 @@ qualquer variação acumulada.
 
 Na comparação por **igual duração**, *N* é a maior duração em que os dois períodos têm
 dado, calculada dos dados (44 meses, com dados mensais até ago/2026), não escolhida à mão. O IPCA em 12
-meses começa em jan/2020 (precisa de 12 meses anteriores) e o PIB é anual, então
-para eles vale o que os dois lados têm em comum: IPCA de jan/2020 a ago/2022 contra
-jan/2024 a ago/2026; PIB, três anos fechados de cada lado (2019–2021 contra
-2023–2025).
+meses de jan/2019 em diante usa o número-índice a partir de jan/2018 (o IPCA em 12 meses de um mês divide
+o índice dele pelo de 12 meses antes), então o IPCA também tem os 44 meses de cada lado: jan/2019 a
+ago/2022 contra jan/2023 a ago/2026. Até a v1.2.1 o número-índice só era guardado desde jan/2019, a série
+de 12 meses começava em jan/2020 e o período Bolsonaro perdia o ano de 2019 (ver
+[AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md), v1.3.0). O PIB é anual: três anos fechados de
+cada lado (2019–2021 contra 2023–2025).
 
 Compara-se a **mesma posição no mandato**, não o mesmo calendário: os primeiros 44
 meses de cada período correspondem a momentos diferentes do ciclo econômico
 mundial.
 
-## Análise: como a leitura é construída (metodologia v1.2.1)
+**Regra da janela (v1.4.0): "mesma janela de calendário", não "mesmo número de observações".** O mês *k* de cada mandato é
+jan/2019 + *k*−1 (Bolsonaro) e jan/2023 + *k*−1 (Lula), e uma janela "dos primeiros *n* meses" são os meses 1 a *n* nesse
+calendário, haja ou não dado em cada um. A Análise já funcionava assim (`_k()` em `build_analise.py`). Os resumos "primeiros
+12/24/36 meses" de `build_dashboard_data.py` contavam as *n* primeiras observações: nas séries de combustíveis, que não têm set/2020,
+a janela de 24 meses do período Bolsonaro terminava em jan/2021, e não em dez/2020, e as de 36 meses em jan/2022, um mês
+adiante da janela do período Lula. Agora usam o calendário (`_cohorts_para_periodo`, com `completo` = o período já chegou ao mês
+*n*), e `test_analise.py` confere que nenhuma janela passa do mês *n* do mandato. O PIB, de linhas anuais, fica de fora da regra.
+
+## Análise: como a leitura é construída (metodologia v1.4.0)
 
 A **comparação principal** é a dos períodos inteiros ("período completo disponível":
 Bolsonaro jan/2019–dez/2022; Lula jan/2023–último dado, em curso). A comparação por
@@ -158,7 +175,7 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 |---|---|---|---|
 | Custo de vida | A | Em qual período os preços tiveram menor pressão real sobre o consumidor? | 11 (5 combustíveis, 6 alimentos) — variação **real** |
 | Inflação | A | Em qual período o IPCA em 12 meses foi, em média, menor? | IPCA |
-| Renda e poder de compra | A | Em qual período o salário mínimo ganhou mais poder de compra? | Salário mínimo real; litros de gasolina por salário mínimo (+ salário nominal, tipo C) |
+| Renda e poder de compra | A | Em qual período o salário mínimo ganhou mais poder de compra, descontada a inflação? | Salário mínimo real (a única série com voto); litros de gasolina por salário mínimo e salário nominal, só informativos (tipo C) |
 | Mercado de trabalho | A | Em qual período o mercado de trabalho mostrou menor desocupação, menor subutilização da força de trabalho e maior rendimento real do trabalho? | Taxa de desocupação; taxa composta de subutilização; rendimento médio real habitual (PNAD Contínua) — cada série na sua unidade |
 | Atividade econômica | A | Em qual período o PIB apresentou maior crescimento? | PIB (média do crescimento real anual) |
 | Mercados | B | Como os indicadores financeiros evoluíram? | Dólar, Selic, Ibovespa |
@@ -167,14 +184,16 @@ a versão e registrar em [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVER
 
 - **Tipo A — direção definida.** A metodologia diz de antemão qual sentido é
   o de menor pressão ou de mais atividade: preço real ou inflação **menor**; poder de
-  compra, rendimento do trabalho ou crescimento **maior**. 18 séries.
+  compra, rendimento do trabalho ou crescimento **maior**. 17 séries.
 - **Tipo B — depende do contexto.** Só descrito (início, fim, média, mínimo,
   máximo). Nunca recebe leitura de direção nem entra na síntese: Dólar, Selic,
   Ibovespa. Um dólar mais baixo barateia importações e prejudica exportadores; juro
   alto contém inflação e encarece crédito; o Ibovespa mede uma carteira de ações,
   não o bem-estar das famílias.
 - **Tipo C — informativo.** Não entra em nenhuma leitura: salário mínimo nominal
-  (sobe com a inflação em qualquer período).
+  (sobe com a inflação em qualquer período) e litros de gasolina por salário mínimo (v1.3.0: é o
+  salário real dividido pelo preço real da gasolina; recebia um voto próprio em Renda e contava duas vezes
+  a mesma informação, e agora é um indicador à parte).
 
 ### Cálculo
 
@@ -202,9 +221,11 @@ percentual do início ao fim da janela**.
 
 **Salário mínimo real** = salário mínimo nominal do mês × (número-índice do IPCA do último mês
 disponível ÷ número-índice do IPCA do mês): R$ do último mês com IPCA (ago/2026 hoje), o mesmo
-mês-base dos preços reais do projeto. Até a v1.2 o valor era calculado como salário ÷ índice × 1000,
+mês-base dos preços reais do projeto. "A preços do último mês" quer dizer: o poder de compra de cada mês expresso em reais
+do último mês com IPCA; no último mês o valor real é igual ao nominal e nos anteriores é maior, porque o dinheiro de então
+comprava mais por real. Não é um salário nominal: o nominal sobe com a inflação em qualquer período. Até a v1.2 o valor era calculado como salário ÷ índice × 1000,
 que não é R$ de data nenhuma (ver [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md), v1.2.1).
-"Litros de gasolina por salário mínimo" continua nominal: salário nominal ÷ preço nominal do mês.
+"Litros de gasolina por salário mínimo" continua publicado: salário nominal ÷ preço nominal do mês, que é igual a salário real ÷ preço real da gasolina (a diferença máxima nos 91 meses é arredondamento, 0,008 litro).
 
 **Dimensões de unidades diferentes (agregação "por série").** Mercado de trabalho mistura %, %
 e R$; uma mediana entre elas seria misturar unidades. Cada série é comparada na sua métrica e
@@ -229,9 +250,9 @@ Cada dimensão recebe um rótulo, calculado por regra (não é opinião):
 Para uma dimensão Tipo A, vale o **menor** nível de confiança entre as suas séries.
 O rótulo descreve a qualidade da medida, não o desempenho de nenhum governo.
 
-### Sensibilidade aos pesos
+### Análise de sensibilidade aos pesos
 
-Seis cenários definidos antes do cálculo, sobre as cinco dimensões Tipo A:
+Pergunta: **mudar a importância relativa das cinco dimensões muda o lado da síntese?** Seis cenários definidos antes do cálculo, sobre as cinco dimensões Tipo A:
 
 | Cenário | Custo de vida | Inflação | Renda | Trabalho | Atividade |
 |---|---|---|---|---|---|
@@ -244,13 +265,38 @@ Seis cenários definidos antes do cálculo, sobre as cinco dimensões Tipo A:
 
 O padrão é igual porque não há razão a priori para privilegiar uma dimensão; qualquer
 outra escolha é juízo de valor. Além dos cenários, o script refaz a síntese para
-**todas as combinações de pesos de 5 em 5 pontos que somam 100** (10.626 combinações com cinco dimensões)
-e informa em quantas a síntese aponta para cada período e em quantas empata. Na
+**todas as combinações de pesos de 5 em 5 pontos que somam 100** e informa em quantas a síntese aponta para
+cada período e em quantas empata. O total é combinatório: 100 ÷ 5 = 20 blocos de 5 pontos repartidos entre 5
+dimensões, `C(20 + 5 − 1, 5 − 1) = C(24, 4) = 10.626` (conferido por enumeração independente em
+`test_analise.py`). É uma **grade discreta**: não testa todos os vetores de pesos possíveis (os intermediários, como
+22%, não entram) e o resultado vale para esta metodologia e estas cinco dimensões. "Estável nas combinações
+testadas" quer dizer que nenhuma delas mudou o lado da síntese; como nenhuma dimensão aponta para o período Bolsonaro,
+isso é consequência de as leituras apontarem todas para o mesmo lado (dominância), não prova de robustez geral nem de
+causa. Se uma dimensão apontasse para o outro lado, a mesma grade mostraria a divisão (ver "Outra forma de olhar", abaixo). Na
 página, o leitor move uma barra por dimensão ("Como diferentes prioridades mudam a
 leitura?"); a única conta feita no navegador é a soma ponderada dos sentidos já
 calculados (+1, 0, −1), a mesma fórmula da síntese. Os pesos são preferência do
 leitor, não dado: mudá-los muda a interpretação e não mostra qual governo foi
 melhor.
+
+### Outra forma de olhar o Custo de vida (nível real)
+
+A leitura principal do Custo de vida é a **variação do início ao fim** de cada período (`fim ÷ início − 1`), que
+responde "como os preços variaram?". Há outra pergunta legítima: "qual era o nível típico dos preços reais durante o
+período?". Para cada uma das 11 séries, o preço real de cada mês da janela é dividido pela média dos preços reais dos dois
+períodos juntos e multiplicado por 100; o nível de um período é a média (e, à parte, a mediana) desses valores; a leitura
+usa a mediana entre as séries do nível médio, com a mesma tolerância de 1,0 ponto. Resultado de hoje (período completo):
+nível médio 98,8 (Bolsonaro) e 101,3 (Lula); mediano 94,7 e 101,9; a leitura por esta pergunta aponta para o período
+Bolsonaro, ao contrário da variação do início ao fim. As duas são corretas para perguntas diferentes: preços que caem a
+partir de um ponto alto terminam abaixo do início e podem, mesmo assim, ter ficado em média acima. **Esta leitura não
+entra na síntese**; ela aparece em "Outra forma de olhar" (Parte 3) e na nota da Parte 10, que informa como ficaria a grade
+se ela substituísse a leitura principal. Os números saem de `analysis_results.json` (`custo_vida_nivel_real`), nunca
+digitados.
+
+**A leitura do nível depende do resumo das séries.** Com mediana, média aritmética, média geométrica, diesel único ou média por categoria, o
+nível aponta para o período Bolsonaro; com a média ponderada pelo peso dos itens no IPCA (a gasolina é ~54% do peso dos 10 itens) aponta para o período
+Lula, na margem da tolerância. A variação do início ao fim, ao contrário, aponta para o mesmo período em todos os resumos testados (seção
+"Custo de vida: como as 11 séries se resumem"). O site mostra as duas contagens (`custo_vida_agregadores`).
 
 ### Outras verificações de robustez
 
@@ -322,9 +368,272 @@ data e a lista mostra o valor da série no mês do evento); resumos curtos, sem 
 afirmações contestadas atribuídas a quem as fez. **Proximidade no tempo não é evidência de
 causalidade:** o script recusa resumos com "causou", "provocou" ou "foi responsável por".
 
+## Fundamentos por indicador: da fonte à interpretação
+
+Esta seção segue, para cada indicador, o caminho **fonte → fórmula → método → interpretação**. Os selos separam o que
+é **fato** (dado oficial), **escolha do projeto** (convenção declarada) e **evidência acadêmica ou oficial**. As referências
+são classificadas pelo que realmente sustentam: **sustenta** (trata diretamente do método), **indireta** (mesmo conceito
+ou contexto, não a fórmula), **não sustenta** ou **não verificada**. Lista completa, com DOI conferido no Crossref e
+classificação de cada fonte, em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md) (seção "Etapa 2").
+Onde não há literatura que sustente exatamente a implementação, o texto diz isso.
+
+### Salário mínimo real
+
+- **Dados:** salário mínimo nominal vigente em cada mês (BCB/SGS 1619) e número-índice do IPCA (IBGE/SIDRA, tabela 1737,
+  variável 2266). Série própria e completa (jan/2019 a ago/2026, 92 meses, inclusive set/2020).
+- **Fórmula:** `salário real(mês) = salário nominal(mês) × IPCA(último mês disponível) ÷ IPCA(mês)`. Unidade: R$ do último mês
+  com IPCA (ago/2026 hoje; nesse mês o valor real é igual ao nominal, R$ 1.621). O mês-base é dinâmico: muda quando sai um
+  IPCA novo, e a unidade na página mostra o mês. Conferido por fora em jan/2019, jan/2020, ..., jan/2026 e no mês-base.
+- **Por que o IPCA:** é o mesmo deflator de todos os valores reais do projeto, então os valores são comparáveis entre si, e o IPCA
+  é o índice oficial de inflação do país (meta do Banco Central). As séries oficiais de salário mínimo real costumam usar o INPC
+  (IPEA/Ipeadata, DIEESE), que mede a inflação de famílias com renda de 1 a 5 salários mínimos. **O INPC é uma alternativa
+  legítima, não uma correção automática:** com INPC (SIDRA 1736), a variação real vai de −4,02% para −5,20% (Bolsonaro) e de
+  +6,15% para +7,39% (Lula); mesma direção, nenhuma leitura muda. **Convenção do projeto**, mantida; trocar de deflator exigiria uma
+  nova versão da metodologia.
+- **Referências:** IBGE (2020), *Sistema Nacional de Índices de Preços ao Consumidor: métodos de cálculo* (8ª ed.) — **sustenta**
+  a mecânica do deflator e dos números-índice. Ertel (2022), *Perspectiva Econômica* 18(1) — **sustenta parcialmente** (usa
+  SM e IPCA do SIDRA 1737; o DOI impresso não resolve no Crossref, o texto está em acesso aberto na revista). Ipeadata (salário
+  mínimo real) e DIEESE — **indiretas** (mesmo conceito, deflator INPC).
+- **Não significa:** a renda das famílias nem a de quem ganha acima do piso; alguns estados têm pisos maiores.
+
+### Litros de gasolina por salário mínimo (poder de compra em um item)
+
+- **Fórmula:** `salário mínimo nominal ÷ preço nominal da gasolina` no mesmo mês (litros). Igual a `salário real ÷ preço real`
+  (conferido mês a mês em `test_analise.py`).
+- **Papel (v1.3.0):** indicador de poder de compra **à parte**, publicado e gráficado; **sem voto** na dimensão Renda, porque
+  repete o salário real e o preço da gasolina (que já está no Custo de vida). O OECD/JRC *Handbook* (Nardo et al., 2008, p. 32)
+  alerta para a dupla contagem quando indicadores correlacionados entram juntos num composto — **sustenta** a decisão de
+  não pesar os dois.
+- **Literatura sobre a razão em si (pesquisada de novo em 01/10/2026):** não há artigo revisado por pares que defina "litros de
+  gasolina por salário mínimo". O que existe é o conceito geral de **salário expresso em unidades de um bem**: Alcântara, Daier &
+  Silva (2024), IPEA *Boletim Mercado de Trabalho* 77, DOI 10.38116/bmt77/pf2 (parcela do salário mínimo destinada à cesta básica,
+  dados DIEESE; texto lido) e Ashenfelter & Jurajda (2024), *Review of Economics and Statistics*, DOI 10.1162/rest_a_01514 (salário em
+  unidades de um bem, o "McWage"; resumo conferido na versão NBER). Ambas são **indiretas**: sustentam o conceito, não esta razão
+  nem a escolha da gasolina. **A razão como indicador é, portanto, uma convenção do projeto**, aplicada com a mesma conta de
+  qualquer razão salário/preço.
+- **Não significa:** custo de vida; mede um item.
+
+### Preços de combustíveis (ANP)
+
+- **Dados:** Levantamento de Preços de Combustíveis (LPC) da ANP, por posto revendedor, preço de revenda; e a série mensal nacional
+  que a própria ANP publica (`mensal-brasil-desde-jan2013.xlsx`).
+- **Decisão (v1.4.0): a série principal é a série mensal nacional oficial da ANP.** Resultado da investigação da diferença entre a
+  média simples das coletas (usada até a v1.3.0) e a série oficial, reproduzida em `docs/auditoria_anp_ponderacao.py`:
+  - **A amostra é a mesma.** O número de coletas do projeto é igual ao "número de postos pesquisados" do arquivo oficial (razão
+    média 1,001), os 91 meses são os mesmos e o produto é o mesmo (etanol hidratado, gasolina comum, GLP, óleo diesel e diesel S10).
+    A diferença não vem de produto, de calendário nem de cobertura.
+  - **A diferença vem da ponderação.** A página da ANP diz que a média é simples só no nível municipal e que, desde 31/10/2004, os
+    níveis estadual, regional e nacional são ponderados pelas vendas informadas pelas distribuidoras. A média simples de todas as
+    coletas pesa cada UF pelo número de coletas, que depende do desenho da amostra (os municípios do Nordeste e do Sul têm mais
+    coletas do que sua parte nas vendas). Em 2022, no etanol hidratado: São Paulo tinha 33,3% das coletas e 52,1% das vendas, com preço
+    médio de R$ 4,33 contra R$ 4,85 na média simples nacional; Nordeste, 19,9% das coletas e 8,2% das vendas; Sul, 12,5% e 6,0%;
+    Sudeste, 53,9% e 68,6%.
+  - **Reprodução da série oficial.** Ponderando o preço médio de cada município pelas vendas anuais do município e depois cada UF
+    pelas vendas mensais da UF (vendas oficiais da ANP) reproduz a série oficial com diferença média de +0,02% no etanol (média
+    absoluta 0,47%, máxima 1,61%) e −0,02% na gasolina (0,14%; 0,40%). A média simples fica +6,49% (etanol; máx. 12,0%) e +0,29%
+    (gasolina; 0,39%); pesar cada município por igual (+10,1%) ou cada UF por igual (+15,3%) afasta ainda mais. Só a ponderação por
+    vendas mensais das UFs já leva a +0,58% no etanol (máx. 2,05%).
+  - **O que não foi determinado:** o resíduo de 0,47% (etanol) a 0,14% (gasolina) entre a reprodução e a série oficial. A ANP não
+    publica os pesos exatos nem a data de referência das vendas usadas; **causa do resíduo não determinada a partir da documentação
+    disponível**. Ele é pequeno diante da diferença original e não muda nenhuma leitura.
+  - **Por que a série oficial é a mais adequada.** A pergunta do projeto é "quanto custava o combustível, em média, para quem o compra
+    no país?". Uma média nacional que pesa o consumo responde a ela; uma média que pesa a densidade da amostra responde a "qual
+    era o preço médio dos postos pesquisados". Além disso, a série oficial é pública, mantida pela ANP e auditável. Critério
+    metodológico, não de resultado: o efeito foi medido depois da decisão e não muda nenhuma leitura.
+  - **Efeito da troca** (período completo; Bolsonaro / Lula, variação real do início ao fim): gasolina −9,17 / +11,02 → −7,96 / +10,25;
+    etanol +2,56 / −11,07 → +7,93 / −13,64; diesel +46,30 / −11,26 → +46,25 / −12,45; diesel S10 +44,80 / −8,28 → +44,78 / −8,65; GLP
+    +23,49 / −9,84 → +24,59 / −10,30. Custo de vida (mediana das 11 séries): Lula −9,84% → −10,30%; Bolsonaro 34,80% (inalterado).
+    Nenhuma leitura de dimensão e nenhum número da síntese ou da grade de 10.626 combinações mudou.
+- **Rótulos:** "série mensal nacional oficial da ANP (ponderada por vendas)". A média simples das coletas só aparece, rotulada assim, na
+  explicação do método e na coluna `preco_simples_coletas`. As linhas regionais seguem sendo a média simples das coletas da região
+  (a ANP não publica a região mensal nesse arquivo) e não são exibidas.
+- **Lacuna de 2020:** a página da ANP diz que não houve pesquisa entre 23/08 e 17/10/2020; o arquivo oficial mensal diz 18/08 a
+  17/10. Nos dados brutos, a última coleta é 17/08 e a primeira, 19/10; agosto e outubro têm coleta parcial. O site cita a ANP.
+- **Referências:** ANP, *Informações sobre o levantamento de preços de combustíveis* (texto lido em 01/10/2026) e *Metodologia resumida
+  do LPC* (2020) — **sustentam** a fonte, a coleta, a média municipal simples e a ponderação por vendas nos níveis estadual, regional
+  e nacional. Vendas: ANP, dados abertos de vendas de combustíveis por UF e por município — **sustentam** a reprodução. Da Silva et
+  al. (2014), *Energy Economics* 43, DOI 10.1016/j.eneco.2014.02.002 — **indireta** (usa o LPC como fonte).
+- **Não significa:** o preço de um posto, de um estado ou de um dia.
+
+### Alimentos (índice de preço por item do IPCA)
+
+- **Dados:** variação mensal oficial de seis subitens do IPCA (IBGE/SIDRA, variável 63): Arroz (1101002, código SIDRA 7173),
+  Feijão-carioca (rajado) (1101073, 12222), Patinho (1107089, 7295), Leite longa vida (1111004, 12393), Óleo de soja
+  (1113013, 7385) e Café moído (1114022, 7392). Tabela 1419 (jan/2012–dez/2019) e tabela 7060 (jan/2020 em diante); mesmos
+  códigos e nomes nas duas.
+- **Verificação dos subitens (R10):** a tabela de correspondência oficial do IBGE entre despesas da POF 2017-2018 e subitens do
+  SNIPC confirma que cada subitem é o produto pretendido: Arroz agrupa arroz polido, com casca e "não especificado" (todos os
+  tipos); Feijão-carioca = "feijão rajado"; Patinho = corte patinho (o "patinho orgânico" é outro subitem, 1107204, e não entra);
+  Leite longa vida = "leite de vaca integral"; Óleo de soja; Café moído = café moído e "café não especificado" (o café solúvel é
+  outro subitem, 1114023, e não entra).
+- **Leite (código 1111004), resolvido:** a tabela de correspondência da POF 2008-2009 do IBGE descreve o código 1111004 como "Leite
+  integral pasteurizado", e a da POF 2017-2018 e o SIDRA (tabelas 1419 e 7060) como "Leite longa vida". O Banco Central, no Estudo
+  Especial nº 69/2019 (dezembro/2019, que compara a estrutura vigente de jan/2012 a dez/2019, da POF 2008-2009, com a de jan/2020),
+  lista o código 1111004 como "Leite longa vida" **nas duas estruturas**. Ou seja: o código é o mesmo, o nome "Leite longa vida" já
+  valia na estrutura 2012–2019 e o descritor "integral pasteurizado" é o da tabela de correspondência de despesas da POF, não o do
+  subitem coletado. O rótulo do projeto está correto. Não foi encontrada uma especificação de coleta que permita provar, por si só, que
+  o produto é idêntico nos dois períodos; a série é a oficial do subitem, encadeada pela variação mensal, e não mostra
+  descontinuidade em dez/2019–jan/2020 (+0,30%, −0,38%). **Documentado como distinção histórica, sem mudança de dados nem de rótulo.**
+- **Fórmula:** índice encadeado `índice(t) = índice(t−1) × (1 + variação mensal ÷ 100)`, base 100 em jan/2019; índice real =
+  índice × IPCA do último mês ÷ IPCA do mês.
+- **Referências:** IBGE (2020), métodos de cálculo — **sustenta** o encadeamento e o deflator; Yuba et al. (2013), *Rev. Saúde
+  Pública* 47(3), DOI 10.1590/s0034-8910.2013047004073 — **sustenta parcialmente** (preço real de alimento por índice geral;
+  encadeamento); BCB, Estudo Especial nº 69/2019 — **sustenta** o nome do subitem 1111004 nas duas estruturas.
+- **Não significa:** preço em reais do quilo; "carne" é só o patinho.
+
+### Dólar corrigido pelo IPCA (câmbio nominal em reais constantes)
+
+- **Dados:** PTAX venda (BCB/SGS série 1), média do mês nos gráficos e dado diário nas pontas das comparações.
+- **Três coisas diferentes:**
+  1. **Taxa de câmbio nominal** `E` (reais por dólar): a cotação do dia.
+  2. **Dólar corrigido pelo IPCA** (o que o projeto mostra): `E(mês) × IPCA(último mês) ÷ IPCA(mês)`, a cotação de cada mês expressa em reais
+     de hoje. Só tira a inflação brasileira.
+  3. **Taxa de câmbio real** da literatura: `E × P* ÷ P`, que compara o nível de preços do exterior (`P*`) com o do país (`P`) e, nos índices
+     efetivos, usa uma cesta de parceiros comerciais. Desconta também a inflação do parceiro.
+- **Por isso o rótulo** é "Dólar corrigido pelo IPCA", e a página diz que não é a taxa de câmbio real. O cálculo não foi alterado.
+- **Referências:** Ipeadata, *Taxa de câmbio efetiva real — nota metodológica* (2018) — **sustenta** a definição de câmbio real (e a
+  distinção). Rogoff (1996), sobre paridade do poder de compra, **não foi usado como referência**: o DOI não foi localizado no
+  Crossref e o texto não foi verificado.
+- **Não significa:** boa ou má notícia; o dólar é Tipo B, descrito e nunca pontuado.
+
+### Selic
+
+- **Dados:** meta Selic definida pelo Copom (BCB/SGS 432), não a taxa efetiva (séries 11 e 4189).
+- **Fórmula:** média do mês nos gráficos; nas comparações, o dado diário da meta; variação em pontos percentuais.
+- **Escolha do projeto:** a média mensal da meta não é estatística oficial do BCB (o BCB publica meta, vigência e a taxa efetiva
+  como média ponderada por volume). **Referência:** BCB, metadados SGS "Taxas Selic" — **sustenta** a distinção meta × efetiva
+  e **não sustenta** a média dos dias úteis da meta como estatística oficial.
+- **Não significa:** juros que as pessoas pagam; Tipo B, só descrito.
+
+### Ibovespa
+
+- **Dados:** fechamento do Ibovespa (B3), em pontos; último pregão do mês nos gráficos, dado diário nas pontas.
+- **Método:** variação percentual nominal de pontos. O índice é de retorno total (reinveste dividendos); a série **não é
+  descontada da inflação**. **Referências:** B3, *Metodologia do Índice Bovespa* — **sustenta** a definição e os critérios;
+  Araújo, Brito & Sanvicente (2021), *Int. J. Finance & Economics* 26(4), DOI 10.1002/ijfe.2118 — **sustenta parcialmente** (usa o
+  Ibovespa como retorno total e deflaciona para comparar épocas).
+- **Não significa:** desempenho das empresas em reais constantes nem bem-estar; Tipo B.
+
+### IPCA em 12 meses
+
+- **Dados:** número-índice do IPCA (SIDRA 1737, variável 2266), **a partir de jan/2018**.
+- **Fórmula:** `IPCA 12m(t) = índice(t) ÷ índice(t−12) − 1`, em %. A média da janela é a média simples dos valores mensais.
+  Jan/2019 usa o índice de jan/2018 (3,78%); dez/2019, 4,31%. É a mesma regra do IBGE para o acumulado em 12 meses (variação do
+  número-índice entre o mês e o mesmo mês do ano anterior).
+- **Escolha do projeto:** a média da janela mede a pressão ao longo do período (regra da métrica). Para taxas, não é a variação
+  entre o primeiro e o último ponto.
+- **Referências:** IBGE (2020), métodos de cálculo — **sustenta** o encadeamento, a variação acumulada e os números-índice.
+- **Não significa:** a inflação de cada família.
+
+### PIB
+
+- **Dados:** crescimento real anual (IBGE, Contas Nacionais Trimestrais), resultado do 4º trimestre; só anos fechados.
+- **Fórmula:** média aritmética simples das taxas anuais da janela (Bolsonaro 2019–2022; Lula 2023–2025). Convenção do projeto:
+  a média geométrica (CAGR) dá 1,38% e 2,97%, contra 1,43% e 2,97% pela aritmética; mesma leitura.
+- **Referências:** IBGE, *Contas Nacionais Trimestrais* (relatório metodológico) — **sustenta** a medida; OECD, *Quarterly
+  National Accounts – GDP Growth Methodology* — **sustenta** o cálculo de taxas; OECD *Compendium of Productivity Indicators* 2024
+  (DOI 10.1787/b96cd88a-en) — **não sustenta** a escolha entre média aritmética e geométrica.
+- **Não significa:** renda individual, distribuição nem bem-estar; nem desempenho de governo.
+
+### Mercado de trabalho
+
+Ver a seção própria acima. Referências: IBGE, *Medidas de subutilização da força de trabalho* e notas da PNAD Contínua —
+**sustentam** os conceitos e a coleta; BCB, Estudo Especial nº 109/2021 (PNAD Contínua na pandemia) — **sustenta** a ressalva
+sobre a queda da taxa de resposta; a regra "cada série vota uma vez" **não tem literatura que a sustente diretamente**
+(é convenção do projeto, declarada antes do cálculo).
+
+### Custo de vida: como as 11 séries se resumem
+
+- **Método principal (convenção do projeto, com ressalvas):** variação real do início ao fim de cada série, mediana entre as 11
+  séries (5 combustíveis e 6 alimentos), sem pesos. A mediana é um resumo robusto: um item extremo (o óleo de soja subiu 90% em termos
+  reais num período) não decide a leitura sozinho. **Não é um índice de preços**: não é um agregado elementar, não tem pesos de despesa e
+  as séries têm unidades e naturezas diferentes.
+- **Avaliação (R3b, concluída em 01/10/2026): DEFENSÁVEL, COM LIMITAÇÕES; mantida como método principal.**
+  - *Limitações:* (a) pesos iguais para itens de importâncias muito diferentes (a gasolina pesa ~5,3% do IPCA, o feijão ~0,13%); (b) diesel e
+    diesel S10 têm correlação de variações mensais de 0,99 e são o mesmo subitem do IPCA (peso 0,24%), então o diesel entra duas vezes;
+    (c) a mediana de 11 valores é decidida por poucas séries centrais; (d) a leitura principal responde "como variaram", e o nível real é
+    outra pergunta (ver "Outra forma de olhar").
+  - *Por que não foi substituída:* nenhuma alternativa testada é uma correção clara. As alternativas respondem a perguntas um pouco
+    diferentes, a literatura não aponta um único agregador para séries heterogêneas e, na leitura principal, **todas** apontam para o
+    mesmo período. Trocar o método depois de ver os resultados seria uma escolha post hoc.
+- **Alternativas calculadas** (pipeline: `custo_vida_agregadores`; recálculo independente em `docs/auditoria_custo_vida_agregadores.py`).
+  Variação real do início ao fim, período completo, Bolsonaro / Lula (menor valor = menor pressão):
+
+  | Agregador | Bolsonaro | Lula | Diferença L−B | Leitura | Grade (Lula / Bolsonaro / empate) |
+  |---|---|---|---|---|---|
+  | Mediana das 11 (atual) | +34,80% | −10,30% | −45,10 | Lula | 10.626 / 0 / 0 |
+  | Média aritmética das 11 (Carli) | +33,35% | −5,30% | −38,65 | Lula | 10.626 / 0 / 0 |
+  | Média geométrica das 11 (Jevons) | +31,32% | −6,28% | −37,60 | Lula | 10.626 / 0 / 0 |
+  | Mediana, diesel e S10 como um item (10) | +30,68% | −10,43% | −41,11 | Lula | 10.626 / 0 / 0 |
+  | Mediana sem o diesel S10 (10) | +30,68% | −11,38% | −42,06 | Lula | 10.626 / 0 / 0 |
+  | Média das médias das duas categorias | +32,49% | −5,44% | −37,93 | Lula | 10.626 / 0 / 0 |
+  | Média ponderada pelo peso no IPCA (10 itens) | +9,22% | +2,36% | −6,86 | Lula | 10.626 / 0 / 0 |
+
+  Nível real médio (base 100 = média dos dois períodos), mesma ordem: a mediana, a média, a média geométrica, o diesel único e a média por
+  categoria apontam para o período **Bolsonaro** (98,8 / 101,3 na mediana; 98,4 / 101,6 por igual duração) e dão uma grade de 9.625 / 715 / 286;
+  a **média ponderada pelo IPCA aponta para o período Lula** (nível relativo +0,55 no período Bolsonaro e −0,56 no Lula, diferença de 1,1 ponto, na margem da tolerância de
+  1,0 ponto), porque a gasolina, com ~54% do peso dos 10 itens, ficou mais barata em nível no período Lula. Com pesos de dez/2022 ou de
+  ago/2026 a diferença cai abaixo de 1 ponto ("praticamente iguais"). **Portanto a leitura do nível depende do resumo escolhido** e o site
+  diz isso no bloco "Outra forma de olhar".
+- **Literatura (pesquisada de novo):** OECD/JRC *Handbook* (Nardo et al., 2008) — **sustenta** a dupla contagem, o papel dos pesos e a
+  necessidade de testar a sensibilidade; **não sustenta** a mediana como agregador. *Consumer Price Index Manual* (ILO et al., 2004, cap. 20, "Elementary
+  indices"; edição revisada, cap. 6) — **indireta**: para agregar relativos de preço sem pesos de despesa recomenda a média geométrica
+  (Jevons) e aponta o viés para cima da média aritmética (Carli); é a razão de a média geométrica estar entre as alternativas. Não foi
+  possível abrir o texto integral do manual (acesso bloqueado); a classificação se apoia nos resumos e nos registros Crossref. Bryan &
+  Cecchetti (1993, NBER WP 4303), Smith (2004, *J. Money, Credit and Banking* 36(2):253–263, DOI 10.1353/mcb.2004.0014) e Ball, Carvalho &
+  Evans (2023, NBER WP 31032) — **indiretas**: usam a mediana de variações de preços como medida central de inflação, mas **ponderada** pelas
+  participações de despesa. Dobbie & Dail (2013), *Ecological Indicators* 29:270–277, DOI 10.1016/j.ecolind.2012.12.025 — **indireta**: testa
+  a robustez e a sensibilidade de ponderação e agregação em índices compostos (o resumo foi conferido; o texto não foi lido). Mazziotta
+  & Pareto (2013) — **indireta** (escolha de normalização e redundância). **Não foi encontrado** artigo que use mediana não ponderada de
+  séries de naturezas diferentes como agregador de uma dimensão: **a mediana não ponderada é uma convenção do projeto**.
+
+### Síntese e análise de sensibilidade aos pesos
+
+- **Método:** cada dimensão vira um sentido (−1, 0, +1) pela comparação das medianas de `f` com a tolerância; a síntese soma os
+  sentidos ponderados. Não há artigo que sustente **exatamente** esse voto ±1/0 por dimensão com tolerância e soma ponderada. Há dois
+  quadros conceituais próximos, ambos **indiretos**: (i) a agregação ordinal ou não compensatória (Munda & Nardo, 2009, *Applied
+  Economics* 41(12), DOI 10.1080/00036840601019364, que registra a perda da magnitude); (ii) o índice de concordância dos métodos de
+  superação (*outranking*, ELECTRE), que soma os pesos dos critérios em que uma alternativa é ao menos tão boa quanto a outra, com um
+  limiar de indiferença (Roy, 1991, *Theory and Decision* 31:49–73, DOI 10.1007/bf00134132). **Cautela** sobre contagem de votos: Hedges &
+  Olkin (1980), *Psychological Bulletin* 88(2):359–369, DOI 10.1037/0033-2909.88.2.359, estudam métodos de contagem de votos em sínteses
+  de pesquisa (outro contexto, inferencial; texto não lido nesta etapa), e são citados só como contexto e cautela; aqui a contagem é descritiva, com direção definida antes
+  do cálculo, e por isso a magnitude é mostrada ao lado. **A regra do voto é uma convenção do projeto.**
+- **Grade discreta de pesos:** o conjunto de combinações de pesos em múltiplos de 5 pontos que somam 100 é uma **malha simplex-lattice** `{q = 5, m = 20}`
+  (Scheffé, 1958, *J. Royal Statistical Society B* 20(2):344–360, DOI 10.1111/j.2517-6161.1958.tb00299.x), que tem `C(q + m − 1, m) = C(24, 20) = C(24, 4) = 10.626`
+  pontos. Scheffé trata de experimentos com misturas, não de índices compostos: **sustenta a estrutura combinatória**, não o uso.
+- **Sensibilidade:** Saisana, Saltelli & Tarantola (2005), *JRSS A* 168(2), DOI 10.1111/j.1467-985x.2005.00350.x — **sustenta** a prática de
+  testar incerteza e sensibilidade de compostos; Saltelli & Annoni (2010), DOI 10.1016/j.envsoft.2010.04.012 — **indireta** (critica a
+  sensibilidade de um fator por vez; a grade varia todos os pesos juntos); Lahdelma, Hokkanen & Salminen (1998), *EJOR* 106, DOI
+  10.1016/s0377-2217(97)00163-x e Tervonen & Lahdelma (2007), *EJOR* 178, DOI 10.1016/j.ejor.2005.12.037 — **sustentam o conceito** de
+  explorar o conjunto de pesos e reportar aceitabilidade (SMAA). **SMAA não foi adotado:** ele amostra o simplex contínuo e reporta a fração
+  de pesos que favorece cada alternativa; a grade de 5 em 5 pontos é a versão discreta e exaustiva disso, mais simples de auditar. Seria uma
+  extensão possível, com o mesmo princípio e as mesmas ressalvas.
+
+### Tolerâncias e "praticamente iguais" (convenção do projeto)
+
+Duas medianas de `f` que diferem menos que **1,0 ponto** (variações em %) ou **0,1 ponto** (médias de taxas) são lidas como
+"praticamente iguais". Os limiares **não vêm de literatura**: o conceito de limiar de indiferença existe em métodos
+multicritério (Roy, 1991; Brans & Vincke, 1985, *Management Science* 31(6):647–656, DOI 10.1287/mnsc.31.6.647 — **indiretas**, não fixam
+valores), e o *Handbook* adverte para limiares arbitrários. São escolhas do projeto fixadas antes do cálculo. Teste: na janela
+completa, Inflação e PIB ficam empatados com tolerância ≥ ~1,6 ponto; nenhuma tolerância testada produz leitura a favor do período
+Bolsonaro.
+
+**Mercado de trabalho (regra do voto, convenção do projeto).** Três séries da PNAD Contínua em unidades diferentes (taxa de desocupação em %,
+taxa composta de subutilização em %, rendimento médio real habitual em R$). Cada série é comparada na sua métrica (taxas: média da janela;
+rendimento: variação do início ao fim) e na sua tolerância (0,1 ponto para médias; 1,0 ponto para variação) e **vota** +1 (período Lula), −1
+(período Bolsonaro) ou 0 ("praticamente iguais"). A dimensão segue o **sinal da soma** dos votos. Se as séries divergem, a soma decide:
+2 contra 1 dá o lado dos 2; 1 contra 1 mais um empate dá empate (0, "praticamente iguais"); nenhuma série tem peso maior que outra.
+Hoje: 3 votos pelo período Lula. A regra alternativa (variação do início ao fim para as taxas; média da janela para o rendimento) é
+mostrada só como transparência: desocupação B −4,9 / L −3,5 p.p. (voto Bolsonaro); subutilização B −6,5 / L −5,8 (empate); rendimento
+(média) a favor de Lula; soma 0, o que daria "praticamente iguais". **Alternativa pesquisada:** uma mediana entre séries de unidades
+diferentes foi descartada por misturar unidades; um índice composto exigiria normalizar (min-max ou z-score) e escolher pesos, o que o
+projeto evita para não introduzir juízo de valor. Nenhuma alternativa tem melhor suporte na literatura (não há trabalho que fixe a regra), então a
+regra continua sendo uma convenção do projeto, declarada antes do cálculo; a duplicação parcial entre desocupação e subutilização (correlacionadas) é
+informada na leitura "sem uma série".
+
 ## Limitações gerais
 
-1. ANP: amostra de postos, defasagem, média simples; set/2020 sem pesquisa.
+1. ANP: preço nacional oficial (ponderado por vendas), com defasagem de publicação; set/2020 sem pesquisa; sem quebra regional oficial no arquivo mensal.
 2. Alimentos: índice, não R$; "carne" é só o patinho; o IBGE não tem preço médio
    absoluto por item.
 3. IPCA geral como deflator, sem ajuste sazonal.

@@ -2014,3 +2014,13 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .an-tt-frase { padding-left: 16px; }
   .an-tt-nota { padding-left: 20px; }
 }
+
+/* Outra forma de olhar (Custo de vida, nível real) e "Como ler esta análise" (Parte 10) */
+.an-outra { max-width: 74ch; margin-top: 20px; padding: 16px 18px; background: var(--bg-2); border-left: 3px solid var(--line); }
+.an-outra p { margin-top: 10px; font-size: 0.94rem; line-height: 1.55; color: var(--fg-2); }
+.an-outra .an-outra-q { color: var(--fg); }
+.an-outra .an-mc-s { margin-top: 12px; }
+.an-comoler { max-width: 66ch; margin-top: 18px; padding-left: 24px; }
+.an-comoler ul { margin: 8px 0 0; padding-left: 18px; }
+.an-comoler li { margin-top: 8px; font-size: 0.92rem; line-height: 1.55; color: var(--fg-2); }
+@media (max-width: 640px) { .an-comoler { padding-left: 20px; } .an-outra { padding: 14px; } }

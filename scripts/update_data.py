@@ -9,7 +9,7 @@ tudo em dashboard_data.json e verifica/publica as notícias. Nenhum script
 individual muda de comportamento — este arquivo só os chama em sequência e
 para na primeira falha de uma etapa crítica (o build final).
 
---rapido pula ANP e IBGE (arquivos grandes, demoram minutos) e atualiza só o
+--rapido pula ANP (por posto) e IBGE (arquivos grandes, demoram minutos) e atualiza só o
 que muda todo dia: câmbio/Selic/Ibovespa (via download_mercados.py com dados
 diários desde 2019), salário mínimo, PNAD Contínua (mercado de trabalho), Brent, e então a consolidação/notícias.
 Use isso para "atualizar os indicadores de mercado agora" sem esperar a ANP
@@ -52,6 +52,8 @@ def main() -> None:
     ]
     if not args.rapido:
         etapas_download = [("download_anp.py", False), ("download_ibge.py", False), *etapas_download]
+    # série mensal nacional OFICIAL da ANP (preço principal dos combustíveis): é um arquivo pequeno, então também roda em --rapido
+    etapas_download.append(("download_anp_oficial.py", True))
 
     falhas_download = [nome for nome, critico in etapas_download if not rodar(nome, critico=critico)]
 
@@ -60,10 +62,11 @@ def main() -> None:
     # build_dashboard_data.py precisa não existem — sem eles não tem como
     # seguir. Em --rapido, build_dataset.py não é chamado de novo (os finais
     # já existem de uma execução anterior), então essa etapa é pulada.
-    if not args.rapido:
-        if not rodar("build_dataset.py", critico=True):
-            logger.error("build_dataset.py falhou — abortando (dashboard_data.json não seria atualizado corretamente).")
-            sys.exit(1)
+    # build_dataset.py só lê CSV já processados (é rápido) e passou a depender da série oficial da ANP, que --rapido também baixa:
+    # roda nos dois modos. Em --rapido uma falha não aborta (os arquivos finais anteriores continuam válidos).
+    if not rodar("build_dataset.py", critico=not args.rapido) and not args.rapido:
+        logger.error("build_dataset.py falhou — abortando (dashboard_data.json não seria atualizado corretamente).")
+        sys.exit(1)
 
     if not rodar("build_dashboard_data.py", critico=True):
         logger.error("build_dashboard_data.py falhou — dashboard_data.json pode estar desatualizado ou ausente.")

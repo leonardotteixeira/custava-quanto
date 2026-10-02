@@ -4,7 +4,10 @@ Baixa dados do IPCA via API SIDRA/IBGE (apisidra.ibge.gov.br).
 Duas coisas distintas são baixadas:
 
 1. IPCA geral - número-índice mensal (tabela 1737, variável 2266). Usado como
-   deflator para converter preços nominais em preços reais.
+   deflator para converter preços nominais em preços reais e para calcular o
+   IPCA acumulado em 12 meses. Guardado desde jan/2018, 12 meses antes do início
+   do primeiro período analisado (jan/2019), para que o IPCA em 12 meses exista
+   desde jan/2019.
 
 2. Variação mensal (%) de itens específicos da cesta básica (tabela 1419 para
    jan/2012-dez/2019 e tabela 7060 para jan/2020 em diante, ambas variável 63,
@@ -39,6 +42,10 @@ logger = get_logger("download_ibge")
 
 SIDRA_BASE = "https://apisidra.ibge.gov.br/values"
 
+# Primeiro mês do número-índice do IPCA a guardar: 12 meses antes de jan/2019 (início do primeiro
+# período analisado), necessários para o IPCA em 12 meses de jan/2019 a dez/2019.
+IPCA_INICIO_DOWNLOAD = "2018-01-01"
+
 ITENS_CESTA = {
     "7173": "Arroz",
     "12222": "Feijão carioca",
@@ -66,7 +73,32 @@ def baixar_ipca_geral() -> pd.DataFrame:
     df["ano_mes"] = pd.to_datetime(df["D3C"], format="%Y%m")
     df["ipca_indice"] = pd.to_numeric(df["V"], errors="coerce")
     df = df[["ano_mes", "ipca_indice"]].dropna().sort_values("ano_mes")
-    return df[df["ano_mes"] >= "2019-01-01"]
+    # O período analisado começa em jan/2019, mas o IPCA acumulado em 12 meses de
+    # jan/2019 já precisa do índice de jan/2018 (a variação é índice(t) / índice(t-12)).
+    # Por isso o número-índice é baixado desde jan/2018: sem esses 12 meses anteriores a série
+    # de 12 meses só começaria em jan/2020 e o período Bolsonaro perderia o ano de 2019.
+    return df[df["ano_mes"] >= IPCA_INICIO_DOWNLOAD]
+
+
+# Peso mensal de cada item no IPCA (variável 66), só dos 10 itens usados no Custo de vida (diesel e diesel S10 são um
+# só subitem do IPCA, "óleo diesel"). Serve para UMA coisa: a sensibilidade do Custo de vida a um agregador ponderado
+# (auditoria R3b). Os pesos não entram em nenhuma leitura principal.
+ITENS_PESO = {**{c: n for c, n in ITENS_CESTA.items()}, "7657": "GASOLINA", "7658": "ETANOL", "7659": "DIESEL", "7482": "GLP"}
+
+
+def baixar_pesos_ipca() -> pd.DataFrame:
+    logger.info("Baixando o peso mensal dos itens no IPCA (variável 66)...")
+    linhas = []
+    for tabela, periodo in (("1419", ",".join(f"2019{m:02d}" for m in range(1, 13))), ("7060", "all")):
+        url = f"{SIDRA_BASE}/t/{tabela}/n1/1/v/66/p/{periodo}/c315/{','.join(ITENS_PESO)}"
+        for r in _sidra_get(url):
+            linhas.append({"ano_mes": r["D3C"], "codigo_sidra": r["D4C"], "peso": r["V"]})
+    df = pd.DataFrame(linhas)
+    df["ano_mes"] = pd.to_datetime(df["ano_mes"], format="%Y%m")
+    df["item"] = df["codigo_sidra"].astype(str).map(ITENS_PESO)
+    df["peso"] = pd.to_numeric(df["peso"], errors="coerce")
+    df = df.dropna(subset=["peso"]).drop_duplicates(["ano_mes", "codigo_sidra"]).sort_values(["item", "ano_mes"])
+    return df[["ano_mes", "item", "codigo_sidra", "peso"]]
 
 
 def baixar_variacao_item(codigo: str) -> pd.DataFrame:
@@ -104,6 +136,10 @@ def main() -> None:
     ipca_geral = baixar_ipca_geral()
     ipca_geral.to_csv(DATA_PROCESSED / "ipca_geral_mensal.csv", index=False)
     logger.info(f"Salvo: ipca_geral_mensal.csv ({len(ipca_geral)} linhas)")
+
+    pesos = baixar_pesos_ipca()
+    pesos.to_csv(DATA_PROCESSED / "ipca_pesos_itens.csv", index=False)
+    logger.info(f"Salvo: ipca_pesos_itens.csv ({len(pesos)} linhas, {pesos['item'].nunique()} itens)")
 
     itens = []
     for codigo, nome in ITENS_CESTA.items():

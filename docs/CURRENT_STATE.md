@@ -50,13 +50,13 @@ recalculada no navegador: o capítulo **Bolso** some nas histórias sem preço o
 | **09 Método** | Como chegaram a estes números? | Fontes, cálculo, PIB, estimativa da ANP, limitações, definições, frescor, **Audite a análise** (versão e hash da metodologia, períodos, tipos, indicadores, fórmulas e arquivos para baixar) | texto + `mercados_status.json` | Contém textos **desatualizados** (ver KNOWN_ISSUES H1, H2, M4) |
 | **10 Apoie** | Como ajudar a manter o projeto? | Valores sugeridos (R$ 10, 25, 50, 100 e outro valor), Pix Copia e Cola no padrão BR Code e QR Code com o valor escolhido, "para onde vai o apoio", transparência | `PIX_KEY`, `MERCHANT_NAME` e `MERCHANT_CITY` em `dashboard/js/apoie.config.js`; QR pela biblioteca `qrcode-generator` (MIT) em `dashboard/vendor/`, carregada só quando há QR | **Chave Pix e nome do recebedor ainda são "COLOQUE_…"**: sem eles a página não gera QR nem código; o site não processa nem confirma pagamentos |
 
-## Dimensões da Análise (metodologia v1.2.1)
+## Dimensões da Análise (metodologia v1.4.0)
 
 | Dimensão | Tipo | Séries |
 |---|---|---|
 | Custo de vida | A (direção definida) | 5 combustíveis + 6 alimentos, variação **real** |
 | Inflação | A | IPCA em 12 meses (média) |
-| Renda e poder de compra | A | Salário mínimo real; litros de gasolina por salário mínimo (+ salário nominal, tipo C, só informativo) |
+| Renda e poder de compra | A | Salário mínimo real (a única série com voto); litros de gasolina por salário mínimo e salário nominal, tipo C, só informativos |
 | Mercado de trabalho | A (por série) | Taxa de desocupação, taxa composta de subutilização e rendimento médio real habitual (PNAD Contínua, trimestre móvel; cada série na sua unidade e com um voto) |
 | Atividade econômica | A | PIB (média do crescimento real anual) |
 | Mercados | B (só descrição) | Dólar, Selic, Ibovespa |
@@ -65,19 +65,20 @@ Janelas: **período completo disponível** (principal: Bolsonaro jan/2019–dez/
 48 meses × Lula jan/2023–último dado, em curso) e **comparação por igual duração**
 (secundária; 44 meses de cada período nos dados de ago/2026). Níveis de evidência:
 Custo de vida MÉDIA (alimentos são índice), Inflação, Renda, Mercado de trabalho e
-Atividade ALTA, Mercados INFORMATIVA. Estado do resultado hoje (30/09/2026): no período
-completo, quatro dimensões apontam para o período Lula e Renda fica "praticamente
-igual"; por igual duração, as cinco apontam para o período Lula (a janela muda só a
-leitura de Renda). No mercado de trabalho, as três séries votam pelo período Lula; com
+Atividade ALTA, Mercados INFORMATIVA. Estado do resultado hoje (01/10/2026, v1.4.0): nas duas
+janelas, as cinco dimensões apontam para o período Lula (até a v1.2.1, Renda ficava "praticamente
+igual" no período completo, porque os litros de gasolina por salário mínimo contavam duas vezes o
+salário real; a v1.3.0 corrigiu isso). A "outra forma de olhar" o Custo de vida (nível real médio, fora da
+síntese) aponta para o período Bolsonaro. No mercado de trabalho, as três séries votam pelo período Lula; com
 a métrica alternativa (variação do início ao fim), a dimensão ficaria praticamente
-igual no período completo. Nenhuma das 10.626 combinações de pesos leva a síntese ao
-período Bolsonaro. Detalhes: [METHODOLOGY.md](METHODOLOGY.md).
+igual no período completo. Nenhuma das 10.626 combinações de pesos (análise de sensibilidade
+aos pesos, grade de 5 em 5 pontos) leva a síntese ao período Bolsonaro. Detalhes: [METHODOLOGY.md](METHODOLOGY.md).
 
 ## Séries e frescor
 
 | Grupo | Séries | Último dado (28/09/2026) |
 |---|---|---|
-| Combustíveis | Gasolina, Etanol, Diesel, Diesel S10, GLP (ANP) | ago/2026 (set/2020 sem pesquisa) |
+| Combustíveis | Gasolina, Etanol, Diesel, Diesel S10, GLP (série mensal nacional oficial da ANP) | ago/2026 (set/2020 sem pesquisa) |
 | Alimentos | Arroz, Feijão carioca, Carne (patinho), Leite longa vida, Óleo de soja, Café moído (IBGE/SIDRA, **índice**) | ago/2026 |
 | Mercados | Dólar (BCB PTAX), Selic meta (BCB), IPCA (IBGE), Ibovespa (B3) | mensal ago/2026; diário até 22/09/2026 (última execução) |
 | Atividade | PIB (IBGE): anual 1996–2025, trimestral até 2026-T2 | 2º trimestre de 2026 (baixado em 25/09/2026) |
@@ -87,7 +88,7 @@ período Bolsonaro. Detalhes: [METHODOLOGY.md](METHODOLOGY.md).
 
 ## Arquitetura resumida
 
-- `scripts/` — 12 scripts de download (inclui `download_pnad.py`), 1 de processamento de retratos, 4 de build
+- `scripts/` — 13 scripts de download (inclui `download_pnad.py` e `download_anp_oficial.py`), 1 de processamento de retratos, 4 de build
   (`build_dataset.py`, `build_dashboard_data.py`, `build_news.py`,
   `build_analise.py`), 1 orquestrador (`update_data.py`) e 1 teste
   (`test_analise.py`). Fluxo completo em [DATA_PIPELINE.md](DATA_PIPELINE.md).

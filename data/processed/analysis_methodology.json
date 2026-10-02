@@ -1,5 +1,5 @@
 {
-  "versao": "1.2.1",
+  "versao": "1.4.0",
   "data": "2026-10-01",
   "dimensoes": [
     {
@@ -8,7 +8,7 @@
       "titulo": "Custo de vida",
       "tipo": "A",
       "pergunta": "Em qual período os preços analisados tiveram menor pressão real (descontada a inflação) sobre o consumidor?",
-      "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período.",
+      "explicacao": "Combustíveis (preço médio em reais, ANP) e alimentos (índice de preço encadeado, IBGE). Usamos a variação REAL, porque a variação nominal sobe junto com a inflação em qualquer período. A leitura principal compara como os preços variaram do início ao fim de cada período; o nível real médio dos preços durante o período (outra pergunta) aparece à parte, como \"outra forma de olhar\", e não entra na síntese.",
       "mede": "quanto variou, descontada a inflação, o preço de cinco combustíveis (em R$) e o índice de preço de seis alimentos",
       "nao_mede": "o gasto de uma família nem o preço em reais dos alimentos",
       "criterio": {
@@ -37,12 +37,12 @@
       "ordem": 3,
       "titulo": "Renda e poder de compra",
       "tipo": "A",
-      "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra nos indicadores disponíveis?",
-      "explicacao": "O salário mínimo descontada a inflação (IPCA) e quantos litros de gasolina ele comprava. O valor nominal aparece só como informação: ele sobe em qualquer período com inflação.",
-      "mede": "quanto o piso nacional rende, descontada a inflação, e quantos litros de gasolina ele compra",
+      "pergunta": "Em qual período o salário mínimo ganhou mais poder de compra, descontada a inflação?",
+      "explicacao": "O salário mínimo descontada a inflação (IPCA). O valor nominal e os litros de gasolina que ele comprava aparecem só como informação: o nominal sobe em qualquer período com inflação, e os litros são o próprio salário real dividido pelo preço real da gasolina, ou seja, repetiriam a mesma informação e contariam duas vezes.",
+      "mede": "quanto o piso nacional rende, descontada a inflação",
       "nao_mede": "a renda média das famílias nem a de quem ganha acima do piso",
       "criterio": {
-        "metrica": "variação mediana do poder de compra das 2 séries",
+        "metrica": "variação do salário mínimo real do início ao fim da janela",
         "sentido": "maior",
         "explica": "variação maior = o piso rende mais"
       }
@@ -99,13 +99,13 @@
       "metrica": "variacao_pct",
       "direcao": "menor",
       "unidade": "R$ (em valores do último mês)",
-      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
       "frequencia": "mensal",
       "nome": "Gasolina",
       "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
       "limitacoes": [
         "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+        "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."
       ],
       "confianca": "alta"
     },
@@ -117,13 +117,13 @@
       "metrica": "variacao_pct",
       "direcao": "menor",
       "unidade": "R$ (em valores do último mês)",
-      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
       "frequencia": "mensal",
       "nome": "Etanol",
       "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
       "limitacoes": [
         "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+        "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."
       ],
       "confianca": "alta"
     },
@@ -135,13 +135,13 @@
       "metrica": "variacao_pct",
       "direcao": "menor",
       "unidade": "R$ (em valores do último mês)",
-      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
       "frequencia": "mensal",
       "nome": "Diesel",
       "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
       "limitacoes": [
         "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+        "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."
       ],
       "confianca": "alta"
     },
@@ -153,13 +153,13 @@
       "metrica": "variacao_pct",
       "direcao": "menor",
       "unidade": "R$ (em valores do último mês)",
-      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
       "frequencia": "mensal",
       "nome": "Diesel S10",
       "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
       "limitacoes": [
         "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+        "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."
       ],
       "confianca": "alta"
     },
@@ -171,13 +171,13 @@
       "metrica": "variacao_pct",
       "direcao": "menor",
       "unidade": "R$ (em valores do último mês)",
-      "fonte": "ANP — Levantamento de Preços de Combustíveis",
+      "fonte": "ANP — Levantamento de Preços de Combustíveis (série mensal nacional oficial)",
       "frequencia": "mensal",
       "nome": "Gás de cozinha (GLP)",
       "interpretacao": "Queda do preço real é, em geral, favorável ao consumidor.",
       "limitacoes": [
         "Depende em parte de cotações internacionais (Brent) e do câmbio, não só de decisões domésticas.",
-        "Preço médio nacional de revenda: não é o preço de cada posto ou estado."
+        "Preço médio nacional de revenda (série mensal oficial da ANP, ponderada por vendas): não é o preço de cada posto ou estado."
       ],
       "confianca": "alta"
     },
@@ -309,13 +309,13 @@
       "interpretacao": "Inflação média menor representa menor pressão sobre os preços.",
       "limitacoes": [
         "Média nacional de uma cesta: não é a inflação de cada família.",
-        "A série de 12 meses começa em jan/2020 (precisa de 12 meses anteriores)."
+        "O IPCA em 12 meses de jan/2019 a dez/2019 usa o número-índice de 2018 (índice do mês / índice 12 meses antes), baixado do SIDRA justamente para isso."
       ],
       "confianca": "alta"
     },
     {
       "id": "SALARIO_REAL",
-      "origem": "GASOLINA",
+      "origem": "SALARIO_MINIMO",
       "dimensao": "renda",
       "tipo": "A",
       "campo": "salario_minimo_real",
@@ -335,23 +335,24 @@
       "id": "SM_GASOLINA",
       "origem": "GASOLINA",
       "dimensao": "renda",
-      "tipo": "A",
+      "tipo": "C",
       "campo": "unidades_por_salario_minimo",
       "metrica": "variacao_pct",
-      "direcao": "maior",
+      "direcao": null,
       "unidade": "litros por salário mínimo",
       "fonte": "ANP + Banco Central (cálculo do projeto)",
       "frequencia": "mensal",
       "nome": "Litros de gasolina por salário mínimo",
-      "interpretacao": "Mais litros por salário mínimo representa mais poder de compra em combustível.",
+      "interpretacao": "Informativo: mais litros por salário mínimo é mais poder de compra em combustível. Como equivale ao salário mínimo real dividido pelo preço real da gasolina, não recebe voto próprio na dimensão Renda (contaria duas vezes a mesma informação); continua como indicador à parte.",
       "limitacoes": [
-        "Mede o poder de compra em UM item; não é um índice de custo de vida."
+        "Mede o poder de compra em UM item; não é um índice de custo de vida.",
+        "Matematicamente igual a (salário mínimo real) / (preço real da gasolina): carrega a informação do salário real e a do preço da gasolina, que já aparece no Custo de vida."
       ],
       "confianca": "alta"
     },
     {
       "id": "SALARIO_NOMINAL",
-      "origem": "GASOLINA",
+      "origem": "SALARIO_MINIMO",
       "dimensao": "renda",
       "tipo": "C",
       "campo": "salario_minimo",
@@ -590,7 +591,8 @@
     "modo_principal_nota": "A comparação principal é a dos períodos inteiros, como o projeto os define (Bolsonaro jan/2019-dez/2022; Lula jan/2023-último dado). A comparação por igual duração é um controle secundário, para quando os tamanhos diferentes dos períodos importam. As duas nunca se misturam num mesmo número.",
     "sensibilidade": {
       "passo_pesos": 5,
-      "descricao": "Todas as combinações de pesos das cinco dimensões com critério definido, de 5 em 5 pontos, somando 100 (10.626 combinações)."
+      "nome": "Análise de sensibilidade aos pesos",
+      "descricao": "Análise de sensibilidade aos pesos: refaz a síntese para todas as combinações de pesos das cinco dimensões com critério definido, de 5 em 5 pontos percentuais, somando 100. O número de combinações é C(20+4, 4) = 10.626 (20 blocos de 5 pontos repartidos entre 5 dimensões). Pergunta: mudar a importância relativa das dimensões muda o lado da síntese? Não testa todos os vetores de pesos possíveis (só a grade de 5 em 5 pontos), os pesos são preferências de quem lê e não dados, e o resultado vale só para esta metodologia e estas dimensões."
     },
     "nivel_evidencia": {
       "regra": "Dimensão de tipo B: informativa. Dimensão de tipo A: o menor nível de confiança entre as séries com direção definida (alta > média). O nível de cada série está em 'confianca' e resume fonte, consistência de medida e comparabilidade entre os períodos. Não é uma nota para o desempenho de nenhum governo.",
@@ -609,8 +611,10 @@
       "favoravel": "f = valor da métrica x (+1 se a direção preferida é 'maior', -1 se é 'menor'). f > 0 = movimento na direção definida como favorável.",
       "leitura_dimensao": "Compara a MEDIANA de f entre os períodos. Diferença menor que a tolerância = praticamente iguais. O texto descreve o valor bruto (por exemplo, 'foi menor no período Lula'), com o critério da dimensão ao lado.",
       "sem_uma_serie": "Para dimensões com 3 ou mais séries: refaz a leitura tirando uma série por vez e conta em quantas remoções a leitura não muda.",
-      "grade_de_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em que fração delas a síntese aponta para cada lado.",
-      "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude."
+      "sensibilidade_aos_pesos": "Refaz a síntese para todas as combinações de pesos (de 5 em 5 pontos, somando 100) e informa em quantas a síntese aponta para cada lado. O total vem da contagem de composições: C(n+k-1, k-1) com n = 100/5 = 20 blocos e k = 5 dimensões, isto é, C(24, 4) = 10.626. É uma grade discreta: não esgota os pesos contínuos possíveis.",
+      "nivel_real_custo_vida": "Outra forma de olhar (não entra na síntese): para cada uma das 11 séries do Custo de vida, o preço real de cada mês dentro da janela é dividido pela média dos preços reais dos dois períodos juntos e multiplicado por 100 (base 100 = nível médio conjunto). O nível de cada período é a média (e, à parte, a mediana) desses valores; a leitura do período usa a mediana entre as séries do nível médio, com a mesma tolerância de 1,0 ponto. Responde 'qual era o nível típico dos preços reais durante o período?', enquanto a leitura principal responde 'como os preços variaram do início ao fim?'.",
+      "sintese": "Soma ponderada do sentido de cada dimensão (+1 Lula, -1 Bolsonaro, 0 sem diferença). Usa o sentido, não a magnitude.",
+      "poder_de_compra_gasolina": "Litros de gasolina por salário mínimo = salário mínimo nominal / preço nominal da gasolina do mesmo mês, que é igual ao salário mínimo real / preço real da gasolina. Indicador de poder de compra à parte (tipo C): não recebe voto na dimensão Renda porque repete o salário real e o preço da gasolina."
     },
     "tolerancia": {
       "variacao_pct": 1.0,

@@ -1,6 +1,6 @@
 # Auditoria da análise entre períodos de governo
 
-Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.2 · 30/09/2026
+Capítulo "Análise" do CUSTAVA QUANTO? · metodologia v1.4.0 · 01/10/2026
 
 Este documento registra o que estava errado ou frágil na primeira versão do
 capítulo (commit `9844300`), o que mudou, e as limitações que continuam.
@@ -18,6 +18,66 @@ Qualquer mudança futura na metodologia deve subir a versão em
 | `dashboard/js/analise.js` | Só apresentação: escolhe o modo e formata; não calcula nada econômico |
 
 ## Histórico de versões
+
+### v1.4.0 · 01/10/2026 — fecha as pendências da auditoria (etapa 3)
+
+Origem: itens em aberto da etapa 2 em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md). Metodologia regravada, novo hash.
+Mudança de versão **minor** (1.3.0 → 1.4.0): a fonte de uma série da Análise mudou (combustíveis) e a origem de outra (salário mínimo), como em
+v1.1 e v1.2; nenhuma regra de leitura mudou.
+
+| Item | Tipo | O que mudou |
+|---|---|---|
+| Combustíveis (R6, etanol) | Correção de dados / fonte | A causa da diferença de +6,5% (etanol) entre a média simples das coletas e a série oficial é a **ponderação**: a amostra é a mesma (mesmo número de coletas), mas a ANP pesa as UFs e os municípios pelas vendas e a média simples os pesa pelo número de coletas. Reproduzida com dados oficiais (diferença média absoluta de 0,47% no etanol). O preço nacional passou a ser a **série mensal oficial da ANP** (`download_anp_oficial.py`); a média simples ficou em `preco_simples_coletas`. |
+| Salário mínimo | Correção de arquitetura | `SALARIO_REAL` e `SALARIO_NOMINAL` leem a série própria `salario_minimo_serie` (BCB SGS 1619 e IPCA, jan/2019 a ago/2026, 92 meses), e não as linhas da gasolina, que não têm set/2020. Variação e leituras inalteradas; o número de meses passou de 47 para 48 (completo) e de 43 para 44 (igual duração). |
+| Janela (E11) | Correção de regra | Os resumos "primeiros 12/24/36 meses" usam a janela de calendário (meses 1 a *n* do mandato) e não as *n* primeiras observações; a janela de 24 meses de combustíveis do período Bolsonaro termina em dez/2020 (antes, jan/2021). A Análise já usava calendário. |
+| R3b | Avaliação + sensibilidade | Seis agregadores do Custo de vida recalculados em Python (`custo_vida_agregadores`), para a variação do início ao fim e para o nível real, com a grade de 10.626 combinações. Método principal mantido. |
+| Leite (R10) | Verificação | Rótulo "Leite longa vida" correto nas duas estruturas do IPCA (BCB, Estudo Especial nº 69/2019). Sem mudança. |
+| Links | Verificação | 142 links de notícias auditados; ver [AUDITORIA_LINKS_NOTICIAS.md](AUDITORIA_LINKS_NOTICIAS.md). Sem mudança nos dados. |
+
+Efeito nos resultados (período completo; antes = v1.3.0): Custo de vida, Lula −9,84% → −10,30% (Bolsonaro +34,80%, inalterado); variações reais
+de combustíveis passam à série oficial (gasolina −9,17 / +11,02 → −7,96 / +10,25; etanol +2,56 / −11,07 → +7,93 / −13,64; diesel +46,30 / −11,26 → +46,25 / −12,45;
+diesel S10 +44,80 / −8,28 → +44,78 / −8,65; GLP +23,49 / −9,84 → +24,59 / −10,30). Nenhuma leitura de dimensão, nenhum número da síntese e nenhuma das 10.626
+combinações mudou (10.626 / 0 / 0). O nível real do Custo de vida (mediana) ficou em 98,8 / 101,3, e a grade alternativa em 9.625 / 715 / 286.
+
+### v1.3.0 · 01/10/2026 — auditoria acadêmica e metodológica (etapa 2)
+
+Origem: auditoria independente em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md), itens R1 a R10.
+Cada mudança abaixo está classificada como **correção de dados**, **correção de síntese**, **correção de terminologia** ou
+**documentação**. Metodologia regravada, novo hash.
+
+| Item | Tipo | O que mudou |
+|---|---|---|
+| R1 | Correção de dados | `download_ibge.py` guardava o número-índice do IPCA só desde jan/2019, então o IPCA em 12 meses começava em jan/2020 e o período Bolsonaro tinha 36 meses (contra 44 de Lula). Agora o índice é baixado desde jan/2018 (`IPCA_INICIO_DOWNLOAD`) e a série de 12 meses começa em jan/2019 (jan/2019 = 3,78%; dez/2019 = 4,31%). Bolsonaro passa a ter 48 meses; na janela de igual duração, o IPCA passa de 32 para 44 meses de cada lado. Nada foi alterado à mão nos JSON: tudo foi regenerado pelo pipeline (`download_ibge.py` → `build_dataset.py` → `build_dashboard_data.py` → `build_analise.py`). |
+| R2 (e R4) | Correção de síntese | "Litros de gasolina por salário mínimo" passou de Tipo A a Tipo C. Ele é matematicamente igual a salário real ÷ preço real da gasolina (diferença máxima de 0,008 litro em 91 meses, só arredondamento); entrava com voto próprio em Renda, contando duas vezes o salário real. Continua publicado e gráficado como indicador à parte. Renda passa a ter uma série com voto (salário mínimo real). |
+| R3a | Documentação + leitura complementar | A leitura principal do Custo de vida continua sendo a variação do início ao fim. Foi adicionada, fora da síntese, a "outra forma de olhar": nível real médio e mediano de cada período (base 100 = média conjunta dos dois períodos), com a grade de pesos que resultaria se ela substituísse a principal. Regra declarada na metodologia (`formulas.nivel_real_custo_vida`) e calculada em Python (`custo_vida_nivel_real`). |
+| R5 | Terminologia | O rótulo do dólar com correção pelo IPCA passou a "Dólar corrigido pelo IPCA", e a página diz que não é a taxa de câmbio real. O cálculo não mudou. |
+| R6 | Terminologia | O preço mensal de combustíveis é rotulado "média simples das coletas da ANP". O cálculo não mudou e a série oficial não foi adotada **na v1.3.0**; na v1.4.0 a causa da diferença foi determinada e a série oficial passou a ser a principal (ver abaixo). A diferença para a série oficial foi medida (etanol +6,5% em média, causa não determinada). |
+| R7 | Terminologia | A grade de 10.626 combinações chama-se "análise de sensibilidade aos pesos", com o raciocínio combinatório (`C(24,4)`), os limites (grade discreta, só estas dimensões) e o que ela não prova. Parte 10 reescrita; Parte 11 resumida, com remissão à Parte 10. A chave `textos.robustez` virou `textos.sensibilidade`. |
+| R8, R9 | Documentação | Tolerâncias (1,0 e 0,1 ponto) e fórmula do salário mínimo real (IPCA, mês-base dinâmico) documentadas como escolhas do projeto, sem mudança de valor. |
+| R10 | Verificação | Os seis subitens do IPCA foram conferidos contra a tabela de correspondência oficial do IBGE (POF 2017-2018 × SNIPC). Sem mudança; uma ressalva aberta sobre o nome do subitem do leite na estrutura da POF 2008-2009. |
+
+Efeito nos resultados (de `docs/auditoria_antes_depois.py`):
+
+| Item | Antes (v1.2.1) | Depois (v1.3.0) |
+|---|---|---|
+| IPCA 12 meses, média, Bolsonaro (completo) | 6,95% (36 meses) | 6,14% (48 meses) |
+| IPCA 12 meses, média, Lula | 4,61% | 4,61% (inalterado) |
+| IPCA, igual duração (Bolsonaro / Lula) | 7,02% / 4,61% (32 meses) | 6,13% / 4,61% (44 meses) |
+| Inflação, leitura | Lula | Lula (diferença de 2,34 para 1,54 p.p.) |
+| Renda, valor da dimensão, Bolsonaro / Lula (completo) | +0,83% / +0,89% (praticamente iguais) | −4,02% / +6,15% (Lula) |
+| Renda, leitura (igual duração) | Lula | Lula |
+| Custo de vida, Trabalho, Atividade | Lula | inalterados |
+| Síntese, soma com pesos iguais (completo) | +80 | +100 |
+| Grade de 10.626 (Lula / Bolsonaro / empate), completo | 10.625 / 0 / 1 | 10.626 / 0 / 0 |
+| Grade, igual duração | 10.626 / 0 / 0 | 10.626 / 0 / 0 (inalterada) |
+| Nível real do Custo de vida (novo), Bolsonaro / Lula | — | 98,8 / 101,3 (mediano 94,7 / 101,9) |
+| Grade se o nível real substituísse a variação (novo) | — | 9.625 / 715 / 286 |
+
+Nenhum resultado foi escolhido: todos saem do pipeline. O resultado qualitativo (cinco dimensões a favor do período Lula, nenhuma
+a favor do Bolsonaro) é consequência dessas leituras sob estas regras; a "outra forma de olhar" mostra que ele depende da
+pergunta feita ao Custo de vida.
+
+Novos testes em `test_analise.py` (bloco "v1.3.0"): ver [TESTING_AND_QA.md](TESTING_AND_QA.md).
 
 ### v1.2.1 · 01/10/2026 — correção da escala do salário mínimo real
 

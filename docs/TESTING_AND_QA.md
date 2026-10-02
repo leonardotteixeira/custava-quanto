@@ -124,8 +124,28 @@ Registradas para dar contexto; **não** substituem testes automáticos.
   anterior; links `?historia=` (válido, inválido, com `#capítulo`), recarregar, voltar e avançar.
   axe-core: 0 violações em 390, 1024 e 1366 px (com a animação do mês da Máquina do tempo
   terminada).
+- **Auditoria metodológica, v1.3.0 (01/10/2026):** `test_analise.py` ganhou um bloco por item da auditoria. R1: o
+  número-índice do IPCA começa em jan/2018, o IPCA em 12 meses começa em jan/2019, cada mês é recalculado por fora
+  (índice do mês ÷ índice de 12 meses antes), o período Bolsonaro tem 48 meses e as janelas de igual duração têm o mesmo tamanho.
+  R2: litros por salário mínimo é Tipo C, Renda tem uma série com voto e leitura igual à do salário real, e a série de litros
+  continua igual a salário ÷ preço (nominal e real). R3a: a leitura principal do Custo de vida segue a variação do início ao fim,
+  o nível real é recalculado por série e não entra na síntese. R5: o site não usa "dólar real" e o dólar corrigido é câmbio nominal
+  × IPCA base ÷ IPCA do mês. R6: o preço nacional de mar/2019 é a média simples das coletas brutas. R7: 10.626 = C(24,4), grade
+  recontada por enumeração independente, texto da sensibilidade sem "robustez". R8: tolerâncias. R9: salário mínimo real em
+  jan/2019 a jan/2026 e no mês-base. R10: códigos SIDRA dos seis itens. Integridade: nenhum valor não finito e nenhuma série mensal
+  duplicada ou fora de ordem.
+- **Metodologia v1.4.0 (01/10/2026):** `test_analise.py` confere que o preço nominal de cada combustível, em cada mês, é o da série oficial da
+  ANP (`anp_oficial_mensal.csv`, sem mês duplicado, ordenado, positivo) e que a média simples das coletas do etanol fica, em média, entre 2% e 12% acima
+  dela; que a série do salário mínimo é própria, começa em jan/2019, não tem mês faltando (inclusive set/2020) e que o salário real tem 48 meses
+  no período Bolsonaro e o número de meses do calendário no Lula; que `SALARIO_REAL` e `SALARIO_NOMINAL` têm origem `SALARIO_MINIMO`; que nenhuma janela
+  "primeiros 12/24/36 meses" passa do mês *n* do mandato e que a de 24 meses da gasolina termina em dez/2020 e dez/2024; e, para o R3b, que os agregadores do
+  Custo de vida reproduzem a mediana e a média recalculadas por fora, que a "mediana" reproduz a leitura principal, que cada grade tem 10.626
+  combinações e que os pesos do IPCA são positivos (o diesel S10 não tem peso próprio). Auditorias reexecutáveis (somente leitura): `docs/auditoria_simulacoes.py`,
+  `docs/auditoria_antes_depois.py`, `docs/auditoria_custo_vida_agregadores.py`, `docs/auditoria_anp_ponderacao.py` (precisa do cache bruto da ANP) e
+  `docs/auditoria_links.py` (rede). QA do front-end: 12 larguras (1024, 1280, 1366, 1440, 1600, 1920 e 320, 360, 375, 390, 412, 430 px), sem rolagem horizontal, sem
+  imagem quebrada, axe-core com 0 violações e sem erro no console; as 17 histórias abrem sem erro.
 - **Parte 10 da Análise, bloco "Teste de sensibilidade" (01/10/2026):** números lidos de `res().grade`
-  (10.626 = 10.625 + 1 + 0 no período completo; 10.626 + 0 + 0 em "mesmo número de meses"); mexer nos
+  (v1.2.1: 10.626 = 10.625 + 1 + 0 no período completo; v1.3.0: 10.626 + 0 + 0 nas duas janelas); mexer nos
   controles "Seus pesos" não altera o bloco; sem rolagem lateral em 320–1920 px; axe-core com 0
   violações em 390 e 1280 px.
 - **Salário mínimo real (01/10/2026):** `test_analise.py` agora recalcula, por fora, cada mês do salário

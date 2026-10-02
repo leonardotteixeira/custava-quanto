@@ -45,10 +45,11 @@ dashboard/  (HTML + CSS + módulos JS; lê os 4 JSON acima via fetch)
 | 4 | `download_salario_minimo.py` | não | não |
 | 5 | `download_pnad.py` (mercado de trabalho, IBGE/SIDRA) | não | não |
 | 6 | `download_brent.py` | não | não |
-| 7 | `build_dataset.py` | sim | **sim** (aborta se falhar) |
-| 8 | `build_dashboard_data.py` | não | **sim** (aborta se falhar) |
-| 9 | `build_news.py` | não | não |
-| 10 | `build_analise.py`, depois `test_analise.py` | não | não |
+| 7 | `download_anp_oficial.py` (série mensal nacional **oficial** da ANP; arquivo pequeno, roda também em `--rapido`) | não | **sim** |
+| 8 | `build_dataset.py` (roda nos dois modos; em `--rapido` uma falha não aborta) | não | **sim** no modo completo |
+| 9 | `build_dashboard_data.py` | não | **sim** (aborta se falhar) |
+| 10 | `build_news.py` | não | não |
+| 11 | `build_analise.py`, depois `test_analise.py` | não | não |
 
 **Rodam só à mão (não estão no `update_data.py`):**
 
@@ -74,14 +75,14 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 
 | Indicador | Fonte | Dataset / API | Frequência | Unidade | Campo/métrica usado | Processamento | Limitações | Status |
 |---|---|---|---|---|---|---|---|---|
-| Gasolina, Etanol, Diesel, Diesel S10 | ANP | Série Histórica de Preços de Combustíveis (`download_anp.py`) | mensal (coleta semanal por posto) | R$/litro | `preco_nominal` (média simples de todas as coletas do mês, região `BR`); `preco_real` | Deflacionado pelo IPCA "a preços do último mês" | Amostra de postos; set/2020 sem dado; média simples, não ponderada | PROD |
+| Gasolina, Etanol, Diesel, Diesel S10 | ANP | **Série mensal nacional oficial** (`download_anp_oficial.py`, arquivo `mensal-brasil-desde-jan2013.xlsx`); a série por posto (`download_anp.py`) segue como sensibilidade | mensal | R$/litro | `preco_nominal` (série oficial, ponderada por vendas, região `BR`); `preco_real`; `preco_simples_coletas` (média simples das coletas, só em `combustiveis_final.csv`) | Deflacionado pelo IPCA "a preços do último mês" | Amostra de postos da ANP; set/2020 sem dado; sem região mensal oficial | PROD |
 | GLP | ANP | idem (arquivo semestral de GLP) | mensal | R$/botijão de 13 kg | idem | idem | idem | PROD |
 | Estimativa set/2020 (combustíveis) | ANP + IBGE/SIDRA | último preço ANP × variação mensal do item no IPCA (tabela 7060; `download_ibge_combustiveis.py`) | pontual | R$ | `estimativas[]` no JSON | Só aparece na Máquina do tempo, marcada "≈"; não entra em variações, médias nem períodos | É estimativa, não dado oficial; erro de teste de volta: −0,2% (gasolina) a ~4% (etanol, diesel, gás) | PROD (exibição limitada) |
 | Arroz, Feijão carioca, Carne (patinho), Leite longa vida, Óleo de soja, Café moído | IBGE/SIDRA | IPCA por subitem: tabela 1419 (2019) e 7060 (2020+), variável 63, classificação 315 (`download_ibge.py`) | mensal | **índice encadeado, base 100 = jan/2019** | `indice_relativo`; `indice_relativo_real` | Encadeia a variação mensal oficial; deflacionado pelo IPCA | **Não é preço em R$.** "Carne" é só o corte patinho; feijão é a variedade carioca | PROD |
 | Preço de varejo (R$/kg) de arroz e feijão | CONAB | Sistema de Informações de Mercado, "Preços Agropecuários" (`download_conab.py`) | mensal por UF | R$/kg | `preco_absoluto` (opcional) | Média simples entre UFs, se integrado | **Não integrado**: `conab_precos_varejo.csv` não existe; a última tentativa (25/09/2026) falhou — o script não achou o link de download na página | **PLAN** |
 | Cesta básica em R$ (DIEESE) | DIEESE | — | — | — | — | — | Sem acesso público em lote desde abril/2018; nenhum código a usa | **PLAN / só validação manual** |
 | Preços de produtor (CEPEA/ESALQ) | CEPEA | — | — | — | — | — | Avaliado na auditoria e descartado (mede produtor, não consumidor); nenhum código a usa | não usado |
-| IPCA (12 meses) | IBGE/SIDRA | tabela 1737, variável 2266 (número-índice; `download_ibge.py`) | mensal | % em 12 meses | `taxa_aa` | `índice do mês ÷ índice de 12 meses antes × 100 − 100`; a série começa em jan/2020 | Exige 12 meses anteriores | PROD |
+| IPCA (12 meses) | IBGE/SIDRA | tabela 1737, variável 2266 (número-índice; `download_ibge.py`) | mensal | % em 12 meses | `taxa_aa` | `índice do mês ÷ índice de 12 meses antes × 100 − 100`; a série começa em jan/2019 (o número-índice é baixado desde jan/2018 para os 12 meses anteriores) | Exige 12 meses anteriores | PROD |
 | IPCA (deflator) | IBGE/SIDRA | idem | mensal | número-índice | `ipca_indice` | Deflator de todos os preços reais | IPCA geral, não específico do item | PROD |
 | Salário mínimo | Banco Central (SGS 1619) | `download_salario_minimo.py` | mensal | R$ (nominal) | `salario_minimo`; % do salário e unidades por salário | Divide o preço do mês pelo salário vigente no mês | Piso nacional; não capta pisos regionais | PROD |
 | Dólar | Banco Central (SGS 1, PTAX venda) | `download_mercados.py` | diária (dias úteis) + média mensal | R$/US$ | `preco_nominal` (média mensal); `diario.*` (pontas) | Média do mês nas séries; dado diário nas comparações entre dois pontos | Sem dado em fins de semana/feriados | PROD |
@@ -102,12 +103,14 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 
 | Arquivo | Gerado por | Usado por |
 |---|---|---|
-| `anp_precos_mensais.csv` | `download_anp.py` | `build_dataset.py` |
-| `ibge_itens_cesta_mensal.csv`, `ipca_geral_mensal.csv` | `download_ibge.py` | `build_dataset.py` |
+| `anp_oficial_mensal.csv` | `download_anp_oficial.py` | `build_dataset.py` (preço nominal Brasil dos combustíveis) |
+| `anp_precos_mensais.csv` | `download_anp.py` | `build_dataset.py` (linhas regionais e `preco_simples_coletas`) |
+| `ibge_itens_cesta_mensal.csv`, `ipca_geral_mensal.csv` (número-índice **desde jan/2018**) | `download_ibge.py` | `build_dataset.py` |
+| `ipca_pesos_itens.csv` (peso mensal dos 10 itens no IPCA, variável 66) | `download_ibge.py` | `montar_pesos_ipca()` → `ipca_pesos` (só a sensibilidade do Custo de vida) |
 | `ibge_combustiveis_var_mensal.csv` | `download_ibge_combustiveis.py` | `estimar_lacunas_anp()` |
 | `mercados_diario/{dolar_ptax,selic_meta,ibovespa}.csv`, `mercados_status.json` | `download_mercados.py` | `build_dashboard_data.py` (pontas diárias), selo de frescor |
 | `bcb_contexto_mensal.csv`, `ibovespa_mensal.csv`, `bcb_hoje.json`, `ibovespa_hoje.json` | `download_mercados.py` | `build_dataset.py`, `build_dashboard_data.py` |
-| `salario_minimo_mensal.csv` | `download_salario_minimo.py` | `build_dataset.py`, `build_dashboard_data.py` |
+| `salario_minimo_mensal.csv` | `download_salario_minimo.py` | `build_dataset.py`, `build_dashboard_data.py` (inclui a série própria `salario_minimo_serie`, usada pela Análise) |
 | `brent_mensal.csv` | `download_brent.py` | `build_dataset.py` |
 | `pib_trimestral.csv`, `pib_anual.csv`, `pib_status.json` | `download_pib.py` | `montar_pib()` |
 | `pib_componentes_trimestral.csv`, `pib_nominal_trimestral.csv` | `download_pib_componentes.py` | `montar_pib()`, `_componentes_pib()` |
@@ -118,7 +121,7 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 | `pnad_mercado_trabalho.csv`, `pnad_status.json` | `download_pnad.py` | `montar_mercado_trabalho()` (bloco `mercado_trabalho` do `dashboard_data.json`) |
 | `noticias.json` | `build_news.py` | `dashboard/js/app.js`, `analise.js`, `linhadotempo.js` |
 
-`data/raw/` (cache dos arquivos baixados, ~1 GB da ANP) não é versionado
+`data/raw/` (cache dos arquivos baixados, ~1 GB da ANP, mais `data/raw/anp/oficial/` e `data/raw/anp/vendas/`) não é versionado
 (`.gitignore`). Os agregados em `data/processed/` são versionados de propósito.
 
 ## O que `dashboard_data.json` contém

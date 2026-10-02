@@ -1,6 +1,6 @@
 # Documentação — mapa
 
-Última atualização: 28/09/2026
+Última atualização: 01/10/2026
 
 Fonte da verdade: o código e os dados do repositório. Quando um documento e o código
 discordarem, vale o código, e a discordância deve ser registrada em
@@ -26,7 +26,10 @@ discordarem, vale o código, e a discordância deve ser registrada em
 | [KNOWN_ISSUES.md](KNOWN_ISSUES.md) | Problemas verificados, classificados | CURRENT |
 | [ROADMAP.md](ROADMAP.md) | Feito, em andamento, próximo, backlog | CURRENT |
 | [TESTING_AND_QA.md](TESTING_AND_QA.md) | Testes que existem e verificações manuais | CURRENT |
-| [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md) | Auditoria e decisões da metodologia v1.0 da Análise | CURRENT (v1.0) |
+| [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md) | Histórico de versões da metodologia da Análise (v1.0 a v1.4.0) e decisões | CURRENT (v1.4.0) |
+| [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md) | Auditoria acadêmica e oficial da metodologia: matriz R1–R10, referências classificadas, antes/depois, auditoria final | CURRENT |
+| [AUDITORIA_LINKS_NOTICIAS.md](AUDITORIA_LINKS_NOTICIAS.md) | Auditoria dos 142 links de notícias e contexto | CURRENT |
+| `auditoria_*.py`, `auditoria_links_noticias.csv` | Scripts de auditoria reexecutáveis (somente leitura) e o resultado da auditoria de links | CURRENT |
 | [AUDITORIA_PRECOS_ALIMENTOS.md](AUDITORIA_PRECOS_ALIMENTOS.md) | Fontes avaliadas para preço absoluto de alimentos | CURRENT (com nota de status) |
 | [../DESIGN.md](../DESIGN.md) | Sistema visual v2 ("Arquivo noturno") | CURRENT / evoluindo |
 | [../PRODUCT.md](../PRODUCT.md) | Contexto de produto, público, princípios | CURRENT |
