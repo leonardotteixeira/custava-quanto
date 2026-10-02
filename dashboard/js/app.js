@@ -10,7 +10,7 @@ import {
   PERIODO_CORTE, PERIODOS, configurarPeriodos, getGovernmentComparison, comparisonPoints, pointLabel, PRODUCT_ORDER, META, familia, kind, nativeValue, isTaxaLike,
   isNil, fmtNum, fmtInt, fmtBRL, fmtPct, fmtPP, fmtValue, fmtValueHTML, change, fmtChange, sign,
   mesAno, mesAnoCurto, mesAnoLongo, dataCurta, dataNoticia, mesKey, monthIdx,
-  lastValid, firstValid, rowAt, rowAtYear, cadenceGap, baseRow, temPrecoAbsoluto, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
+  lastValid, firstValid, rowAt, rowAtYear, cadenceGap, baseRow, $, $$, esc, reduceMotion, pmark, setPressed, countTo,
 } from "./util.js";
 import { lineChart, spark, texture, scrubViz } from "./charts.js";
 import { initApoie } from "./apoie.js";
@@ -367,30 +367,9 @@ function renderStory() {
   const mA = pointLabel(pa), mB = pointLabel(pb);
   const c = change(prod, va, vb);
 
-  // Alimentos com preço CONAB (R$/kg) validado (ver preco_absoluto no JSON,
-  // gerado por scripts/download_conab.py): o preço observado vira a métrica
-  // PRINCIPAL do herói e o índice IBGE vira uma métrica SECUNDÁRIA — nunca
-  // os dois no mesmo número. Se faltar dado da CONAB num dos dois extremos
-  // (dez/2022 ou último dado), o índice continua sendo a principal e a
-  // secundária mostra "sem dado" nesse mês específico, sem trocar de mês
-  // nem de fonte para preencher a lacuna.
-  let heroVa = va, heroVb = vb, heroC = c, heroFmt = (v) => fmtValueHTML(prod, v), heroFmtPlain = (v) => fmtValue(prod, v), heroUnit = unitLong(code);
-  let secondary = null, usandoPrecoConab = false;
-  if (k === "indice" && temPrecoAbsoluto(prod) && !daily) {
-    const meta = prod.preco_absoluto;
-    const caA = a.preco_conab_brl_kg, caB = b.preco_conab_brl_kg;
-    const rotuloCalculo = meta.oficial_nacional ? "CONAB · Varejo" : `CONAB · Varejo · média calculada pelo projeto entre as UFs pesquisadas naquele mês (não é preço nacional oficial da CONAB)`;
-    if (!isNil(caA) && !isNil(caB)) {
-      usandoPrecoConab = true;
-      heroVa = caA; heroVb = caB; heroC = change(prod, caA, caB);
-      heroFmt = (v) => `<span class="cur">R$</span>${fmtNum(v, 2)}<span class="suf">/kg</span>`;
-      heroFmtPlain = (v) => `${fmtBRL(v)}/kg`;
-      heroUnit = `${meta.produto_conab} · ${rotuloCalculo}`;
-      secondary = { kicker: "Índice de preço (IBGE)", val: `${fmtNum(va, 1)} → ${fmtNum(vb, 1)}`, src: "IBGE · série encadeada, jan/2019 = 100 · não é R$" };
-    } else {
-      secondary = { kicker: `${meta.produto_conab} · ${meta.nivel_comercializacao}`, val: "Sem dado da CONAB para este mês", src: rotuloCalculo };
-    }
-  }
+  const heroVa = va, heroVb = vb;
+  let heroC = c;
+  const heroFmt = (v) => fmtValueHTML(prod, v), heroFmtPlain = (v) => fmtValue(prod, v), heroUnit = unitLong(code);
 
   $("#story-kicker").innerHTML = `<b>${famTitle(prod)}</b> · ${heroUnit}`;
   $("#story-name").textContent = m.titulo;
@@ -410,7 +389,7 @@ function renderStory() {
   const what = k === "taxa" ? (code === "SELIC" ? "na taxa Selic, em pontos percentuais," : "na inflação em 12 meses, em pontos percentuais,")
     : k === "pib" ? "no PIB (variação real acumulada no ano), em pontos percentuais,"
     : k === "pontos" ? "no Ibovespa"
-    : k === "indice" ? (usandoPrecoConab ? `no preço médio ${m.de}` : `no índice de preço ${m.de}`)
+    : k === "indice" ? `no índice de preço ${m.de}`
     : code === "DOLAR" ? "na cotação média do dólar" : `no preço médio ${m.de}`;
   $("#story-change-cap").textContent = ultTri && !isNil(ultTri.variacao_dessazonalizada)
     ? `última variação disponível: ${triLabel(ultTri.trimestre)}, contra o trimestre anterior (dessazonalizado). Periodicidade: trimestral.`
@@ -431,8 +410,7 @@ function renderStory() {
   const ipcaRatio = !isNil(a.ipca_indice) && !isNil(b.ipca_indice) ? b.ipca_indice / a.ipca_indice : null;
   const inflPct = ipcaRatio ? (ipcaRatio - 1) * 100 : null;
   let vRef = null;
-  if (usandoPrecoConab) vRef = a.preco_conab_real_brl_kg;
-  else if (k === "preco" && !daily) vRef = a.preco_real;
+  if (k === "preco" && !daily) vRef = a.preco_real;
   else if ((k === "preco" || k === "indice" || k === "pontos") && ipcaRatio) vRef = va * ipcaRatio;
   const max = Math.max(heroVa, heroVb, vRef ?? 0) || 1;
   const refPos = vRef ? (vRef / max) * 100 : null;
@@ -443,14 +421,6 @@ function renderStory() {
       ${vRef ? `<i class="tnb-ref" style="left:${refPos.toFixed(2)}%"></i><span class="tnb-ref-label ${refCls}" style="left:${refPos.toFixed(2)}%"><b>${heroFmtPlain(vRef)}</b> se tivesse acompanhado a inflação</span>` : ""}
     </div></div>`;
   $("#tn-bars").style.marginBottom = vRef ? "28px" : "";
-
-  const secEl = $("#story-secondary");
-  secEl.hidden = !secondary;
-  if (secondary) {
-    $("#ss-kicker").textContent = secondary.kicker;
-    $("#ss-val").innerHTML = secondary.val;
-    $("#ss-src").textContent = secondary.src;
-  }
 
   // frase-resumo + fatos de apoio
   const facts = [];
@@ -538,7 +508,7 @@ function renderStory() {
 function metricOptions(prod) {
   const k = kind(prod);
   if (k === "taxa" || k === "pontos" || k === "pib") return [];
-  if (k === "indice") return temPrecoAbsoluto(prod) ? ["nominal", "real", "conab"] : ["nominal", "real"];
+  if (k === "indice") return ["nominal", "real"];
   return prod.tipo === "combustivel" ? ["nominal", "real", "pct_sm"] : ["nominal", "real"];
 }
 
@@ -560,12 +530,6 @@ function priceConfig(code) {
     get = (r) => r.taxa_aa; yFmt = (t, s) => `${fmtNum(t, s < 1 ? 1 : 0)}%`; vFmt = (v) => `${fmtNum(v, 2)}%`;
     help = "Variação real do PIB acumulada no ano (resultado do 4º trimestre). Um ano sem essa linha ainda não teve o resultado fechado pelo IBGE — aparece em branco, não estimado.";
     deck = "PIB real (crescimento): resultado anual, de 2019 ao último ano fechado. Frequência anual; não é o PIB em reais.";
-  } else if (k === "indice" && S.metric === "conab" && temPrecoAbsoluto(prod)) {
-    const meta = prod.preco_absoluto;
-    get = (r) => r.preco_conab_brl_kg; ref = (r) => r.preco_conab_real_brl_kg;
-    yFmt = (t) => `R$ ${fmtNum(t, 2)}`; vFmt = (v) => `${fmtBRL(v)}/kg`;
-    help = `Preço observado, ${meta.produto_conab}, nível ${meta.nivel_comercializacao} — ${meta.oficial_nacional ? "número nacional oficial da CONAB" : "média calculada pelo projeto entre as UFs que a CONAB pesquisou naquele mês, não um número nacional oficial"}. A linha pontilhada é o mesmo preço corrigido pela inflação (IPCA), em reais de ${mL}.${meta.definicao_compativel_indice_ibge ? "" : ` Atenção: a CONAB nomeia este produto como "${meta.produto_conab}", que pode não ser exatamente o mesmo corte/variedade do índice IBGE ao lado.`}`;
-    deck = `O preço observado ${m.de} no varejo, em R$/kg, além do índice. ${meta.cobertura}`;
   } else if (k === "indice") {
     if (S.metric === "real") { get = (r) => r.indice_relativo_real; ref = (r) => r.indice_relativo; help = `Índice em valores de ${mL}: se a linha sobe, o item ficou mais caro de verdade. A linha pontilhada é o índice como estava na época.`; }
     else { get = (r) => r.indice_relativo; help = "Índice de preço com jan/2019 = 100: 150 quer dizer 50% mais caro que no início. Não é valor em reais."; }
@@ -672,7 +636,7 @@ function renderPrice(animate = true) {
   chartEl.setAttribute("aria-label", `Gráfico: ${META[code].titulo}, ${help} De ${vFmt(get(first))} em ${pLabel(first.ano_mes)} a ${vFmt(get(last))} em ${pLabel(last.ano_mes)}; máxima de ${vFmt(get(hi))} em ${pLabel(hi.ano_mes)}. Use as setas para ler ${pc.k === "pib" ? "ano a ano" : "mês a mês"}; a tabela abaixo traz todos os valores.`);
 
   $("#chart-events").innerHTML = evs.map((e) => `<li><span class="ev-key">${e.key}</span><span><time>${mesAno(e.iso)}</time> ${e.text}</span></li>`).join("");
-  $("#chart-source").textContent = S.metric === "conab" ? `Fonte: CONAB (Sistema de Informações de Mercado, Preços Agropecuários, nível Varejo). ${pc.prod.preco_absoluto.oficial_nacional ? "" : "Média entre UFs calculada pelo projeto, não um número nacional oficial da CONAB. "}IBGE (IPCA, usado para a linha corrigida pela inflação).` : sourceFor(code);
+  $("#chart-source").textContent = sourceFor(code);
 
   // tabela equivalente (acessível e verificável)
   const cols = [pc.k === "pib" ? ["Ano", (r) => String(r.ano)] : ["Mês", (r) => mesAno(r.ano_mes)], ["Período", (r) => r.periodo || "antes de 2019"]];
@@ -1114,7 +1078,6 @@ function renderPeriods() {
     const main = (r) => !r ? null : r.daily ? (isTaxaLike(prod) ? r.fim.valor - r.ini.valor : (r.fim.valor / r.ini.valor - 1) * 100)
       : isTaxaLike(prod) ? r.variacao_pp : k === "pontos" ? r.variacao_pct : r.variacao_nominal_pct;
     const fmtMain = (v) => (isTaxaLike(prod) ? fmtPP(v) : fmtPct(v));
-    const conabResumo = (j) => temPrecoAbsoluto(prod) ? prod.preco_absoluto.resumo_periodos?.[j ? "Lula" : "Bolsonaro"]?.[S.cohort] : null;
     const sub = (r, j) => {
       if (!r) return "dado não disponível";
       if (r.daily) {
@@ -1125,9 +1088,7 @@ function renderPeriods() {
       if (k === "pontos") return `${fmtNum(r.pontos_inicio / 1000, 1)} → ${fmtNum(r.pontos_fim / 1000, 1)} mil pts`;
       const ini = k === "preco" ? fmtValue(prod, r.preco_nominal_inicio) : fmtNum(r.indice_nominal_inicio, 1);
       const fim = k === "preco" ? fmtValue(prod, r.preco_nominal_fim) : fmtNum(r.indice_nominal_fim, 1);
-      const cr = j !== undefined ? conabResumo(j) : null;
-      const linhaConab = cr ? `<br><span class="sp-conab">${fmtBRL(cr.preco_brl_kg_inicio)}/kg → ${fmtBRL(cr.preco_brl_kg_fim)}/kg <i>CONAB</i></span>` : "";
-      return `${ini} → ${fim}<br>descontada a inflação: ${fmtPct(r.variacao_real_pct)}${linhaConab}`;
+      return `${ini} → ${fim}<br>descontada a inflação: ${fmtPct(r.variacao_real_pct)}`;
     };
     const vals = rs.map(main);
     const span = Math.max(...vals.filter((v) => !isNil(v)).map(Math.abs), 0.0001);

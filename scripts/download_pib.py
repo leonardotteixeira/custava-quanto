@@ -7,8 +7,7 @@ nesta sessão; ver a mensagem de erro que este script grava em
 pib_status.json quando isso acontece). Por isso o script NUNCA assume um
 código de variável de cabeça: pede `v/all` e escolhe a variável certa
 comparando o NOME dela (campo "D2N"/"D3N" do retorno do SIDRA) com um texto
-esperado — o mesmo princípio de "achar pelo texto, não por um número
-adivinhado" já usado em download_conab.py para o link de download.
+esperado ("achar pelo texto, não por um número adivinhado").
 
 Tabelas usadas:
 
@@ -73,11 +72,9 @@ FONTE_URL = "https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/93
 # um código numérico adivinhado. Se o IBGE reformular o nome da variável,
 # a busca falha alto (ver _achar_variavel) em vez de ler a variável errada.
 VARS_TRIMESTRAL = {
-    # Palavras-âncora tiradas do texto das 4 variáveis da tabela 5932 tal
-    # como relatado pela pesquisa que embasou esta implementação (nenhuma
-    # foi confirmada abrindo a API, que está bloqueada nesta sessão — ver
-    # docs/AUDITORIA_PRECOS_ALIMENTOS.md para o precedente desta limitação
-    # com a CONAB). "trimestral" (adjetivo) só aparece na variável #1;
+    # Palavras-âncora tiradas do texto das 4 variáveis da tabela 5932: a variável é
+    # escolhida pelo NOME que o SIDRA devolve, nunca por um código adivinhado.
+    # "trimestral" (adjetivo) só aparece na variável #1;
     # "longo" só na #3 (distingue de "acumulada em QUATRO trimestres", que
     # não é uma das três que usamos); "imediatamente" só na #4.
     "interanual": ["trimestral"],

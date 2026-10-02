@@ -15,5 +15,21 @@ data/anp_download*.log
 .claude/
 .agents/
 skills-lock.json
-# Design resources (external repos)
-design-resources/
+
+# Material interno de desenvolvimento: fica só na máquina de quem trabalha no projeto.
+.impeccable/
+/PRODUCT.md
+/DESIGN.md
+/PHASE_*.md
+/DESIGN_EVOLUTION_PLAN.md
+/DESIGN_RESOURCES.md
+/design-resources/
+/docs/ROADMAP.md
+/docs/CURRENT_STATE.md
+/output/
+/analysis/analysis.py
+/Definindo parâmetros de exploração/
+*Brand Book*.pdf
+/p.html
+/imagem *.jpg
+/gemini_generated_*.mp4

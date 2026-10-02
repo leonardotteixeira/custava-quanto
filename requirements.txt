@@ -1,6 +1,5 @@
 pandas>=2.2
 requests>=2.31
-matplotlib>=3.8
-plotly>=5.20
 openpyxl>=3.1
-python-dateutil>=2.9
+# opcional: só para scripts/process_portraits.py (tratamento das fotos dos presidentes)
+# Pillow>=10

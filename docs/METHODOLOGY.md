@@ -1,7 +1,6 @@
 # Metodologia
 
-Última atualização: 01/10/2026
-Status: **CURRENT** — descreve o que o código calcula hoje. Metodologia da
+Atualizado em 02/10/2026. Descreve o que o código calcula hoje. Metodologia da
 Análise: **v1.4.0** (arquivo congelado em `data/processed/analysis_methodology.json`).
 
 Este texto é para quem lê, não para quem programa. Onde há fórmula, ela é a que o
@@ -438,7 +437,7 @@ Esta seção segue, para cada indicador, o caminho **fonte → fórmula → mét
 é **fato** (dado oficial), **escolha do projeto** (convenção declarada) e **evidência acadêmica ou oficial**. As referências
 são classificadas pelo que realmente sustentam: **sustenta** (trata diretamente do método), **indireta** (mesmo conceito
 ou contexto, não a fórmula), **não sustenta** ou **não verificada**. Lista completa, com DOI conferido no Crossref e
-classificação de cada fonte, em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md) (seção "Etapa 2").
+classificação de cada fonte, em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md).
 Onde não há literatura que sustente exatamente a implementação, o texto diz isso.
 
 ### Salário mínimo real

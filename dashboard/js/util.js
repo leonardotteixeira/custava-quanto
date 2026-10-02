@@ -157,12 +157,6 @@ export const rowAtYear = (rows, iso) => rows.find((r) => r.ano_mes.slice(0, 4) =
 // se interromper — ver charts.js:segments(). PIB é anual (jan de cada ano).
 export const cadenceGap = (prod) => (prod.tipo === "pib" ? 12 : 1);
 
-// Item de cesta básica com preço observado (R$/kg) da CONAB somado ao índice
-// IBGE — ver scripts/download_conab.py e docs/AUDITORIA_PRECOS_ALIMENTOS.md.
-// Ausente para a maioria dos itens: nesse caso o produto segue só com o
-// índice, como sempre foi.
-export const temPrecoAbsoluto = (prod) => !!prod.preco_absoluto;
-
 // Ponto de partida das comparações: "troca" = último mês do governo
 // Bolsonaro com dado (dez/2022); "inicio" = primeiro mês da série. O mês da
 // troca vem de PERIODO_CORTE, nunca de uma data escrita à mão.

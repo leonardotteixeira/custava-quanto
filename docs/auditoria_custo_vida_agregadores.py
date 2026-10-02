@@ -1,4 +1,4 @@
-"""Custo de vida: como a leitura muda com outros agregadores das 11 séries (auditoria R3b, etapa 3).
+"""Custo de vida: como a leitura muda com outros agregadores das 11 séries (auditoria R3b).
 
     python docs/auditoria_custo_vida_agregadores.py
 

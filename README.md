@@ -1,568 +1,132 @@
 # CUSTAVA QUANTO?
 
-> **Quanto custava. Quanto custa. O que mudou.**
+**Quanto custava. Quanto custa. O que mudou.**
 
-**Jornalismo de dados sobre preços, inflação, renda e economia brasileira.**
-
-🌐 **<https://custavaquanto.me/>**
-
-Última atualização deste documento: 01/10/2026 · Status: **CURRENT**. O código e os dados do
-repositório são a fonte da verdade; se este texto e o código discordarem, vale o código
-(e a discordância deve entrar em [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md)).
-
----
+Jornalismo de dados sobre preços, inflação, renda e economia brasileira · Site: <https://custavaquanto.me/> · Metodologia da Análise: **v1.4.0**
 
 ## O que é
 
-**CUSTAVA QUANTO?** é um projeto independente de jornalismo de dados. Ele reúne dados públicos
-para explorar como **preços, inflação, renda, atividade econômica e indicadores financeiros**
-mudaram no Brasil desde janeiro de 2019, e transforma séries históricas em uma experiência
-visual que qualquer pessoa pode explorar.
+CUSTAVA QUANTO? é um projeto independente de jornalismo de dados. Ele reúne dados públicos (ANP, IBGE, Banco Central, B3) para mostrar como **preços, inflação, renda, atividade econômica e indicadores financeiros** mudaram no Brasil desde janeiro de 2019, e transforma séries históricas em um site que qualquer pessoa pode explorar:
 
-Quem entra no site pode:
+- escolher uma série (combustíveis, alimentos, câmbio, juros, bolsa, inflação, PIB) e acompanhar a trajetória mês a mês, em reais da época ou corrigidos pela inflação;
+- comparar o período Bolsonaro (jan/2019 a dez/2022) e o período Lula (jan/2023 até o último dado, em curso) com a mesma régua;
+- ver o contexto de cada momento, com matérias reais conferidas na fonte;
+- abrir a fonte de cada número e auditar os cálculos;
+- testar como a leitura muda quando se muda o peso de cada dimensão.
 
-- **escolher uma série** (combustíveis, alimentos, câmbio, juros, bolsa, inflação, PIB);
-- **acompanhar a trajetória** dela, mês a mês, em reais ou a preços de hoje;
-- **comparar períodos**: o período Bolsonaro (jan/2019–dez/2022) e o período Lula
-  (jan/2023 até o último dado, em curso), com a mesma régua;
-- **observar o que acontecia** em torno das mudanças, com matérias reais conferidas na fonte;
-- **consultar as fontes** de cada número e de cada notícia;
-- **entender a metodologia** e **auditar os cálculos**;
-- **testar diferentes formas de interpretar os dados**, mudando o peso que cada dimensão tem.
+Não há backend: é um site estático alimentado por um pipeline Python aberto neste repositório. O projeto não tem anunciante, partido nem campanha.
 
-O projeto não tem anunciante, partido nem campanha. Não há backend: é um site estático
-alimentado por um pipeline Python aberto neste repositório.
+## Objetivo e princípios
 
----
+O objetivo não é dizer ao leitor o que pensar sobre os números, mas tornar os números, o contexto e o caminho até eles transparentes o bastante para que cada pessoa chegue à própria conclusão. Na prática:
 
-## A pergunta é simples
-
-> Quanto custava?
->
-> Quanto custa?
->
-> O que mudou?
-
-Responder bem a essa pergunta exige mais do que parece:
-
-- **séries históricas** de fontes diferentes, em tabelas e sistemas diferentes;
-- **frequências diferentes** (a gasolina é mensal, o dólar é diário, o PIB é trimestral e anual);
-- **inflação**: R$ 4,96 em 2022 não é o mesmo que R$ 4,96 hoje, então é preciso comparar a
-  preços de uma mesma data;
-- **tratamento de dados**: meses sem pesquisa, índices que não são preços, trimestres móveis;
-- **comparação de períodos** com durações diferentes;
-- **fontes** que o leitor possa abrir e conferir;
-- **contexto**, sem confundir "aconteceu na mesma época" com "foi a causa";
-- **limitações**, ditas em voz alta.
-
-O objetivo do projeto é transformar tudo isso em algo compreensível, sem esconder o caminho.
-
----
-
-## Por que existe
-
-Os dados econômicos brasileiros existem em várias instituições (ANP, IBGE, Banco Central, B3 e
-outras), em tabelas e sistemas distintos. Com frequência eles aparecem **separados** do período,
-da unidade, da metodologia, da inflação, da fonte e do contexto, e é justamente isso que torna
-um número fácil de usar mal.
-
-O CUSTAVA QUANTO? tenta **aproximar essas coisas**. A cadeia editorial do projeto é:
-
-```text
-DADO
- ↓
-TRATAMENTO        (unidade, inflação, frequência, lacunas declaradas)
- ↓
-COMPARAÇÃO        (mesma régua, períodos definidos antes do cálculo)
- ↓
-CONTEXTO          (o que estava acontecendo, sem afirmar causa)
- ↓
-FONTE             (cada número e cada notícia com origem verificável)
- ↓
-INTERPRETAÇÃO DO LEITOR
-```
-
----
-
-## O leitor tira a própria conclusão
-
-O projeto **não pretende**:
-
-- fazer campanha;
-- dar nota a governo;
-- criar ranking político;
-- prever eleições;
-- dizer ao leitor o que pensar.
-
-A proposta é apresentar **dados + contexto + metodologia + fontes**, para que cada pessoa
-possa formar a sua própria interpretação.
-
-> **O objetivo não é dizer ao leitor o que pensar sobre os números. É tornar os números, o
-> contexto e o caminho até eles transparentes o suficiente para que ele possa formar a própria
-> conclusão.**
-
-Na prática, isso vira regras que o código faz cumprir:
-
-- **Sem nota e sem vencedor.** Os textos gerados não podem conter "venceu", "melhor governo",
-  "pior governo", "campeão" ou "perdeu" (o teste `scripts/test_analise.py` falha se aparecerem).
-- **"Subiu" não é "melhorou".** Preço real em queda significa menos pressão sobre o
-  consumidor; PIB em alta, mais atividade. Dólar, Selic e Ibovespa não têm direção única de
-  bem-estar e só são **descritos**.
-- **Proximidade no tempo não é evidência de causalidade.** Notícias e marcos históricos são
-  contexto; o script que os publica recusa resumos com "causou", "provocou" ou "foi
-  responsável por".
-- **Critério antes do resultado.** A pergunta, a régua e o critério de cada dimensão estão
-  escritos em um arquivo de metodologia com **hash SHA-256**, que o teste confere: não dá para
-  mudar o critério depois de olhar o resultado sem subir a versão.
+- **Sem nota e sem vencedor.** Os textos gerados não usam "venceu", "melhor governo" ou "pior governo"; o teste automatizado falha se aparecerem.
+- **"Subiu" não é "melhorou".** Preço real em queda significa menos pressão sobre o consumidor; dólar, Selic e Ibovespa não têm direção única de bem-estar e só são descritos.
+- **Proximidade no tempo não é causa.** Notícias e marcos históricos são contexto; o projeto não afirma relação de causa.
+- **Critério antes do resultado.** A pergunta, a régua e o critério de cada dimensão ficam num arquivo de metodologia com hash SHA-256, conferido pelo teste.
 - **Nada inventado.** Dado, fonte, notícia ou imagem que não possa ser verificado não entra.
 
----
+## Dados
 
-## O site em capítulos
-
-O site é uma publicação em capítulos (`dashboard/index.html`). O endereço **não muda** ao navegar:
-escolher uma série ou clicar em um capítulo só rola a página até o lugar certo, e a barra
-continua em `https://custavaquanto.me/`. (Links antigos com `?historia=gasolina` ainda abrem a
-série pedida.)
-
-| Capítulo | A pergunta que ele responde | O que tem |
+| Grupo | Séries | Fonte |
 |---|---|---|
-| **01 Índice** | Qual história quero ler? | 16 séries em 3 famílias, com a variação da troca de governo (dez/2022) até o último dado |
-| **02 Preço** | Como mudou, mês a mês? | Gráfico da série (na época, corrigido pela inflação ou em % do salário mínimo), com as notícias da época numeradas |
-| **03 Bolso** | Quanto isso pesa no salário? | Quantos litros ou quanto de um item um salário mínimo comprava |
-| **04 Contexto** | O que mais estava acontecendo? | Outras séries na mesma escala e uma linha do tempo editorial de marcos históricos |
-| **05 Máquina do tempo** | Como estava o Brasil num mês qualquer? | Fotografia do mês escolhido: preços, câmbio, juros, bolsa, notícias |
-| **06 Períodos** | Como os dois períodos se comparam? | A série escolhida nos dois períodos, com a mesma régua |
-| **07 Análise** | O que os números permitem afirmar? | Seis dimensões, critérios definidos antes do cálculo, gráficos, acontecimentos e a ferramenta "E se?" |
-| **08 Arquivo** | De onde vêm as informações? | Biblioteca de fontes pesquisável (busca e filtros), com link para cada matéria original |
-| **09 Método** | Como tudo foi calculado? | Fórmulas, fontes, limitações e **"Audite a análise"** |
+| Combustíveis | Gasolina, etanol, diesel, diesel S10, GLP | ANP, série mensal nacional oficial (ponderada por vendas) |
+| Alimentos | Arroz, feijão carioca, carne (patinho), leite longa vida, óleo de soja, café moído | IBGE/SIDRA, IPCA por subitem (índice encadeado, **não é preço em R$**) |
+| Inflação | IPCA (número-índice e acumulado em 12 meses) | IBGE/SIDRA |
+| Renda | Salário mínimo nominal e real | Banco Central (SGS 1619) e IPCA |
+| Mercados | Dólar (PTAX), Selic (meta), Ibovespa | Banco Central e B3 |
+| Atividade | PIB (anual e trimestral) | IBGE, Contas Nacionais |
+| Mercado de trabalho | Desocupação, subutilização, rendimento real habitual | IBGE, PNAD Contínua |
+| Contexto | Brent; 142 notícias e marcos, de curadoria manual | FRED; veículos e fontes oficiais |
 
-A numeração se ajusta sozinha: nas séries sem preço ou índice (Selic, IPCA, Ibovespa, PIB), o
-capítulo **Bolso** some e os seguintes sobem um número.
+As frequências são diferentes e o site as respeita: combustíveis e alimentos são mensais, dólar, Selic e Ibovespa são diários, o mercado de trabalho vem em trimestres móveis e o PIB é anual e trimestral. Tabela completa por indicador (frequência, campo, processamento, limitações): [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md).
 
-**Contexto e Arquivo têm papéis diferentes.** O Contexto conta a história (o que estava
-acontecendo em torno do momento em que os dados mudaram). O Arquivo guarda a evidência (todas as
-matérias e registros, pesquisáveis). Eles se ligam por "Ver no Contexto" e "Ver no Arquivo".
+## Metodologia
 
-### Como a Análise se lê
+A Análise compara os dois períodos em **seis dimensões** (Custo de vida, Inflação, Renda e poder de compra, Mercado de trabalho, Atividade econômica e Mercados). Cinco têm direção definida antes do cálculo; Mercados é só descritiva. Cada dimensão resulta em uma leitura (aponta para um período ou os dois ficam praticamente iguais), e a síntese soma essas leituras ponderadas pelos pesos que o leitor escolhe.
 
-A Análise segue um caminho de leitura progressiva, do geral para o detalhe:
+Resumo das regras principais:
 
-1. **Régua do tempo (Parte 1):** os dois períodos lado a lado, com o número de meses de cada um
-   e duas formas de olhar: *período completo* (comparação principal) e *mesmo número de meses*
-   (controle secundário). São duas réguas possíveis, e elas podem dar leituras diferentes.
-2. **Em 1 minuto:** um cartão por dimensão com o valor de cada período, a **diferença** entre
-   eles, a regra de leitura e uma classificação neutra ("Diferença relevante", "Praticamente
-   iguais", "Sem direção definida"). Nenhum cartão aponta vencedor.
-3. **Uma parte por dimensão:** a pergunta, o que mede e o que **não** mede, os números, o
-   gráfico (com abas por série e acontecimentos recolhidos, que se abrem sob demanda) e a
-   leitura dos dados.
-4. **Detalhe sob demanda:** a leitura muda se uma série sair?, maiores movimentos e a
-   tabela por série ficam atrás de um botão.
+- **Variação** é `(fim ÷ início − 1) × 100`; para taxas (Selic, IPCA, PIB) a diferença é em pontos percentuais.
+- **Valor real** é o valor nominal expresso em reais do último mês com IPCA: `nominal × IPCA do último mês ÷ IPCA do mês`.
+- **Salário mínimo real** usa a mesma conta, com série própria e completa. **Litros de gasolina por salário mínimo** é um indicador à parte e não tem voto em Renda (repetiria o salário real e o preço da gasolina).
+- **Custo de vida: trajetória × nível.** A leitura principal é a variação real do início ao fim de cada período ("como os preços variaram?"). O nível real médio durante o período ("qual era o preço típico?") aparece à parte, como "outra forma de olhar", e **não entra na síntese**. São perguntas diferentes, e a leitura do nível depende do resumo escolhido.
+- **Análise de sensibilidade aos pesos.** A síntese é refeita para todas as 10.626 combinações de pesos de 5 em 5 pontos que somam 100 (C(24, 4)). É uma grade discreta, não todos os pesos possíveis, e não é validação externa da metodologia.
+- **Janela de comparação:** a mesma janela de calendário nos dois períodos, nunca o mesmo número de observações.
+- **O que é fonte e o que é convenção.** Os dados e as definições vêm de IBGE, ANP, Banco Central e B3; a mediana do Custo de vida, o voto por dimensão com tolerância, a razão litros por salário mínimo e a grade de pesos são **convenções do projeto**, sem literatura que as sustente diretamente.
 
----
+Onde ler mais:
 
-## E se eu mudar a minha prioridade?
+- **Metodologia completa:** [docs/METHODOLOGY.md](docs/METHODOLOGY.md), com a tabela "Origem da metodologia" (o que é fonte oficial, literatura ou convenção própria, componente por componente).
+- **Referências:** [docs/referencias.md](docs/referencias.md), cada uma com o que sustenta e o que não sustenta.
+- **Auditoria:** [docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) (auditoria acadêmica e oficial da metodologia), [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md) (histórico de versões da metodologia) e [docs/AUDITORIA_LINKS_NOTICIAS.md](docs/AUDITORIA_LINKS_NOTICIAS.md) (links das notícias).
+- **No site:** capítulo 09 Método, com os blocos "Referências e base metodológica" e "Audite a análise".
 
-Uma das ideias mais importantes do projeto está na **Parte 10 da Análise**: *Como diferentes
-prioridades mudam a leitura?*
-
-A análise tem cinco dimensões com direção definida:
-
-- Custo de vida
-- Inflação
-- Renda e poder de compra
-- Mercado de trabalho
-- Atividade econômica
-
-Cada uma resulta em uma leitura (aponta para um período, ou os dois ficam praticamente iguais).
-A **síntese** soma essas leituras, ponderadas pelo peso que o leitor atribui a cada dimensão.
-Por padrão os pesos são iguais (20% cada), mas o leitor pode movê-los.
-
-> **Os dados não mudam. O que muda é a importância que o leitor atribui a cada dimensão.**
-
-Uma pessoa pode ter o **custo de vida** como a maior preocupação. Outra pode achar o **mercado
-de trabalho** mais importante. Outra pode distribuir tudo igualmente. A ferramenta permite
-testar esses cenários e ver como a leitura agregada responde.
-
-**Isso não significa que exista um peso correto.** É uma **análise de sensibilidade**: ela
-mostra o quanto a conclusão depende das prioridades de quem lê, e não prova qual governo foi
-melhor. A ideia central é:
-
-```text
-mesmos dados + prioridades diferentes = leituras agregadas potencialmente diferentes
-```
-
-### Exemplo ilustrativo
-
-Os pesos abaixo são **um exemplo** (não são um cenário oficial do projeto). Com os dados de hoje
-(metodologia 1.3.0), as cinco dimensões apontam para o mesmo período, então qualquer combinação de
-pesos dá o mesmo lado:
-
-```text
-E SE VOCÊ PRIORIZAR CUSTO DE VIDA?
-
-Custo de vida            50%  ████████████████████
-Inflação                 20%  ████████
-Renda e poder de compra  15%  ██████
-Mercado de trabalho       5%  ██
-Atividade econômica      10%  ████
-
-Para onde o peso aponta, com os dados de hoje:
-  Período Bolsonaro        0%
-  Praticamente iguais      0%
-  Período Lula           100%  ████████████████████████████████████████
-```
-
-Para mostrar a mecânica, a Parte 3 traz uma **"outra forma de olhar" o custo de vida**: em vez da
-variação do início ao fim de cada período (a leitura principal), o **nível real típico** dos
-preços durante o período. As duas perguntas são diferentes e podem apontar para lados diferentes.
-Essa leitura **não entra na síntese principal**, mas o site informa como ficaria a grade de pesos
-se ela entrasse, para que o resultado não pareça mais conclusivo do que é.
-
-**Uma observação honesta sobre os dados de hoje:** nenhuma das **10.626 combinações** de pesos
-(de 5 em 5 pontos, somando 100) leva a síntese ao período Bolsonaro: as 10.626 apontam para o
-período Lula. Isso acontece porque nenhuma das cinco dimensões aponta para o período Bolsonaro
-(dominância), não porque o teste prove algo sobre os governos. É uma **análise de sensibilidade
-aos pesos**: ela testa uma grade discreta (5 em 5 pontos), não todos os pesos possíveis, vale para
-esta metodologia e estas dimensões, e não estabelece causa nem desempenho. Seis cenários nomeados
-(pesos iguais e ênfase em cada dimensão) estão na metodologia; o leitor pode mover os pesos
-livremente.
-
----
-
-## Os dados
-
-| Grupo | Séries | Unidade |
-|---|---|---|
-| Combustíveis | Gasolina, Etanol, Diesel, Diesel S10, GLP | R$/litro (GLP: R$/botijão de 13 kg) |
-| Alimentos | Arroz, Feijão carioca, Carne (patinho), Leite longa vida, Óleo de soja, Café moído | **índice** (base 100 = jan/2019), **não é R$** |
-| Mercados | Dólar (PTAX), Selic (meta), IPCA (12 meses), Ibovespa | R$/US$, % ao ano, % em 12 meses, pontos |
-| Atividade | PIB | % de crescimento real (anual; trimestral à parte) |
-| Mercado de trabalho | Taxa de desocupação, taxa composta de subutilização, rendimento médio real habitual | %, %, R$ mensais (valores reais do IBGE) |
-
-As séries de mercado de trabalho entram na **Análise** (não são "histórias" do Índice).
-
-**Frequências diferentes, atualizações diferentes.** O site não trata tudo como se tivesse a
-mesma data: os combustíveis e os alimentos são mensais; Dólar, Selic e Ibovespa são diários (o
-site mostra a data do último pregão e diz que não é tempo real); o mercado de trabalho vem em
-trimestres móveis (cada ponto leva o mês em que o trimestre termina); o PIB é anual e
-trimestral. **O PIB de 2026 não aparece como resultado anual**, porque o ano ainda não fechou:
-os trimestres de 2026 ficam separados e nunca entram nas barras anuais nem na média.
-
-### Fontes
-
-| Fonte | O que | Status |
-|---|---|---|
-| ANP | Preços de combustíveis: **série mensal nacional oficial** (ponderada por vendas); a série por posto fica como sensibilidade | Produção |
-| IBGE / SIDRA | IPCA, variação mensal por item de alimento, PIB e componentes, PNAD Contínua (tabelas 6381, 6441 e 6390) | Produção |
-| Banco Central (SGS) | Dólar PTAX (série 1), meta Selic (432), salário mínimo (1619) | Produção |
-| B3 | Ibovespa (fechamento diário, site público do índice) | Produção |
-| FRED | Brent (contexto dos combustíveis) | Produção (contexto) |
-| CONAB | Preço de varejo de arroz e feijão (R$/kg) | **Planejada, não integrada**: o download falha, e nenhum dado da CONAB está nos resultados |
-| DIEESE, CEPEA/ESALQ, Procon, IBGE/POF | Avaliadas para preço absoluto de alimentos | Não usadas ([auditoria](docs/AUDITORIA_PRECOS_ALIMENTOS.md)) |
-
-Tabela completa por indicador (frequência, campo, processamento, limitações):
-[docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md).
-
----
-
-## Metodologia em resumo
-
-A metodologia completa está em [docs/METHODOLOGY.md](docs/METHODOLOGY.md); a da Análise (versão
-**1.4.0**) é congelada em `data/processed/analysis_methodology.json`.
-
-- **Variação** = `(fim ÷ início − 1) × 100`. Para taxas (Selic, IPCA, PIB), a diferença é em
-  **pontos percentuais**.
-- **Real** = nominal × IPCA do último mês ÷ IPCA do mês do preço ("a preços de hoje"). O
-  IPCA é o geral, não específico do item.
-- **Alimentos** são índices encadeados a partir da variação oficial do IPCA por item: **não**
-  são preço em reais.
-- **PIB anual** é a taxa acumulada no ano lida no 4º trimestre; o resultado trimestral tem
-  quatro leituras que nunca se misturam.
-- **Mercado de trabalho:** cada ponto é um trimestre móvel, e só entram os trimestres inteiros
-  dentro de cada período. O rendimento real já vem deflacionado pelo IBGE; o projeto não aplica
-  um segundo deflator.
-
-### Os dois períodos
-
-| Janela | Período Bolsonaro | Período Lula |
-|---|---|---|
-| **Período completo disponível** (comparação principal) | jan/2019–dez/2022 (48 meses) | jan/2023–último dado (44 meses em ago/2026; **em curso**) |
-| **Mesmo número de meses** (controle secundário) | meses 1 a *N* do mandato | meses 1 a *N* do mandato (*N* = duração comum, hoje 44) |
-
-O período Lula **não está completo**: toda leitura sobre ele é parcial. As duas janelas existem
-porque comparar 48 com 44 meses distorce acumulados.
-
-### A Análise
-
-- **Seis dimensões:** Custo de vida, Inflação, Renda e poder de compra, Mercado de trabalho,
-  Atividade econômica e Mercados.
-- **Tipos de indicador:** *Tipo A* tem direção definida antes do cálculo (preço real e inflação
-  menores; poder de compra e crescimento maiores); *Tipo B* (Dólar, Selic, Ibovespa) só é
-  descrito; *Tipo C* (salário nominal) é informativo.
-- **Leitura de cada dimensão:** pela mediana das séries (no Mercado de trabalho, cujas séries têm
-  unidades diferentes, cada série vota uma vez), com uma **tolerância** abaixo da qual os dois
-  períodos ficam "praticamente iguais" (1,0 ponto em variações; 0,1 ponto em médias).
-- **Nível de evidência** por dimensão: ALTA, MÉDIA ou INFORMATIVA, calculado por regra.
-- **Síntese:** soma dos sentidos ponderados, testada em seis cenários e em todas as 10.626
-  combinações de pesos de 5 em 5 pontos (**análise de sensibilidade aos pesos**: uma grade
-  discreta, não todos os pesos possíveis). **Sem nota e sem vencedor.**
-- **Combustíveis:** o preço mensal é a **série nacional oficial da ANP** (média ponderada pelas
-  vendas), não a média simples das coletas que o projeto usava até a versão 1.3.0. A diferença
-  (+6,5% no etanol) vinha da ponderação, e a amostra é a mesma; o raciocínio e os números estão em
-  [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
-- **Custo de vida, trajetória × nível:** a leitura principal é a **trajetória**, a variação real do
-  início ao fim de cada período ("como os preços variaram?"). O **nível** real médio durante o
-  período ("qual era o preço típico?") aparece à parte, em "Outra forma de olhar", e **não entra
-  na síntese**. São perguntas diferentes e nenhuma é apresentada como a melhor; a leitura do nível
-  depende do resumo das 11 séries (mediana e médias sem peso: período Bolsonaro; média ponderada
-  pelo IPCA: período Lula, na margem da tolerância).
-- **Salário mínimo real:** `salário nominal × IPCA do último mês disponível ÷ IPCA do mês`, em R$ do
-  último mês com IPCA (IPCA, e não INPC, como convenção do projeto; o INPC está testado como
-  sensibilidade e não muda nenhuma leitura). A série é própria (BCB e IPCA), com todos os meses.
-- **Poder de compra:** "litros de gasolina por salário mínimo" é um indicador à parte; ele
-  equivale ao salário real dividido pelo preço real da gasolina e por isso **não tem voto
-  próprio** em Renda (contaria a mesma informação duas vezes).
-- **Janela de comparação:** a mesma janela de calendário nos dois períodos (meses 1 a *n* do
-  mandato), não "as *n* primeiras observações disponíveis".
-- **Dólar:** o gráfico "Dólar corrigido pelo IPCA" é o câmbio nominal em reais de hoje, **não** a
-  taxa de câmbio real da literatura econômica.
-- **Mercados** nunca entram na síntese.
-
----
-
-## Metodologia, literatura e referências
-
-O projeto separa, de propósito, três coisas que costumam aparecer misturadas:
-
-- **Fonte oficial:** de onde vem o dado (IBGE, ANP, Banco Central, B3). Uma instituição ser a fonte de um dado **não** significa que a forma como o projeto o combina com
-  outros seja metodologia dessa instituição.
-- **Fundamentação externa:** documentação institucional ou literatura que sustenta um conceito ou uma definição (por exemplo, a definição do número-índice do IPCA, a ponderação
-  por vendas da ANP, o alerta contra a dupla contagem do *Handbook* da OCDE/JRC).
-- **Convenção metodológica própria do projeto:** escolhas de agregação, síntese, ponderação e janela (a mediana do Custo de vida, o voto por dimensão com tolerância, a razão litros de gasolina por
-  salário mínimo, a grade de pesos de 5 em 5 pontos, as janelas de 12/24/36 meses) para as quais não existe necessariamente uma metodologia única ou diretamente aplicável.
-
-A metodologia da Análise está na **versão 1.4.0**. A tabela "Origem da metodologia", componente por componente, e as limitações estão em [docs/METHODOLOGY.md](docs/METHODOLOGY.md#base-metodológica-e-referências);
-cada referência, com **o que ela sustenta e o que não sustenta**, está em [docs/referencias.md](docs/referencias.md); a auditoria que verificou as contas, as fontes e as alternativas está em
-[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md). O mesmo conteúdo aparece no site, no capítulo **09 Método**, bloco "Referências e base metodológica".
-
-**A auditoria não transforma as escolhas próprias em metodologia acadêmica universalmente aceita.** Ela mostrou que as contas estão corretas, que as alternativas razoáveis foram testadas e que as limitações estão
-registradas: parte do método é convenção do projeto; o Custo de vida foi avaliado como "defensável, com limitações"; a reprodução da série da ANP deixa um resíduo de 0,14% a 0,47% sem explicação; o texto integral do
-*Consumer Price Index Manual* não pôde ser consultado; e a análise de sensibilidade dos pesos testa a estabilidade do resultado nas combinações avaliadas, **não é validação externa**. O projeto não é "cientificamente
-comprovado": documenta cada escolha, mostra as alternativas e deixa o leitor conferir.
-
-O código, os dados processados, os testes e os scripts de auditoria (`docs/auditoria_*.py`, somente leitura) estão no repositório, e o pipeline é reproduzível (ver "Rodando localmente").
-
----
-
-## Contexto e notícias
-
-As matérias em Contexto, Arquivo e Análise vêm de **curadoria manual** (`data/news/raw_*.json`).
-O script `scripts/build_news.py` abre cada URL e só publica se a página responde e o título
-confere (similaridade ≥ 0,80); o resumo é a descrição da própria matéria. Hoje são **142 itens**
-(quase todos de 2019 em diante), 63 deles **marcos históricos** (`data/news/marcos.json`: dimensão,
-indicadores, tipo, relevância e um resumo curto do projeto), de 2019 a 2026.
-
-Fotos: as da Agência Brasil seguem a licença CC BY 4.0 informada pela EBC; as dos demais
-veículos são a imagem de capa da matéria, com crédito e **sem licença de reprodução** (decisão
-editorial, desligável em `build_news.py`). Sem foto, só texto.
-
-> **Proximidade no tempo não é evidência de causalidade.** Os acontecimentos aparecem pela data
-> em que ocorreram, não por terem causado a mudança.
-
----
+A auditoria verificou contas, fontes e alternativas; ela não transforma as escolhas próprias do projeto em metodologia acadêmica universalmente aceita. O projeto não é "cientificamente comprovado": documenta cada escolha, mostra as alternativas e deixa o leitor conferir.
 
 ## Como auditar
 
-O projeto foi feito para ser conferido, por qualquer pessoa, em quatro níveis:
+1. **No site:** o capítulo 09 Método mostra a versão da metodologia, o hash, as janelas, as tolerâncias, o tipo e a fonte de cada indicador e as fórmulas.
+2. **Nos arquivos:** `analysis_methodology.json` (critérios), `analysis_results.json` (resultados) e `dashboard_data.json` (séries) em [`data/processed/`](data/processed/); todos são JSON legível.
+3. **Refazendo o cálculo:** `scripts/build_analise.py` grava primeiro a metodologia e seu hash e só depois os resultados; `scripts/test_analise.py` recalcula de forma independente as sínteses, a grade de pesos, as variações e as janelas. Passo a passo: [docs/REPRODUCAO.md](docs/REPRODUCAO.md).
+4. **Nas fontes:** cada notícia tem link para a página original, e cada indicador, a tabela de origem.
 
-1. **No site, sem instalar nada.** O capítulo **09 Método** tem a seção **"Audite a análise"**:
-   versão da metodologia, hash SHA-256, janelas, tolerâncias, tipo e fonte de cada indicador,
-   fórmulas e links para os arquivos.
-2. **Nos arquivos.** Baixe `analysis_methodology.json` (critérios) e `analysis_results.json`
-   (resultados) em [`data/processed/`](data/processed/), e `dashboard_data.json` (séries de
-   origem). Todos são JSON legível.
-3. **Refazendo o cálculo.** Com o ambiente instalado (ver abaixo):
+## Reprodução
 
-   ```bash
-   .venv/Scripts/python scripts/build_analise.py
-   .venv/Scripts/python scripts/test_analise.py
-   ```
-
-   `build_analise.py` grava primeiro a metodologia e seu hash e só depois os resultados.
-   `test_analise.py` (sem dependências além da biblioteca padrão) recalcula de forma independente
-   a síntese de cada cenário, a grade de combinações, as variações e as janelas, e falha se o
-   hash, a direção de um indicador, uma data no futuro ou uma palavra proibida ("vencedor",
-   "melhor governo"...) aparecerem.
-4. **Nas fontes.** Cada notícia tem link para a página original; cada indicador, a tabela de
-   origem (por exemplo, as tabelas 6381, 6441 e 6390 do SIDRA para a PNAD Contínua).
-
-Auditorias e decisões registradas: [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md),
-[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) (referências acadêmicas e oficiais, cada
-uma classificada pelo que realmente sustenta), [docs/AUDITORIA_LINKS_NOTICIAS.md](docs/AUDITORIA_LINKS_NOTICIAS.md) e
-[docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md). Os scripts de auditoria (`docs/auditoria_*.py`) são
-somente leitura e podem ser reexecutados.
-
----
-
-## Limitações, ditas em voz alta
-
-1. **ANP:** série oficial, com a amostra de postos da própria ANP; **setembro/2020 sem pesquisa**
-   (as linhas ficam interrompidas, e a Máquina do tempo mostra uma estimativa marcada com "≈").
-2. **Alimentos:** índice, não R$; "carne" é só o corte patinho; o feijão é o carioca.
-3. **Preço absoluto de alimentos:** nenhum dado da CONAB está nos resultados.
-4. **PIB:** o IBGE revisa a série; 2026 só tem trimestres.
-5. **Ibovespa:** vem de um endpoint público da B3, sem garantia contratual; é "último dado
-   disponível", não tempo real. A Selic é a **meta**, não a efetiva.
-6. **Salário mínimo:** piso nacional.
-7. **Período Lula em curso:** toda leitura é parcial.
-8. **Nenhuma dimensão diz tudo.** Contas públicas, dívida, desigualdade de renda,
-   informalidade e qualidade do emprego ficam fora por falta de série no projeto.
-9. **A Análise descreve; não explica.** Ela não mede causa e muda com os pesos.
-10. **Parte do método é convenção do projeto, sem literatura que a sustente diretamente:** a mediana
-    não ponderada das 11 séries do Custo de vida, o voto ±1/0 por dimensão com tolerância, a razão
-    litros por salário mínimo e a grade de pesos de 5 em 5 pontos. Cada uma está declarada como tal
-    em [docs/METHODOLOGY.md](docs/METHODOLOGY.md). **O projeto não é "cientificamente comprovado"**:
-    ele documenta cada escolha, mostra as alternativas e deixa o leitor conferir.
-
-Problemas verificados e lacunas: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
-
----
-
-## Arquitetura
-
-```text
-scripts/         download_*.py, build_dataset.py, build_dashboard_data.py, build_news.py,
-                 build_analise.py, update_data.py, test_analise.py
-data/raw/        cache dos downloads (não versionado)
-data/processed/  dados versionados; dashboard_data.json e analysis_*.json alimentam o site
-data/news/       curadoria manual de notícias e marcos
-dashboard/       site estático (index.html, styles.css, js/), lê os JSON; nenhum cálculo
-                 econômico acontece no navegador
-docs/            documentação (índice em docs/README.md)
-.github/         workflow que publica o site no GitHub Pages
-analysis/, output/   gráficos estáticos da primeira fase (histórico)
-```
-
-- **Front-end:** HTML, CSS e módulos JavaScript puros, sem framework e sem biblioteca de
-  gráficos (os gráficos são SVG próprio). Não há etapa de build.
-- **Pipeline:** Python (pandas, requests), gerando CSV e JSON versionados em `data/processed/`.
-- **Nada econômico é calculado no navegador.** As únicas contas feitas lá são a soma ponderada
-  dos sentidos já calculados, quando o leitor mexe nos pesos (a mesma fórmula da metodologia), e a
-  distância entre dois valores já calculados em Python nos cartões "Em 1 minuto".
-- **Dependências em tempo de leitura:** Google Fonts e as imagens das matérias, servidas pelos
-  próprios veículos. O gerador de QR Code (`qrcode-generator`, MIT) está copiado em
-  `dashboard/vendor/`.
-- **Sem backend, sem cookies, sem rastreamento.**
-
-### Pipeline de dados
-
-```text
-fonte → download_*.py → data/processed/*.csv → build_dataset.py → build_dashboard_data.py
-      → dashboard_data.json → build_analise.py → analysis_*.json → site
-```
-
-Detalhes, e quais scripts o `update_data.py` roda (e quais não): [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md).
-
----
-
-## Rodando localmente
-
-Requer Python 3.11. Nos exemplos, caminhos do Windows (Git Bash/PowerShell); em outros sistemas,
-troque `.venv/Scripts/` por `.venv/bin/`.
+Requer Python 3.11. Em resumo:
 
 ```bash
 python -m venv .venv
-.venv/Scripts/pip install -r requirements.txt
+.venv/Scripts/pip install -r requirements.txt     # em Linux/macOS: .venv/bin/
+.venv/Scripts/python scripts/update_data.py       # baixa os dados e reconstrói tudo
+.venv/Scripts/python scripts/test_analise.py      # valida dados, cálculos e metodologia
+.venv/Scripts/python -m http.server 8420          # abrir http://localhost:8420/dashboard/index.html
 ```
 
-`process_portraits.py` também precisa de Pillow (`.venv/Scripts/pip install pillow`), que ainda
-não está no `requirements.txt`.
+Os dados processados já estão versionados em `data/processed/`, então a análise pode ser refeita e testada sem baixar nada de novo. Detalhes, incluindo os scripts que rodam à parte: [docs/REPRODUCAO.md](docs/REPRODUCAO.md).
 
-Servir o site (precisa de HTTP; `file://` não funciona):
+## Limitações
 
-```bash
-.venv/Scripts/python -m http.server 8420
+1. **ANP:** setembro/2020 não tem pesquisa; as linhas ficam interrompidas e a Máquina do tempo mostra uma estimativa marcada com "≈".
+2. **Alimentos:** índice, não preço em reais; "carne" é só o corte patinho; o feijão é o carioca. Nenhum preço absoluto de alimento foi integrado (as fontes avaliadas estão em [docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md)).
+3. **PIB:** o IBGE revisa a série; 2026 só tem trimestres.
+4. **Ibovespa e Selic:** o Ibovespa vem de endpoint público da B3, sem garantia contratual, e é "último dado disponível", não tempo real; a Selic é a meta, não a taxa efetiva.
+5. **Salário mínimo:** piso nacional; alguns estados têm pisos maiores.
+6. **Período Lula em curso:** toda leitura sobre ele é parcial.
+7. **Escopo:** contas públicas, dívida, desigualdade de renda, informalidade e qualidade do emprego ficam fora por falta de série no projeto.
+8. **A Análise descreve; não explica.** Ela não mede causa e muda com os pesos.
+9. **Convenções próprias:** parte do método não tem literatura direta (ver "Metodologia" acima). O método do Custo de vida foi avaliado como "defensável, com limitações", e a reprodução da série da ANP deixa um resíduo de 0,14% a 0,47% sem explicação.
+
+Problemas conhecidos e lacunas de dados: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
+
+## O site
+
+Publicação em capítulos (`dashboard/index.html`): 01 Índice, 02 Preço, 03 Bolso, 04 Contexto, 05 Máquina do tempo, 06 Períodos, 07 Análise, 08 Arquivo e 09 Método. O endereço não muda ao navegar entre capítulos. HTML, CSS e JavaScript puros, sem framework e sem etapa de build; os gráficos são SVG próprio; nenhum cálculo econômico é feito no navegador (as únicas contas são a soma ponderada dos sentidos já calculados, quando o leitor mexe nos pesos, e a distância entre dois valores já calculados em Python). Sem backend, sem cookies, sem rastreamento. O site é publicado no GitHub Pages pelo workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml); domínio, DNS e como voltar atrás: [docs/DEPLOY.md](docs/DEPLOY.md).
+
+## Estrutura do repositório
+
+```text
+dashboard/        site estático (index.html, styles.css, js/, assets/)
+data/processed/   dados processados e resultados (versionados)
+data/news/        curadoria manual de notícias e marcos
+scripts/          download_*.py, build_*.py, update_data.py, test_analise.py
+docs/             metodologia, referências, auditorias, pipeline, deploy, problemas conhecidos
+.github/          workflow de publicação no GitHub Pages
 ```
-
-e abrir `http://localhost:8420/dashboard/index.html`.
-
-### Atualizando os dados
-
-```bash
-.venv/Scripts/python scripts/update_data.py            # completo (ANP e IBGE são lentos)
-.venv/Scripts/python scripts/update_data.py --rapido   # só mercados, salário mínimo, Brent, build, notícias, análise
-```
-
-**Não estão no `update_data.py`** e precisam de execução manual:
-
-```bash
-.venv/Scripts/python scripts/download_pib.py               # PIB trimestral e anual
-.venv/Scripts/python scripts/download_pib_componentes.py   # componentes e PIB nominal trimestral
-.venv/Scripts/python scripts/download_ibge_combustiveis.py # insumo da estimativa de set/2020
-.venv/Scripts/python scripts/download_conab.py             # CONAB (hoje falha)
-```
-
-Depois de baixar o PIB, reconstrua com `scripts/build_dashboard_data.py`,
-`scripts/build_analise.py` e `scripts/test_analise.py`. Não rode `download_bcb.py` nem
-`download_ibovespa.py` (legados; sobrescrevem a fonte de produção).
-
-### Testes
-
-```bash
-.venv/Scripts/python scripts/test_analise.py                 # validações da Análise e da metodologia (automático)
-.venv/Scripts/python docs/auditoria_antes_depois.py          # compara os resultados com a versão anterior (somente leitura)
-.venv/Scripts/python docs/auditoria_custo_vida_agregadores.py  # sensibilidade do Custo de vida ao agregador (somente leitura)
-.venv/Scripts/python scripts/download_conab.py --autoteste   # lógica do CONAB, com dados sintéticos
-```
-
-Não há testes automáticos do front-end nem de acessibilidade: essas checagens (console, layout,
-teclado, axe-core) foram feitas à mão e estão registradas em
-[docs/TESTING_AND_QA.md](docs/TESTING_AND_QA.md).
-
----
-
-## Publicação
-
-O site é publicado no **GitHub Pages**, com domínio próprio (`CNAME`) e HTTPS. O workflow
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) monta o site (o conteúdo de
-`dashboard/` na raiz e os JSON de `data/processed/`) e publica a cada push na `master` que mude o
-site ou os dados. Domínio, DNS e como voltar atrás: [docs/DEPLOY.md](docs/DEPLOY.md).
-
----
 
 ## Contribuindo
 
 O repositório é público: <https://github.com/leonardotteixeira/custava-quanto>.
 
-- **Fonte incorreta, cálculo inconsistente ou escolha metodológica questionável?** Abra uma
-  *issue*, dizendo qual número, qual fonte e o que não bate.
-- **Mudança na metodologia da Análise?** Ela exige subir `METODOLOGIA_VERSAO` em
-  `scripts/build_analise.py`, registrar a decisão em
-  [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md) e rodar
-  `scripts/test_analise.py`.
-- **Nova notícia ou marco?** Entra em `data/news/` com URL real; o `build_news.py` confere a
-  página antes de publicar.
-- **Regra do projeto:** nada de dado, fonte, notícia ou imagem inventados, e nenhuma linguagem
-  de causa, nota ou vencedor.
-
----
+- **Fonte incorreta, cálculo inconsistente ou escolha metodológica questionável?** Abra uma *issue* dizendo qual número, qual fonte e o que não bate.
+- **Mudança na metodologia da Análise?** Exige subir `METODOLOGIA_VERSAO` em `scripts/build_analise.py`, registrar a decisão em [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AUDITORIA_ANALISE_GOVERNOS.md) e rodar `scripts/test_analise.py`.
+- **Nova notícia ou marco?** Entra em `data/news/` com URL real; `scripts/build_news.py` confere a página antes de publicar.
+- **Regra do projeto:** nada de dado, fonte, notícia ou imagem inventados, e nenhuma linguagem de causa, nota ou vencedor.
 
 ## Licença e créditos
 
-O repositório **não tem arquivo de licença** hoje; sem uma, valem os direitos reservados por
-padrão. Os dados vêm de fontes públicas, citadas acima. Retratos dos presidentes: CC BY 2.0
-(Wikimedia Commons, crédito no site). Fotos da Agência Brasil: CC BY 4.0. Fotos de outros
-veículos: sem licença de reprodução (ver "Contexto e notícias").
-
----
+O repositório não tem arquivo de licença; sem uma, valem os direitos reservados por padrão. Os dados vêm de fontes públicas, citadas acima. Retratos dos presidentes: CC BY 2.0 (Wikimedia Commons, crédito no site). Fotos da Agência Brasil: CC BY 4.0. Fotos de outros veículos: imagem de capa da matéria, com crédito e sem licença de reprodução (decisão editorial). O vídeo da abertura da Análise é uma ilustração gerada por IA, e o site diz isso.
 
 ## Documentação
 
-Índice: [docs/README.md](docs/README.md). Principais:
-[CURRENT_STATE](docs/CURRENT_STATE.md) · [METHODOLOGY](docs/METHODOLOGY.md) ·
-[DATA_PIPELINE](docs/DATA_PIPELINE.md) · [KNOWN_ISSUES](docs/KNOWN_ISSUES.md) ·
-[ROADMAP](docs/ROADMAP.md) · [TESTING_AND_QA](docs/TESTING_AND_QA.md) · [DEPLOY](docs/DEPLOY.md) ·
-[REFERENCIAS](docs/referencias.md) · [AUDITORIA_ACADEMICA_METODOLOGIA](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) ·
-[AUDITORIA_LINKS_NOTICIAS](docs/AUDITORIA_LINKS_NOTICIAS.md) · [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md).
+Índice: [docs/README.md](docs/README.md). Principais: [METHODOLOGY](docs/METHODOLOGY.md) · [referencias](docs/referencias.md) · [AUDITORIA_ACADEMICA_METODOLOGIA](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) · [REPRODUCAO](docs/REPRODUCAO.md) · [DATA_PIPELINE](docs/DATA_PIPELINE.md) · [KNOWN_ISSUES](docs/KNOWN_ISSUES.md) · [TESTING_AND_QA](docs/TESTING_AND_QA.md) · [DEPLOY](docs/DEPLOY.md).

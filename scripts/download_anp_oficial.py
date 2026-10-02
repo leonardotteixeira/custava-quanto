@@ -12,7 +12,7 @@ vendas informadas pelas distribuidoras. A média simples de todas as coletas do 
 `download_anp.py` calcula) pesa cada UF pelo número de coletas, que depende do desenho da amostra,
 não do consumo. Em etanol isso importa: em 2022, São Paulo tinha 33% das coletas mas 52% das vendas
 de etanol hidratado, e o preço em SP era mais baixo que o das demais regiões; a média simples ficava
-em média 6,5% acima da série oficial (docs/AUDITORIA_ACADEMICA_METODOLOGIA.md, etapa 3). Reproduzi a
+em média 6,5% acima da série oficial (docs/AUDITORIA_ACADEMICA_METODOLOGIA.md, seção 7.1). Reproduzi a
 série oficial a partir dos dados brutos ponderando por vendas (município -> UF -> Brasil), com diferença
 média absoluta de 0,47% no etanol: a diferença vem da ponderação, não da amostra (a contagem de coletas
 é a mesma). O preço "nacional" que o projeto mostra deve ser o preço típico pago pelo consumidor, e é

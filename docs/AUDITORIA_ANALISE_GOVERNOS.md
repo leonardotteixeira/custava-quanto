@@ -19,9 +19,9 @@ Qualquer mudança futura na metodologia deve subir a versão em
 
 ## Histórico de versões
 
-### v1.4.0 · 01/10/2026 — fecha as pendências da auditoria (etapa 3)
+### v1.4.0 · 01/10/2026 — fecha as pendências da auditoria
 
-Origem: itens em aberto da etapa 2 em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md). Metodologia regravada, novo hash.
+Origem: itens em aberto da auditoria v1.3.0, registrados em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md). Metodologia regravada, novo hash.
 Mudança de versão **minor** (1.3.0 → 1.4.0): a fonte de uma série da Análise mudou (combustíveis) e a origem de outra (salário mínimo), como em
 v1.1 e v1.2; nenhuma regra de leitura mudou.
 
@@ -39,7 +39,7 @@ de combustíveis passam à série oficial (gasolina −9,17 / +11,02 → −7,96
 diesel S10 +44,80 / −8,28 → +44,78 / −8,65; GLP +23,49 / −9,84 → +24,59 / −10,30). Nenhuma leitura de dimensão, nenhum número da síntese e nenhuma das 10.626
 combinações mudou (10.626 / 0 / 0). O nível real do Custo de vida (mediana) ficou em 98,8 / 101,3, e a grade alternativa em 9.625 / 715 / 286.
 
-### v1.3.0 · 01/10/2026 — auditoria acadêmica e metodológica (etapa 2)
+### v1.3.0 · 01/10/2026 — auditoria acadêmica e metodológica
 
 Origem: auditoria independente em [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md), itens R1 a R10.
 Cada mudança abaixo está classificada como **correção de dados**, **correção de síntese**, **correção de terminologia** ou

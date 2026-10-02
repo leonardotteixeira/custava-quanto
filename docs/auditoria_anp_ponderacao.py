@@ -1,4 +1,4 @@
-"""Por que a média simples das coletas da ANP difere da série nacional oficial (auditoria R6, etapa 3).
+"""Por que a média simples das coletas da ANP difere da série nacional oficial (auditoria R6).
 
     python docs/auditoria_anp_ponderacao.py
 

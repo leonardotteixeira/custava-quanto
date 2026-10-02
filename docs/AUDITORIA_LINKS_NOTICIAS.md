@@ -1,7 +1,7 @@
 # Auditoria dos links de notícias e contexto
 
 Data: 01/10/2026 · Escopo: os 142 itens de `data/processed/noticias.json` (79 matérias do Arquivo e 63 marcos de contexto) ·
-Ferramenta: `docs/auditoria_links.py` · Resultado por item: `docs/auditoria_links_noticias.csv`
+Ferramenta: `docs/auditoria_links.py` (grava o resultado por item em `data/raw/auditoria_links_noticias.csv`, que não é versionado)
 
 A auditoria só lê: abre cada URL com um cliente de navegador comum, segue redirecionamentos, lê título e data de publicação na
 própria página e compara com o que o projeto gravou. Nenhum metadado de matéria foi alterado, nenhum link foi trocado e nenhum
@@ -31,8 +31,7 @@ foi removido. Para o que não abre, registra se existe cópia no Internet Archiv
 
 A CNN Brasil reorganizou o caminho do site (`/economia/macroeconomia/...` e `/economia/financas/...` passaram a
 `/economia/seu-bolso/meu-dinheiro/...` ou `/economia/money/...`), mantendo o mesmo final do endereço. A URL antiga continua abrindo a mesma
-matéria (título e data conferem). A URL gravada foi mantida, porque é a que a fonte publicou e o redirecionamento funciona; a URL final está
-no CSV. Se a CNN Brasil deixar de redirecionar, os 11 itens passarão a ser classificados como quebrados e deverão ser atualizados para a URL final.
+matéria (título e data conferem). A URL gravada foi mantida, porque é a que a fonte publicou e o redirecionamento funciona; a URL final fica no CSV que o script gera. Se a CNN Brasil deixar de redirecionar, os 11 itens passarão a ser classificados como quebrados e deverão ser atualizados para a URL final.
 
 ## Os 4 itens do IBGE (bloqueio de robô, não link quebrado)
 
@@ -46,7 +45,7 @@ Para cada um, o título e a data foram conferidos em cópia do Internet Archive:
 | n130 | PIB cresce 1,1% no primeiro trimestre de 2026 | 29/05/2026 | 05/07/2026 | título e 2026-05-29 |
 | n138 | PIB cresce 0,5% no segundo trimestre de 2026 | 01/09/2026 | 17/09/2026 | título e 2026-09-01 |
 
-Os endereços arquivados estão no CSV (`wayback`). O arquivo do Internet Archive é uma cópia de apoio da auditoria, não substitui o link da fonte.
+Cópias consultadas: [n001](http://web.archive.org/web/20260906114012/https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/13983-asi-em-2010-pib-varia-75-e-fica-em-r-3675-trilhoes), [n117](http://web.archive.org/web/20260303153737/https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/45969-pib-cresce-2-3-em-2025), [n130](http://web.archive.org/web/20260705172135/https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46917-pib-cresce-1-1-no-primeiro-trimestre-de-2026) e [n138](http://web.archive.org/web/20260917230120/https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/47902-pib-cresce-0-5-no-segundo-trimestre-de-2026). O arquivo do Internet Archive é uma cópia de apoio da auditoria, não substitui o link da fonte.
 
 ## Outros links externos do site
 
@@ -57,7 +56,7 @@ foram abertos no navegador onde possível: IBGE Explica PIB, SIDRA e FRED funcio
 ## Como repetir
 
 ```bash
-python docs/auditoria_links.py            # rede; regrava docs/auditoria_links_noticias.csv
+python docs/auditoria_links.py            # rede; grava data/raw/auditoria_links_noticias.csv
 python docs/auditoria_links.py --resumo   # resumo do último CSV
 ```
 

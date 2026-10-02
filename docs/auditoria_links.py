@@ -1,6 +1,6 @@
 """Auditoria dos links externos da camada de notícias e contexto (data/processed/noticias.json).
 
-    python docs/auditoria_links.py            # audita e grava docs/auditoria_links_noticias.csv
+    python docs/auditoria_links.py            # audita e grava data/raw/auditoria_links_noticias.csv (não versionado)
     python docs/auditoria_links.py --resumo   # só imprime o resumo do último CSV
 
 Para cada item: status HTTP final, redirecionamentos, https, título da página, data de publicação encontrada,
@@ -36,7 +36,7 @@ from urllib.parse import urlparse
 import requests
 
 RAIZ = Path(__file__).resolve().parents[1]
-SAIDA = RAIZ / "docs" / "auditoria_links_noticias.csv"
+SAIDA = RAIZ / "data" / "raw" / "auditoria_links_noticias.csv"  # data/raw/ não é versionado
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
 
 
@@ -160,6 +160,7 @@ def main() -> None:
     if "--resumo" in sys.argv:
         resumo(list(csv.DictReader(open(SAIDA, encoding="utf-8"))))
         return
+    SAIDA.parent.mkdir(parents=True, exist_ok=True)
     itens = json.loads((RAIZ / "data" / "processed" / "noticias.json").read_text(encoding="utf-8"))["itens"]
     # no máximo 2 conexões por vez por domínio: um pool pequeno e uma pausa curta bastam para 142 links
     with ThreadPoolExecutor(max_workers=6) as ex:

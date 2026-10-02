@@ -9,9 +9,9 @@ Tratamento (o mesmo para os dois, sem alterar a aparência das pessoas):
      a ~42% da altura, rosto ocupando ~50% da largura);
   2. redimensionamento para 720x720 px (nítido até ~360 px de tela em 2x);
   3. leve dessaturação com ajuste de contraste — reduz sem eliminar as
-     cores de fundo (bandeira, faixa presidencial), seguindo a diretriz do
-     Custava Quanto Brand Book ("tratamento levemente dessaturado, nunca
-     preto e branco puro"). DESSATURACAO = 0 (colorido original) a
+     cores de fundo (bandeira, faixa presidencial), seguindo a diretriz de
+     marca do projeto ("tratamento levemente dessaturado, nunca preto e
+     branco puro"). DESSATURACAO = 0 (colorido original) a
      1 (P&B total).
   4. versões pré-reduzidas (140, 210 e 280 px) para o tamanho real de exibição:
      o retrato aparece com ~70 px de altura, e o navegador reduzindo 720 -> 70

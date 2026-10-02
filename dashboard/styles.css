@@ -16,7 +16,7 @@
    - período escuro #5B8FD6 / #DD6356 sobre #101A1D — PASS em todos os checks
    - âmbar nunca entra como série de dado junto com o vermelho (falha o
      piso de visão normal contra ele); é só ênfase de interface.
-   Contraste de texto (WCAG): todos os pares ≥ 4.5:1 (ver DESIGN.md).
+   Contraste de texto (WCAG): todos os pares ≥ 4.5:1.
    ===================================================================== */
 
 :root {
@@ -326,14 +326,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .tnb-ref-label { position: absolute; top: 100%; margin-top: 6px; white-space: nowrap; font-size: 0.74rem; color: var(--ink-2); transform: translateX(-50%); }
 .tnb-ref-label.flip { transform: translateX(-100%); }
 .tnb-ref-label.flip0 { transform: none; }
-/* segunda métrica (índice IBGE quando o preço CONAB é a métrica principal,
-   ou o próprio preço CONAB — inclusive "sem dado" — quando o índice segue
-   sendo a principal): nunca no mesmo número da métrica primária. */
-.story-secondary { margin-top: 20px; padding: 14px 16px; border: 1px solid var(--rule); display: grid; gap: 3px; }
-.ss-kicker { color: var(--ink-3); }
-.ss-val { font-weight: 700; font-variation-settings: "wdth" 78; font-size: 1.35rem; letter-spacing: -0.01em; }
-.ss-val .dim { color: var(--ink-3); font-weight: 500; }
-.ss-src { color: var(--ink-3); text-transform: none; letter-spacing: 0; font-size: 0.74rem; }
 .story-lede { font-family: var(--serif); font-size: clamp(1.15rem, 1.45vw, 1.42rem); line-height: 1.45; text-wrap: pretty; }
 .story-lede strong { font-weight: 600; background: linear-gradient(transparent 62%, rgba(226, 163, 61, 0.38) 62%); }
 .facts { margin-top: 24px; display: grid; }
@@ -605,8 +597,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .sp-row.is-product .sp-track { height: 84px; }
 .sp-val { font-weight: 800; font-variation-settings: "wdth" 72; font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1; font-variant-numeric: tabular-nums; }
 .sp-val small { display: block; font-family: var(--sans); font-weight: 500; font-variation-settings: "wdth" 100; font-size: 0.72rem; color: var(--fg-3); margin-top: 5px; line-height: 1.3; letter-spacing: 0; }
-.sp-conab { color: var(--fg-2); }
-.sp-conab i { font-style: normal; font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-3); margin-left: 4px; }
 .sp-bar { display: block; height: 6px; margin-top: 8px; position: relative; background: var(--line-2); }
 .sp-bar i { position: absolute; top: 0; bottom: 0; }
 .sp-bar i.b { background: var(--pb); }
@@ -1715,7 +1705,6 @@ code { font-family: var(--mono); font-size: 0.88em; }
   .story-q--then { order: 1; margin-top: 4px; }
   .thennow { order: 2; margin-top: 12px; padding-top: 0; border-top: 0; }
   .tn-bars { order: 3; }
-  .story-secondary { order: 4; }
   .story-q--change { order: 5; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule); }
   .story-big { order: 6; margin-top: 6px; }
   .story-big-cap { order: 7; }

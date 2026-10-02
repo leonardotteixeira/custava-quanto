@@ -1,8 +1,7 @@
 # Pipeline de dados
 
-Última atualização: 30/09/2026
-Status: **CURRENT** — descreve o que o código faz hoje. Verificado lendo os
-scripts em `scripts/` e os arquivos em `data/processed/`.
+Última atualização: 02/10/2026. Descreve o que o código faz hoje, conforme os scripts em
+`scripts/` e os arquivos em `data/processed/`.
 
 Regra de arquitetura: **nenhum cálculo econômico acontece no navegador**. O
 Python calcula tudo e grava JSON; `dashboard/js/` só escolhe, formata e desenha.
@@ -58,20 +57,12 @@ dashboard/  (HTML + CSS + módulos JS; lê os 4 JSON acima via fetch)
 | `download_pib.py` | PIB trimestral (tabela 5932) e anual (6784) | PIB fica na última data baixada; o build só avisa (`frescor` no JSON) |
 | `download_pib_componentes.py` | Componentes do PIB e PIB nominal trimestral (tabela 1846) | idem |
 | `download_ibge_combustiveis.py` | Variação mensal do IPCA dos combustíveis, insumo da estimativa da lacuna de set/2020 | a estimativa não é recalculada |
-| `download_conab.py` | Preço de varejo de arroz/feijão (CONAB) | hoje falha; ver "CONAB" abaixo |
 | `process_portraits.py` | Gera os retratos dos presidentes (140/210/280 px) | só precisa rodar se as fotos mudarem |
-
-Scripts **legados/sobrepostos** (existem, não são chamados por nenhum outro script):
-`download_bcb.py` e `download_ibovespa.py`. Escrevem os mesmos arquivos que
-`download_mercados.py` (`bcb_contexto_mensal.csv`, `bcb_hoje.json`,
-`ibovespa_mensal.csv`, `ibovespa_hoje.json`). O `download_ibovespa.py` usa o
-Yahoo Finance, cujo histórico diverge do da B3. **Não rode**: sobrescreveriam a
-fonte de produção. Ver [KNOWN_ISSUES.md](KNOWN_ISSUES.md).
 
 ## Fontes e indicadores
 
-Legenda: **PROD** = alimenta o dashboard hoje · **SEC** = validação/contexto
-secundário · **PLAN** = planejada ou tentada, ainda não integrada.
+Legenda: **PROD** = alimenta o dashboard hoje · **contexto** = só contexto, fora de qualquer
+cálculo · **avaliada** = fonte estudada e não integrada.
 
 | Indicador | Fonte | Dataset / API | Frequência | Unidade | Campo/métrica usado | Processamento | Limitações | Status |
 |---|---|---|---|---|---|---|---|---|
@@ -79,16 +70,14 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 | GLP | ANP | idem (arquivo semestral de GLP) | mensal | R$/botijão de 13 kg | idem | idem | idem | PROD |
 | Estimativa set/2020 (combustíveis) | ANP + IBGE/SIDRA | último preço ANP × variação mensal do item no IPCA (tabela 7060; `download_ibge_combustiveis.py`) | pontual | R$ | `estimativas[]` no JSON | Só aparece na Máquina do tempo, marcada "≈"; não entra em variações, médias nem períodos | É estimativa, não dado oficial; erro de teste de volta: −0,2% (gasolina) a ~4% (etanol, diesel, gás) | PROD (exibição limitada) |
 | Arroz, Feijão carioca, Carne (patinho), Leite longa vida, Óleo de soja, Café moído | IBGE/SIDRA | IPCA por subitem: tabela 1419 (2019) e 7060 (2020+), variável 63, classificação 315 (`download_ibge.py`) | mensal | **índice encadeado, base 100 = jan/2019** | `indice_relativo`; `indice_relativo_real` | Encadeia a variação mensal oficial; deflacionado pelo IPCA | **Não é preço em R$.** "Carne" é só o corte patinho; feijão é a variedade carioca | PROD |
-| Preço de varejo (R$/kg) de arroz e feijão | CONAB | Sistema de Informações de Mercado, "Preços Agropecuários" (`download_conab.py`) | mensal por UF | R$/kg | `preco_absoluto` (opcional) | Média simples entre UFs, se integrado | **Não integrado**: `conab_precos_varejo.csv` não existe; a última tentativa (25/09/2026) falhou — o script não achou o link de download na página | **PLAN** |
-| Cesta básica em R$ (DIEESE) | DIEESE | — | — | — | — | — | Sem acesso público em lote desde abril/2018; nenhum código a usa | **PLAN / só validação manual** |
-| Preços de produtor (CEPEA/ESALQ) | CEPEA | — | — | — | — | — | Avaliado na auditoria e descartado (mede produtor, não consumidor); nenhum código a usa | não usado |
+| Preço absoluto (R$/kg) de alimentos | CONAB, DIEESE, CEPEA/ESALQ | — | — | — | — | — | **Nenhuma fonte foi integrada.** A CONAB (varejo de arroz e feijão por UF) não pôde ser obtida de forma verificável, o DIEESE não tem acesso público em lote e o CEPEA/ESALQ mede o produtor, não a prateleira. Nada foi estimado para preencher a lacuna; ver [AUDITORIA_PRECOS_ALIMENTOS.md](AUDITORIA_PRECOS_ALIMENTOS.md) | avaliada |
 | IPCA (12 meses) | IBGE/SIDRA | tabela 1737, variável 2266 (número-índice; `download_ibge.py`) | mensal | % em 12 meses | `taxa_aa` | `índice do mês ÷ índice de 12 meses antes × 100 − 100`; a série começa em jan/2019 (o número-índice é baixado desde jan/2018 para os 12 meses anteriores) | Exige 12 meses anteriores | PROD |
 | IPCA (deflator) | IBGE/SIDRA | idem | mensal | número-índice | `ipca_indice` | Deflator de todos os preços reais | IPCA geral, não específico do item | PROD |
 | Salário mínimo | Banco Central (SGS 1619) | `download_salario_minimo.py` | mensal | R$ (nominal) | `salario_minimo`; % do salário e unidades por salário | Divide o preço do mês pelo salário vigente no mês | Piso nacional; não capta pisos regionais | PROD |
 | Dólar | Banco Central (SGS 1, PTAX venda) | `download_mercados.py` | diária (dias úteis) + média mensal | R$/US$ | `preco_nominal` (média mensal); `diario.*` (pontas) | Média do mês nas séries; dado diário nas comparações entre dois pontos | Sem dado em fins de semana/feriados | PROD |
 | Selic | Banco Central (SGS 432, **meta Selic**) | `download_mercados.py` | diária (valor vigente em cada dia corrido) | % ao ano | `taxa_aa` (média do mês); `diario.*` | Linhas com data futura descartadas (a série é publicada adiantada) | **Não** é a Selic efetiva (série 11) nem o CDI | PROD |
 | Ibovespa | B3 | Página pública de estatísticas do índice (backend do site; `download_mercados.py`) | diária (pregões) + fechamento mensal | pontos | `pontos` (fechamento do mês); `diario.*` | Fechamento do último pregão de cada mês | Endpoint **não** é API contratual e pode mudar; não é tempo real; pontos, não R$ | PROD |
-| Brent | FRED (DCOILBRENTEU) | `download_brent.py` | diária → média mensal | US$/barril | `brent_usd_bbl`; `brent_brl_bbl` (× câmbio do mês) | Só contexto dos combustíveis | Contexto, não causa | PROD (contexto) |
+| Brent | FRED (DCOILBRENTEU) | `download_brent.py` | diária → média mensal | US$/barril | `brent_usd_bbl`; `brent_brl_bbl` (× câmbio do mês) | Só contexto dos combustíveis | Contexto, não causa | contexto |
 | PIB real (anual) | IBGE — Contas Nacionais Trimestrais | tabela 5932 (`download_pib.py`), setor 90707 | trimestral → 1 valor/ano | % de crescimento real | `taxa_aa` = "taxa acumulada ao longo do ano" lida no 4º trimestre | Um ponto por ano; ano sem 4º trimestre não tem resultado | O IBGE revisa a série; usamos a última revisão baixada | PROD |
 | PIB (trimestral) | IBGE | tabela 5932 | trimestral | % | `variacao_interanual`, `variacao_dessazonalizada`, `acumulado_4tri`, `acumulado_ano` | Quatro leituras separadas, nunca misturadas | idem | PROD |
 | PIB nominal e per capita | IBGE — Contas Nacionais Anuais + Trimestrais | tabelas 6784 (anual) e 1846 (trimestral) | anual | R$ | `pib_nominal_bilhoes`, `pib_per_capita_rs` | Anos que a 6784 ainda não fechou usam a **soma dos quatro trimestres** (marcado em `pib_nominal_fonte`) | per capita só vem da 6784 (até 2023) | PROD |
@@ -114,7 +103,6 @@ secundário · **PLAN** = planejada ou tentada, ainda não integrada.
 | `brent_mensal.csv` | `download_brent.py` | `build_dataset.py` |
 | `pib_trimestral.csv`, `pib_anual.csv`, `pib_status.json` | `download_pib.py` | `montar_pib()` |
 | `pib_componentes_trimestral.csv`, `pib_nominal_trimestral.csv` | `download_pib_componentes.py` | `montar_pib()`, `_componentes_pib()` |
-| `conab_status.json` | `download_conab.py` | (registro da tentativa; `conab_precos_varejo.csv` não existe) |
 | `combustiveis_final.csv`, `cesta_basica_final.csv`, `resumo_periodos_*.csv` | `build_dataset.py` | `build_dashboard_data.py` |
 | `dashboard_data.json` | `build_dashboard_data.py` | `dashboard/js/app.js` |
 | `analysis_methodology.json`, `analysis_results.json` | `build_analise.py` | `dashboard/js/analise.js`, `test_analise.py` |
@@ -152,7 +140,7 @@ projeto começa em jan/2019. O PIB guarda histórico desde 1996, mas anos antes 
 | PIB anual | 2025 (2026 só tem trimestres) | manual |
 | Mercado de trabalho (PNAD) | jun-jul-ago 2026 (baixado em 30/09/2026) | `update_data.py` (e `--rapido`) |
 | Notícias | verificadas em 30/09/2026 (142 itens, 63 marcos) | `build_news.py` |
-| Análise | calculada em 30/09/2026 (metodologia v1.2) | `build_analise.py` |
+| Análise | calculada em 01/10/2026 (metodologia v1.4.0) | `build_analise.py` |
 
 O build grava `produtos.PIB.frescor` (`desatualizado: true/false`, com o
 trimestre esperado calculado pela data e folga de 100 dias) e escreve um aviso no

@@ -176,7 +176,7 @@ def renda():
     # igual duração (44 meses)
     for nome, s in (("SM real", sm_real), ("SM litros", sm_gas)):
         # janela de CALENDÁRIO (meses 1 a 44 de cada mandato), não "as 44 primeiras observações": a série da gasolina
-        # não tem set/2020 e contar observações deslocaria o fim da janela do período Bolsonaro em um mês (etapa 3, E11)
+        # não tem set/2020 e contar observações deslocaria o fim da janela do período Bolsonaro em um mês (E11)
         w = {p: _recorta(s[p], p, 44) for p in PER}
         print("   (44m, calendário) %-10s B=%7.2f L=%7.2f" % (nome, var(w["Bolsonaro"]), var(w["Lula"])))
 
