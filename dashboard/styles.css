@@ -2024,3 +2024,12 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .an-comoler ul { margin: 8px 0 0; padding-left: 18px; }
 .an-comoler li { margin-top: 8px; font-size: 0.92rem; line-height: 1.55; color: var(--fg-2); }
 @media (max-width: 640px) { .an-comoler { padding-left: 20px; } .an-outra { padding: 14px; } }
+
+/* Método: bloco "Referências e base metodológica" */
+.nb-aviso { max-width: 74ch; padding: 14px 18px; background: var(--bg-2); border-left: 3px solid var(--signal); }
+.nb-aviso-t { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; color: var(--fg); margin: 0 0 6px; }
+.nb-aviso p { margin: 0; font-size: 0.94rem; line-height: 1.6; color: var(--fg-2); }
+.notebook .nb--wide .nb-body > * + * { margin-top: 14px; }
+.nb-sub { font-family: var(--serif); font-weight: 500; font-size: 1.15rem; color: var(--fg); margin-top: 22px; }
+.nb--wide .nb-body > p { max-width: 74ch; }
+#referencias .an-table th[scope="row"] { font-weight: 700; color: var(--fg); }

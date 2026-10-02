@@ -737,6 +737,69 @@
           <summary><span class="mono">G</span>Audite a análise</summary>
           <div class="nb-body"><div id="an-audit"></div></div>
         </details>
+
+        <details class="nb nb--wide" id="referencias" open>
+          <summary><span class="mono">H</span>Referências e base metodológica</summary>
+          <div class="nb-body">
+            <div class="nb-aviso">
+              <h3 class="nb-aviso-t">Como interpretar a metodologia</h3>
+              <p>Nem todas as decisões utilizadas nesta análise são metodologias estabelecidas pela literatura. O projeto combina dados e definições oficiais com procedimentos analíticos próprios. As referências externas indicam a origem dos dados e os conceitos utilizados; as escolhas específicas de agregação, síntese e ponderação são identificadas como convenções do projeto.</p>
+            </div>
+
+            <h3 class="nb-sub">Fonte não é método</h3>
+            <p>A ANP é a fonte dos preços de combustíveis, mas a forma como este projeto os compara entre dois períodos não é metodologia da ANP. O IBGE fornece o IPCA e a documentação do índice, mas a forma como o projeto o usa para corrigir preços e salários não é metodologia do IBGE. O Banco Central publica a série do salário mínimo e a do dólar, mas “salário mínimo real” e “Dólar corrigido pelo IPCA” são contas do projeto.</p>
+
+            <h3 class="nb-sub">Fundamentação externa e convenções do projeto</h3>
+            <div class="table-scroll an-scroll">
+              <table class="an-table">
+                <thead><tr><th scope="col">Componente</th><th scope="col">Base</th><th scope="col">Natureza</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">IPCA em 12 meses</th><td>IBGE (número-índice, SIDRA 1737; métodos de cálculo do SNIPC)</td><td>Fonte e documentação oficiais; o cálculo em 12 meses a partir do índice é feito pelo projeto</td></tr>
+                  <tr><th scope="row">Preço real (a preços do último mês)</th><td>IBGE (conceito de deflator)</td><td>Conceito oficial; a escolha do IPCA geral e do último mês como base é do projeto</td></tr>
+                  <tr><th scope="row">Índices de alimentos</th><td>IBGE/SIDRA (variação mensal por subitem)</td><td>Dados oficiais; o encadeamento em base 100 é procedimento do projeto</td></tr>
+                  <tr><th scope="row">Preços de combustíveis</th><td>ANP (série mensal nacional oficial, ponderada por vendas)</td><td>Fonte e metodologia oficiais</td></tr>
+                  <tr><th scope="row">Salário mínimo</th><td>Banco Central (SGS 1619)</td><td>Fonte oficial</td></tr>
+                  <tr><th scope="row">Salário mínimo real</th><td>Banco Central + IBGE</td><td>Procedimento analítico do projeto; o INPC é alternativa usada por outras instituições</td></tr>
+                  <tr><th scope="row">Dólar</th><td>Banco Central (PTAX venda, SGS 1)</td><td>Fonte oficial</td></tr>
+                  <tr><th scope="row">Dólar corrigido pelo IPCA</th><td>Banco Central + IBGE</td><td>Procedimento analítico do projeto; não é a taxa de câmbio real (definida na nota do Ipeadata)</td></tr>
+                  <tr><th scope="row">Selic, Ibovespa e PIB</th><td>Banco Central (meta Selic), B3 e IBGE</td><td>Fontes oficiais; as médias e variações usadas na comparação são convenção do projeto</td></tr>
+                  <tr><th scope="row">Mercado de trabalho</th><td>IBGE (PNAD Contínua)</td><td>Dados oficiais; o voto por série é convenção metodológica própria do projeto</td></tr>
+                  <tr><th scope="row">Litros de gasolina por salário mínimo</th><td>ANP + Banco Central</td><td>Indicador derivado; a razão é convenção do projeto (o conceito de salário em unidades de um bem tem apoio indireto na literatura)</td></tr>
+                  <tr><th scope="row">Janelas de 12/24/36 meses e de calendário</th><td>—</td><td>Convenção analítica do projeto</td></tr>
+                  <tr><th scope="row">Tolerâncias de 1,0 e 0,1 ponto</th><td>—</td><td>Convenção metodológica própria do projeto</td></tr>
+                  <tr><th scope="row">Leitura por dimensão e síntese</th><td>—</td><td>Convenção metodológica própria do projeto</td></tr>
+                  <tr><th scope="row">Não pesar juntos o salário real e os litros</th><td>OECD/JRC, <i>Handbook</i> (dupla contagem)</td><td>Princípio da literatura aplicado pelo projeto</td></tr>
+                  <tr><th scope="row">Agregação do Custo de vida</th><td>—</td><td>Método próprio, com limitações documentadas</td></tr>
+                  <tr><th scope="row">Grade de pesos C(24, 4) = 10.626</th><td>Simplex-lattice (Scheffé, 1958); análise de sensibilidade (Saisana et al., 2005)</td><td>Análise de sensibilidade própria; a malha de 5 em 5 pontos é escolha do projeto</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Onde a coluna “Base” traz “—”, não existe literatura direta que sustente o componente: ele é uma <strong>convenção metodológica própria do projeto</strong>.</p>
+
+            <h3 class="nb-sub">Referências</h3>
+            <dl class="nb-list">
+              <dt>IBGE</dt>
+              <dd><a href="https://sidra.ibge.gov.br/tabela/1737" target="_blank" rel="noopener">IPCA (SIDRA, tabela 1737)</a> e <a href="https://sidra.ibge.gov.br/tabela/7060" target="_blank" rel="noopener">tabela 7060</a>. <a href="https://biblioteca.ibge.gov.br/visualizacao/livros/liv101767.pdf" target="_blank" rel="noopener">Métodos de cálculo do SNIPC</a>. Sustenta: os dados, a definição do índice e a mecânica de números-índice e deflator. Não sustenta: a forma como o projeto os combina.</dd>
+              <dt>ANP</dt>
+              <dd><a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis" target="_blank" rel="noopener">Levantamento de Preços de Combustíveis</a>. Sustenta: a série mensal nacional de preços e a descrição da coleta e da ponderação por vendas. Não sustenta: a comparação entre períodos nem a razão litros por salário mínimo.</dd>
+              <dt>Banco Central do Brasil</dt>
+              <dd><a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">SGS</a> (dólar PTAX, meta Selic, salário mínimo) e <a href="https://www4.bcb.gov.br/pec/series/port/metadados/mg45p.htm" target="_blank" rel="noopener">metadados da Selic</a>. Sustenta: as séries e a distinção entre meta e taxa efetiva.</dd>
+              <dt>B3 e Ipeadata</dt>
+              <dd><a href="https://www.b3.com.br/data/files/9C/15/76/F6/3F6947102255C247AC094EA8/IBOV-Metodologia-pt-br__Novo_.pdf" target="_blank" rel="noopener">Metodologia do Ibovespa</a> (a definição do índice) e <a href="http://www.ipeadata.gov.br/doc/Nota%20Metodol%C3%B3gica%20-%20tx%20de%20cambio%20efetiva%20real.pdf" target="_blank" rel="noopener">nota sobre a taxa de câmbio efetiva real</a> (a definição do conceito e, portanto, o que o “Dólar corrigido pelo IPCA” não é).</dd>
+              <dt>Literatura metodológica</dt>
+              <dd>OECD/JRC, <a href="https://doi.org/10.1787/9789264043466-en" target="_blank" rel="noopener"><i>Handbook on Constructing Composite Indicators</i></a> (dupla contagem, pesos e análise de sensibilidade); Saisana, Saltelli e Tarantola (2005) e Scheffé (1958) (sensibilidade e estrutura da grade de pesos); Munda e Nardo (2009) e Roy (1991) (conceitos próximos da síntese por sentido e do limiar de indiferença, <strong>apoio indireto</strong>). O <i>Consumer Price Index Manual</i> é referência metodológica pertinente a índices de preços; <strong>o texto integral não pôde ser consultado durante a auditoria</strong>. A lista completa, com o que cada obra sustenta e o que não sustenta, está em <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/referencias.md" target="_blank" rel="noopener">docs/referencias.md</a>.</dd>
+            </dl>
+
+            <h3 class="nb-sub">Limitações e escolhas metodológicas</h3>
+            <ul class="nb-bullets">
+              <li>Parte do método é <strong>convenção própria do projeto</strong>: não existe necessariamente uma metodologia acadêmica única, nem diretamente aplicável, para todas as agregações feitas aqui.</li>
+              <li>O método do Custo de vida foi avaliado como “defensável, com limitações”.</li>
+              <li>A reprodução da série da ANP deixa um resíduo de cerca de 0,14% a 0,47% que não foi explicado.</li>
+              <li>A análise de sensibilidade dos pesos <strong>não é validação externa</strong> da metodologia: ela testa se o resultado muda nas combinações de pesos avaliadas.</li>
+              <li>A auditoria verificou contas, fontes e alternativas; ela não transforma as escolhas próprias do projeto em metodologia acadêmica universalmente aceita. Detalhes: <a href="https://github.com/leonardotteixeira/custava-quanto/blob/master/docs/AUDITORIA_ACADEMICA_METODOLOGIA.md" target="_blank" rel="noopener">auditoria acadêmica da metodologia</a>.</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </div>
   </section>

@@ -26,6 +26,70 @@ tempo é **contexto**. O projeto só descreve uma relação de causa se a própr
 a estabelece — e hoje nenhuma matéria ou marco é apresentado assim. Vale para
 combustíveis, alimentos, inflação, PIB, câmbio, bolsa e juros.
 
+## Base metodológica e referências
+
+O projeto combina cinco coisas diferentes, e esta seção existe para que ninguém as confunda:
+
+1. **Fontes oficiais** (IBGE, ANP, Banco Central, B3): de onde vêm os dados.
+2. **Documentação institucional**: o que cada instituição diz sobre como produz o dado (por exemplo, como a ANP calcula a média nacional, como o IBGE define o número-índice do IPCA).
+3. **Literatura metodológica**: manuais e artigos que sustentam um conceito usado (deflação, dupla contagem, análise de sensibilidade). A lista, com o que cada obra sustenta e o que não sustenta, está em [referencias.md](referencias.md).
+4. **Procedimentos estatísticos e documentais**: contas que o projeto faz com esses dados e que são definições conhecidas (variação percentual, razão entre números-índice, média, mediana).
+5. **Convenções analíticas próprias do projeto**: escolhas de agregação, síntese, ponderação e janela que não vêm de nenhuma instituição e para as quais não existe necessariamente uma metodologia única ou diretamente aplicável.
+
+> **Como interpretar a metodologia.** Nem todas as decisões usadas nesta análise são metodologias estabelecidas pela literatura. O projeto combina
+> dados e definições oficiais com procedimentos analíticos próprios. As referências externas indicam a origem dos dados e os conceitos utilizados; as
+> escolhas específicas de agregação, síntese e ponderação são identificadas como convenções do projeto.
+
+**Fonte não é método.** A ANP é a fonte dos preços de combustíveis, mas a forma como o projeto os compara entre dois períodos não é metodologia da
+ANP. O IBGE fornece o IPCA e a documentação do índice, mas a forma como o projeto o usa para deflacionar preços e salários não é metodologia do IBGE. O Banco
+Central publica a série do salário mínimo e a do dólar, mas "salário mínimo real" e "Dólar corrigido pelo IPCA" são contas do projeto. Sempre que um texto diz
+"fonte: X", é a origem do dado; quando diz "convenção do projeto", a decisão é nossa.
+
+### Fundamentação externa
+
+Aquilo que tem respaldo em documentação oficial ou em literatura: o número-índice do IPCA e a definição da variação acumulada entre dois números-índice
+(IBGE); a série mensal nacional de preços de combustíveis e a regra de ponderação por vendas (ANP); as séries do dólar PTAX, da meta Selic e do salário mínimo
+(Banco Central); a definição do Ibovespa (B3); o conceito de deflacionar valores por um índice de preços (IBGE); o alerta contra a dupla contagem de indicadores
+correlacionados e a prática de testar a sensibilidade de um índice composto (OECD/JRC, *Handbook on Constructing Composite Indicators*); a distinção entre câmbio
+nominal e câmbio real (Ipeadata).
+
+### Convenções metodológicas próprias
+
+Aquilo que foi definido especificamente para este projeto: a síntese por sentido (+1, 0, −1) com tolerância; a mediana das variações reais como resumo do Custo de
+vida; o "nível real" como leitura complementar; o voto por série no Mercado de trabalho; a razão litros de gasolina por salário mínimo; as janelas de 12, 24 e 36
+meses e a janela de calendário; a grade de pesos de 5 em 5 pontos; a escolha do IPCA (e não do INPC) para o salário real; a média mensal da meta Selic; a média
+aritmética das taxas anuais do PIB. **Esta lista não é uma validação acadêmica dessas escolhas.** A auditoria verificou que as contas estão corretas, que as
+alternativas razoáveis foram testadas e que as limitações estão registradas; ela não transforma uma escolha do projeto em metodologia universalmente aceita.
+
+### Origem da metodologia
+
+| Componente | Base | Natureza |
+|---|---|---|
+| IPCA em 12 meses | IBGE (número-índice, SIDRA 1737; métodos de cálculo do SNIPC) | Fonte e documentação oficiais; o cálculo mensal em 12 meses a partir do índice é feito pelo projeto, com a definição oficial de variação entre números-índice |
+| Preço real (a preços do último mês) | IBGE (conceito de deflator e de número-índice) | Conceito oficial; **a escolha do IPCA geral como deflator e do último mês como base é do projeto** |
+| Índices de alimentos | IBGE/SIDRA (variação mensal por subitem do IPCA) | Dados oficiais; o encadeamento da variação mensal em um índice de base 100 em jan/2019 é procedimento do projeto |
+| Preços de combustíveis | ANP (série mensal nacional oficial, ponderada por vendas) | Fonte e metodologia oficiais |
+| Salário mínimo | Banco Central (SGS 1619); os valores são fixados por ato do governo federal (os atos individuais não foram verificados um a um pelo projeto) | Fonte oficial |
+| Salário mínimo real | Banco Central + IBGE | Procedimento analítico do projeto (`salário × IPCA do último mês ÷ IPCA do mês`); o INPC é alternativa usada por outras instituições e foi medido como sensibilidade |
+| Dólar | Banco Central (PTAX venda, SGS 1) | Fonte oficial |
+| Dólar corrigido pelo IPCA | Banco Central + IBGE | Procedimento analítico do projeto; **não é a taxa de câmbio real**, cuja definição oficial está na nota do Ipeadata |
+| Selic | Banco Central (meta definida pelo Copom, SGS 432) | Fonte oficial; a média mensal da meta é convenção do projeto |
+| Ibovespa | B3 (metodologia do índice) | Fonte oficial; a variação nominal em pontos é convenção do projeto |
+| PIB | IBGE (Contas Nacionais) | Fonte oficial; a média aritmética das taxas anuais é convenção do projeto |
+| Mercado de trabalho (dados) | IBGE (PNAD Contínua) | Fonte oficial |
+| Mercado de trabalho (voto por série) | — | Convenção metodológica própria do projeto |
+| Litros de gasolina por salário mínimo | ANP + Banco Central | Indicador derivado; o conceito de salário em unidades de um bem tem apoio indireto na literatura, a razão é convenção do projeto |
+| Janelas de 12/24/36 meses e janela de calendário | — | Convenção analítica do projeto |
+| Tolerâncias de 1,0 e 0,1 ponto | — | Convenção metodológica própria do projeto (o conceito de limiar de indiferença existe na literatura de decisão multicritério; os valores não vêm dela) |
+| Leitura por dimensão (mediana) e síntese por sentido | — | Convenção metodológica própria do projeto |
+| Não pesar ao mesmo tempo o salário real e os litros de gasolina | OECD/JRC, *Handbook* (dupla contagem) | Princípio da literatura aplicado pelo projeto |
+| Agregação do Custo de vida | — | Método próprio, com limitações documentadas (avaliado como "defensável, com limitações") |
+| Nível real do Custo de vida | — | Convenção própria, leitura complementar fora da síntese |
+| Grade de pesos C(24, 4) = 10.626 | Estrutura combinatória: simplex-lattice (Scheffé, 1958); prática de análise de sensibilidade (Saisana et al., 2005) | Análise de sensibilidade própria; a malha de 5 em 5 pontos é escolha do projeto |
+| Corte entre os períodos (jan/2023) | — | Definição editorial do projeto |
+
+Onde a coluna "Base" traz "—", **não existe literatura direta** que sustente o componente, e ele é uma **convenção metodológica própria do projeto**.
+
 ## Como uma variação é calculada
 
 | Conceito | Fórmula | Onde |
@@ -451,8 +515,7 @@ Onde não há literatura que sustente exatamente a implementação, o texto diz 
   17/10. Nos dados brutos, a última coleta é 17/08 e a primeira, 19/10; agosto e outubro têm coleta parcial. O site cita a ANP.
 - **Referências:** ANP, *Informações sobre o levantamento de preços de combustíveis* (texto lido em 01/10/2026) e *Metodologia resumida
   do LPC* (2020) — **sustentam** a fonte, a coleta, a média municipal simples e a ponderação por vendas nos níveis estadual, regional
-  e nacional. Vendas: ANP, dados abertos de vendas de combustíveis por UF e por município — **sustentam** a reprodução. Da Silva et
-  al. (2014), *Energy Economics* 43, DOI 10.1016/j.eneco.2014.02.002 — **indireta** (usa o LPC como fonte).
+  e nacional. Vendas: ANP, dados abertos de vendas de combustíveis por UF e por município — **sustentam** a reprodução.
 - **Não significa:** o preço de um posto, de um estado ou de um dia.
 
 ### Alimentos (índice de preço por item do IPCA)
@@ -518,8 +581,8 @@ Onde não há literatura que sustente exatamente a implementação, o texto diz 
 
 - **Dados:** número-índice do IPCA (SIDRA 1737, variável 2266), **a partir de jan/2018**.
 - **Fórmula:** `IPCA 12m(t) = índice(t) ÷ índice(t−12) − 1`, em %. A média da janela é a média simples dos valores mensais.
-  Jan/2019 usa o índice de jan/2018 (3,78%); dez/2019, 4,31%. É a mesma regra do IBGE para o acumulado em 12 meses (variação do
-  número-índice entre o mês e o mesmo mês do ano anterior).
+  Jan/2019 usa o índice de jan/2018 (3,78%); dez/2019, 4,31%. O IBGE define a variação acumulada de um IPCA em um período como a razão entre números-índice (fonte oficial); o
+  cálculo mensal em 12 meses a partir do número-índice é feito pelo projeto, com essa definição.
 - **Escolha do projeto:** a média da janela mede a pressão ao longo do período (regra da métrica). Para taxas, não é a variação
   entre o primeiro e o último ponto.
 - **Referências:** IBGE (2020), métodos de cálculo — **sustenta** o encadeamento, a variação acumulada e os números-índice.
@@ -582,9 +645,7 @@ sobre a queda da taxa de resposta; a regra "cada série vota uma vez" **não tem
   possível abrir o texto integral do manual (acesso bloqueado); a classificação se apoia nos resumos e nos registros Crossref. Bryan &
   Cecchetti (1993, NBER WP 4303), Smith (2004, *J. Money, Credit and Banking* 36(2):253–263, DOI 10.1353/mcb.2004.0014) e Ball, Carvalho &
   Evans (2023, NBER WP 31032) — **indiretas**: usam a mediana de variações de preços como medida central de inflação, mas **ponderada** pelas
-  participações de despesa. Dobbie & Dail (2013), *Ecological Indicators* 29:270–277, DOI 10.1016/j.ecolind.2012.12.025 — **indireta**: testa
-  a robustez e a sensibilidade de ponderação e agregação em índices compostos (o resumo foi conferido; o texto não foi lido). Mazziotta
-  & Pareto (2013) — **indireta** (escolha de normalização e redundância). **Não foi encontrado** artigo que use mediana não ponderada de
+  participações de despesa. **Não foi encontrado** artigo que use mediana não ponderada de
   séries de naturezas diferentes como agregador de uma dimensão: **a mediana não ponderada é uma convenção do projeto**.
 
 ### Síntese e análise de sensibilidade aos pesos
@@ -594,10 +655,8 @@ sobre a queda da taxa de resposta; a regra "cada série vota uma vez" **não tem
   quadros conceituais próximos, ambos **indiretos**: (i) a agregação ordinal ou não compensatória (Munda & Nardo, 2009, *Applied
   Economics* 41(12), DOI 10.1080/00036840601019364, que registra a perda da magnitude); (ii) o índice de concordância dos métodos de
   superação (*outranking*, ELECTRE), que soma os pesos dos critérios em que uma alternativa é ao menos tão boa quanto a outra, com um
-  limiar de indiferença (Roy, 1991, *Theory and Decision* 31:49–73, DOI 10.1007/bf00134132). **Cautela** sobre contagem de votos: Hedges &
-  Olkin (1980), *Psychological Bulletin* 88(2):359–369, DOI 10.1037/0033-2909.88.2.359, estudam métodos de contagem de votos em sínteses
-  de pesquisa (outro contexto, inferencial; texto não lido nesta etapa), e são citados só como contexto e cautela; aqui a contagem é descritiva, com direção definida antes
-  do cálculo, e por isso a magnitude é mostrada ao lado. **A regra do voto é uma convenção do projeto.**
+  limiar de indiferença (Roy, 1991, *Theory and Decision* 31:49–73, DOI 10.1007/bf00134132). Aqui a contagem é descritiva, com direção definida antes
+  do cálculo, e a magnitude é mostrada ao lado. **A regra do voto é uma convenção do projeto.**
 - **Grade discreta de pesos:** o conjunto de combinações de pesos em múltiplos de 5 pontos que somam 100 é uma **malha simplex-lattice** `{q = 5, m = 20}`
   (Scheffé, 1958, *J. Royal Statistical Society B* 20(2):344–360, DOI 10.1111/j.2517-6161.1958.tb00299.x), que tem `C(q + m − 1, m) = C(24, 20) = C(24, 4) = 10.626`
   pontos. Scheffé trata de experimentos com misturas, não de índices compostos: **sustenta a estrutura combinatória**, não o uso.
@@ -631,7 +690,25 @@ projeto evita para não introduzir juízo de valor. Nenhuma alternativa tem melh
 regra continua sendo uma convenção do projeto, declarada antes do cálculo; a duplicação parcial entre desocupação e subutilização (correlacionadas) é
 informada na leitura "sem uma série".
 
-## Limitações gerais
+## Limitações e escolhas metodológicas
+
+Registradas pela auditoria de 01/10/2026 ([AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md)); esta seção só as documenta e não as resolve.
+
+- **Parte do método é convenção própria do projeto.** Não existe necessariamente uma metodologia acadêmica única, nem diretamente aplicável, para todas as agregações
+  feitas aqui (mediana do Custo de vida, voto por série, síntese por sentido, razão litros por salário mínimo, grade de pesos de 5 em 5 pontos).
+- **O método do Custo de vida foi avaliado como "defensável, com limitações":** pesos iguais para itens de importâncias muito diferentes, diesel e diesel S10
+  quase duplicados, e uma leitura do nível real que depende do resumo escolhido.
+- **A série oficial da ANP tem um resíduo não explicado.** A reprodução da ponderação por vendas chega a menos de 0,5% da série oficial; os 0,14% a 0,47% que
+  sobram não têm explicação na documentação pública.
+- **O texto integral do *Consumer Price Index Manual* não pôde ser consultado durante a auditoria.** Ele consta como referência metodológica pertinente a índices
+  de preços, com essa ressalva.
+- **A análise de sensibilidade dos pesos não valida a metodologia.** Ela testa se o resultado muda nas combinações de pesos avaliadas (uma grade discreta de 5 em 5
+  pontos, não todos os pesos possíveis); como nenhuma dimensão aponta para o período Bolsonaro, o resultado é estável por construção. Não é validação externa, não
+  prova causa e não mede desempenho de governo.
+- **A auditoria não transforma as escolhas próprias em metodologia acadêmica.** Ela verificou contas, fontes e alternativas.
+
+### Limitações de dados e de escopo
+
 
 1. ANP: preço nacional oficial (ponderado por vendas), com defasagem de publicação; set/2020 sem pesquisa; sem quebra regional oficial no arquivo mensal.
 2. Alimentos: índice, não R$; "carne" é só o patinho; o IBGE não tem preço médio

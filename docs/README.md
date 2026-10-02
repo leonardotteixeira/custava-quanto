@@ -1,6 +1,6 @@
 # Documentação — mapa
 
-Última atualização: 01/10/2026
+Última atualização: 02/10/2026
 
 Fonte da verdade: o código e os dados do repositório. Quando um documento e o código
 discordarem, vale o código, e a discordância deve ser registrada em
@@ -27,6 +27,7 @@ discordarem, vale o código, e a discordância deve ser registrada em
 | [ROADMAP.md](ROADMAP.md) | Feito, em andamento, próximo, backlog | CURRENT |
 | [TESTING_AND_QA.md](TESTING_AND_QA.md) | Testes que existem e verificações manuais | CURRENT |
 | [AUDITORIA_ANALISE_GOVERNOS.md](AUDITORIA_ANALISE_GOVERNOS.md) | Histórico de versões da metodologia da Análise (v1.0 a v1.4.0) e decisões | CURRENT (v1.4.0) |
+| [referencias.md](referencias.md) | Fontes institucionais e literatura, cada uma com o que sustenta e o que não sustenta; o que é convenção do projeto | CURRENT |
 | [AUDITORIA_ACADEMICA_METODOLOGIA.md](AUDITORIA_ACADEMICA_METODOLOGIA.md) | Auditoria acadêmica e oficial da metodologia: matriz R1–R10, referências classificadas, antes/depois, auditoria final | CURRENT |
 | [AUDITORIA_LINKS_NOTICIAS.md](AUDITORIA_LINKS_NOTICIAS.md) | Auditoria dos 142 links de notícias e contexto | CURRENT |
 | `auditoria_*.py`, `auditoria_links_noticias.csv` | Scripts de auditoria reexecutáveis (somente leitura) e o resultado da auditoria de links | CURRENT |

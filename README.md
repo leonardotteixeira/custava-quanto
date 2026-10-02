@@ -332,6 +332,30 @@ porque comparar 48 com 44 meses distorce acumulados.
 
 ---
 
+## Metodologia, literatura e referências
+
+O projeto separa, de propósito, três coisas que costumam aparecer misturadas:
+
+- **Fonte oficial:** de onde vem o dado (IBGE, ANP, Banco Central, B3). Uma instituição ser a fonte de um dado **não** significa que a forma como o projeto o combina com
+  outros seja metodologia dessa instituição.
+- **Fundamentação externa:** documentação institucional ou literatura que sustenta um conceito ou uma definição (por exemplo, a definição do número-índice do IPCA, a ponderação
+  por vendas da ANP, o alerta contra a dupla contagem do *Handbook* da OCDE/JRC).
+- **Convenção metodológica própria do projeto:** escolhas de agregação, síntese, ponderação e janela (a mediana do Custo de vida, o voto por dimensão com tolerância, a razão litros de gasolina por
+  salário mínimo, a grade de pesos de 5 em 5 pontos, as janelas de 12/24/36 meses) para as quais não existe necessariamente uma metodologia única ou diretamente aplicável.
+
+A metodologia da Análise está na **versão 1.4.0**. A tabela "Origem da metodologia", componente por componente, e as limitações estão em [docs/METHODOLOGY.md](docs/METHODOLOGY.md#base-metodológica-e-referências);
+cada referência, com **o que ela sustenta e o que não sustenta**, está em [docs/referencias.md](docs/referencias.md); a auditoria que verificou as contas, as fontes e as alternativas está em
+[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md). O mesmo conteúdo aparece no site, no capítulo **09 Método**, bloco "Referências e base metodológica".
+
+**A auditoria não transforma as escolhas próprias em metodologia acadêmica universalmente aceita.** Ela mostrou que as contas estão corretas, que as alternativas razoáveis foram testadas e que as limitações estão
+registradas: parte do método é convenção do projeto; o Custo de vida foi avaliado como "defensável, com limitações"; a reprodução da série da ANP deixa um resíduo de 0,14% a 0,47% sem explicação; o texto integral do
+*Consumer Price Index Manual* não pôde ser consultado; e a análise de sensibilidade dos pesos testa a estabilidade do resultado nas combinações avaliadas, **não é validação externa**. O projeto não é "cientificamente
+comprovado": documenta cada escolha, mostra as alternativas e deixa o leitor conferir.
+
+O código, os dados processados, os testes e os scripts de auditoria (`docs/auditoria_*.py`, somente leitura) estão no repositório, e o pipeline é reproduzível (ver "Rodando localmente").
+
+---
+
 ## Contexto e notícias
 
 As matérias em Contexto, Arquivo e Análise vêm de **curadoria manual** (`data/news/raw_*.json`).
@@ -379,16 +403,6 @@ Auditorias e decisões registradas: [docs/AUDITORIA_ANALISE_GOVERNOS.md](docs/AU
 uma classificada pelo que realmente sustenta), [docs/AUDITORIA_LINKS_NOTICIAS.md](docs/AUDITORIA_LINKS_NOTICIAS.md) e
 [docs/AUDITORIA_PRECOS_ALIMENTOS.md](docs/AUDITORIA_PRECOS_ALIMENTOS.md). Os scripts de auditoria (`docs/auditoria_*.py`) são
 somente leitura e podem ser reexecutados.
-
-### Referências, resumidas
-
-**Oficiais** (sustentam a fonte, a fórmula e a definição de cada série): IBGE (métodos de cálculo do IPCA, SIDRA, tabelas de correspondência
-POF × subitens), ANP (levantamento de preços e séries oficiais), Banco Central (SGS, Estudo Especial nº 69/2019), B3 (metodologia do
-Ibovespa), Ipeadata (câmbio real e salário mínimo real). **Acadêmicas** (sustentam partes: dupla contagem, análise de sensibilidade,
-agregação de índices e a ideia de salário em unidades de um bem; **nenhuma** sustenta o conjunto do método): OECD/JRC *Handbook on
-Constructing Composite Indicators* (Nardo et al., 2008), Saisana, Saltelli & Tarantola (2005), Munda & Nardo (2009), Scheffé (1958),
-Lahdelma et al. (1998), entre outras. Lista completa, com DOI conferido no Crossref: seções 6 e 7 da etapa 2 e a etapa 3 de
-[docs/AUDITORIA_ACADEMICA_METODOLOGIA.md](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md).
 
 ---
 
@@ -550,5 +564,5 @@ veículos: sem licença de reprodução (ver "Contexto e notícias").
 [CURRENT_STATE](docs/CURRENT_STATE.md) · [METHODOLOGY](docs/METHODOLOGY.md) ·
 [DATA_PIPELINE](docs/DATA_PIPELINE.md) · [KNOWN_ISSUES](docs/KNOWN_ISSUES.md) ·
 [ROADMAP](docs/ROADMAP.md) · [TESTING_AND_QA](docs/TESTING_AND_QA.md) · [DEPLOY](docs/DEPLOY.md) ·
-[AUDITORIA_ACADEMICA_METODOLOGIA](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) ·
+[REFERENCIAS](docs/referencias.md) · [AUDITORIA_ACADEMICA_METODOLOGIA](docs/AUDITORIA_ACADEMICA_METODOLOGIA.md) ·
 [AUDITORIA_LINKS_NOTICIAS](docs/AUDITORIA_LINKS_NOTICIAS.md) · [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md).

@@ -488,6 +488,19 @@ def main() -> None:
         check(all(v > 0 for v in ag["pesos_ipca"]["pesos"].values()) and "DIESEL S10" not in ag["pesos_ipca"]["pesos"], "R3b: pesos do IPCA devem ser positivos e o diesel S10 não tem peso próprio (é o mesmo subitem do diesel)")
     check(set(dash["ipca_pesos"]) == {"Arroz", "Feijão carioca", "Carne bovina (patinho)", "Leite longa vida", "Óleo de soja", "Café moído", "GASOLINA", "ETANOL", "DIESEL", "GLP"}, "ipca_pesos: itens inesperados")
 
+    # Documentação: base metodológica e referências (só texto; nenhum número da análise depende disto)
+    raiz_ = DATA_PROCESSED.parent.parent
+    html_ = (raiz_ / "dashboard" / "index.html").read_text(encoding="utf-8")
+    check('id="referencias"' in html_ and "Referências e base metodológica" in html_, "o site deve ter o bloco 'Referências e base metodológica'")
+    check("convenção metodológica própria do projeto" in html_.lower(), "o site deve identificar o que é convenção metodológica própria do projeto")
+    ref_md = (raiz_ / "docs" / "referencias.md").read_text(encoding="utf-8")
+    met_md = (raiz_ / "docs" / "METHODOLOGY.md").read_text(encoding="utf-8")
+    for nome_, txt_ in (("docs/referencias.md", ref_md), ("docs/METHODOLOGY.md", met_md), ("site", html_)):
+        if "Consumer Price Index Manual" in txt_:
+            check("não pôde ser consultado" in txt_, f"{nome_}: o Consumer Price Index Manual deve vir com a ressalva de que o texto integral não pôde ser consultado")
+    check("## Origem da metodologia" in met_md or "### Origem da metodologia" in met_md, "METHODOLOGY.md: falta a tabela 'Origem da metodologia'")
+    check("Convenção metodológica própria do projeto" in met_md, "METHODOLOGY.md: a matriz deve dizer, onde não há literatura direta, 'Convenção metodológica própria do projeto'")
+
     # R7: 10.626 combinações, calculadas aqui por enumeração independente
     check(math.comb(24, 4) == 10626, "R7: C(24,4) deveria ser 10.626")
     leit_c = {d["id"]: d["leitura"] for d in res["modos"]["completo"]["dimensoes"] if d.get("leitura") is not None}
